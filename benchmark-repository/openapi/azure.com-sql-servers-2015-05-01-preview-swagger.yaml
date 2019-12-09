@@ -1,0 +1,673 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2015-05-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/servers.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: sql-servers
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers":
+    get:
+      description: Gets a list of all servers in the subscription.
+      operationId: Servers_List
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of servers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerListResult"
+              examples:
+                List servers:
+                  $ref: "#/components/examples/List_servers"
+        default:
+          description: "*** Error Responses: ***"
+      tags:
+        - Servers
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers":
+    get:
+      description: Gets a list of servers in a resource groups.
+      operationId: Servers_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of servers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerListResult"
+              examples:
+                List servers by resource group:
+                  $ref: "#/components/examples/List_servers_by_resource_group"
+        default:
+          description: "*** Error Responses: ***"
+      tags:
+        - Servers
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}":
+    delete:
+      description: Deletes a server.
+      operationId: Servers_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully deleted the server.
+        "202":
+          description: Accepted
+        "204":
+          description: The specified server does not exist.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 SubscriptionNotFound - The requested subscription was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 OperationIdNotFound - The operation with Id does not exist.
+
+             * 409 OperationCancelled - The operation has been cancelled by user.
+
+             * 409 OperationInterrupted - The operation on the resource could not be completed because it was interrupted by another operation on the same resource.
+
+             * 429 ConflictingServerOperation - An operation is currently in progress for the server.
+
+             * 500 OperationTimedOut - The operation timed out and automatically rolled back. Please retry the operation.
+      tags:
+        - Servers
+      x-ms-long-running-operation: true
+    get:
+      description: Gets a server.
+      operationId: Servers_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the specified server.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Server"
+              examples:
+                Get server:
+                  $ref: "#/components/examples/Get_server"
+        default:
+          description: |-
+            *** Error Responses: ***
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - Servers
+    patch:
+      description: Updates a server.
+      operationId: Servers_Update
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServerUpdate"
+        description: The requested server resource state.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the server.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Server"
+              examples:
+                Update a server with all properties:
+                  $ref: "#/components/examples/Update_a_server_with_all_properties"
+                Update a server with minimal properties:
+                  $ref: "#/components/examples/Update_a_server_with_minimal_propert\
+                    ies"
+        "202":
+          description: Accepted
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 NameAlreadyExists - The provided name already exists.
+
+             * 400 RegionDoesNotSupportVersion - A user attempted to create a server of a specified version in a location where that server version isn't supported.
+
+             * 400 ServerNotFound - The requested server was not found.
+
+             * 400 InvalidUsername - Supplied user name contains invalid characters.
+
+             * 400 InvalidParameterValue - An invalid value was given to a parameter.
+
+             * 400 InvalidIdentifier - The identifier contains NULL or an invalid unicode character.
+
+             * 400 TokenTooLong - The provided token is too long.
+
+             * 400 InvalidLoginName - The provided login name is invalid.
+
+             * 400 PasswordTooShort - The provided password is too short
+
+             * 400 PasswordTooLong - The provided password is too long.
+
+             * 400 PasswordNotComplex - The provided password is not complex enough.
+
+             * 400 SubscriptionNotFound - The requested subscription was not found.
+
+             * 400 InvalidLocation - An invalid location was specified.
+
+             * 400 InvalidServerName - Invalid server name specified.
+
+             * 400 RegionDoesNotAllowProvisioning - The selected location is not accepting new Windows Azure SQL Database servers. This may change at a later time.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 OperationIdNotFound - The operation with Id does not exist.
+
+             * 409 OperationCancelled - The operation has been cancelled by user.
+
+             * 409 OperationInterrupted - The operation on the resource could not be completed because it was interrupted by another operation on the same resource.
+
+             * 409 ServerAlreadyExists - Duplicate server name.
+
+             * 409 SubscriptionDisabled - Subscription is disabled.
+
+             * 409 ServerDisabled - Server is disabled.
+
+             * 409 ServerQuotaExceeded - Server cannot be added to a subscription because it will exceed quota.
+
+             * 429 ConflictingSubscriptionOperation - An operation is currently in progress for the subscription.
+
+             * 429 ConflictingServerOperation - An operation is currently in progress for the server.
+
+             * 500 OperationTimedOut - The operation timed out and automatically rolled back. Please retry the operation.
+      tags:
+        - Servers
+      x-ms-long-running-operation: true
+    put:
+      description: Creates or updates a server.
+      operationId: Servers_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Server"
+        description: The requested server resource state.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the server.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Server"
+              examples:
+                Create server with all properties:
+                  $ref: "#/components/examples/Create_server_with_all_properties"
+                Create server with minimal properties:
+                  $ref: "#/components/examples/Create_server_with_minimal_properties"
+        "201":
+          description: Successfully created the server.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Server"
+              examples:
+                Create server with all properties:
+                  $ref: "#/components/examples/Create_server_with_all_properties"
+                Create server with minimal properties:
+                  $ref: "#/components/examples/Create_server_with_minimal_properties"
+        "202":
+          description: Accepted
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 NameAlreadyExists - The provided name already exists.
+
+             * 400 RegionDoesNotSupportVersion - A user attempted to create a server of a specified version in a location where that server version isn't supported.
+
+             * 400 ServerNotFound - The requested server was not found.
+
+             * 400 InvalidUsername - Supplied user name contains invalid characters.
+
+             * 400 InvalidParameterValue - An invalid value was given to a parameter.
+
+             * 400 InvalidIdentifier - The identifier contains NULL or an invalid unicode character.
+
+             * 400 TokenTooLong - The provided token is too long.
+
+             * 400 InvalidLoginName - The provided login name is invalid.
+
+             * 400 PasswordTooShort - The provided password is too short
+
+             * 400 PasswordTooLong - The provided password is too long.
+
+             * 400 PasswordNotComplex - The provided password is not complex enough.
+
+             * 400 SubscriptionNotFound - The requested subscription was not found.
+
+             * 400 InvalidLocation - An invalid location was specified.
+
+             * 400 InvalidServerName - Invalid server name specified.
+
+             * 400 RegionDoesNotAllowProvisioning - The selected location is not accepting new Windows Azure SQL Database servers. This may change at a later time.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 OperationIdNotFound - The operation with Id does not exist.
+
+             * 409 OperationCancelled - The operation has been cancelled by user.
+
+             * 409 OperationInterrupted - The operation on the resource could not be completed because it was interrupted by another operation on the same resource.
+
+             * 409 ServerAlreadyExists - Duplicate server name.
+
+             * 409 SubscriptionDisabled - Subscription is disabled.
+
+             * 409 ServerDisabled - Server is disabled.
+
+             * 409 ServerQuotaExceeded - Server cannot be added to a subscription because it will exceed quota.
+
+             * 429 ConflictingSubscriptionOperation - An operation is currently in progress for the subscription.
+
+             * 429 ConflictingServerOperation - An operation is currently in progress for the server.
+
+             * 500 OperationTimedOut - The operation timed out and automatically rolled back. Please retry the operation.
+      tags:
+        - Servers
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    List_servers:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645
+            kind: v12.0
+            location: japaneast
+            name: sqlcrudtest-4645
+            properties:
+              administratorLogin: dummylogin
+              fullyQualifiedDomainName: sqlcrudtest-4645.database.windows.net
+              state: Ready
+              version: "12.0"
+            type: Microsoft.Sql/servers
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-6661
+            kind: v12.0
+            location: japaneast
+            name: sqlcrudtest-6661
+            properties:
+              administratorLogin: dummylogin
+              fullyQualifiedDomainName: sqlcrudtest-6661.database.windows.net
+              state: Ready
+              version: "12.0"
+            type: Microsoft.Sql/servers
+    List_servers_by_resource_group:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645
+            kind: v12.0
+            location: japaneast
+            name: sqlcrudtest-4645
+            properties:
+              administratorLogin: dummylogin
+              fullyQualifiedDomainName: sqlcrudtest-4645.database.windows.net
+              state: Ready
+              version: "12.0"
+            type: Microsoft.Sql/servers
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-6661
+            kind: v12.0
+            location: japaneast
+            name: sqlcrudtest-6661
+            properties:
+              administratorLogin: dummylogin
+              fullyQualifiedDomainName: sqlcrudtest-6661.database.windows.net
+              state: Ready
+              version: "12.0"
+            type: Microsoft.Sql/servers
+    Get_server:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645
+        kind: v12.0
+        location: japaneast
+        name: sqlcrudtest-4645
+        properties:
+          administratorLogin: dummylogin
+          fullyQualifiedDomainName: sqlcrudtest-4645.database.windows.net
+          state: Ready
+          version: "12.0"
+        tags:
+          tagKey1: TagValue1
+        type: Microsoft.Sql/servers
+    Update_a_server_with_all_properties:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645
+        kind: v12.0
+        location: japaneast
+        name: sqlcrudtest-4645
+        properties:
+          administratorLogin: dummylogin
+          fullyQualifiedDomainName: sqlcrudtest-4645.database.windows.net
+          state: Ready
+          version: "12.0"
+        tags:
+          tagKey1: TagValue1
+        type: Microsoft.Sql/servers
+    Update_a_server_with_minimal_properties:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645
+        kind: v12.0
+        location: japaneast
+        name: sqlcrudtest-4645
+        properties:
+          administratorLogin: dummylogin
+          fullyQualifiedDomainName: sqlcrudtest-4645.database.windows.net
+          state: Ready
+          version: "12.0"
+        tags:
+          tagKey1: TagValue1
+        type: Microsoft.Sql/servers
+    Create_server_with_all_properties:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645
+        kind: v12.0
+        location: japaneast
+        name: sqlcrudtest-4645
+        properties:
+          administratorLogin: dummylogin
+          fullyQualifiedDomainName: sqlcrudtest-4645.database.windows.net
+          state: Ready
+          version: "12.0"
+        tags:
+          tagKey1: TagValue1
+        type: Microsoft.Sql/servers
+    Create_server_with_minimal_properties:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645
+        kind: v12.0
+        location: japaneast
+        name: sqlcrudtest-4645
+        properties:
+          administratorLogin: dummylogin
+          fullyQualifiedDomainName: sqlcrudtest-4645.database.windows.net
+          state: Ready
+          version: "12.0"
+        type: Microsoft.Sql/servers
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        List servers:
+          value: 2015-05-01-preview
+        List servers by resource group:
+          value: 2015-05-01-preview
+        Delete server:
+          value: 2015-05-01-preview
+        Get server:
+          value: 2015-05-01-preview
+        Update a server with all properties:
+          value: 2015-05-01-preview
+        Update a server with minimal properties:
+          value: 2015-05-01-preview
+        Create server with all properties:
+          value: 2015-05-01-preview
+        Create server with minimal properties:
+          value: 2015-05-01-preview
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        List servers by resource group:
+          value: sqlcrudtest-7398
+        Delete server:
+          value: sqlcrudtest-7398
+        Get server:
+          value: sqlcrudtest-7398
+        Update a server with all properties:
+          value: sqlcrudtest-7398
+        Update a server with minimal properties:
+          value: sqlcrudtest-7398
+        Create server with all properties:
+          value: sqlcrudtest-7398
+        Create server with minimal properties:
+          value: sqlcrudtest-7398
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Delete server:
+          value: sqlcrudtest-6661
+        Get server:
+          value: sqlcrudtest-4645
+        Update a server with all properties:
+          value: sqlcrudtest-4645
+        Update a server with minimal properties:
+          value: sqlcrudtest-4645
+        Create server with all properties:
+          value: sqlcrudtest-4645
+        Create server with minimal properties:
+          value: sqlcrudtest-4645
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        List servers:
+          value: 00000000-1111-2222-3333-444444444444
+        List servers by resource group:
+          value: 00000000-1111-2222-3333-444444444444
+        Delete server:
+          value: 00000000-1111-2222-3333-444444444444
+        Get server:
+          value: 00000000-1111-2222-3333-444444444444
+        Update a server with all properties:
+          value: 00000000-1111-2222-3333-444444444444
+        Update a server with minimal properties:
+          value: 00000000-1111-2222-3333-444444444444
+        Create server with all properties:
+          value: 00000000-1111-2222-3333-444444444444
+        Create server with minimal properties:
+          value: 00000000-1111-2222-3333-444444444444
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Server:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM tracked top level resource.
+          properties:
+            location:
+              description: Resource location.
+              type: string
+              x-ms-mutability:
+                - read
+                - create
+            tags:
+              additionalProperties:
+                type: string
+              description: Resource tags.
+              type: object
+          required:
+            - location
+          type: object
+      description: An Azure SQL Database server.
+      properties:
+        identity:
+          description: Azure Active Directory identity configuration for a resource.
+          properties:
+            principalId:
+              description: The Azure Active Directory principal id.
+              format: uuid
+              readOnly: true
+              type: string
+            tenantId:
+              description: The Azure Active Directory tenant id.
+              format: uuid
+              readOnly: true
+              type: string
+            type:
+              description: The identity type. Set this to 'SystemAssigned' in order to
+                automatically create and assign an Azure Active Directory
+                principal for the resource.
+              enum:
+                - SystemAssigned
+              type: string
+              x-ms-enum:
+                modelAsString: true
+                name: IdentityType
+          type: object
+        kind:
+          description: Kind of sql server. This is metadata used for the Azure portal
+            experience.
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/ServerProperties"
+      required:
+        - location
+      type: object
+    ServerListResult:
+      description: A list of servers.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/Server"
+          readOnly: true
+          type: array
+      type: object
+    ServerProperties:
+      description: The properties of a server.
+      properties:
+        administratorLogin:
+          description: Administrator username for the server. Once created it cannot be
+            changed.
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        administratorLoginPassword:
+          description: The administrator login password (required for server creation).
+          type: string
+          x-ms-mutability:
+            - create
+            - update
+        fullyQualifiedDomainName:
+          description: The fully qualified domain name of the server.
+          readOnly: true
+          type: string
+        state:
+          description: The state of the server.
+          readOnly: true
+          type: string
+        version:
+          description: The version of the server.
+          type: string
+      type: object
+    ServerUpdate:
+      description: An update request for an Azure SQL Database server.
+      properties:
+        properties:
+          $ref: "#/components/schemas/ServerProperties"
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+      type: object

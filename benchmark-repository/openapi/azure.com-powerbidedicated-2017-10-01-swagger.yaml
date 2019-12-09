@@ -1,0 +1,840 @@
+openapi: 3.0.0
+info:
+  description: PowerBI Dedicated Web API provides a RESTful set of web services that
+    enables users to create, retrieve, update, and delete Power BI dedicated
+    capacities
+  title: PowerBIDedicated
+  version: 2017-10-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-ms-code-generation-settings:
+    name: PowerBIDedicatedManagementClient
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2017-10-01/powerbidedicated.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: powerbidedicated
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.PowerBIDedicated/operations:
+    get:
+      description: Lists all of the available PowerBIDedicated REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/capacities":
+    get:
+      description: Lists all the Dedicated capacities for the given subscription.
+      operationId: Capacities_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DedicatedCapacities"
+              examples:
+                Get details of a capacity:
+                  $ref: "#/components/examples/Get_details_of_a_capacity"
+      tags:
+        - Capacities
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/locations/{location}/checkNameAvailability":
+    post:
+      description: Check the name availability in the target location.
+      operationId: Capacities_CheckNameAvailability
+      parameters:
+        - description: The region name which the operation will lookup into.
+          in: path
+          name: location
+          required: true
+          schema:
+            type: string
+          examples:
+            Check name availability of a capacity:
+              value: West US
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckCapacityNameAvailabilityParameters"
+        description: The name of the capacity.
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckCapacityNameAvailabilityResult"
+              examples:
+                Check name availability of a capacity:
+                  $ref: "#/components/examples/Check_name_availability_of_a_capacity"
+      tags:
+        - Capacities
+  "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/skus":
+    get:
+      description: Lists eligible SKUs for PowerBI Dedicated resource provider.
+      operationId: Capacities_ListSkus
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkuEnumerationForNewResourceResult"
+              examples:
+                List eligible SKUs for a new capacity:
+                  $ref: "#/components/examples/List_eligible_SKUs_for_a_new_capacity"
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities":
+    get:
+      description: Gets all the Dedicated capacities for the given resource group.
+      operationId: Capacities_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DedicatedCapacities"
+              examples:
+                List capacities in resource group:
+                  $ref: "#/components/examples/List_capacities_in_resource_group"
+      tags:
+        - Capacities
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}":
+    delete:
+      description: Deletes the specified Dedicated capacity.
+      operationId: Capacities_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Dedicated capacity. It must be at least 3 characters
+            in length, and no more than 63.
+          in: path
+          name: dedicatedCapacityName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Get details of a capacity:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK.
+        "202":
+          description: Accepted.
+        "204":
+          description: No Content.
+      tags:
+        - Capacities
+      x-ms-long-running-operation: true
+    get:
+      description: Gets details about the specified dedicated capacity.
+      operationId: Capacities_GetDetails
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the dedicated capacity. It must be a minimum of 3
+            characters, and a maximum of 63.
+          in: path
+          name: dedicatedCapacityName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Get details of a capacity:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK. The operation was successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DedicatedCapacity"
+              examples:
+                Get details of a capacity:
+                  $ref: "#/components/examples/Get_details_of_a_capacity"
+      tags:
+        - Capacities
+    patch:
+      description: Updates the current state of the specified Dedicated capacity.
+      operationId: Capacities_Update
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Dedicated capacity. It must be at least 3 characters
+            in length, and no more than 63.
+          in: path
+          name: dedicatedCapacityName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Update capacity parameters:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DedicatedCapacityUpdateParameters"
+        description: Request object that contains the updated information for the capacity.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DedicatedCapacity"
+              examples:
+                Update capacity parameters:
+                  $ref: "#/components/examples/Update_capacity_parameters"
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DedicatedCapacity"
+              examples:
+                Update capacity parameters:
+                  $ref: "#/components/examples/Update_capacity_parameters"
+      tags:
+        - Capacities
+      x-ms-long-running-operation: true
+    put:
+      description: Provisions the specified Dedicated capacity based on the configuration
+        specified in the request.
+      operationId: Capacities_Create
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Dedicated capacity. It must be a minimum of 3
+            characters, and a maximum of 63.
+          in: path
+          name: dedicatedCapacityName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Create capacity:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DedicatedCapacity"
+        description: Contains the information used to provision the Dedicated capacity.
+        required: true
+      responses:
+        "200":
+          description: OK. The operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DedicatedCapacity"
+              examples:
+                Create capacity:
+                  $ref: "#/components/examples/Create_capacity"
+        "201":
+          description: InProgress. The operation is still in progress.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DedicatedCapacity"
+              examples:
+                Create capacity:
+                  $ref: "#/components/examples/Create_capacity"
+      tags:
+        - Capacities
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}/resume":
+    post:
+      description: Resumes operation of the specified Dedicated capacity instance.
+      operationId: Capacities_Resume
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Dedicated capacity. It must be at least 3 characters
+            in length, and no more than 63.
+          in: path
+          name: dedicatedCapacityName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Get details of a capacity:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK
+        "202":
+          description: Accepted
+      tags:
+        - Capacities
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}/skus":
+    get:
+      description: Lists eligible SKUs for a PowerBI Dedicated resource.
+      operationId: Capacities_ListSkusForCapacity
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Dedicated capacity. It must be at least 3 characters
+            in length, and no more than 63.
+          in: path
+          name: dedicatedCapacityName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            List eligible SKUs for an existing capacity:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkuEnumerationForExistingResourceResult"
+              examples:
+                List eligible SKUs for an existing capacity:
+                  $ref: "#/components/examples/List_eligible_SKUs_for_an_existing_c\
+                    apacity"
+      tags:
+        - Capacities
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}/suspend":
+    post:
+      description: Suspends operation of the specified dedicated capacity instance.
+      operationId: Capacities_Suspend
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Dedicated capacity. It must be at least 3 characters
+            in length, and no more than 63.
+          in: path
+          name: dedicatedCapacityName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Suspend capacity:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK.
+        "202":
+          description: Accepted.
+      tags:
+        - Capacities
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_details_of_a_capacity:
+      value:
+        id: /subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.PowerBIDedicated/capacities/azsdktest
+        location: West US
+        name: azsdktest
+        properties:
+          administration:
+            members:
+              - azsdktest@microsoft.com
+          provisioningState: Provisioning
+          state: Provisioning
+        sku:
+          name: A1
+          tier: PBIE_Azure
+        tags: {}
+    Check_name_availability_of_a_capacity:
+      value:
+        nameAvailable: true
+    List_eligible_SKUs_for_a_new_capacity:
+      value:
+        value:
+          - name: A1
+          - name: A2
+          - name: A3
+          - name: A4
+          - name: A5
+          - name: A6
+    List_capacities_in_resource_group:
+      value:
+        value:
+          - id: /subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.PowerBIDedicated/capacities/azsdktest
+            location: West US
+            name: azsdktest
+            properties:
+              administration:
+                members:
+                  - azsdktest@microsoft.com
+              provisioningState: Provisioning
+              state: Provisioning
+            sku:
+              name: A1
+              tier: PBIE_Azure
+            tags:
+              testKey: testValue
+          - id: /subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.PowerBIDedicated/capacities/azsdktest
+            location: West US
+            name: azsdktest2
+            properties:
+              administration:
+                members:
+                  - azsdktest@microsoft.com
+              provisioningState: Provisioning
+              state: Provisioning
+            sku:
+              name: A2
+              tier: PBIE_Azure
+            tags:
+              testKey: testValue
+    Update_capacity_parameters:
+      value:
+        id: /subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.PowerBIDedicated/capacities/azsdktest
+        location: West US
+        name: azsdktest
+        properties:
+          administration:
+            members:
+              - azsdktest@microsoft.com
+              - azsdktest2@microsoft.com
+          provisioningState: Provisioning
+          state: Provisioning
+        sku:
+          name: A1
+          tier: PBIE_Azure
+        tags:
+          testKey: testValue
+    Create_capacity:
+      value:
+        id: /subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.PowerBIDedicated/servers/azsdktest
+        location: West US
+        name: azsdktest
+        properties:
+          administration:
+            members:
+              - azsdktest@microsoft.com
+              - azsdktest2@microsoft.com
+          provisioningState: Provisioning
+          state: Provisioning
+        sku:
+          name: A1
+          tier: PBIE_Azure
+        tags:
+          testKey: testValue
+    List_eligible_SKUs_for_an_existing_capacity:
+      value:
+        value:
+          - sku:
+              name: A2
+              tier: PBIE_Azure
+          - sku:
+              name: A3
+              tier: PBIE_Azure
+          - sku:
+              name: A4
+              tier: PBIE_Azure
+          - sku:
+              name: A5
+              tier: PBIE_Azure
+          - sku:
+              name: A6
+              tier: PBIE_Azure
+  parameters:
+    ApiVersionParameter:
+      description: The client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Get details of a capacity:
+          value: 2017-10-01
+        Check name availability of a capacity:
+          value: 2017-10-01
+        List eligible SKUs for a new capacity:
+          value: 2017-10-01
+        List capacities in resource group:
+          value: 2017-10-01
+        Update capacity parameters:
+          value: 2017-10-01
+        Create capacity:
+          value: 2017-10-01
+        List eligible SKUs for an existing capacity:
+          value: 2017-10-01
+        Suspend capacity:
+          value: 2017-10-01
+    ResourceGroupNameParameter:
+      description: The name of the Azure Resource group of which a given PowerBIDedicated
+        capacity is part. This name must be at least 1 character in length, and
+        no more than 90.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\._\(\)]+$
+      examples:
+        List capacities in resource group:
+          value: TestRG
+        Get details of a capacity:
+          value: TestRG
+        Update capacity parameters:
+          value: TestRG
+        Create capacity:
+          value: TestRG
+        List eligible SKUs for an existing capacity:
+          value: TestRG
+        Suspend capacity:
+          value: TestRG
+    SubscriptionIdParameter:
+      description: A unique identifier for a Microsoft Azure subscription. The subscription
+        ID forms part of the URI for every service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Get details of a capacity:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        Check name availability of a capacity:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        List eligible SKUs for a new capacity:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        List capacities in resource group:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        Update capacity parameters:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        Create capacity:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        List eligible SKUs for an existing capacity:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        Suspend capacity:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    CheckCapacityNameAvailabilityParameters:
+      description: Details of capacity name request body.
+      properties:
+        name:
+          description: Name for checking availability.
+          maxLength: 63
+          minLength: 3
+          pattern: ^[a-z][a-z0-9]*$
+          type: string
+        type:
+          default: Microsoft.PowerBIDedicated/capacities
+          description: The resource type of PowerBI dedicated.
+          type: string
+      type: object
+    CheckCapacityNameAvailabilityResult:
+      description: The checking result of capacity name availability.
+      properties:
+        message:
+          description: The detailed message of the request unavailability.
+          type: string
+        nameAvailable:
+          description: Indicator of availability of the capacity name.
+          type: boolean
+        reason:
+          description: The reason of unavailability.
+          type: string
+      type: object
+    DedicatedCapacities:
+      description: An array of Dedicated capacities resources.
+      properties:
+        value:
+          description: An array of Dedicated capacities resources.
+          items:
+            $ref: "#/components/schemas/DedicatedCapacity"
+          type: array
+      required:
+        - value
+      type: object
+    DedicatedCapacity:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Represents an instance of a Dedicated Capacity resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/DedicatedCapacityProperties"
+      type: object
+    DedicatedCapacityAdministrators:
+      description: An array of administrator user identities
+      properties:
+        members:
+          description: An array of administrator user identities.
+          items:
+            description: "The UPN of the user. For example: johnsmith@contoso.com."
+            type: string
+          type: array
+      type: object
+    DedicatedCapacityMutableProperties:
+      description: An object that represents a set of mutable Dedicated capacity resource
+        properties.
+      properties:
+        administration:
+          $ref: "#/components/schemas/DedicatedCapacityAdministrators"
+      type: object
+    DedicatedCapacityProperties:
+      allOf:
+        - $ref: "#/components/schemas/DedicatedCapacityMutableProperties"
+      description: Properties of Dedicated Capacity resource.
+      properties:
+        provisioningState:
+          description: The current deployment state of PowerBI Dedicated resource. The
+            provisioningState is to indicate states for resource provisioning.
+          enum:
+            - Deleting
+            - Succeeded
+            - Failed
+            - Paused
+            - Suspended
+            - Provisioning
+            - Updating
+            - Suspending
+            - Pausing
+            - Resuming
+            - Preparing
+            - Scaling
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ProvisioningState
+        state:
+          description: The current state of PowerBI Dedicated resource. The state is to
+            indicate more states outside of resource provisioning.
+          enum:
+            - Deleting
+            - Succeeded
+            - Failed
+            - Paused
+            - Suspended
+            - Provisioning
+            - Updating
+            - Suspending
+            - Pausing
+            - Resuming
+            - Preparing
+            - Scaling
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: State
+      type: object
+    DedicatedCapacityUpdateParameters:
+      description: Provision request specification
+      properties:
+        properties:
+          $ref: "#/components/schemas/DedicatedCapacityMutableProperties"
+        sku:
+          $ref: "#/components/schemas/ResourceSku"
+        tags:
+          additionalProperties:
+            type: string
+          description: Key-value pairs of additional provisioning properties.
+          type: object
+      type: object
+    ErrorResponse:
+      description: Describes the format of Error response.
+      properties:
+        code:
+          description: Error code
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          type: string
+      type: object
+    Operation:
+      description: Capacities REST API operation.
+      properties:
+        display:
+          description: The object that represents the operation.
+          properties:
+            operation:
+              description: "Operation type: create, update, delete, etc."
+              readOnly: true
+              type: string
+            provider:
+              description: "Service provider: Microsoft.PowerBIDedicated."
+              readOnly: true
+              type: string
+            resource:
+              description: "Resource on which the operation is performed: capacity, etc."
+              readOnly: true
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}."
+          readOnly: true
+          type: string
+      type: object
+    OperationListResult:
+      description: Result listing capacities. It contains a list of operations and a URL
+        link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          readOnly: true
+          type: string
+        value:
+          description: List of capacities supported by the Microsoft.PowerBIDedicated
+            resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          readOnly: true
+          type: array
+    Resource:
+      description: Represents an instance of an PowerBI Dedicated resource.
+      properties:
+        id:
+          description: An identifier that represents the PowerBI Dedicated resource.
+          readOnly: true
+          type: string
+        location:
+          description: Location of the PowerBI Dedicated resource.
+          type: string
+        name:
+          description: The name of the PowerBI Dedicated resource.
+          readOnly: true
+          type: string
+        sku:
+          $ref: "#/components/schemas/ResourceSku"
+        tags:
+          additionalProperties:
+            type: string
+          description: Key-value pairs of additional resource provisioning properties.
+          type: object
+        type:
+          description: The type of the PowerBI Dedicated resource.
+          readOnly: true
+          type: string
+      required:
+        - location
+        - sku
+      type: object
+      x-ms-azure-resource: true
+    ResourceSku:
+      description: Represents the SKU name and Azure pricing tier for PowerBI Dedicated
+        resource.
+      properties:
+        name:
+          description: Name of the SKU level.
+          type: string
+        tier:
+          description: The name of the Azure pricing tier to which the SKU applies.
+          enum:
+            - PBIE_Azure
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SkuTier
+      required:
+        - name
+      type: object
+    SkuDetailsForExistingResource:
+      description: An object that represents SKU details for existing resources
+      properties:
+        sku:
+          $ref: "#/components/schemas/ResourceSku"
+      type: object
+    SkuEnumerationForExistingResourceResult:
+      description: An object that represents enumerating SKUs for existing resources
+      properties:
+        value:
+          description: The collection of available SKUs for existing resources
+          items:
+            $ref: "#/components/schemas/SkuDetailsForExistingResource"
+          type: array
+      type: object
+    SkuEnumerationForNewResourceResult:
+      description: An object that represents enumerating SKUs for new resources
+      properties:
+        value:
+          description: The collection of available SKUs for new resources
+          items:
+            $ref: "#/components/schemas/ResourceSku"
+          type: array
+      type: object

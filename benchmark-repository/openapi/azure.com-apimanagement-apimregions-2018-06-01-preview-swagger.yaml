@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  description: Use these REST APIs for performing operations in Azure API Management
+    deployment.
+  title: ApiManagementClient
+  version: 2018-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/resource-manager/Microsoft.ApiManagement/preview/2018-06-01-preview/apimregions.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: apimanagement-apimregions
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/regions":
+    get:
+      description: Lists all azure regions in which the service exists.
+      operationId: Region_ListByService
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementListRegions:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementListRegions:
+              value: apimService1
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListRegions:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListRegions:
+              value: subid
+      responses:
+        "200":
+          description: Lists of Regions in which the service is deployed.
+          content:
+            application/json:
+              schema:
+                description: Lists Regions operation response details.
+                properties:
+                  count:
+                    description: Total record count number across all pages.
+                    format: int64
+                    type: integer
+                  nextLink:
+                    description: Next page link if any.
+                    type: string
+                  value:
+                    description: Lists of Regions.
+                    items:
+                      description: Region profile.
+                      properties:
+                        isDeleted:
+                          description: whether Region is deleted.
+                          type: boolean
+                        isMasterRegion:
+                          description: whether Region is the master region.
+                          type: boolean
+                        name:
+                          description: Region name.
+                          readOnly: true
+                          type: string
+                    type: array
+              examples:
+                ApiManagementListRegions:
+                  $ref: "#/components/examples/ApiManagementListRegions"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Region
+      x-ms-pageable:
+        nextLinkName: nextLink
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ApiManagementListRegions:
+      value:
+        count: 1
+        nextLink: ""
+        value:
+          - isDeleted: false
+            isMasterRegion: true
+            name: West US
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account

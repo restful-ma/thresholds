@@ -1,0 +1,207 @@
+openapi: 3.0.0
+info:
+  description: The HDInsight Management Client.
+  title: HDInsightManagementClient
+  version: 2015-03-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2015-03-01-preview/capabilities.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: hdinsight-capabilities
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/capabilities":
+    get:
+      description: Gets the capabilities for the specified location.
+      operationId: Location_GetCapabilities
+      parameters:
+        - description: The location to get capabilities for.
+          in: path
+          name: location
+          required: true
+          schema:
+            type: string
+          examples:
+            Get the subscription capabilities for specific location:
+              value: West US
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/capabilitiesResult"
+      tags:
+        - Regions
+servers:
+  - url: https://management.azure.com
+components:
+  parameters:
+    ApiVersionParameter:
+      description: The HDInsight client API Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Get the subscription capabilities for specific location:
+          value: 2015-03-01-preview
+    SubscriptionIdParameter:
+      description: The subscription credentials which uniquely identify Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Get the subscription capabilities for specific location:
+          value: subid
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    capabilitiesResult:
+      description: The Get Capabilities operation response.
+      properties:
+        features:
+          description: The capabilty features.
+          items:
+            type: string
+          type: array
+        quota:
+          $ref: "#/components/schemas/quotaCapability"
+        regions:
+          additionalProperties:
+            $ref: "#/components/schemas/regionsCapability"
+          description: The virtual machine size compatibilty features.
+          type: object
+        versions:
+          additionalProperties:
+            $ref: "#/components/schemas/versionsCapability"
+          description: The version capability.
+          type: object
+        vmSize_filters:
+          description: The virtual machine size compatibilty filters.
+          items:
+            $ref: "#/components/schemas/vmSizeCompatibilityFilter"
+          type: array
+        vmSizes:
+          additionalProperties:
+            $ref: "#/components/schemas/vmSizesCapability"
+          description: The virtual machine sizes.
+          type: object
+    quotaCapability:
+      description: The regional quota capability.
+      properties:
+        regionalQuotas:
+          description: The list of region quota capabilities.
+          items:
+            $ref: "#/components/schemas/regionalQuotaCapability"
+          type: array
+    regionalQuotaCapability:
+      description: The regional quota capacity.
+      properties:
+        cores_available:
+          description: The number of courses available in the region.
+          format: int64
+          type: integer
+        cores_used:
+          description: The number of cores used in the region.
+          format: int64
+          type: integer
+        region_name:
+          description: The region name.
+          type: string
+    regionsCapability:
+      description: The regions capability.
+      properties:
+        available:
+          description: The list of region capabilities.
+          items:
+            type: string
+          type: array
+    versionSpec:
+      description: The version properties.
+      properties:
+        componentVersions:
+          additionalProperties:
+            type: string
+          description: The component version property.
+          type: object
+        displayName:
+          description: The display name
+          type: string
+        friendlyName:
+          description: The friendly name
+          type: string
+        isDefault:
+          description: Whether or not the version is the default version.
+          type: string
+    versionsCapability:
+      description: The version capability.
+      properties:
+        available:
+          description: The list of version capabilities.
+          items:
+            $ref: "#/components/schemas/versionSpec"
+          type: array
+    vmSizeCompatibilityFilter:
+      description: The virtual machine type compatibility filter.
+      properties:
+        ClusterFlavors:
+          description: The list of cluster types available.
+          items:
+            type: string
+          type: array
+        ClusterVersions:
+          description: The list of cluster versions.
+          items:
+            type: string
+          type: array
+        FilterMode:
+          description: The mode for the filter.
+          type: string
+        NodeTypes:
+          description: The list of node types.
+          items:
+            type: string
+          type: array
+        Regions:
+          description: The list of regions.
+          items:
+            type: string
+          type: array
+        vmsizes:
+          description: The list of virtual machine sizes.
+          items:
+            type: string
+          type: array
+    vmSizesCapability:
+      description: The virtual machine sizes capability.
+      properties:
+        available:
+          description: The list of virtual machine size capabilities.
+          items:
+            type: string
+          type: array

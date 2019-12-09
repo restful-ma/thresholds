@@ -1,0 +1,1702 @@
+openapi: 3.0.0
+info:
+  version: 2018-08-08
+  x-release: v4
+  title: AWS Global Accelerator
+  description: <fullname>AWS Global Accelerator</fullname> <p>This is the <i>AWS Global
+    Accelerator API Reference</i>. This guide is for developers who need
+    detailed information about AWS Global Accelerator API actions, data types,
+    and errors. For more information about Global Accelerator features, see the
+    <a
+    href="https://docs.aws.amazon.com/global-accelerator/latest/dg/Welcome.html">AWS
+    Global Accelerator Developer Guide</a>. </p> <p>AWS Global Accelerator is a
+    network layer service in which you create accelerators to improve
+    availability and performance for internet applications used by a global
+    audience. </p> <important> <p>You must specify the US-West-2 (Oregon) Region
+    to create or update accelerators.</p> </important> <p>Global Accelerator
+    provides you with static IP addresses that you associate with your
+    accelerator. These IP addresses are anycast from the AWS edge network and
+    distribute incoming application traffic across multiple endpoint resources
+    in multiple AWS Regions, which increases the availability of your
+    applications. Endpoints can be Elastic IP addresses, Network Load Balancers,
+    and Application Load Balancers that are located in one AWS Region or
+    multiple Regions.</p> <p>Global Accelerator uses the AWS global network to
+    route traffic to the optimal regional endpoint based on health, client
+    location, and policies that you configure. The service reacts instantly to
+    changes in health or configuration to ensure that internet traffic from
+    clients is directed to only healthy endpoints.</p> <p>Global Accelerator
+    includes components that work together to help you improve performance and
+    availability for your applications:</p> <dl> <dt>Static IP address</dt> <dd>
+    <p>AWS Global Accelerator provides you with a set of static IP addresses
+    which are anycast from the AWS edge network and serve as the single fixed
+    entry points for your clients. If you already have Elastic Load Balancing or
+    Elastic IP address resources set up for your applications, you can easily
+    add those to Global Accelerator to allow the resources to be accessed by a
+    Global Accelerator static IP address.</p> </dd> <dt>Accelerator</dt> <dd>
+    <p>An accelerator directs traffic to optimal endpoints over the AWS global
+    network to improve availability and performance for your internet
+    applications that have a global audience. Each accelerator includes one or
+    more listeners.</p> </dd> <dt>Network zone</dt> <dd> <p>A network zone
+    services the static IP addresses for your accelerator from a unique IP
+    subnet. Similar to an AWS Availability Zone, a network zone is an isolated
+    unit with its own set of physical infrastructure. When you configure an
+    accelerator, Global Accelerator allocates two IPv4 addresses for it. If one
+    IP address from a network zone becomes unavailable due to IP address
+    blocking by certain client networks, or network disruptions, then client
+    applications can retry on the healthy static IP address from the other
+    isolated network zone.</p> </dd> <dt>Listener</dt> <dd> <p>A listener
+    processes inbound connections from clients to Global Accelerator, based on
+    the protocol and port that you configure. Each listener has one or more
+    endpoint groups associated with it, and traffic is forwarded to endpoints in
+    one of the groups. You associate endpoint groups with listeners by
+    specifying the Regions that you want to distribute traffic to. Traffic is
+    distributed to optimal endpoints within the endpoint groups associated with
+    a listener.</p> </dd> <dt>Endpoint group</dt> <dd> <p>Each endpoint group is
+    associated with a specific AWS Region. Endpoint groups include one or more
+    endpoints in the Region. You can increase or reduce the percentage of
+    traffic that would be otherwise directed to an endpoint group by adjusting a
+    setting called a <i>traffic dial</i>. The traffic dial lets you easily do
+    performance testing or blue/green deployment testing for new releases across
+    different AWS Regions, for example. </p> </dd> <dt>Endpoint</dt> <dd> <p>An
+    endpoint is an Elastic IP address, Network Load Balancer, or Application
+    Load Balancer. Traffic is routed to endpoints based on several factors,
+    including the geo-proximity to the user, the health of the endpoint, and the
+    configuration options that you choose, such as endpoint weights. For each
+    endpoint, you can configure weights, which are numbers that you can use to
+    specify the proportion of traffic to route to each one. This can be useful,
+    for example, to do performance testing within a Region.</p> </dd> </dl>
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: globalaccelerator
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/globalaccelerator-2018-08-08.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/globalaccelerator/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  /#X-Amz-Target=GlobalAccelerator_V20180706.CreateAccelerator:
+    post:
+      operationId: CreateAccelerator
+      description: <p>Create an accelerator. An accelerator includes one or more listeners
+        that process inbound connections and direct traffic to one or more
+        endpoint groups, each of which includes endpoints, such as Network Load
+        Balancers. To see an AWS CLI example of creating an accelerator, scroll
+        down to <b>Example</b>.</p> <important> <p>You must specify the
+        US-West-2 (Oregon) Region to create or update accelerators.</p>
+        </important>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateAcceleratorResponse"
+        "480":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "481":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "482":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.CreateAccelerator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAcceleratorRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.CreateEndpointGroup:
+    post:
+      operationId: CreateEndpointGroup
+      description: Create an endpoint group for the specified listener. An endpoint group
+        is a collection of endpoints in one AWS Region. To see an AWS CLI
+        example of creating an endpoint group, scroll down to <b>Example</b>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateEndpointGroupResponse"
+        "480":
+          description: AcceleratorNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceleratorNotFoundException"
+        "481":
+          description: EndpointGroupAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EndpointGroupAlreadyExistsException"
+        "482":
+          description: ListenerNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListenerNotFoundException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "484":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "485":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "486":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.CreateEndpointGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEndpointGroupRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.CreateListener:
+    post:
+      operationId: CreateListener
+      description: Create a listener to process inbound connections from clients to an
+        accelerator. Connections arrive to assigned static IP addresses on a
+        port, port range, or list of port ranges that you specify. To see an AWS
+        CLI example of creating a listener, scroll down to <b>Example</b>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateListenerResponse"
+        "480":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "481":
+          description: AcceleratorNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceleratorNotFoundException"
+        "482":
+          description: InvalidPortRangeException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidPortRangeException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.CreateListener
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateListenerRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.DeleteAccelerator:
+    post:
+      operationId: DeleteAccelerator
+      description: "Delete an accelerator. Note: before you can delete an accelerator, you
+        must disable it and remove all dependent resources (listeners and
+        endpoint groups)."
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: AcceleratorNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceleratorNotFoundException"
+        "481":
+          description: AcceleratorNotDisabledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceleratorNotDisabledException"
+        "482":
+          description: AssociatedListenerFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssociatedListenerFoundException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "484":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.DeleteAccelerator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteAcceleratorRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.DeleteEndpointGroup:
+    post:
+      operationId: DeleteEndpointGroup
+      description: Delete an endpoint group from a listener.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "481":
+          description: EndpointGroupNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EndpointGroupNotFoundException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.DeleteEndpointGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteEndpointGroupRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.DeleteListener:
+    post:
+      operationId: DeleteListener
+      description: Delete a listener from an accelerator.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "481":
+          description: ListenerNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListenerNotFoundException"
+        "482":
+          description: AssociatedEndpointGroupFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssociatedEndpointGroupFoundException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.DeleteListener
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteListenerRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.DescribeAccelerator:
+    post:
+      operationId: DescribeAccelerator
+      description: Describe an accelerator. To see an AWS CLI example of describing an
+        accelerator, scroll down to <b>Example</b>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeAcceleratorResponse"
+        "480":
+          description: AcceleratorNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceleratorNotFoundException"
+        "481":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "482":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.DescribeAccelerator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeAcceleratorRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.DescribeAcceleratorAttributes:
+    post:
+      operationId: DescribeAcceleratorAttributes
+      description: Describe the attributes of an accelerator.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeAcceleratorAttributesResponse"
+        "480":
+          description: AcceleratorNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceleratorNotFoundException"
+        "481":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "482":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.DescribeAcceleratorAttributes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeAcceleratorAttributesRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.DescribeEndpointGroup:
+    post:
+      operationId: DescribeEndpointGroup
+      description: Describe an endpoint group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeEndpointGroupResponse"
+        "480":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "481":
+          description: EndpointGroupNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EndpointGroupNotFoundException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.DescribeEndpointGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeEndpointGroupRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.DescribeListener:
+    post:
+      operationId: DescribeListener
+      description: Describe a listener.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeListenerResponse"
+        "480":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "481":
+          description: ListenerNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListenerNotFoundException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.DescribeListener
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeListenerRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.ListAccelerators:
+    post:
+      operationId: ListAccelerators
+      description: List the accelerators for an AWS account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListAcceleratorsResponse"
+        "480":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "481":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.ListAccelerators
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListAcceleratorsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.ListEndpointGroups:
+    post:
+      operationId: ListEndpointGroups
+      description: List the endpoint groups that are associated with a listener.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListEndpointGroupsResponse"
+        "480":
+          description: ListenerNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListenerNotFoundException"
+        "481":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "482":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.ListEndpointGroups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListEndpointGroupsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.ListListeners:
+    post:
+      operationId: ListListeners
+      description: List the listeners for an accelerator.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListListenersResponse"
+        "480":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "481":
+          description: AcceleratorNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceleratorNotFoundException"
+        "482":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.ListListeners
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListListenersRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.UpdateAccelerator:
+    post:
+      operationId: UpdateAccelerator
+      description: <p>Update an accelerator. To see an AWS CLI example of updating an
+        accelerator, scroll down to <b>Example</b>.</p> <important> <p>You must
+        specify the US-West-2 (Oregon) Region to create or update
+        accelerators.</p> </important>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateAcceleratorResponse"
+        "480":
+          description: AcceleratorNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceleratorNotFoundException"
+        "481":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "482":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.UpdateAccelerator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAcceleratorRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.UpdateAcceleratorAttributes:
+    post:
+      operationId: UpdateAcceleratorAttributes
+      description: Update the attributes for an accelerator. To see an AWS CLI example of
+        updating an accelerator to enable flow logs, scroll down to
+        <b>Example</b>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateAcceleratorAttributesResponse"
+        "480":
+          description: AcceleratorNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceleratorNotFoundException"
+        "481":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "482":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "483":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.UpdateAcceleratorAttributes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAcceleratorAttributesRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.UpdateEndpointGroup:
+    post:
+      operationId: UpdateEndpointGroup
+      description: Update an endpoint group. To see an AWS CLI example of updating an
+        endpoint group, scroll down to <b>Example</b>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateEndpointGroupResponse"
+        "480":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "481":
+          description: EndpointGroupNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EndpointGroupNotFoundException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.UpdateEndpointGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEndpointGroupRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=GlobalAccelerator_V20180706.UpdateListener:
+    post:
+      operationId: UpdateListener
+      description: Update a listener.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateListenerResponse"
+        "480":
+          description: InvalidArgumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArgumentException"
+        "481":
+          description: InvalidPortRangeException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidPortRangeException"
+        "482":
+          description: ListenerNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListenerNotFoundException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - GlobalAccelerator_V20180706.UpdateListener
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateListenerRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://globalaccelerator.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Global Accelerator multi-region endpoint
+  - url: https://globalaccelerator.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Global Accelerator multi-region endpoint
+  - url: http://globalaccelerator.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Global Accelerator endpoint for China (Beijing) and China (Ningxia)
+  - url: https://globalaccelerator.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Global Accelerator endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    CreateAcceleratorResponse:
+      type: object
+      properties:
+        Accelerator:
+          $ref: "#/components/schemas/Accelerator"
+    CreateAcceleratorRequest:
+      type: object
+      required:
+        - Name
+        - IdempotencyToken
+      properties:
+        Name:
+          $ref: "#/components/schemas/GenericString"
+        IpAddressType:
+          $ref: "#/components/schemas/IpAddressType"
+        Enabled:
+          $ref: "#/components/schemas/GenericBoolean"
+        IdempotencyToken:
+          $ref: "#/components/schemas/IdempotencyToken"
+    InternalServiceErrorException: {}
+    InvalidArgumentException: {}
+    LimitExceededException: {}
+    CreateEndpointGroupResponse:
+      type: object
+      properties:
+        EndpointGroup:
+          $ref: "#/components/schemas/EndpointGroup"
+    CreateEndpointGroupRequest:
+      type: object
+      required:
+        - ListenerArn
+        - EndpointGroupRegion
+        - IdempotencyToken
+      properties:
+        ListenerArn:
+          $ref: "#/components/schemas/GenericString"
+        EndpointGroupRegion:
+          $ref: "#/components/schemas/GenericString"
+        EndpointConfigurations:
+          $ref: "#/components/schemas/EndpointConfigurations"
+        TrafficDialPercentage:
+          $ref: "#/components/schemas/TrafficDialPercentage"
+        HealthCheckPort:
+          $ref: "#/components/schemas/HealthCheckPort"
+        HealthCheckProtocol:
+          $ref: "#/components/schemas/HealthCheckProtocol"
+        HealthCheckPath:
+          $ref: "#/components/schemas/GenericString"
+        HealthCheckIntervalSeconds:
+          $ref: "#/components/schemas/HealthCheckIntervalSeconds"
+        ThresholdCount:
+          $ref: "#/components/schemas/ThresholdCount"
+        IdempotencyToken:
+          $ref: "#/components/schemas/IdempotencyToken"
+    AcceleratorNotFoundException: {}
+    EndpointGroupAlreadyExistsException: {}
+    ListenerNotFoundException: {}
+    AccessDeniedException: {}
+    CreateListenerResponse:
+      type: object
+      properties:
+        Listener:
+          $ref: "#/components/schemas/Listener"
+    CreateListenerRequest:
+      type: object
+      required:
+        - AcceleratorArn
+        - PortRanges
+        - Protocol
+        - IdempotencyToken
+      properties:
+        AcceleratorArn:
+          $ref: "#/components/schemas/GenericString"
+        PortRanges:
+          $ref: "#/components/schemas/PortRanges"
+        Protocol:
+          $ref: "#/components/schemas/Protocol"
+        ClientAffinity:
+          $ref: "#/components/schemas/ClientAffinity"
+        IdempotencyToken:
+          $ref: "#/components/schemas/IdempotencyToken"
+    InvalidPortRangeException: {}
+    DeleteAcceleratorRequest:
+      type: object
+      required:
+        - AcceleratorArn
+      properties:
+        AcceleratorArn:
+          $ref: "#/components/schemas/GenericString"
+    AcceleratorNotDisabledException: {}
+    AssociatedListenerFoundException: {}
+    DeleteEndpointGroupRequest:
+      type: object
+      required:
+        - EndpointGroupArn
+      properties:
+        EndpointGroupArn:
+          $ref: "#/components/schemas/GenericString"
+    EndpointGroupNotFoundException: {}
+    DeleteListenerRequest:
+      type: object
+      required:
+        - ListenerArn
+      properties:
+        ListenerArn:
+          $ref: "#/components/schemas/GenericString"
+    AssociatedEndpointGroupFoundException: {}
+    DescribeAcceleratorResponse:
+      type: object
+      properties:
+        Accelerator:
+          $ref: "#/components/schemas/Accelerator"
+    DescribeAcceleratorRequest:
+      type: object
+      required:
+        - AcceleratorArn
+      properties:
+        AcceleratorArn:
+          $ref: "#/components/schemas/GenericString"
+    DescribeAcceleratorAttributesResponse:
+      type: object
+      properties:
+        AcceleratorAttributes:
+          $ref: "#/components/schemas/AcceleratorAttributes"
+    DescribeAcceleratorAttributesRequest:
+      type: object
+      required:
+        - AcceleratorArn
+      properties:
+        AcceleratorArn:
+          $ref: "#/components/schemas/GenericString"
+    DescribeEndpointGroupResponse:
+      type: object
+      properties:
+        EndpointGroup:
+          $ref: "#/components/schemas/EndpointGroup"
+    DescribeEndpointGroupRequest:
+      type: object
+      required:
+        - EndpointGroupArn
+      properties:
+        EndpointGroupArn:
+          $ref: "#/components/schemas/GenericString"
+    DescribeListenerResponse:
+      type: object
+      properties:
+        Listener:
+          $ref: "#/components/schemas/Listener"
+    DescribeListenerRequest:
+      type: object
+      required:
+        - ListenerArn
+      properties:
+        ListenerArn:
+          $ref: "#/components/schemas/GenericString"
+    ListAcceleratorsResponse:
+      type: object
+      properties:
+        Accelerators:
+          $ref: "#/components/schemas/Accelerators"
+        NextToken:
+          $ref: "#/components/schemas/GenericString"
+    ListAcceleratorsRequest:
+      type: object
+      properties:
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        NextToken:
+          $ref: "#/components/schemas/GenericString"
+    InvalidNextTokenException: {}
+    ListEndpointGroupsResponse:
+      type: object
+      properties:
+        EndpointGroups:
+          $ref: "#/components/schemas/EndpointGroups"
+        NextToken:
+          $ref: "#/components/schemas/GenericString"
+    ListEndpointGroupsRequest:
+      type: object
+      required:
+        - ListenerArn
+      properties:
+        ListenerArn:
+          $ref: "#/components/schemas/GenericString"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        NextToken:
+          $ref: "#/components/schemas/GenericString"
+    ListListenersResponse:
+      type: object
+      properties:
+        Listeners:
+          $ref: "#/components/schemas/Listeners"
+        NextToken:
+          $ref: "#/components/schemas/GenericString"
+    ListListenersRequest:
+      type: object
+      required:
+        - AcceleratorArn
+      properties:
+        AcceleratorArn:
+          $ref: "#/components/schemas/GenericString"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        NextToken:
+          $ref: "#/components/schemas/GenericString"
+    UpdateAcceleratorResponse:
+      type: object
+      properties:
+        Accelerator:
+          $ref: "#/components/schemas/Accelerator"
+    UpdateAcceleratorRequest:
+      type: object
+      required:
+        - AcceleratorArn
+      properties:
+        AcceleratorArn:
+          $ref: "#/components/schemas/GenericString"
+        Name:
+          $ref: "#/components/schemas/GenericString"
+        IpAddressType:
+          $ref: "#/components/schemas/IpAddressType"
+        Enabled:
+          $ref: "#/components/schemas/GenericBoolean"
+    UpdateAcceleratorAttributesResponse:
+      type: object
+      properties:
+        AcceleratorAttributes:
+          $ref: "#/components/schemas/AcceleratorAttributes"
+    UpdateAcceleratorAttributesRequest:
+      type: object
+      required:
+        - AcceleratorArn
+      properties:
+        AcceleratorArn:
+          $ref: "#/components/schemas/GenericString"
+        FlowLogsEnabled:
+          $ref: "#/components/schemas/GenericBoolean"
+        FlowLogsS3Bucket:
+          $ref: "#/components/schemas/GenericString"
+        FlowLogsS3Prefix:
+          $ref: "#/components/schemas/GenericString"
+    UpdateEndpointGroupResponse:
+      type: object
+      properties:
+        EndpointGroup:
+          $ref: "#/components/schemas/EndpointGroup"
+    UpdateEndpointGroupRequest:
+      type: object
+      required:
+        - EndpointGroupArn
+      properties:
+        EndpointGroupArn:
+          $ref: "#/components/schemas/GenericString"
+        EndpointConfigurations:
+          $ref: "#/components/schemas/EndpointConfigurations"
+        TrafficDialPercentage:
+          $ref: "#/components/schemas/TrafficDialPercentage"
+        HealthCheckPort:
+          $ref: "#/components/schemas/HealthCheckPort"
+        HealthCheckProtocol:
+          $ref: "#/components/schemas/HealthCheckProtocol"
+        HealthCheckPath:
+          $ref: "#/components/schemas/GenericString"
+        HealthCheckIntervalSeconds:
+          $ref: "#/components/schemas/HealthCheckIntervalSeconds"
+        ThresholdCount:
+          $ref: "#/components/schemas/ThresholdCount"
+    UpdateListenerResponse:
+      type: object
+      properties:
+        Listener:
+          $ref: "#/components/schemas/Listener"
+    UpdateListenerRequest:
+      type: object
+      required:
+        - ListenerArn
+      properties:
+        ListenerArn:
+          $ref: "#/components/schemas/GenericString"
+        PortRanges:
+          $ref: "#/components/schemas/PortRanges"
+        Protocol:
+          $ref: "#/components/schemas/Protocol"
+        ClientAffinity:
+          $ref: "#/components/schemas/ClientAffinity"
+    GenericString:
+      type: string
+      maxLength: 255
+    IpAddressType:
+      type: string
+      enum:
+        - IPV4
+    GenericBoolean:
+      type: boolean
+    IpSets:
+      type: array
+      items:
+        $ref: "#/components/schemas/IpSet"
+    AcceleratorStatus:
+      type: string
+      enum:
+        - DEPLOYED
+        - IN_PROGRESS
+    Timestamp:
+      type: string
+      format: date-time
+    Accelerator:
+      type: object
+      properties:
+        AcceleratorArn:
+          $ref: "#/components/schemas/GenericString"
+        Name:
+          $ref: "#/components/schemas/GenericString"
+        IpAddressType:
+          $ref: "#/components/schemas/IpAddressType"
+        Enabled:
+          $ref: "#/components/schemas/GenericBoolean"
+        IpSets:
+          $ref: "#/components/schemas/IpSets"
+        DnsName:
+          $ref: "#/components/schemas/GenericString"
+        Status:
+          $ref: "#/components/schemas/AcceleratorStatus"
+        CreatedTime:
+          $ref: "#/components/schemas/Timestamp"
+        LastModifiedTime:
+          $ref: "#/components/schemas/Timestamp"
+      description: An accelerator is a complex type that includes one or more listeners
+        that process inbound connections and then direct traffic to one or more
+        endpoint groups, each of which includes endpoints, such as load
+        balancers.
+    AcceleratorAttributes:
+      type: object
+      properties:
+        FlowLogsEnabled:
+          $ref: "#/components/schemas/GenericBoolean"
+        FlowLogsS3Bucket:
+          $ref: "#/components/schemas/GenericString"
+        FlowLogsS3Prefix:
+          $ref: "#/components/schemas/GenericString"
+      description: Attributes of an accelerator.
+    Accelerators:
+      type: array
+      items:
+        $ref: "#/components/schemas/Accelerator"
+    ClientAffinity:
+      type: string
+      enum:
+        - NONE
+        - SOURCE_IP
+    IdempotencyToken:
+      type: string
+      maxLength: 255
+    EndpointConfigurations:
+      type: array
+      items:
+        $ref: "#/components/schemas/EndpointConfiguration"
+      minItems: 0
+      maxItems: 10
+    TrafficDialPercentage:
+      type: number
+      format: float
+      minimum: 0
+      maximum: 100
+    HealthCheckPort:
+      type: integer
+      minimum: 1
+      maximum: 65535
+    HealthCheckProtocol:
+      type: string
+      enum:
+        - TCP
+        - HTTP
+        - HTTPS
+    HealthCheckIntervalSeconds:
+      type: integer
+      minimum: 10
+      maximum: 30
+    ThresholdCount:
+      type: integer
+      minimum: 1
+      maximum: 10
+    EndpointGroup:
+      type: object
+      properties:
+        EndpointGroupArn:
+          $ref: "#/components/schemas/GenericString"
+        EndpointGroupRegion:
+          $ref: "#/components/schemas/GenericString"
+        EndpointDescriptions:
+          $ref: "#/components/schemas/EndpointDescriptions"
+        TrafficDialPercentage:
+          $ref: "#/components/schemas/TrafficDialPercentage"
+        HealthCheckPort:
+          $ref: "#/components/schemas/HealthCheckPort"
+        HealthCheckProtocol:
+          $ref: "#/components/schemas/HealthCheckProtocol"
+        HealthCheckPath:
+          $ref: "#/components/schemas/GenericString"
+        HealthCheckIntervalSeconds:
+          $ref: "#/components/schemas/HealthCheckIntervalSeconds"
+        ThresholdCount:
+          $ref: "#/components/schemas/ThresholdCount"
+      description: "A complex type for the endpoint group. An AWS Region can have only one
+        endpoint group for a specific listener. "
+    PortRanges:
+      type: array
+      items:
+        $ref: "#/components/schemas/PortRange"
+      minItems: 1
+      maxItems: 10
+    Protocol:
+      type: string
+      enum:
+        - TCP
+        - UDP
+    Listener:
+      type: object
+      properties:
+        ListenerArn:
+          $ref: "#/components/schemas/GenericString"
+        PortRanges:
+          $ref: "#/components/schemas/PortRanges"
+        Protocol:
+          $ref: "#/components/schemas/Protocol"
+        ClientAffinity:
+          $ref: "#/components/schemas/ClientAffinity"
+      description: A complex type for a listener.
+    EndpointWeight:
+      type: integer
+      minimum: 0
+      maximum: 255
+    EndpointConfiguration:
+      type: object
+      properties:
+        EndpointId:
+          $ref: "#/components/schemas/GenericString"
+        Weight:
+          $ref: "#/components/schemas/EndpointWeight"
+        ClientIPPreservationEnabled:
+          $ref: "#/components/schemas/GenericBoolean"
+      description: A complex type for endpoints.
+    HealthState:
+      type: string
+      enum:
+        - INITIAL
+        - HEALTHY
+        - UNHEALTHY
+    EndpointDescription:
+      type: object
+      properties:
+        EndpointId:
+          $ref: "#/components/schemas/GenericString"
+        Weight:
+          $ref: "#/components/schemas/EndpointWeight"
+        HealthState:
+          $ref: "#/components/schemas/HealthState"
+        HealthReason:
+          $ref: "#/components/schemas/GenericString"
+        ClientIPPreservationEnabled:
+          $ref: "#/components/schemas/GenericBoolean"
+      description: A complex type for an endpoint. Each endpoint group can include one or
+        more endpoints, such as load balancers.
+    EndpointDescriptions:
+      type: array
+      items:
+        $ref: "#/components/schemas/EndpointDescription"
+    EndpointGroups:
+      type: array
+      items:
+        $ref: "#/components/schemas/EndpointGroup"
+    IpAddress:
+      type: string
+    IpAddresses:
+      type: array
+      items:
+        $ref: "#/components/schemas/IpAddress"
+      minItems: 0
+      maxItems: 2
+    IpSet:
+      type: object
+      properties:
+        IpFamily:
+          $ref: "#/components/schemas/GenericString"
+        IpAddresses:
+          $ref: "#/components/schemas/IpAddresses"
+      description: A complex type for the set of IP addresses for an accelerator.
+    MaxResults:
+      type: integer
+      minimum: 1
+      maximum: 100
+    Listeners:
+      type: array
+      items:
+        $ref: "#/components/schemas/Listener"
+    PortNumber:
+      type: integer
+      minimum: 1
+      maximum: 65535
+    PortRange:
+      type: object
+      properties:
+        FromPort:
+          $ref: "#/components/schemas/PortNumber"
+        ToPort:
+          $ref: "#/components/schemas/PortNumber"
+      description: A complex type for a range of ports for a listener.

@@ -1,0 +1,180 @@
+openapi: 3.0.0
+info:
+  description: Use these REST APIs for performing retrieving a collection of policy
+    snippets available in Azure API Management deployment.
+  title: ApiManagementClient
+  version: 2018-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/resource-manager/Microsoft.ApiManagement/preview/2018-06-01-preview/apimpolicysnippets.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: apimanagement-apimpolicysnippets
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policySnippets":
+    get:
+      description: Lists all policy snippets.
+      operationId: PolicySnippets_ListByService
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementListPolicySnippets:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementListPolicySnippets:
+              value: apimService1
+        - description: Policy scope.
+          in: query
+          name: scope
+          required: false
+          x-ms-enum:
+            modelAsString: false
+            name: PolicyScopeContract
+          schema:
+            type: string
+            enum:
+              - Tenant
+              - Product
+              - Api
+              - Operation
+              - All
+          examples:
+            ApiManagementListPolicySnippets:
+              value: Api
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListPolicySnippets:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListPolicySnippets:
+              value: subid
+      responses:
+        "200":
+          description: Returns an array of Policy Snippets.
+          content:
+            application/json:
+              schema:
+                description: The response of the list policy snippets operation.
+                properties:
+                  value:
+                    description: Policy snippet value.
+                    items:
+                      description: Policy snippet.
+                      properties:
+                        content:
+                          description: Snippet content.
+                          readOnly: true
+                          type: string
+                        name:
+                          description: Snippet name.
+                          readOnly: true
+                          type: string
+                        scope:
+                          description: Binary OR value of the Snippet scope.
+                          readOnly: true
+                          type: integer
+                        toolTip:
+                          description: Snippet toolTip.
+                          readOnly: true
+                          type: string
+                    type: array
+              examples:
+                ApiManagementListPolicySnippets:
+                  $ref: "#/components/examples/ApiManagementListPolicySnippets"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - PolicySnippet
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ApiManagementListPolicySnippets:
+      value:
+        - content: <authentication-basic username="username" password="password" />
+          name: Authenticate with Basic
+          scope: 268435471
+          toolTip: Authenticate with the backend service using Basic authentication.
+            Use in the inbound section at API scope.
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account

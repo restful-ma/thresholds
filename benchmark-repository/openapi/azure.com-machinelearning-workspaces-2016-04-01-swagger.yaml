@@ -1,0 +1,686 @@
+openapi: 3.0.0
+info:
+  description: These APIs allow end users to operate on Azure Machine Learning Workspace
+    resources. They support CRUD operations for Azure Machine Learning
+    Workspaces.
+  title: Machine Learning Workspaces Management Client
+  version: 2016-04-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/machinelearning/resource-manager/Microsoft.MachineLearning/stable/2016-04-01/workspaces.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: machinelearning-workspaces
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.MachineLearning/operations:
+    get:
+      description: Lists all of the available Azure Machine Learning Studio REST API
+        operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The request was successful; the request was well-formed and received
+            properly.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+        default:
+          description: Error response describing why the operation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operation
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearning/workspaces":
+    get:
+      description: Lists all the available machine learning workspaces under the specified
+        subscription.
+      operationId: Workspaces_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: The request was successful; the request was well-formed and received
+            properly.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceListResult"
+              examples:
+                WorkspaceGetBySubscription:
+                  $ref: "#/components/examples/WorkspaceGetBySubscription"
+        default:
+          description: Error response describing why the operation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearning/workspaces":
+    get:
+      description: Lists all the available machine learning workspaces under the specified
+        resource group.
+      operationId: Workspaces_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+      responses:
+        "200":
+          description: The request was successful; the request was well-formed and received
+            properly.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceListResult"
+              examples:
+                WorkspaceListResourceGroup:
+                  $ref: "#/components/examples/WorkspaceListResourceGroup"
+        default:
+          description: Error response describing why the operation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearning/workspaces/{workspaceName}":
+    delete:
+      description: Deletes a machine learning workspace.
+      operationId: Workspaces_Delete
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/WorkspaceNameParameter"
+      responses:
+        "200":
+          description: The request was successful; the request was well-formed and received
+            properly.
+        "204":
+          description: The machine learning workspace does not exist in the subscription.
+        default:
+          description: Error response describing why the operation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+    get:
+      description: Gets the properties of the specified machine learning workspace.
+      operationId: Workspaces_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/WorkspaceNameParameter"
+      responses:
+        "200":
+          description: The request was successful; the request was well-formed and received
+            properly.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
+              examples:
+                WorkspaceGet:
+                  $ref: "#/components/examples/WorkspaceGet"
+        default:
+          description: Error response describing why the operation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+    patch:
+      description: Updates a machine learning workspace with the specified parameters.
+      operationId: Workspaces_Update
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/WorkspaceNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkspaceUpdateParameters"
+        description: The parameters for updating a machine learning workspace.
+        required: true
+      responses:
+        "200":
+          description: The request was successful; the request was well-formed and received
+            properly.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
+              examples:
+                WorkspaceUpdate:
+                  $ref: "#/components/examples/WorkspaceUpdate"
+        default:
+          description: Error response describing why the operation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+    put:
+      description: Creates or updates a workspace with the specified parameters.
+      operationId: Workspaces_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/WorkspaceNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Workspace"
+        description: The parameters for creating or updating a machine learning workspace.
+        required: true
+      responses:
+        "200":
+          description: The request was successful; the resource already exists and was
+            updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
+              examples:
+                WorkspaceCreate:
+                  $ref: "#/components/examples/WorkspaceCreate"
+        default:
+          description: Error response describing why the operation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearning/workspaces/{workspaceName}/listWorkspaceKeys":
+    post:
+      description: List the authorization keys associated with this workspace.
+      operationId: Workspaces_ListWorkspaceKeys
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/WorkspaceNameParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+      responses:
+        "200":
+          description: The request was successful; the request was well-formed and received
+            properly.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceKeysResponse"
+              examples:
+                ListWorkspaceKeys:
+                  $ref: "#/components/examples/ListWorkspaceKeys"
+        default:
+          description: Error response describing why the operation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearning/workspaces/{workspaceName}/resyncStorageKeys":
+    post:
+      description: Resync storage keys associated with this workspace.
+      operationId: Workspaces_ResyncStorageKeys
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/WorkspaceNameParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+      responses:
+        "200":
+          description: The request was successful; the request was well-formed and received
+            properly.
+        default:
+          description: Error response describing why the operation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    WorkspaceGetBySubscription:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearning/workspaces/testworkspace
+            location: East US
+            name: testworkspace
+            properties:
+              creationTime: 2017-03-01T23:14:37.0707808Z
+              keyVaultIdentifierId: kvid
+              ownerEmail: abc@microsoft.com
+              studioEndpoint: https://studioapi.azureml.net
+              userStorageAccountId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/teststorage1
+              workspaceId: 00000000-1111-2222-3333-444444444444
+              workspaceState: Enabled
+              workspaceType: PaidStandard
+            type: Microsoft.MachineLearning/workspaces
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearning/workspaces/testworkspace1
+            location: East US
+            name: testworkspace1
+            properties:
+              creationTime: 2017-03-01T23:16:37.0707808Z
+              keyVaultIdentifierId: kvid
+              ownerEmail: abc@microsoft.com
+              studioEndpoint: https://studioapi.azureml.net
+              userStorageAccountId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/teststorage1
+              workspaceId: 00000000-1111-2222-3333-444444444444
+              workspaceState: Enabled
+              workspaceType: PaidStandard
+            type: Microsoft.MachineLearning/workspaces
+    WorkspaceListResourceGroup:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearning/workspaces/testworkspace
+            location: East US
+            name: testworkspace
+            properties:
+              creationTime: 2017-03-01T23:14:37.0707808Z
+              keyVaultIdentifierId: kvid
+              ownerEmail: abc@microsoft.com
+              studioEndpoint: https://studioapi.azureml.net
+              userStorageAccountId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/teststorage1
+              workspaceId: 00000000-1111-2222-3333-444444444444
+              workspaceState: Enabled
+              workspaceType: PaidStandard
+            type: Microsoft.MachineLearning/workspaces
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearning/workspaces/testworkspace1
+            location: East US
+            name: testworkspace1
+            properties:
+              creationTime: 2017-03-01T23:16:37.0707808Z
+              keyVaultIdentifierId: kvid
+              ownerEmail: abc@microsoft.com
+              studioEndpoint: https://studioapi.azureml.net
+              userStorageAccountId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/teststorage1
+              workspaceId: 00000000-1111-2222-3333-444444444444
+              workspaceState: Enabled
+              workspaceType: PaidStandard
+            type: Microsoft.MachineLearning/workspaces
+    WorkspaceGet:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearning/workspaces/testworkspace
+        location: East US
+        name: testworkspace
+        properties:
+          creationTime: 2017-03-01T23:14:37.0707808Z
+          keyVaultIdentifierId: kvid
+          ownerEmail: abc@microsoft.com
+          studioEndpoint: https://studioapi.azureml.net
+          userStorageAccountId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/teststorage
+          workspaceId: 00000000-1111-2222-3333-444444444444
+          workspaceState: Enabled
+          workspaceType: PaidStandard
+        tags:
+          tagKey1: TagValue1
+        type: Microsoft.MachineLearning/workspaces
+    WorkspaceUpdate:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearning/workspaces/testworkspace
+        location: East US
+        name: testworkspace
+        properties:
+          creationTime: 2017-03-01T23:14:37.0707808Z
+          keyVaultIdentifierId: kvidnew
+          ownerEmail: abc@microsoft.com
+          studioEndpoint: https://studioapi.azureml.net
+          userStorageAccountId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/teststorage
+          workspaceId: 00000000-1111-2222-3333-444444444444
+          workspaceState: Enabled
+          workspaceType: PaidStandard
+        tags:
+          tagKey1: TagValue1
+        type: Microsoft.MachineLearning/workspaces
+    WorkspaceCreate:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearning/workspaces/testworkspace
+        location: East US
+        name: testworkspace
+        properties:
+          creationTime: 2017-03-01T23:14:37.0707808Z
+          keyVaultIdentifierId: kvid
+          ownerEmail: abc@microsoft.com
+          studioEndpoint: https://studioapi.azureml.net
+          userStorageAccountId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/teststorage
+          workspaceId: 00000000-1111-2222-3333-444444444444
+          workspaceState: Enabled
+          workspaceType: PaidStandard
+        tags:
+          tagKey1: TagValue1
+        type: Microsoft.MachineLearning/workspaces
+    ListWorkspaceKeys:
+      value:
+        primaryToken: cZdmqKBYLEPcPo7dsfdfefeSlKpnxybJ86KSQGLarmLik2MYMxHijwsDIZ+d1mGtYJz3mlI5AEnxu8QqHcUjSA==
+        secondaryToken: NPtbk8ksmLvsasasonFeTjw/k7QLz/SEdKN8+SyzKRcPzOVTQcR6C0O1fwmlELnCsYLjs+13yzdJ+4+Lxo3LtZ2g==
+  parameters:
+    ApiVersionParameter:
+      description: The client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        WorkspaceGetBySubscription:
+          value: 2016-04-01
+        WorkspaceListResourceGroup:
+          value: 2016-04-01
+        WorkspaceDelete:
+          value: 2016-04-01
+        WorkspaceGet:
+          value: 2016-04-01
+        WorkspaceUpdate:
+          value: 2016-04-01
+        WorkspaceCreate:
+          value: 2016-04-01
+        ListWorkspaceKeys:
+          value: 2016-04-01
+        ResyncStorageKeys:
+          value: 2016-04-01
+    ResourceGroupParameter:
+      description: The name of the resource group to which the machine learning workspace
+        belongs.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        WorkspaceListResourceGroup:
+          value: myResourceGroup
+        WorkspaceDelete:
+          value: myResourceGroup
+        WorkspaceGet:
+          value: myResourceGroup
+        WorkspaceUpdate:
+          value: myResourceGroup
+        WorkspaceCreate:
+          value: myResourceGroup
+        ListWorkspaceKeys:
+          value: myResourceGroup
+        ResyncStorageKeys:
+          value: myResourceGroup
+    SubscriptionIdParameter:
+      description: The Microsoft Azure subscription ID.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        WorkspaceGetBySubscription:
+          value: 00000000-1111-2222-3333-444444444444
+        WorkspaceListResourceGroup:
+          value: 00000000-1111-2222-3333-444444444444
+        WorkspaceDelete:
+          value: 00000000-0000-0000-0000-000000000000
+        WorkspaceGet:
+          value: 00000000-0000-0000-0000-000000000000
+        WorkspaceUpdate:
+          value: 00000000-0000-0000-0000-000000000000
+        WorkspaceCreate:
+          value: 00000000-0000-0000-0000-000000000000
+        ListWorkspaceKeys:
+          value: 00000000-0000-0000-0000-000000000000
+        ResyncStorageKeys:
+          value: 00000000-0000-0000-0000-000000000000
+    WorkspaceNameParameter:
+      description: The name of the machine learning workspace.
+      in: path
+      name: workspaceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        WorkspaceDelete:
+          value: testworkspace
+        WorkspaceGet:
+          value: testworkspace
+        WorkspaceUpdate:
+          value: testworkspace
+        WorkspaceCreate:
+          value: testworkspace
+        ListWorkspaceKeys:
+          value: testworkspace
+        ResyncStorageKeys:
+          value: testworkspace
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ErrorResponse:
+      description: The error response send when an operation fails.
+      properties:
+        code:
+          description: error code
+          type: string
+        message:
+          description: error message
+          type: string
+      required:
+        - code
+        - message
+    Operation:
+      description: Azure Machine Learning Studio REST API operation
+      properties:
+        display:
+          description: Display name of operation
+          properties:
+            description:
+              description: The description for the operation.
+              type: string
+            operation:
+              description: The operation that users can perform.
+              type: string
+            provider:
+              description: "The resource provider name: Microsoft.MachineLearning"
+              type: string
+            resource:
+              description: The resource on which the operation is performed.
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}"
+          type: string
+      type: object
+    OperationListResult:
+      description: An array of operations supported by the resource provider.
+      properties:
+        value:
+          description: List of AML Studio operations supported by the AML Studio resource
+            provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          type: array
+    Resource:
+      description: An Azure resource.
+      properties:
+        id:
+          description: The resource ID.
+          readOnly: true
+          type: string
+        location:
+          description: The location of the resource. This cannot be changed after the
+            resource is created.
+          type: string
+        name:
+          description: The name of the resource.
+          readOnly: true
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: The tags of the resource.
+          type: object
+        type:
+          description: The type of the resource.
+          readOnly: true
+          type: string
+      required:
+        - location
+      x-ms-azure-resource: true
+    Workspace:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: An object that represents a machine learning workspace.
+      properties:
+        properties:
+          $ref: "#/components/schemas/WorkspaceProperties"
+      type: object
+    WorkspaceKeysResponse:
+      description: Workspace authorization keys for a workspace.
+      properties:
+        primaryToken:
+          description: Primary authorization key for this workspace.
+          type: string
+        secondaryToken:
+          description: Secondary authorization key for this workspace.
+          type: string
+      type: object
+    WorkspaceListResult:
+      description: The result of a request to list machine learning workspace keys.
+      properties:
+        nextLink:
+          description: The URI that can be used to request the next list of machine
+            learning workspaces.
+          type: string
+        value:
+          description: The list of machine learning workspaces. Since this list may be
+            incomplete, the nextLink field should be used to request the next
+            list of machine learning workspaces.
+          items:
+            $ref: "#/components/schemas/Workspace"
+          type: array
+    WorkspaceProperties:
+      description: The properties of a machine learning workspace.
+      properties:
+        creationTime:
+          description: The creation time for this workspace resource.
+          readOnly: true
+          type: string
+        keyVaultIdentifierId:
+          description: The key vault identifier used for encrypted workspaces.
+          type: string
+        ownerEmail:
+          description: The email id of the owner for this workspace.
+          type: string
+        studioEndpoint:
+          description: The regional endpoint for the machine learning studio service which
+            hosts this workspace.
+          readOnly: true
+          type: string
+        userStorageAccountId:
+          description: The fully qualified arm id of the storage account associated with
+            this workspace.
+          type: string
+        workspaceId:
+          description: The immutable id associated with this workspace.
+          readOnly: true
+          type: string
+        workspaceState:
+          description: The current state of workspace resource.
+          enum:
+            - Deleted
+            - Enabled
+            - Disabled
+            - Migrated
+            - Updated
+            - Registered
+            - Unregistered
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: WorkspaceState
+        workspaceType:
+          description: The type of this workspace.
+          enum:
+            - Production
+            - Free
+            - Anonymous
+            - PaidStandard
+            - PaidPremium
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: WorkspaceType
+      required:
+        - userStorageAccountId
+        - ownerEmail
+      type: object
+    WorkspacePropertiesUpdateParameters:
+      description: The parameters for updating the properties of a machine learning
+        workspace.
+      properties:
+        keyVaultIdentifierId:
+          description: The key vault identifier used for encrypted workspaces.
+          type: string
+        workspaceState:
+          description: The current state of workspace resource.
+          enum:
+            - Deleted
+            - Enabled
+            - Disabled
+            - Migrated
+            - Updated
+            - Registered
+            - Unregistered
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: WorkspaceState
+    WorkspaceUpdateParameters:
+      description: The parameters for updating a machine learning workspace.
+      properties:
+        properties:
+          $ref: "#/components/schemas/WorkspacePropertiesUpdateParameters"
+        tags:
+          additionalProperties:
+            type: string
+          description: The resource tags for the machine learning workspace.
+          type: object

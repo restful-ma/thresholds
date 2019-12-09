@@ -1,0 +1,2248 @@
+openapi: 3.0.0
+info:
+  version: 2018-04-01
+  x-release: v4
+  title: Amazon QuickSight
+  description: <fullname>Amazon QuickSight API Reference</fullname> <p>Amazon QuickSight is
+    a fully managed, serverless, cloud business intelligence service that makes
+    it easy to extend data and insights to every user in your organization. This
+    API interface reference contains documentation for a programming interface
+    that you can use to manage Amazon QuickSight. </p>
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: quicksight
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/quicksight-2018-04-01.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/quicksight/
+security:
+  - hmac: []
+paths:
+  "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups":
+    post:
+      operationId: CreateGroup
+      description: <p>Creates an Amazon QuickSight group.</p> <p>The permissions resource
+        is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i>
+        </code>.</p> <p>The response is a group object.</p> <p> <b>CLI
+        Sample:</b> </p> <p> <code>aws quicksight create-group
+        --aws-account-id=111122223333 --namespace=default
+        --group-name="Sales-Management" --description="Sales Management -
+        Forecasting" </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateGroupResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceExistsException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "485":
+          description: PreconditionNotMetException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreconditionNotMetException"
+        "486":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "487":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "488":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the group is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - GroupName
+              properties:
+                GroupName:
+                  description: A name for the group that you want to create.
+                  type: string
+                  pattern: "[\\u0020-\\u00FF]+"
+                  minLength: 1
+                Description:
+                  description: A description for the group that you want to create.
+                  type: string
+                  minLength: 1
+                  maxLength: 512
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListGroups
+      description: <p>Lists all user groups in Amazon QuickSight. </p> <p>The permissions
+        resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/*</code>.</p>
+        <p>The response is a list of group objects. </p> <p> <b>CLI Sample:</b>
+        </p> <p> <code>aws quicksight list-groups -\-aws-account-id=111122223333
+        -\-namespace=default </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListGroupsResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "485":
+          description: PreconditionNotMetException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreconditionNotMetException"
+        "486":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "487":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the group is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: next-token
+          in: query
+          required: false
+          description: A pagination token that can be used in a subsequent request.
+          schema:
+            type: string
+        - name: max-results
+          in: query
+          required: false
+          description: The maximum number of results to return.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+  "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}/members/{MemberName}":
+    put:
+      operationId: CreateGroupMembership
+      description: <p>Adds an Amazon QuickSight user to an Amazon QuickSight group. </p>
+        <p>The permissions resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i>
+        </code>.</p> <p>The condition resource is the user name.</p> <p>The
+        condition key is <code>quicksight:UserName</code>.</p> <p>The response
+        is the group member object.</p> <p> <b>CLI Sample:</b> </p> <p>
+        <code>aws quicksight create-group-membership
+        --aws-account-id=111122223333 --namespace=default --group-name=Sales
+        --member-name=Pat </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateGroupMembershipResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: PreconditionNotMetException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreconditionNotMetException"
+        "485":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "486":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: MemberName
+          in: path
+          required: true
+          description: The name of the user that you want to add to the group membership.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: GroupName
+          in: path
+          required: true
+          description: The name of the group that you want to add the user to.
+          schema:
+            type: string
+            minLength: 1
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the group is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    delete:
+      operationId: DeleteGroupMembership
+      description: <p>Removes a user from a group so that the user is no longer a member of
+        the group.</p> <p>The permissions resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i>
+        </code>.</p> <p>The condition resource is the user name.</p> <p>The
+        condition key is <code>quicksight:UserName</code>.</p> <p> <b>CLI
+        Sample:</b> </p> <p> <code>aws quicksight delete-group-membership
+        --aws-account-id=111122223333 --namespace=default
+        --group-name=Sales-Management --member-name=Charlie </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteGroupMembershipResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: PreconditionNotMetException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreconditionNotMetException"
+        "485":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "486":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: MemberName
+          in: path
+          required: true
+          description: The name of the user that you want to delete from the group
+            membership.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: GroupName
+          in: path
+          required: true
+          description: The name of the group that you want to delete the user from.
+          schema:
+            type: string
+            minLength: 1
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the group is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+  "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}":
+    delete:
+      operationId: DeleteGroup
+      description: <p>Removes a user group from Amazon QuickSight. </p> <p>The permissions
+        resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i>
+        </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight
+        delete-group -\-aws-account-id=111122223333 -\-namespace=default
+        -\-group-name=Sales-Management </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteGroupResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: PreconditionNotMetException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreconditionNotMetException"
+        "485":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "486":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: GroupName
+          in: path
+          required: true
+          description: The name of the group that you want to delete.
+          schema:
+            type: string
+            minLength: 1
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the group is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeGroup
+      description: <p>Returns an Amazon QuickSight group's description and Amazon Resource
+        Name (ARN). </p> <p>The permissions resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i>
+        </code>.</p> <p>The response is the group object. </p> <p> <b>CLI
+        Sample:</b> </p> <p> <code>aws quicksight describe-group
+        -\-aws-account-id=11112222333 -\-namespace=default -\-group-name=Sales
+        </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeGroupResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: PreconditionNotMetException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreconditionNotMetException"
+        "485":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "486":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: GroupName
+          in: path
+          required: true
+          description: The name of the group that you want to describe.
+          schema:
+            type: string
+            minLength: 1
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the group is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+    put:
+      operationId: UpdateGroup
+      description: <p>Changes a group description. </p> <p>The permissions resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i>
+        </code>.</p> <p>The response is a group object.</p> <p> <b>CLI
+        Sample:</b> </p> <p> <code>aws quicksight update-group
+        --aws-account-id=111122223333 --namespace=default --group-name=Sales
+        --description="Sales BI Dashboards" </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateGroupResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: PreconditionNotMetException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreconditionNotMetException"
+        "485":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "486":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: GroupName
+          in: path
+          required: true
+          description: The name of the group that you want to update.
+          schema:
+            type: string
+            minLength: 1
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the group is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Description:
+                  description: The description for the group that you want to update.
+                  type: string
+                  minLength: 1
+                  maxLength: 512
+        required: true
+  "/accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}":
+    delete:
+      operationId: DeleteUser
+      description: <p>Deletes the Amazon QuickSight user that is associated with the
+        identity of the AWS Identity and Access Management (IAM) user or role
+        that's making the call. The IAM user isn't deleted as a result of this
+        call. </p> <p>The permission resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;
+        </i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight
+        delete-user --aws-account-id=111122223333 --namespace=default
+        --user-name=Pat </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteUserResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "485":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: UserName
+          in: path
+          required: true
+          description: The name of the user that you want to delete.
+          schema:
+            type: string
+            minLength: 1
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the user is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeUser
+      description: <p>Returns information about a user, given the user name. </p> <p>The
+        permission resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i>
+        </code>. </p> <p>The response is a user object that contains the user's
+        Amazon Resource Name (ARN), AWS Identity and Access Management (IAM)
+        role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws
+        quicksight describe-user --aws-account-id=111122223333
+        --namespace=default --user-name=Pat </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeUserResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "485":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: UserName
+          in: path
+          required: true
+          description: The name of the user that you want to describe.
+          schema:
+            type: string
+            minLength: 1
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the user is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+    put:
+      operationId: UpdateUser
+      description: <p>Updates an Amazon QuickSight user.</p> <p>The permission resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i>
+        </code>. </p> <p>The response is a user object that contains the user's
+        Amazon QuickSight user name, email address, active or inactive status in
+        Amazon QuickSight, Amazon QuickSight role, and Amazon Resource Name
+        (ARN). </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight
+        update-user --user-name=Pat --role=ADMIN --email=new_address@amazon.com
+        --aws-account-id=111122223333 --namespace=default --region=us-east-1
+        </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateUserResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "485":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: UserName
+          in: path
+          required: true
+          description: The Amazon QuickSight user name that you want to update.
+          schema:
+            type: string
+            minLength: 1
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the user is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Email
+                - Role
+              properties:
+                Email:
+                  description: The email address of the user that you want to update.
+                  type: string
+                Role:
+                  description: "<p>The Amazon QuickSight role of the user. The user role
+                    can be one of the following:</p> <ul> <li> <p>
+                    <code>READER</code>: A user who has read-only access to
+                    dashboards.</p> </li> <li> <p> <code>AUTHOR</code>: A user
+                    who can create data sources, data sets, analyses, and
+                    dashboards.</p> </li> <li> <p> <code>ADMIN</code>: A user
+                    who is an author, who can also manage Amazon QuickSight
+                    settings.</p> </li> </ul>"
+                  type: string
+                  enum:
+                    - ADMIN
+                    - AUTHOR
+                    - READER
+                    - RESTRICTED_AUTHOR
+                    - RESTRICTED_READER
+        required: true
+  "/accounts/{AwsAccountId}/namespaces/{Namespace}/user-principals/{PrincipalId}":
+    delete:
+      operationId: DeleteUserByPrincipalId
+      description: <p>Deletes a user identified by its principal ID. </p> <p>The permission
+        resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;
+        </i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight
+        delete-user-by-principal-id --aws-account-id=111122223333
+        --namespace=default --principal-id=ABCDEFJA26JLI7EUUOEHS </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteUserByPrincipalIdResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "485":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: PrincipalId
+          in: path
+          required: true
+          description: The principal ID of the user.
+          schema:
+            type: string
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the user is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/accounts/{AwsAccountId}/dashboards/{DashboardId}/embed-url#creds-type":
+    get:
+      operationId: GetDashboardEmbedUrl
+      description: '<p>Generates a server-side embeddable URL and authorization code.
+        Before this can work properly, first you need to configure the
+        dashboards and user permissions. For more information, see <a
+        href="https://docs.aws.amazon.com/en_us/quicksight/latest/user/embedding.html">
+        Embedding Amazon QuickSight Dashboards</a>.</p> <p>Currently, you can
+        use <code>GetDashboardEmbedURL</code> only from the server, not from the
+        user’s browser.</p> <p> <b>CLI Sample:</b> </p> <p>Assume the role with
+        permissions enabled for actions: <code>quickSight:RegisterUser</code>
+        and <code>quicksight:GetDashboardEmbedURL</code>. You can use
+        assume-role, assume-role-with-web-identity, or assume-role-with-saml.
+        </p> <p> <code>aws sts assume-role --role-arn
+        "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role"
+        --role-session-name embeddingsession</code> </p> <p>If the user does not
+        exist in QuickSight, register the user:</p> <p> <code>aws quicksight
+        register-user --aws-account-id 111122223333 --namespace default
+        --identity-type IAM --iam-arn
+        "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role"
+        --user-role READER --session-name "embeddingsession" --email
+        user123@example.com --region us-east-1</code> </p> <p>Get the URL for
+        the embedded dashboard</p> <p> <code>aws quicksight
+        get-dashboard-embed-url --aws-account-id 111122223333 --dashboard-id
+        1a1ac2b2-3fc3-4b44-5e5d-c6db6778df89 --identity-type IAM</code> </p>'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetDashboardEmbedUrlResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceExistsException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "485":
+          description: PreconditionNotMetException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreconditionNotMetException"
+        "486":
+          description: DomainNotWhitelistedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DomainNotWhitelistedException"
+        "487":
+          description: QuickSightUserNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuickSightUserNotFoundException"
+        "488":
+          description: IdentityTypeNotSupportedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdentityTypeNotSupportedException"
+        "489":
+          description: SessionLifetimeInMinutesInvalidException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionLifetimeInMinutesInvalidException"
+        "490":
+          description: UnsupportedUserEditionException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnsupportedUserEditionException"
+        "491":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "492":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: AWS account ID that contains the dashboard you are embedding.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: DashboardId
+          in: path
+          required: true
+          description: The ID for the dashboard, also added to IAM policy
+          schema:
+            type: string
+        - name: creds-type
+          in: query
+          required: true
+          description: The authentication method the user uses to sign in (IAM only).
+          schema:
+            type: string
+            enum:
+              - IAM
+              - QUICKSIGHT
+        - name: session-lifetime
+          in: query
+          required: false
+          description: How many minutes the session is valid. The session lifetime must be
+            between 15 and 600 minutes.
+          schema:
+            type: integer
+            minimum: 15
+            maximum: 600
+        - name: undo-redo-disabled
+          in: query
+          required: false
+          description: Remove the undo/redo button on embedded dashboard. The default is
+            FALSE, which enables the undo/redo button.
+          schema:
+            type: boolean
+        - name: reset-disabled
+          in: query
+          required: false
+          description: Remove the reset button on embedded dashboard. The default is FALSE,
+            which allows the reset button.
+          schema:
+            type: boolean
+        - name: user-arn
+          in: query
+          required: false
+          description: <p>The Amazon QuickSight user's ARN, for use with
+            <code>QUICKSIGHT</code> identity type. You can use this for any of
+            the following:</p> <ul> <li> <p>Amazon QuickSight users in your
+            account (readers, authors, or admins)</p> </li> <li> <p>AD users</p>
+            </li> <li> <p>Invited non-federated users</p> </li> <li>
+            <p>Federated IAM users</p> </li> <li> <p>Federated IAM role-based
+            sessions</p> </li> </ul>
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}/members":
+    get:
+      operationId: ListGroupMemberships
+      description: <p>Lists member users in a group.</p> <p>The permissions resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i>
+        </code>.</p> <p>The response is a list of group member objects.</p> <p>
+        <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-group-memberships
+        -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListGroupMembershipsResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "485":
+          description: PreconditionNotMetException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreconditionNotMetException"
+        "486":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "487":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: GroupName
+          in: path
+          required: true
+          description: The name of the group that you want to see a membership list of.
+          schema:
+            type: string
+            minLength: 1
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: next-token
+          in: query
+          required: false
+          description: A pagination token that can be used in a subsequent request.
+          schema:
+            type: string
+        - name: max-results
+          in: query
+          required: false
+          description: The maximum number of results to return from this request.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the group is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}/groups":
+    get:
+      operationId: ListUserGroups
+      description: <p>Lists the Amazon QuickSight groups that an Amazon QuickSight user is
+        a member of.</p> <p>The permission resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i>
+        </code>. </p> <p>The response is a one or more group objects. </p> <p>
+        <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-user-groups
+        -\-user-name=Pat -\-aws-account-id=111122223333 -\-namespace=default
+        -\-region=us-east-1 </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListUserGroupsResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "485":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: UserName
+          in: path
+          required: true
+          description: The Amazon QuickSight user name that you want to list group
+            memberships for.
+          schema:
+            type: string
+            minLength: 1
+            pattern: "[\\u0020-\\u00FF]+"
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The AWS Account ID that the user is in. Currently, you use the ID
+            for the AWS account that contains your Amazon QuickSight account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+        - name: next-token
+          in: query
+          required: false
+          description: A pagination token that can be used in a subsequent request.
+          schema:
+            type: string
+        - name: max-results
+          in: query
+          required: false
+          description: The maximum number of results to return from this request.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/accounts/{AwsAccountId}/namespaces/{Namespace}/users":
+    get:
+      operationId: ListUsers
+      description: <p>Returns a list of all of the Amazon QuickSight users belonging to
+        this account. </p> <p>The permission resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>*</i>
+        </code>.</p> <p>The response is a list of user objects, containing each
+        user's Amazon Resource Name (ARN), AWS Identity and Access Management
+        (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p>
+        <code>aws quicksight list-users --aws-account-id=111122223333
+        --namespace=default </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListUsersResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "485":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "486":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the user is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: next-token
+          in: query
+          required: false
+          description: A pagination token that can be used in a subsequent request.
+          schema:
+            type: string
+        - name: max-results
+          in: query
+          required: false
+          description: The maximum number of results to return from this request.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    post:
+      operationId: RegisterUser
+      description: <p>Creates an Amazon QuickSight user, whose identity is associated with
+        the AWS Identity and Access Management (IAM) identity or role specified
+        in the request. </p> <p>The permission resource is
+        <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i>
+        </code>.</p> <p>The condition resource is the Amazon Resource Name (ARN)
+        for the IAM user or role, and the session name. </p> <p>The condition
+        keys are <code>quicksight:IamArn</code> and
+        <code>quicksight:SessionName</code>. </p> <p> <b>CLI Sample:</b> </p>
+        <p> <code>aws quicksight register-user -\-aws-account-id=111122223333
+        -\-namespace=default -\-email=pat@example.com -\-identity-type=IAM
+        -\-user-role=AUTHOR -\-iam-arn=arn:aws:iam::111122223333:user/Pat
+        </code> </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterUserResponse"
+        "480":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: ResourceExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceExistsException"
+        "486":
+          description: PreconditionNotMetException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreconditionNotMetException"
+        "487":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "488":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+      parameters:
+        - name: AwsAccountId
+          in: path
+          required: true
+          description: The ID for the AWS account that the user is in. Currently, you use
+            the ID for the AWS account that contains your Amazon QuickSight
+            account.
+          schema:
+            type: string
+            minLength: 12
+            maxLength: 12
+            pattern: ^[0-9]{12}$
+        - name: Namespace
+          in: path
+          required: true
+          description: The namespace. Currently, you should set this to
+            <code>default</code>.
+          schema:
+            type: string
+            pattern: default
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - IdentityType
+                - Email
+                - UserRole
+              properties:
+                IdentityType:
+                  description: "<p>Amazon QuickSight supports several ways of managing the
+                    identity of users. This parameter accepts two values:</p>
+                    <ul> <li> <p> <code>IAM</code>: A user whose identity maps
+                    to an existing IAM user or role. </p> </li> <li> <p>
+                    <code>QUICKSIGHT</code>: A user whose identity is owned and
+                    managed internally by Amazon QuickSight. </p> </li> </ul>"
+                  type: string
+                  enum:
+                    - IAM
+                    - QUICKSIGHT
+                Email:
+                  description: The email address of the user that you want to register.
+                  type: string
+                UserRole:
+                  description: "<p>The Amazon QuickSight role of the user. The user role
+                    can be one of the following:</p> <ul> <li> <p>
+                    <code>READER</code>: A user who has read-only access to
+                    dashboards.</p> </li> <li> <p> <code>AUTHOR</code>: A user
+                    who can create data sources, data sets, analyses, and
+                    dashboards.</p> </li> <li> <p> <code>ADMIN</code>: A user
+                    who is an author, who can also manage Amazon QuickSight
+                    settings.</p> </li> </ul>"
+                  type: string
+                  enum:
+                    - ADMIN
+                    - AUTHOR
+                    - READER
+                    - RESTRICTED_AUTHOR
+                    - RESTRICTED_READER
+                IamArn:
+                  description: "The ARN of the IAM user or role that you are registering
+                    with Amazon QuickSight. "
+                  type: string
+                SessionName:
+                  description: "You need to use this parameter only when you register one
+                    or more users using an assumed IAM role. You don't need to
+                    provide the session name for other scenarios, for example
+                    when you are registering an IAM user or an Amazon QuickSight
+                    user. You can register multiple users using the same IAM
+                    role if each user has a different session name. For more
+                    information on assuming IAM roles, see <a
+                    href=\"https://docs.aws.amazon.com/cli/latest/reference/sts\
+                    /assume-role.html\"> <code>assume-role</code> </a> in the
+                    <i>AWS CLI Reference.</i> "
+                  type: string
+                  pattern: "[\\w+=.@-]*"
+                  minLength: 2
+                  maxLength: 64
+                UserName:
+                  description: The Amazon QuickSight user name that you want to create for
+                    the user you are registering.
+                  type: string
+                  pattern: "[\\u0020-\\u00FF]+"
+                  minLength: 1
+        required: true
+servers:
+  - url: http://quicksight.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Amazon QuickSight multi-region endpoint
+  - url: https://quicksight.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Amazon QuickSight multi-region endpoint
+  - url: http://quicksight.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Amazon QuickSight endpoint for China (Beijing) and China (Ningxia)
+  - url: https://quicksight.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Amazon QuickSight endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    CreateGroupResponse:
+      type: object
+      properties:
+        Group:
+          $ref: "#/components/schemas/Group"
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+      description: The response object for this operation.
+    AccessDeniedException: {}
+    InvalidParameterValueException: {}
+    ResourceExistsException: {}
+    ResourceNotFoundException: {}
+    ThrottlingException: {}
+    PreconditionNotMetException: {}
+    LimitExceededException: {}
+    InternalFailureException: {}
+    ResourceUnavailableException: {}
+    CreateGroupMembershipResponse:
+      type: object
+      properties:
+        GroupMember:
+          $ref: "#/components/schemas/GroupMember"
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    DeleteGroupResponse:
+      type: object
+      properties:
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    DeleteGroupMembershipResponse:
+      type: object
+      properties:
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    DeleteUserResponse:
+      type: object
+      properties:
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    DeleteUserByPrincipalIdResponse:
+      type: object
+      properties:
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    DescribeGroupResponse:
+      type: object
+      properties:
+        Group:
+          $ref: "#/components/schemas/Group"
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    DescribeUserResponse:
+      type: object
+      properties:
+        User:
+          $ref: "#/components/schemas/User"
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    GetDashboardEmbedUrlResponse:
+      type: object
+      properties:
+        EmbedUrl:
+          $ref: "#/components/schemas/EmbeddingUrl"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+        RequestId:
+          $ref: "#/components/schemas/String"
+    DomainNotWhitelistedException: {}
+    QuickSightUserNotFoundException: {}
+    IdentityTypeNotSupportedException: {}
+    SessionLifetimeInMinutesInvalidException: {}
+    UnsupportedUserEditionException: {}
+    ListGroupMembershipsResponse:
+      type: object
+      properties:
+        GroupMemberList:
+          $ref: "#/components/schemas/GroupMemberList"
+        NextToken:
+          $ref: "#/components/schemas/String"
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    InvalidNextTokenException: {}
+    ListGroupsResponse:
+      type: object
+      properties:
+        GroupList:
+          $ref: "#/components/schemas/GroupList"
+        NextToken:
+          $ref: "#/components/schemas/String"
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    ListUserGroupsResponse:
+      type: object
+      properties:
+        GroupList:
+          $ref: "#/components/schemas/GroupList"
+        NextToken:
+          $ref: "#/components/schemas/String"
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    ListUsersResponse:
+      type: object
+      properties:
+        UserList:
+          $ref: "#/components/schemas/UserList"
+        NextToken:
+          $ref: "#/components/schemas/String"
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    RegisterUserResponse:
+      type: object
+      properties:
+        User:
+          $ref: "#/components/schemas/User"
+        UserInvitationUrl:
+          $ref: "#/components/schemas/String"
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    UpdateGroupResponse:
+      type: object
+      properties:
+        Group:
+          $ref: "#/components/schemas/Group"
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    UpdateUserResponse:
+      type: object
+      properties:
+        User:
+          $ref: "#/components/schemas/User"
+        RequestId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/StatusCode"
+    Arn:
+      type: string
+    AwsAccountId:
+      type: string
+      pattern: ^[0-9]{12}$
+      minLength: 12
+      maxLength: 12
+    Boolean:
+      type: boolean
+    GroupMemberName:
+      type: string
+      pattern: "[\\u0020-\\u00FF]+"
+      minLength: 1
+      maxLength: 256
+    GroupName:
+      type: string
+      pattern: "[\\u0020-\\u00FF]+"
+      minLength: 1
+    Namespace:
+      type: string
+      pattern: default
+    CreateGroupMembershipRequest:
+      type: object
+      properties: {}
+    GroupMember:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/Arn"
+        MemberName:
+          $ref: "#/components/schemas/GroupMemberName"
+      description: "A member of an Amazon QuickSight group. Currently, group members must
+        be users. Groups can't be members of another group. "
+    String:
+      type: string
+    StatusCode:
+      type: integer
+    GroupDescription:
+      type: string
+      minLength: 1
+      maxLength: 512
+    CreateGroupRequest:
+      type: object
+      required:
+        - GroupName
+      properties:
+        GroupName:
+          $ref: "#/components/schemas/GroupName"
+        Description:
+          $ref: "#/components/schemas/GroupDescription"
+      description: "The request object for this operation. "
+    Group:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/Arn"
+        GroupName:
+          $ref: "#/components/schemas/GroupName"
+        Description:
+          $ref: "#/components/schemas/GroupDescription"
+        PrincipalId:
+          $ref: "#/components/schemas/String"
+      description: A <i>group</i> in Amazon QuickSight consists of a set of users. You can
+        use groups to make it easier to manage access and security. Currently,
+        an Amazon QuickSight subscription can't contain more than 500 Amazon
+        QuickSight groups.
+    DeleteGroupMembershipRequest:
+      type: object
+      properties: {}
+    DeleteGroupRequest:
+      type: object
+      properties: {}
+    DeleteUserByPrincipalIdRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    UserName:
+      type: string
+      pattern: "[\\u0020-\\u00FF]+"
+      minLength: 1
+    DeleteUserRequest:
+      type: object
+      properties: {}
+    DescribeGroupRequest:
+      type: object
+      properties: {}
+    DescribeUserRequest:
+      type: object
+      properties: {}
+    User:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/Arn"
+        UserName:
+          $ref: "#/components/schemas/UserName"
+        Email:
+          $ref: "#/components/schemas/String"
+        Role:
+          $ref: "#/components/schemas/UserRole"
+        IdentityType:
+          $ref: "#/components/schemas/IdentityType"
+        Active:
+          $ref: "#/components/schemas/Boolean"
+        PrincipalId:
+          $ref: "#/components/schemas/String"
+      description: A registered user of Amazon QuickSight. Currently, an Amazon QuickSight
+        subscription can't contain more than 20 million users.
+    EmbeddingUrl:
+      type: string
+      format: password
+    IdentityType:
+      type: string
+      enum:
+        - IAM
+        - QUICKSIGHT
+    SessionLifetimeInMinutes:
+      type: integer
+      minimum: 15
+      maximum: 600
+    boolean:
+      type: boolean
+    GetDashboardEmbedUrlRequest:
+      type: object
+      properties: {}
+    GroupList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Group"
+    GroupMemberList:
+      type: array
+      items:
+        $ref: "#/components/schemas/GroupMember"
+    MaxResults:
+      type: integer
+      minimum: 1
+      maximum: 100
+    ListGroupMembershipsRequest:
+      type: object
+      properties: {}
+    ListGroupsRequest:
+      type: object
+      properties: {}
+    ListUserGroupsRequest:
+      type: object
+      properties: {}
+    ListUsersRequest:
+      type: object
+      properties: {}
+    UserList:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+    UserRole:
+      type: string
+      enum:
+        - ADMIN
+        - AUTHOR
+        - READER
+        - RESTRICTED_AUTHOR
+        - RESTRICTED_READER
+    RoleSessionName:
+      type: string
+      pattern: "[\\w+=.@-]*"
+      minLength: 2
+      maxLength: 64
+    RegisterUserRequest:
+      type: object
+      required:
+        - IdentityType
+        - Email
+        - UserRole
+      properties:
+        IdentityType:
+          $ref: "#/components/schemas/IdentityType"
+        Email:
+          $ref: "#/components/schemas/String"
+        UserRole:
+          $ref: "#/components/schemas/UserRole"
+        IamArn:
+          $ref: "#/components/schemas/String"
+        SessionName:
+          $ref: "#/components/schemas/RoleSessionName"
+        UserName:
+          $ref: "#/components/schemas/UserName"
+    UpdateGroupRequest:
+      type: object
+      properties:
+        Description:
+          $ref: "#/components/schemas/GroupDescription"
+    UpdateUserRequest:
+      type: object
+      required:
+        - Email
+        - Role
+      properties:
+        Email:
+          $ref: "#/components/schemas/String"
+        Role:
+          $ref: "#/components/schemas/UserRole"

@@ -1,0 +1,193 @@
+openapi: 3.0.0
+info:
+  description: The Microsoft Azure Network management API provides a RESTful set of web
+    services that interact with Microsoft Azure Networks service to manage your
+    network resources. The API has entities that capture the relationship
+    between an end user and the Microsoft Azure Networks service.
+  title: NetworkManagementClient
+  version: 2018-02-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/network/resource-manager/Microsoft.Network/stable/2018-02-01/serviceCommunity.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: network-serviceCommunity
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Network/bgpServiceCommunities":
+    get:
+      description: Gets all the available bgp service communities.
+      operationId: BgpServiceCommunities_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Request successful. The operation returns a list of
+            BgpServiceCommunity resources.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BgpServiceCommunityListResult"
+              examples:
+                ServiceCommunityList:
+                  $ref: "#/components/examples/ServiceCommunityList"
+      tags:
+        - BgpServiceCommunities
+      x-ms-pageable:
+        nextLinkName: nextLink
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ServiceCommunityList:
+      value:
+        value:
+          - id: /subscriptions/subid/providers/Microsoft.Network/bgpServiceCommunities/skype
+            name: skype
+            properties:
+              bgpCommunities:
+                - communityName: Skype For Business Online
+                  communityPrefixes:
+                    - 13.67.56.225/32
+                    - 13.67.186.105/32
+                  communityValue: 12076:5030
+                  isAuthorizedToUse: true
+                  serviceGroup: O365
+                  serviceSupportedRegion: Global
+              serviceName: skype
+            type: Microsoft.Network/bgpServiceCommunities
+          - id: /subscriptions/subid/providers/Microsoft.Network/bgpServiceCommunities/exchange
+            name: exchange
+            properties:
+              bgpCommunities:
+                - communityName: Exchange Online
+                  communityPrefixes:
+                    - 13.67.56.225/32
+                    - 13.67.186.105/32
+                  communityValue: 12076:5040
+                  isAuthorizedToUse: true
+                  serviceGroup: O365
+                  serviceSupportedRegion: Global
+              serviceName: exchange
+            type: Microsoft.Network/bgpServiceCommunities
+  parameters:
+    ApiVersionParameter:
+      description: Client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        ServiceCommunityList:
+          value: 2018-02-01
+    SubscriptionIdParameter:
+      description: The subscription credentials which uniquely identify the Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        ServiceCommunityList:
+          value: subid
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    BGPCommunity:
+      description: Contains bgp community information offered in Service Community
+        resources.
+      properties:
+        communityName:
+          description: The name of the bgp community. e.g. Skype.
+          type: string
+        communityPrefixes:
+          description: The prefixes that the bgp community contains.
+          items:
+            type: string
+          type: array
+        communityValue:
+          description: "The value of the bgp community. For more information:
+            https://docs.microsoft.com/en-us/azure/expressroute/expressroute-ro\
+            uting."
+          type: string
+        isAuthorizedToUse:
+          description: Customer is authorized to use bgp community or not.
+          type: boolean
+        serviceGroup:
+          description: The service group of the bgp community contains.
+          type: string
+        serviceSupportedRegion:
+          description: The region which the service support. e.g. For O365, region is
+            Global.
+          type: string
+    BgpServiceCommunity:
+      allOf:
+        - description: Common resource representation.
+          properties:
+            id:
+              description: Resource ID.
+              type: string
+            location:
+              description: Resource location.
+              type: string
+            name:
+              description: Resource name.
+              readOnly: true
+              type: string
+            tags:
+              additionalProperties:
+                type: string
+              description: Resource tags.
+              type: object
+            type:
+              description: Resource type.
+              readOnly: true
+              type: string
+          x-ms-azure-resource: true
+      description: Service Community Properties.
+      properties:
+        properties:
+          $ref: "#/components/schemas/BgpServiceCommunityPropertiesFormat"
+    BgpServiceCommunityListResult:
+      description: Response for the ListServiceCommunity API service call.
+      properties:
+        nextLink:
+          description: The URL to get the next set of results.
+          type: string
+        value:
+          description: A list of service community resources.
+          items:
+            $ref: "#/components/schemas/BgpServiceCommunity"
+          type: array
+    BgpServiceCommunityPropertiesFormat:
+      description: Properties of Service Community.
+      properties:
+        bgpCommunities:
+          description: Get a list of bgp communities.
+          items:
+            $ref: "#/components/schemas/BGPCommunity"
+          type: array
+        serviceName:
+          description: The name of the bgp community. e.g. Skype.
+          type: string

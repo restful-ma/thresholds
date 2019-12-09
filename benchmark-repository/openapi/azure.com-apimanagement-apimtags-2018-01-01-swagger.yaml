@@ -1,0 +1,4077 @@
+openapi: 3.0.0
+info:
+  description: Use these REST APIs for performing operations on Tag entity in your Azure
+    API Management deployment. Tags can be assigned to APIs, Operations and
+    Products.
+  title: ApiManagementClient
+  version: 2018-01-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2018-01-01/apimtags.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: apimanagement-apimtags
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags":
+    get:
+      description: Lists all Tags associated with the Operation.
+      operationId: Tag_ListByOperation
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagsForOperation:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetTagsForOperation:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementGetTagsForOperation:
+              value: 57d2ef278aa04f0888cba3f3
+        - description: Operation identifier within an API. Must be unique in the current
+            API Management service instance.
+          in: path
+          name: operationId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+          examples:
+            ApiManagementGetTagsForOperation:
+              value: 57d2ef278aa04f0888cba3f6
+        - description: >-
+            | Field       | Supported operators    | Supported
+            functions                         |
+
+            |-------------|------------------------|---------------------------------------------|
+
+            | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | method     | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | urlTemplate | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagsForOperation:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagsForOperation:
+              value: subid
+      responses:
+        "200":
+          description: The operation returns a collection of tags associated with the
+            Operation entity.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagCollection"
+              examples:
+                ApiManagementGetTagsForOperation:
+                  $ref: "#/components/examples/ApiManagementGetTagsForOperation"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - OperationTags
+      x-ms-odata: "#/components/schemas/TagContract"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags/{tagId}":
+    delete:
+      description: Detach the tag from the Operation.
+      operationId: Tag_DetachFromOperation
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteOperationTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementDeleteOperationTag:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementDeleteOperationTag:
+              value: 59d5b28d1f7fab116c282650
+        - description: Operation identifier within an API. Must be unique in the current
+            API Management service instance.
+          in: path
+          name: operationId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+          examples:
+            ApiManagementDeleteOperationTag:
+              value: 59d5b28d1f7fab116c282651
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteOperationTag:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteOperationTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteOperationTag:
+              value: subid
+      responses:
+        "200":
+          description: Successfully detached the tag from the Operation.
+        "204":
+          description: Successfully detached the tag from the Operation.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - OperationTags
+    get:
+      description: Get tag associated with the Operation.
+      operationId: Tag_GetByOperation
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetOperationTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetOperationTag:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementGetOperationTag:
+              value: 59d6bb8f1f7fab13dc67ec9b
+        - description: Operation identifier within an API. Must be unique in the current
+            API Management service instance.
+          in: path
+          name: operationId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+          examples:
+            ApiManagementGetOperationTag:
+              value: 59d6bb8f1f7fab13dc67ec9a
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetOperationTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetOperationTag:
+              value: subid
+      responses:
+        "200":
+          description: Gets the details of the tag specified by its identifier.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagContract"
+              examples:
+                ApiManagementGetOperationTag:
+                  $ref: "#/components/examples/ApiManagementGetOperationTag"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - OperationTags
+    head:
+      description: Gets the entity state version of the tag specified by its identifier.
+      operationId: Tag_GetEntityStateByOperation
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadOperationTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementHeadOperationTag:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementHeadOperationTag:
+              value: 59d6bb8f1f7fab13dc67ec9b
+        - description: Operation identifier within an API. Must be unique in the current
+            API Management service instance.
+          in: path
+          name: operationId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+          examples:
+            ApiManagementHeadOperationTag:
+              value: 59d6bb8f1f7fab13dc67ec9a
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadOperationTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadOperationTag:
+              value: subid
+      responses:
+        "200":
+          description: Empty response body, ETag header entity state version.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - OperationTags
+    put:
+      description: Assign tag to the Operation.
+      operationId: Tag_AssignToOperation
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateOperationTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementCreateOperationTag:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementCreateOperationTag:
+              value: 5931a75ae4bbd512a88c680b
+        - description: Operation identifier within an API. Must be unique in the current
+            API Management service instance.
+          in: path
+          name: operationId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+          examples:
+            ApiManagementCreateOperationTag:
+              value: 5931a75ae4bbd512a88c680a
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: ETag of the Entity. Not required when creating an entity, but
+            required when updating an entity.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateOperationTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateOperationTag:
+              value: subid
+      responses:
+        "200":
+          description: Tag is already assigned to the Operation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagContract"
+              examples:
+                ApiManagementCreateOperationTag:
+                  $ref: "#/components/examples/ApiManagementCreateOperationTag"
+        "201":
+          description: Tag was assigned to the Operation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagContract"
+              examples:
+                ApiManagementCreateOperationTag:
+                  $ref: "#/components/examples/ApiManagementCreateOperationTag"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - OperationTags
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operationsByTags":
+    get:
+      description: Lists a collection of operations associated with tags.
+      operationId: Operation_ListByTags
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementListOperationsByTags:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementListOperationsByTags:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementListOperationsByTags:
+              value: a1
+        - description: >-
+            | Field       | Supported operators    | Supported
+            functions                         |
+
+            |-------------|------------------------|---------------------------------------------|
+
+            | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | apiName     | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | method      | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | urlTemplate | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListOperationsByTags:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListOperationsByTags:
+              value: subid
+      responses:
+        "200":
+          description: Lists a collection of TagResource entities.
+          content:
+            application/json:
+              schema:
+                description: Paged Tag list representation.
+                properties:
+                  count:
+                    description: Total record count number across all pages.
+                    format: int64
+                    type: integer
+                  nextLink:
+                    description: Next page link if any.
+                    type: string
+                  value:
+                    description: Page values.
+                    items:
+                      description: TagResource contract properties.
+                      properties:
+                        api:
+                          allOf:
+                            - description: API base contract details.
+                              properties:
+                                apiRevision:
+                                  description: Describes the Revision of the Api. If no
+                                    value is provided, default revision 1 is
+                                    created
+                                  maxLength: 100
+                                  minLength: 1
+                                  type: string
+                                apiRevisionDescription:
+                                  description: Description of the Api Revision.
+                                  maxLength: 256
+                                  type: string
+                                apiVersion:
+                                  description: Indicates the Version identifier of the API
+                                    if the API is versioned
+                                  maxLength: 100
+                                  type: string
+                                apiVersionDescription:
+                                  description: Description of the Api Version.
+                                  maxLength: 256
+                                  type: string
+                                apiVersionSetId:
+                                  description: A resource identifier for the related
+                                    ApiVersionSet.
+                                  type: string
+                                authenticationSettings:
+                                  description: API Authentication Settings.
+                                  properties:
+                                    oAuth2:
+                                      description: API OAuth2 Authentication settings
+                                        details.
+                                      properties:
+                                        authorizationServerId:
+                                          description: OAuth authorization server
+                                            identifier.
+                                          type: string
+                                        scope:
+                                          description: operations scope.
+                                          type: string
+                                    openid:
+                                      description: API OAuth2 Authentication settings
+                                        details.
+                                      properties:
+                                        bearerTokenSendingMethods:
+                                          description: How to send token to the server.
+                                          items:
+                                            description: Form of an authorization grant,
+                                              which the client uses to request
+                                              the access token.
+                                            enum:
+                                              - authorizationHeader
+                                              - query
+                                            type: string
+                                            x-ms-enum:
+                                              modelAsString: true
+                                              name: bearerTokenSendingMethods
+                                              values:
+                                                - description: Access token will be
+                                                    transmitted in the
+                                                    Authorization header using
+                                                    Bearer schema
+                                                  value: authorizationHeader
+                                                - description: Access token will be
+                                                    transmitted as query
+                                                    parameters.
+                                                  value: query
+                                          type: array
+                                        openidProviderId:
+                                          description: OAuth authorization server
+                                            identifier.
+                                          type: string
+                                    subscriptionKeyRequired:
+                                      description: Specifies whether subscription key is
+                                        required during call to this API, true -
+                                        API is included into closed products
+                                        only, false - API is included into open
+                                        products alone, null - there is a mix of
+                                        products.
+                                      type: boolean
+                                description:
+                                  description: Description of the API. May include HTML
+                                    formatting tags.
+                                  type: string
+                                isCurrent:
+                                  description: Indicates if API revision is current api
+                                    revision.
+                                  readOnly: true
+                                  type: boolean
+                                isOnline:
+                                  description: Indicates if API revision is accessible via
+                                    the gateway.
+                                  readOnly: true
+                                  type: boolean
+                                subscriptionKeyParameterNames:
+                                  description: Subscription key parameter names details.
+                                  example:
+                                    subscriptionKeyParameterNames:
+                                      header: customHeaderParameterName
+                                      query: customQueryParameterName
+                                  properties:
+                                    header:
+                                      description: Subscription key header name.
+                                      type: string
+                                    query:
+                                      description: Subscription key query string parameter
+                                        name.
+                                      type: string
+                                type:
+                                  description: Type of API.
+                                  enum:
+                                    - http
+                                    - soap
+                                  type: string
+                                  x-ms-client-name: ApiType
+                                  x-ms-enum:
+                                    modelAsString: true
+                                    name: ApiType
+                          description: API contract properties for the Tag Resources.
+                          properties:
+                            id:
+                              description: API identifier in the form /apis/{apiId}.
+                              type: string
+                            name:
+                              description: API name.
+                              maxLength: 300
+                              minLength: 1
+                              type: string
+                            path:
+                              description: Relative URL uniquely identifying this API and
+                                all of its resource paths within the API
+                                Management service instance. It is appended to
+                                the API endpoint base URL specified during the
+                                service instance creation to form a public URL
+                                for this API.
+                              maxLength: 400
+                              minLength: 0
+                              type: string
+                            protocols:
+                              description: Describes on which protocols the operations in
+                                this API can be invoked.
+                              items:
+                                enum:
+                                  - http
+                                  - https
+                                type: string
+                                x-ms-enum:
+                                  modelAsString: false
+                                  name: Protocol
+                              type: array
+                            serviceUrl:
+                              description: Absolute URL of the backend service implementing
+                                this API.
+                              maxLength: 2000
+                              minLength: 1
+                              type: string
+                        operation:
+                          description: Operation Entity contract Properties.
+                          properties:
+                            apiName:
+                              description: Api Name.
+                              readOnly: true
+                              type: string
+                            apiRevision:
+                              description: Api Revision.
+                              readOnly: true
+                              type: string
+                            apiVersion:
+                              description: Api Version.
+                              readOnly: true
+                              type: string
+                            description:
+                              description: Operation Description.
+                              readOnly: true
+                              type: string
+                            id:
+                              description: Identifier of the operation in form
+                                /operations/{operationId}.
+                              type: string
+                            method:
+                              description: A Valid HTTP Operation Method. Typical Http
+                                Methods like GET, PUT, POST but not limited by
+                                only them.
+                              externalDocs:
+                                description: As defined by RFC.
+                                url: http://www.rfc-editor.org/rfc/rfc7230.txt
+                              readOnly: true
+                              type: string
+                            name:
+                              description: Operation name.
+                              readOnly: true
+                              type: string
+                            urlTemplate:
+                              description: "Relative URL template identifying the target
+                                resource for this operation. May include
+                                parameters. Example:
+                                /customers/{cid}/orders/{oid}/?date={date}"
+                              readOnly: true
+                              type: string
+                        product:
+                          allOf:
+                            - description: Product Entity Base Parameters
+                              properties:
+                                approvalRequired:
+                                  description: whether subscription approval is required.
+                                    If false, new subscriptions will be approved
+                                    automatically enabling developers to call
+                                    the product’s APIs immediately after
+                                    subscribing. If true, administrators must
+                                    manually approve the subscription before the
+                                    developer can any of the product’s APIs. Can
+                                    be present only if subscriptionRequired
+                                    property is present and has a value of
+                                    false.
+                                  type: boolean
+                                description:
+                                  description: Product description. May include HTML
+                                    formatting tags.
+                                  maxLength: 1000
+                                  minLength: 1
+                                  type: string
+                                state:
+                                  description: whether product is published or not.
+                                    Published products are discoverable by users
+                                    of developer portal. Non published products
+                                    are visible only to administrators. Default
+                                    state of Product is notPublished.
+                                  enum:
+                                    - notPublished
+                                    - published
+                                  type: string
+                                  x-ms-enum:
+                                    modelAsString: false
+                                    name: ProductState
+                                subscriptionRequired:
+                                  description: Whether a product subscription is required
+                                    for accessing APIs included in this product.
+                                    If true, the product is referred to as
+                                    "protected" and a valid subscription key is
+                                    required for a request to an API included in
+                                    the product to succeed. If false, the
+                                    product is referred to as "open" and
+                                    requests to an API included in the product
+                                    can be made without a subscription key. If
+                                    property is omitted when creating a new
+                                    product it's value is assumed to be true.
+                                  type: boolean
+                                subscriptionsLimit:
+                                  description: Whether the number of subscriptions a user
+                                    can have to this product at the same time.
+                                    Set to null or omit to allow unlimited per
+                                    user subscriptions. Can be present only if
+                                    subscriptionRequired property is present and
+                                    has a value of false.
+                                  format: int32
+                                  type: integer
+                                terms:
+                                  description: Product terms of use. Developers trying to
+                                    subscribe to the product will be presented
+                                    and required to accept these terms before
+                                    they can complete the subscription process.
+                                  type: string
+                          description: Product profile.
+                          properties:
+                            id:
+                              description: Identifier of the product in the form of
+                                /products/{productId}
+                              type: string
+                            name:
+                              description: Product name.
+                              maxLength: 300
+                              minLength: 1
+                              type: string
+                          required:
+                            - name
+                        tag:
+                          description: Contract defining the Tag property in the Tag
+                            Resource Contract
+                          properties:
+                            id:
+                              description: Tag identifier
+                              type: string
+                            name:
+                              description: Tag Name
+                              maxLength: 160
+                              minLength: 1
+                              type: string
+                      required:
+                        - tag
+                    type: array
+              examples:
+                ApiManagementListOperationsByTags:
+                  $ref: "#/components/examples/ApiManagementListOperationsByTags"
+      tags:
+        - OperationsByTags
+      x-ms-odata: ./apimtagresources.json#/definitions/TagResourceContract
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tagDescriptions":
+    get:
+      description: Lists all Tags descriptions in scope of API. Model similar to swagger -
+        tagDescription is defined on API level but tag may be assigned to the
+        Operations
+      operationId: TagDescription_ListByApi
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagDescriptionsForApi:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetTagDescriptionsForApi:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementGetTagDescriptionsForApi:
+              value: 57d2ef278aa04f0888cba3f3
+        - description: >-
+            | Field       | Supported operators    | Supported
+            functions                         |
+
+            |-------------|------------------------|---------------------------------------------|
+
+            | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagDescriptionsForApi:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagDescriptionsForApi:
+              value: subid
+      responses:
+        "200":
+          description: The operation returns a collection of tagDescriptions associated
+            with the Api entity.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagDescriptionCollection"
+              examples:
+                ApiManagementGetTagDescriptionsForApi:
+                  $ref: "#/components/examples/ApiManagementGetTagDescriptionsForApi"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiTagDescriptions
+      x-ms-odata: "#/components/schemas/TagDescriptionContract"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tagDescriptions/{tagId}":
+    delete:
+      description: Delete tag description for the Api.
+      operationId: TagDescription_Delete
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiTagDescription:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementDeleteApiTagDescription:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementDeleteApiTagDescription:
+              value: 59d5b28d1f7fab116c282650
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiTagDescription:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiTagDescription:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiTagDescription:
+              value: subid
+      responses:
+        "200":
+          description: Successfully deleted tag description for the Api.
+        "204":
+          description: Successfully deleted tag description for the Api.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiTagDescriptions
+    get:
+      description: Get tag associated with the API.
+      operationId: TagDescription_Get
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetApiTagDescription:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetApiTagDescription:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementGetApiTagDescription:
+              value: 59d6bb8f1f7fab13dc67ec9b
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetApiTagDescription:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetApiTagDescription:
+              value: subid
+      responses:
+        "200":
+          description: Gets the description of the tag specified by its identifier in scope
+            if the Api.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagDescriptionContract"
+              examples:
+                ApiManagementGetApiTagDescription:
+                  $ref: "#/components/examples/ApiManagementGetApiTagDescription"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiTagDescriptions
+    head:
+      description: Gets the entity state version of the tag specified by its identifier.
+      operationId: TagDescription_GetEntityState
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadApiTagDescription:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementHeadApiTagDescription:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementHeadApiTagDescription:
+              value: 59d6bb8f1f7fab13dc67ec9b
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadApiTagDescription:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadApiTagDescription:
+              value: subid
+      responses:
+        "200":
+          description: Empty response body, ETag header entity state version.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiTagDescriptions
+    put:
+      description: Create/Update tag description in scope of the Api.
+      operationId: TagDescription_CreateOrUpdate
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateApiTagDescription:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementCreateApiTagDescription:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementCreateApiTagDescription:
+              value: 5931a75ae4bbd512a88c680b
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: ETag of the Entity. Not required when creating an entity, but
+            required when updating an entity.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateApiTagDescription:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateApiTagDescription:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TagDescriptionCreateParameters"
+        description: Create parameters.
+        required: true
+      responses:
+        "200":
+          description: Tag Description was updated for the Api.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagDescriptionContract"
+              examples:
+                ApiManagementCreateApiTagDescription:
+                  $ref: "#/components/examples/ApiManagementCreateApiTagDescription"
+        "201":
+          description: Tag Description was created for the Api.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagDescriptionContract"
+              examples:
+                ApiManagementCreateApiTagDescription:
+                  $ref: "#/components/examples/ApiManagementCreateApiTagDescription"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiTagDescriptions
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags":
+    get:
+      description: Lists all Tags associated with the API.
+      operationId: Tag_ListByApi
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagsForApi:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetTagsForApi:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementGetTagsForApi:
+              value: 57d2ef278aa04f0888cba3f3
+        - description: >-
+            | Field       | Supported operators    | Supported
+            functions                         |
+
+            |-------------|------------------------|---------------------------------------------|
+
+            | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagsForApi:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagsForApi:
+              value: subid
+      responses:
+        "200":
+          description: The operation returns a collection of tags associated with the Api
+            entity.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagCollection"
+              examples:
+                ApiManagementGetTagsForApi:
+                  $ref: "#/components/examples/ApiManagementGetTagsForApi"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiTags
+      x-ms-odata: "#/components/schemas/TagContract"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags/{tagId}":
+    delete:
+      description: Detach the tag from the Api.
+      operationId: Tag_DetachFromApi
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementDeleteApiTag:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementDeleteApiTag:
+              value: 59d5b28d1f7fab116c282650
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiTag:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiTag:
+              value: subid
+      responses:
+        "200":
+          description: Successfully detached the tag from the Api.
+        "204":
+          description: Successfully detached the tag from the Api.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiTags
+    get:
+      description: Get tag associated with the API.
+      operationId: Tag_GetByApi
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetApiTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetApiTag:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementGetApiTag:
+              value: 59d6bb8f1f7fab13dc67ec9b
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetApiTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetApiTag:
+              value: subid
+      responses:
+        "200":
+          description: Gets the details of the tag specified by its identifier.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagContract"
+              examples:
+                ApiManagementGetApiTag:
+                  $ref: "#/components/examples/ApiManagementGetApiTag"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiTags
+    head:
+      description: Gets the entity state version of the tag specified by its identifier.
+      operationId: Tag_GetEntityStateByApi
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadApiTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementHeadApiTag:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementHeadApiTag:
+              value: 59d6bb8f1f7fab13dc67ec9b
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadApiTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadApiTag:
+              value: subid
+      responses:
+        "200":
+          description: Empty response body, ETag header entity state version.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiTags
+    put:
+      description: Assign tag to the Api.
+      operationId: Tag_AssignToApi
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateApiTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementCreateApiTag:
+              value: apimService1
+        - description: API revision identifier. Must be unique in the current API
+            Management service instance. Non-current revision has ;rev=n as a
+            suffix where n is the revision number.
+          in: path
+          name: apiId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementCreateApiTag:
+              value: 5931a75ae4bbd512a88c680b
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: ETag of the Entity. Not required when creating an entity, but
+            required when updating an entity.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateApiTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateApiTag:
+              value: subid
+      responses:
+        "200":
+          description: Tag is already assigned to the Api.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagContract"
+              examples:
+                ApiManagementCreateApiTag:
+                  $ref: "#/components/examples/ApiManagementCreateApiTag"
+        "201":
+          description: Tag was assigned to the Api.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagContract"
+              examples:
+                ApiManagementCreateApiTag:
+                  $ref: "#/components/examples/ApiManagementCreateApiTag"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiTags
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags":
+    get:
+      description: Lists all Tags associated with the Product.
+      operationId: Tag_ListByProduct
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagsForProduct:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetTagsForProduct:
+              value: apimService1
+        - description: Product identifier. Must be unique in the current API Management
+            service instance.
+          in: path
+          name: productId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+          examples:
+            ApiManagementGetTagsForProduct:
+              value: 57d2ef278aa04f0888cba3f1
+        - description: >-
+            | Field       | Supported operators    | Supported
+            functions                         |
+
+            |-------------|------------------------|---------------------------------------------|
+
+            | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagsForProduct:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTagsForProduct:
+              value: subid
+      responses:
+        "200":
+          description: The operation returns a collection of tags associated with the
+            Product entity.
+          content:
+            application/json:
+              schema:
+                description: Paged Tag list representation.
+                properties:
+                  nextLink:
+                    description: Next page link if any.
+                    type: string
+                  value:
+                    description: Page values.
+                    items:
+                      allOf:
+                        - description: The Resource definition.
+                          properties:
+                            id:
+                              description: Resource ID.
+                              readOnly: true
+                              type: string
+                            name:
+                              description: Resource name.
+                              readOnly: true
+                              type: string
+                            type:
+                              description: Resource type for API Management resource.
+                              readOnly: true
+                              type: string
+                          x-ms-azure-resource: true
+                      description: Tag Contract details.
+                      properties:
+                        properties:
+                          description: Tag contract Properties.
+                          properties:
+                            displayName:
+                              description: Tag name.
+                              maxLength: 160
+                              minLength: 1
+                              type: string
+                          required:
+                            - displayName
+                    type: array
+              examples:
+                ApiManagementGetTagsForProduct:
+                  $ref: "#/components/examples/ApiManagementGetTagsForProduct"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ProductTags
+      x-ms-odata: ./apimtags.json#/definitions/TagContract
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags/{tagId}":
+    delete:
+      description: Detach the tag from the Product.
+      operationId: Tag_DetachFromProduct
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteProductTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementDeleteProductTag:
+              value: apimService1
+        - description: Product identifier. Must be unique in the current API Management
+            service instance.
+          in: path
+          name: productId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+          examples:
+            ApiManagementDeleteProductTag:
+              value: 59d5b28d1f7fab116c282650
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteProductTag:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteProductTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteProductTag:
+              value: subid
+      responses:
+        "200":
+          description: Successfully detached the tag from the Product.
+        "204":
+          description: Successfully detached the tag from the Product.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ProductTags
+    get:
+      description: Get tag associated with the Product.
+      operationId: Tag_GetByProduct
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetProductTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetProductTag:
+              value: apimService1
+        - description: Product identifier. Must be unique in the current API Management
+            service instance.
+          in: path
+          name: productId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+          examples:
+            ApiManagementGetProductTag:
+              value: 59d6bb8f1f7fab13dc67ec9b
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetProductTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetProductTag:
+              value: subid
+      responses:
+        "200":
+          description: Gets the details of the tag specified by its identifier.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - description: The Resource definition.
+                    properties:
+                      id:
+                        description: Resource ID.
+                        readOnly: true
+                        type: string
+                      name:
+                        description: Resource name.
+                        readOnly: true
+                        type: string
+                      type:
+                        description: Resource type for API Management resource.
+                        readOnly: true
+                        type: string
+                    x-ms-azure-resource: true
+                description: Tag Contract details.
+                properties:
+                  properties:
+                    description: Tag contract Properties.
+                    properties:
+                      displayName:
+                        description: Tag name.
+                        maxLength: 160
+                        minLength: 1
+                        type: string
+                    required:
+                      - displayName
+              examples:
+                ApiManagementGetProductTag:
+                  $ref: "#/components/examples/ApiManagementGetProductTag"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ProductTags
+    head:
+      description: Gets the entity state version of the tag specified by its identifier.
+      operationId: Tag_GetEntityStateByProduct
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadProductTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementHeadProductTag:
+              value: apimService1
+        - description: Product identifier. Must be unique in the current API Management
+            service instance.
+          in: path
+          name: productId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+          examples:
+            ApiManagementHeadProductTag:
+              value: 59306a29e4bbd510dc24e5f8
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadProductTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadProductTag:
+              value: subid
+      responses:
+        "200":
+          description: Empty response body, ETag header entity state version.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ProductTags
+    put:
+      description: Assign tag to the Product.
+      operationId: Tag_AssignToProduct
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateProductTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementCreateProductTag:
+              value: apimService1
+        - description: Product identifier. Must be unique in the current API Management
+            service instance.
+          in: path
+          name: productId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+          examples:
+            ApiManagementCreateProductTag:
+              value: 5931a75ae4bbd512a88c680b
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: ETag of the Entity. Not required when creating an entity, but
+            required when updating an entity.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateProductTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateProductTag:
+              value: subid
+      responses:
+        "200":
+          description: Tag is already assigned to the Product.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - description: The Resource definition.
+                    properties:
+                      id:
+                        description: Resource ID.
+                        readOnly: true
+                        type: string
+                      name:
+                        description: Resource name.
+                        readOnly: true
+                        type: string
+                      type:
+                        description: Resource type for API Management resource.
+                        readOnly: true
+                        type: string
+                    x-ms-azure-resource: true
+                description: Tag Contract details.
+                properties:
+                  properties:
+                    description: Tag contract Properties.
+                    properties:
+                      displayName:
+                        description: Tag name.
+                        maxLength: 160
+                        minLength: 1
+                        type: string
+                    required:
+                      - displayName
+              examples:
+                ApiManagementCreateProductTag:
+                  $ref: "#/components/examples/ApiManagementCreateProductTag"
+        "201":
+          description: Tag was assigned to the Product.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - description: The Resource definition.
+                    properties:
+                      id:
+                        description: Resource ID.
+                        readOnly: true
+                        type: string
+                      name:
+                        description: Resource name.
+                        readOnly: true
+                        type: string
+                      type:
+                        description: Resource type for API Management resource.
+                        readOnly: true
+                        type: string
+                    x-ms-azure-resource: true
+                description: Tag Contract details.
+                properties:
+                  properties:
+                    description: Tag contract Properties.
+                    properties:
+                      displayName:
+                        description: Tag name.
+                        maxLength: 160
+                        minLength: 1
+                        type: string
+                    required:
+                      - displayName
+              examples:
+                ApiManagementCreateProductTag:
+                  $ref: "#/components/examples/ApiManagementCreateProductTag"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ProductTags
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags":
+    get:
+      description: Lists a collection of tags defined within a service instance.
+      operationId: Tag_ListByService
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementListTags:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementListTags:
+              value: apimService1
+        - description: >-
+            | Field       | Supported operators    | Supported
+            functions                         |
+
+            |-------------|------------------------|---------------------------------------------|
+
+            | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListTags:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListTags:
+              value: subid
+      responses:
+        "200":
+          description: Lists a collection of Tag entities.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagCollection"
+              examples:
+                ApiManagementListTags:
+                  $ref: "#/components/examples/ApiManagementListTags"
+      tags:
+        - Tags
+      x-ms-odata: "#/components/schemas/TagContract"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags/{tagId}":
+    delete:
+      description: Deletes specific tag of the API Management service instance.
+      operationId: Tag_Delete
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementDeleteTag:
+              value: apimService1
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteTag:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteTag:
+              value: subid
+      responses:
+        "200":
+          description: The tag was successfully deleted.
+        "204":
+          description: The tag was successfully deleted.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Tags
+    get:
+      description: Gets the details of the tag specified by its identifier.
+      operationId: Tag_Get
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetTag:
+              value: apimService1
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTag:
+              value: subid
+      responses:
+        "200":
+          description: The response body contains the specified Tag entity.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagContract"
+              examples:
+                ApiManagementGetTag:
+                  $ref: "#/components/examples/ApiManagementGetTag"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Tags
+    head:
+      description: Gets the entity state version of the tag specified by its identifier.
+      operationId: Tag_GetEntityState
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetTag:
+              value: apimService1
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTag:
+              value: subid
+      responses:
+        "200":
+          description: Empty response body, ETag header entity state version.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Tags
+    patch:
+      description: Updates the details of the tag specified by its identifier.
+      operationId: Tag_Update
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementUpdateTag:
+              value: apimService1
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateTag:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateTag:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TagCreateUpdateParameters"
+        description: Update parameters.
+        required: true
+      responses:
+        "204":
+          description: The tag details were successfully updated.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Tags
+    put:
+      description: Creates a tag.
+      operationId: Tag_CreateOrUpdate
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateTag:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementCreateTag:
+              value: apimService1
+        - $ref: "#/components/parameters/TagIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateTag:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateTag:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TagCreateUpdateParameters"
+        description: Create parameters.
+        required: true
+      responses:
+        "200":
+          description: Tag already exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagContract"
+              examples:
+                ApiManagementCreateTag:
+                  $ref: "#/components/examples/ApiManagementCreateTag"
+        "201":
+          description: Tag was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagContract"
+              examples:
+                ApiManagementCreateTag:
+                  $ref: "#/components/examples/ApiManagementCreateTag"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Tags
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ApiManagementGetTagsForOperation:
+      value:
+        nextLink: ""
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/5600b539c53f5b0062060002
+            name: 5600b539c53f5b0062060002
+            properties:
+              displayName: tag1
+            type: Microsoft.ApiManagement/service/tags
+    ApiManagementGetOperationTag:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/59306a29e4bbd510dc24e5f9
+        name: 59306a29e4bbd510dc24e5f9
+        properties:
+          displayName: tag1
+        type: Microsoft.ApiManagement/service/tags
+    ApiManagementCreateOperationTag:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/tagId1
+        name: tagId1
+        properties:
+          displayName: tag1
+        type: Microsoft.ApiManagement/service/tags
+    ApiManagementListOperationsByTags:
+      value:
+        count: 1
+        value:
+          - operation:
+              apiName: Echo API
+              apiRevision: "1"
+              description: A demonstration of a POST call based on the echo backend above.
+                The request body is expected to contain JSON-formatted data (see
+                example below). A policy is used to automatically transform any
+                request sent in JSON directly to XML. In a real-world scenario
+                this could be used to enable modern clients to speak to a legacy
+                backend.
+              id: /apis/echo-api/operations/create-resource
+              method: POST
+              name: Create resource
+              urlTemplate: /resource
+            tag:
+              id: /tags/apitag123
+              name: awesomeTag
+    ApiManagementGetTagDescriptionsForApi:
+      value:
+        nextLink: ""
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/5600b539c53f5b0062060002
+            name: 5600b539c53f5b0062060002
+            properties:
+              displayName: tag1
+              externalDocsDescription: some additional info
+              externalDocsUrl: http://some_url.com
+            type: Microsoft.ApiManagement/service/tags
+    ApiManagementGetApiTagDescription:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/59306a29e4bbd510dc24e5f9
+        name: 59306a29e4bbd510dc24e5f9
+        properties:
+          displayName: tag1
+          externalDocsDescription: some additional info
+          externalDocsUrl: http://some_url.com
+        type: Microsoft.ApiManagement/service/tags
+    ApiManagementCreateApiTagDescription:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/tagId1
+        name: tagId1
+        properties:
+          displayName: tag1
+          externalDocsDescription: some additional info
+          externalDocsUrl: http://some_url.com
+        type: Microsoft.ApiManagement/service/tags
+    ApiManagementGetTagsForApi:
+      value:
+        nextLink: ""
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/5600b539c53f5b0062060002
+            name: 5600b539c53f5b0062060002
+            properties:
+              displayName: tag1
+            type: Microsoft.ApiManagement/service/tags
+    ApiManagementGetApiTag:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/59306a29e4bbd510dc24e5f9
+        name: 59306a29e4bbd510dc24e5f9
+        properties:
+          displayName: tag1
+        type: Microsoft.ApiManagement/service/tags
+    ApiManagementCreateApiTag:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/tagId1
+        name: tagId1
+        properties:
+          displayName: tag1
+        type: Microsoft.ApiManagement/service/tags
+    ApiManagementGetTagsForProduct:
+      value:
+        nextLink: ""
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/5600b539c53f5b0062060002
+            name: 5600b539c53f5b0062060002
+            properties:
+              displayName: tag1
+            type: Microsoft.ApiManagement/service/tags
+    ApiManagementGetProductTag:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/59306a29e4bbd510dc24e5f9
+        name: 59306a29e4bbd510dc24e5f9
+        properties:
+          displayName: tag1
+        type: Microsoft.ApiManagement/service/tags
+    ApiManagementCreateProductTag:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/tagId1
+        name: tagId1
+        properties:
+          displayName: tag1
+        type: Microsoft.ApiManagement/service/tags
+    ApiManagementListTags:
+      value:
+        nextLink: ""
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/5600b59375ff190048020001
+            name: 5600b59375ff190048020001
+            properties:
+              displayName: tag1
+            type: Microsoft.ApiManagement/service/tags
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/5600b59375ff190048020002
+            name: 5600b59375ff190048020002
+            properties:
+              displayName: tag2
+            type: Microsoft.ApiManagement/service/tags
+    ApiManagementGetTag:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/59306a29e4bbd510dc24e5f9
+        name: 59306a29e4bbd510dc24e5f9
+        properties:
+          displayName: tag1
+        type: Microsoft.ApiManagement/service/tags
+    ApiManagementCreateTag:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/tags/tagId1
+        name: tagId1
+        properties:
+          displayName: tag1
+        type: Microsoft.ApiManagement/service/tags
+  parameters:
+    TagIdParameter:
+      description: Tag identifier. Must be unique in the current API Management service
+        instance.
+      in: path
+      name: tagId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 80
+        pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+      examples:
+        ApiManagementDeleteOperationTag:
+          value: 59d5b28e1f7fab116402044e
+        ApiManagementGetOperationTag:
+          value: 59306a29e4bbd510dc24e5f9
+        ApiManagementHeadOperationTag:
+          value: 59306a29e4bbd510dc24e5f9
+        ApiManagementCreateOperationTag:
+          value: tagId1
+        ApiManagementDeleteApiTagDescription:
+          value: 59d5b28e1f7fab116402044e
+        ApiManagementGetApiTagDescription:
+          value: 59306a29e4bbd510dc24e5f9
+        ApiManagementHeadApiTagDescription:
+          value: 59306a29e4bbd510dc24e5f9
+        ApiManagementCreateApiTagDescription:
+          value: tagId1
+        ApiManagementDeleteApiTag:
+          value: 59d5b28e1f7fab116402044e
+        ApiManagementGetApiTag:
+          value: 59306a29e4bbd510dc24e5f9
+        ApiManagementHeadApiTag:
+          value: 59306a29e4bbd510dc24e5f9
+        ApiManagementCreateApiTag:
+          value: tagId1
+        ApiManagementDeleteProductTag:
+          value: 59d5b28e1f7fab116402044e
+        ApiManagementGetProductTag:
+          value: 59306a29e4bbd510dc24e5f9
+        ApiManagementHeadProductTag:
+          value: 59306a29e4bbd510dc24e5f9
+        ApiManagementCreateProductTag:
+          value: tagId1
+        ApiManagementDeleteTag:
+          value: tagId1
+        ApiManagementGetTag:
+          value: 59306a29e4bbd510dc24e5f9
+        ApiManagementUpdateTag:
+          value: temptag
+        ApiManagementCreateTag:
+          value: tagId1
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    TagCollection:
+      description: Paged Tag list representation.
+      properties:
+        nextLink:
+          description: Next page link if any.
+          type: string
+        value:
+          description: Page values.
+          items:
+            allOf:
+              - description: The Resource definition.
+                properties:
+                  id:
+                    description: Resource ID.
+                    readOnly: true
+                    type: string
+                  name:
+                    description: Resource name.
+                    readOnly: true
+                    type: string
+                  type:
+                    description: Resource type for API Management resource.
+                    readOnly: true
+                    type: string
+                x-ms-azure-resource: true
+            description: Tag Contract details.
+            properties:
+              properties:
+                description: Tag contract Properties.
+                properties:
+                  displayName:
+                    description: Tag name.
+                    maxLength: 160
+                    minLength: 1
+                    type: string
+                required:
+                  - displayName
+          type: array
+    TagContract:
+      allOf:
+        - description: The Resource definition.
+          properties:
+            id:
+              description: Resource ID.
+              readOnly: true
+              type: string
+            name:
+              description: Resource name.
+              readOnly: true
+              type: string
+            type:
+              description: Resource type for API Management resource.
+              readOnly: true
+              type: string
+          x-ms-azure-resource: true
+      description: Tag Contract details.
+      properties:
+        properties:
+          description: Tag contract Properties.
+          properties:
+            displayName:
+              description: Tag name.
+              maxLength: 160
+              minLength: 1
+              type: string
+          required:
+            - displayName
+    TagContractProperties:
+      description: Tag contract Properties.
+      properties:
+        displayName:
+          description: Tag name.
+          maxLength: 160
+          minLength: 1
+          type: string
+      required:
+        - displayName
+    TagCreateUpdateParameters:
+      description: Parameters supplied to Create/Update Tag operations.
+      properties:
+        properties:
+          $ref: "#/components/schemas/TagContractProperties"
+    TagDescriptionBaseProperties:
+      description: Parameters supplied to the Create TagDescription operation.
+      properties:
+        description:
+          description: Description of the Tag.
+          type: string
+        externalDocsDescription:
+          description: Description of the external resources describing the tag.
+          type: string
+        externalDocsUrl:
+          description: Absolute URL of external resources describing the tag.
+          maxLength: 2000
+          type: string
+    TagDescriptionCollection:
+      description: Paged TagDescription list representation.
+      properties:
+        nextLink:
+          description: Next page link if any.
+          type: string
+        value:
+          description: Page values.
+          items:
+            $ref: "#/components/schemas/TagDescriptionContract"
+          type: array
+    TagDescriptionContract:
+      allOf:
+        - description: The Resource definition.
+          properties:
+            id:
+              description: Resource ID.
+              readOnly: true
+              type: string
+            name:
+              description: Resource name.
+              readOnly: true
+              type: string
+            type:
+              description: Resource type for API Management resource.
+              readOnly: true
+              type: string
+          x-ms-azure-resource: true
+      description: Contract details.
+      properties:
+        properties:
+          $ref: "#/components/schemas/TagDescriptionContractProperties"
+    TagDescriptionContractProperties:
+      allOf:
+        - $ref: "#/components/schemas/TagDescriptionBaseProperties"
+      description: TagDescription contract Properties.
+      properties:
+        displayName:
+          description: Tag name.
+          maxLength: 160
+          minLength: 1
+          type: string
+    TagDescriptionCreateParameters:
+      description: Parameters supplied to the Create TagDescription operation.
+      properties:
+        properties:
+          $ref: "#/components/schemas/TagDescriptionBaseProperties"

@@ -1,0 +1,432 @@
+openapi: 3.0.0
+info:
+  description: The Admin Backup Management Client.
+  title: BackupManagementClient
+  version: 2016-05-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/azsadmin/resource-manager/backup/Microsoft.Backup.Admin/stable/2016-05-01/Backups.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: azsadmin-Backups
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Backup.Admin/backupLocations/{location}/backups":
+    get:
+      description: Returns a list of backups from a location.
+      operationId: Backups_List
+      parameters:
+        - description: Subscription credentials that uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Returns a list of backups from a location.:
+              value: 11111111-2222-3333-4444-555555555555
+        - description: Name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Returns a list of backups from a location.:
+              value: System.local
+        - description: Name of the backup location.
+          in: path
+          name: location
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Returns a list of backups from a location.:
+              value: local
+        - description: Client API version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            default: 2016-05-01
+          examples:
+            Returns a list of backups from a location.:
+              value: 2016-05-01
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BackupList"
+              examples:
+                Returns a list of backups from a location.:
+                  $ref: "#/components/examples/Returns_a_list_of_backups_from_a_loc\
+                    ation."
+        "404":
+          description: NOT FOUND
+      tags:
+        - Backups
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Backup.Admin/backupLocations/{location}/backups/{backup}":
+    get:
+      description: Returns a backup from a location based on name.
+      operationId: Backups_Get
+      parameters:
+        - description: Subscription credentials that uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Returns a backup from a location based on name.:
+              value: 11111111-2222-3333-4444-555555555555
+        - description: Name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Returns a backup from a location based on name.:
+              value: System.local
+        - description: Name of the backup location.
+          in: path
+          name: location
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Returns a backup from a location based on name.:
+              value: local
+        - $ref: "#/components/parameters/BackupParameter"
+        - description: Client API version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            default: 2016-05-01
+          examples:
+            Returns a backup from a location based on name.:
+              value: 2016-05-01
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Backup"
+              examples:
+                Returns a backup from a location based on name.:
+                  $ref: "#/components/examples/Returns_a_backup_from_a_location_bas\
+                    ed_on_name."
+        "404":
+          description: NOT FOUND
+      tags:
+        - Backups
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Backup.Admin/backupLocations/{location}/backups/{backup}/restore":
+    post:
+      description: Restore a backup.
+      operationId: Backups_Restore
+      parameters:
+        - description: Subscription credentials that uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Restore a backup.:
+              value: 11111111-2222-3333-4444-555555555555
+        - description: Name of the backup location.
+          in: path
+          name: location
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Restore a backup.:
+              value: local
+        - description: Name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Restore a backup.:
+              value: System.local
+        - $ref: "#/components/parameters/BackupParameter"
+        - description: Client API version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            default: 2016-05-01
+          examples:
+            Restore a backup.:
+              value: 2016-05-01
+      responses:
+        "200":
+          description: OK
+        "202":
+          description: ACCEPTED
+        "404":
+          description: NOT FOUND
+      tags:
+        - Backups
+      x-ms-long-running-operation: true
+servers:
+  - url: https://adminmanagement.local.azurestack.external
+components:
+  examples:
+    Returns_a_list_of_backups_from_a_location.:
+      value:
+        value:
+          - id: /subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/System.local/providers/Microsoft.Backup.Admin/backupLocations/local/backups/de038ae0-294d-468d-90a1-fbe5ae028ce2
+            location: local
+            name: de038ae0-294d-468d-90a1-fbe5ae028ce2
+            properties:
+              backupInfo:
+                backupDataVersion: ""
+                backupId: de038ae0-294d-468d-90a1-fbe5ae028ce2
+                createdDateTime: 2018-02-16T16:06:10.1160531Z
+                deploymentID: ""
+                oemVersion: ""
+                roleStatus:
+                  - roleName: NRP
+                    status: Succeeded
+                  - roleName: SRP
+                    status: Succeeded
+                  - roleName: CRP
+                    status: Succeeded
+                  - roleName: KeyVaultInternalControlPlane
+                    status: Succeeded
+                  - roleName: KeyVaultInternalDataPlane
+                    status: Succeeded
+                  - roleName: KeyVaultControlPlane
+                    status: Succeeded
+                  - roleName: KeyVaultDataPlane
+                    status: Succeeded
+                  - roleName: KeyVaultNamingService
+                    status: Succeeded
+                  - roleName: WAS
+                    status: Succeeded
+                  - roleName: ECE
+                    status: Succeeded
+                  - roleName: CA
+                    status: Succeeded
+                  - roleName: ACS
+                    status: Succeeded
+                stampVersion: ""
+                status: Succeeded
+                timeTakenToCreate: PT5M1.5611298S
+            tags: {}
+            type: Microsoft.Backup.Admin/backupLocations/backups
+    Returns_a_backup_from_a_location_based_on_name.:
+      value:
+        id: /subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/System.local/providers/Microsoft.Backup.Admin/backupLocations/local/backups/de038ae0-294d-468d-90a1-fbe5ae028ce2
+        location: local
+        name: de038ae0-294d-468d-90a1-fbe5ae028ce2
+        properties:
+          backupInfo:
+            backupDataVersion: ""
+            backupId: de038ae0-294d-468d-90a1-fbe5ae028ce2
+            createdDateTime: 2018-02-16T16:06:10.1160531Z
+            deploymentID: ""
+            oemVersion: ""
+            roleStatus:
+              - roleName: NRP
+                status: Succeeded
+              - roleName: SRP
+                status: Succeeded
+              - roleName: CRP
+                status: Succeeded
+              - roleName: KeyVaultInternalControlPlane
+                status: Succeeded
+              - roleName: KeyVaultInternalDataPlane
+                status: Succeeded
+              - roleName: KeyVaultControlPlane
+                status: Succeeded
+              - roleName: KeyVaultDataPlane
+                status: Succeeded
+              - roleName: KeyVaultNamingService
+                status: Succeeded
+              - roleName: WAS
+                status: Succeeded
+              - roleName: ECE
+                status: Succeeded
+              - roleName: CA
+                status: Succeeded
+              - roleName: ACS
+                status: Succeeded
+            stampVersion: ""
+            status: Succeeded
+            timeTakenToCreate: PT5M1.5611298S
+        tags: {}
+        type: Microsoft.Backup.Admin/backupLocations/backups
+  parameters:
+    BackupParameter:
+      description: Name of the backup.
+      in: path
+      name: backup
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Returns a backup from a location based on name.:
+          value: de038ae0-294d-468d-90a1-fbe5ae028ce2
+        Restore a backup.:
+          value: de038ae0-294d-468d-90a1-fbe5ae028ce2
+  securitySchemes:
+    azure_auth:
+      description: Authorization uses an Azure Active Directory OAuth2 flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Backup:
+      allOf:
+        - description: Base Resource Object
+          properties:
+            id:
+              description: URI of the resource.
+              readOnly: true
+              type: string
+            location:
+              description: Location of the resource.
+              readOnly: false
+              type: string
+            name:
+              description: Name of the resource.
+              readOnly: true
+              type: string
+            tags:
+              additionalProperties:
+                type: string
+              description: List of key value pairs.
+              readOnly: false
+              type: object
+            type:
+              description: Type of resource.
+              readOnly: true
+              type: string
+          type: object
+          x-ms-azure-resource: true
+      description: Information related to a backup.
+      properties:
+        properties:
+          $ref: "#/components/schemas/BackupModel"
+      type: object
+    BackupInfo:
+      description: Holds information for a backup.
+      properties:
+        backupDataVersion:
+          description: Version of the backup data.
+          readOnly: true
+          type: string
+        backupId:
+          description: Unique GUID for the backup.
+          readOnly: true
+          type: string
+        createdDateTime:
+          description: Creation time of the backup.
+          format: date-time
+          readOnly: true
+          type: string
+        deploymentID:
+          description: Deployment Id of the stamp.
+          readOnly: true
+          type: string
+        oemVersion:
+          description: OEM version.
+          readOnly: true
+          type: string
+        roleStatus:
+          $ref: "#/components/schemas/RoleOperationStatusList"
+        stampVersion:
+          description: Current version.
+          readOnly: true
+          type: string
+        status:
+          $ref: "#/components/schemas/OperationStatus"
+        timeTakenToCreate:
+          description: Duration to create the backup.
+          readOnly: true
+          type: string
+      type: object
+    BackupList:
+      description: List of backups.
+      properties:
+        nextLink:
+          description: URI to the next page.
+          type: string
+        value:
+          description: List of backups.
+          items:
+            $ref: "#/components/schemas/Backup"
+          type: array
+      type: object
+    BackupModel:
+      description: Properties for a backup.
+      properties:
+        backupInfo:
+          $ref: "#/components/schemas/BackupInfo"
+    OperationStatus:
+      description: Status of an operation.
+      enum:
+        - Creating
+        - Queued
+        - Running
+        - Deleted
+        - Failed
+        - PartialSucceeded
+        - Succeeded
+      type: string
+      x-ms-enum:
+        modelAsString: false
+        name: OperationStatus
+    RoleOperationStatus:
+      description: Backup status for a role.
+      properties:
+        roleName:
+          description: Name of the role.
+          type: string
+        status:
+          $ref: "#/components/schemas/OperationStatus"
+      type: object
+    RoleOperationStatusList:
+      description: object
+      items:
+        $ref: "#/components/schemas/RoleOperationStatus"
+      type: array

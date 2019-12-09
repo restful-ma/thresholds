@@ -1,0 +1,571 @@
+openapi: 3.0.0
+info:
+  description: Consumption management client provides access to consumption resources for
+    Azure Enterprise Subscriptions.
+  title: ConsumptionManagementClient
+  version: 2017-12-30-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/consumption/resource-manager/Microsoft.Consumption/preview/2017-12-30-preview/consumption.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: consumption
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+tags:
+  - description: Perform CRUD (Create, Update, Read, Delete) operations on the budget
+      entity at the Subscription scope.
+    externalDocs:
+      url: https://docs.microsoft.com/en-us/rest/api/consumption/
+    name: Budgets-Preview
+paths:
+  /providers/Microsoft.Consumption/operations:
+    get:
+      description: Lists all of the available consumption REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Consumption/budgets":
+    get:
+      description: Lists all budgets for a subscription.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: Budgets_List
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BudgetsListResult"
+              examples:
+                BudgetsList:
+                  $ref: "#/components/examples/BudgetsList"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Budgets-Preview
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Consumption/budgets/{name}":
+    delete:
+      description: The operation to delete a budget.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: Budgets_Delete
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/budgetNameParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Budgets-Preview
+    get:
+      description: Gets the budget for a subscription by budget name.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: Budgets_Get
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/budgetNameParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Budget"
+              examples:
+                Budget:
+                  $ref: "#/components/examples/Budget"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Budgets-Preview
+    put:
+      description: The operation to create or update a budget. Update operation requires
+        latest eTag to be set in the request mandatorily. You may obtain the
+        latest eTag by performing a get operation. Create operation does not
+        require eTag.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: Budgets_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/budgetNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Budget"
+        description: Parameters supplied to the Create Budget operation.
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Budget"
+              examples:
+                CreateOrUpdateBudget:
+                  $ref: "#/components/examples/CreateOrUpdateBudget"
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Budget"
+              examples:
+                CreateOrUpdateBudget:
+                  $ref: "#/components/examples/CreateOrUpdateBudget"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Budgets-Preview
+      x-ms-pageable: {}
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    BudgetsList:
+      value:
+        value:
+          - eTag: '"1d34d012214157f"'
+            id: subscriptions/{subscription-id}/providers/Microsoft.Consumption/budgets/TestBudget
+            name: TestBudget
+            properties:
+              amount: 100.65
+              category: Cost
+              currentSpend:
+                amount: 80.89
+                unit: USD
+              notifications:
+                Actual_GreaterThanOrEqualTo_90_Percent:
+                  contactEmails:
+                    - johndoe@contoso.com
+                    - janesmith@contoso.com
+                  contactRoles:
+                    - Contributor
+                    - Reader
+                  enabled: true
+                  operator: GreaterThanOrEqualTo
+                  threshold: 90
+                Actual_GreaterThan_80_Percent:
+                  contactEmails:
+                    - johndoe@contoso.com
+                    - janesmith@contoso.com
+                  contactRoles:
+                    - Contributor
+                    - Reader
+                  enabled: true
+                  operator: GreaterThan
+                  threshold: 80
+              timeGrain: Monthly
+              timePeriod:
+                endDate: 2018-10-31T00:00:00Z
+                startDate: 2017-10-01T00:00:00Z
+            type: Microsoft.Consumption/budgets
+          - eTag: '"1d34d012214157f"'
+            id: subscriptions/{subscription-id}/providers/Microsoft.Consumption/budgets/TestBudget
+            name: TestBudget
+            properties:
+              amount: 600.65
+              category: Cost
+              currentSpend:
+                amount: 120.89
+                unit: USD
+              notifications:
+                Actual_GreaterThanOrEqualTo_60_Percent:
+                  contactEmails:
+                    - johndoe@contoso.com
+                    - janesmith@contoso.com
+                  contactRoles:
+                    - Contributor
+                    - Reader
+                  enabled: true
+                  operator: GreaterThanOrEqualTo
+                  threshold: 60
+                Actual_GreaterThan_40_Percent:
+                  contactEmails:
+                    - johndoe@contoso.com
+                    - janesmith@contoso.com
+                  contactRoles:
+                    - Contributor
+                    - Reader
+                  enabled: true
+                  operator: GreaterThan
+                  threshold: 40
+              timeGrain: Monthly
+              timePeriod:
+                endDate: 2018-10-31T00:00:00Z
+                startDate: 2017-10-01T00:00:00Z
+            type: Microsoft.Consumption/budgets
+    Budget:
+      value:
+        eTag: '"1d34d012214157f"'
+        id: subscriptions/{subscription-id}/providers/Microsoft.Consumption/budgets/TestBudget
+        name: TestBudget
+        properties:
+          amount: 100.65
+          category: Cost
+          currentSpend:
+            amount: 80.89
+            unit: USD
+          notifications:
+            Actual_GreaterThan_80_Percent:
+              contactEmails:
+                - johndoe@contoso.com
+                - janesmith@contoso.com
+              contactRoles:
+                - Contributor
+                - Reader
+              enabled: true
+              operator: GreaterThan
+              threshold: 80
+          timeGrain: Monthly
+          timePeriod:
+            endDate: 2018-10-31T00:00:00Z
+            startDate: 2017-10-01T00:00:00Z
+        type: Microsoft.Consumption/budgets
+    CreateOrUpdateBudget:
+      value:
+        eTag: '"1d34d012214157f"'
+        id: subscriptions/{subscription-id}/providers/Microsoft.Consumption/budgets/TestBudget
+        name: TestBudget
+        properties:
+          amount: 100.65
+          category: Cost
+          currentSpend:
+            amount: 80.89
+            unit: USD
+          notifications:
+            Actual_GreaterThan_80_Percent:
+              contactEmails:
+                - johndoe@contoso.com
+                - janesmith@contoso.com
+              contactRoles:
+                - Contributor
+                - Reader
+              enabled: true
+              operator: GreaterThan
+              threshold: 80
+          timeGrain: Monthly
+          timePeriod:
+            endDate: 2018-10-31T00:00:00Z
+            startDate: 2017-10-01T00:00:00Z
+        type: Microsoft.Consumption/budgets
+  parameters:
+    apiVersionParameter:
+      description: Version of the API to be used with the client request. The current
+        version is 2017-12-30-preview.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        BudgetsList:
+          value: 2017-12-30-preview
+        DeleteBudget:
+          value: 2017-12-30-preview
+        Budget:
+          value: 2017-12-30-preview
+        CreateOrUpdateBudget:
+          value: 2017-12-30-preview
+    budgetNameParameter:
+      description: Budget name.
+      in: path
+      name: name
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        DeleteBudget:
+          value: TestBudget
+        Budget:
+          value: TestBudget
+        CreateOrUpdateBudget:
+          value: TestBudget
+    subscriptionIdParameter:
+      description: Azure Subscription ID.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        BudgetsList:
+          value: "{subscription-id}"
+        DeleteBudget:
+          value: "{subscription-id}"
+        Budget:
+          value: "{subscription-id}"
+        CreateOrUpdateBudget:
+          value: "{subscription-id}"
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Budget:
+      allOf:
+        - $ref: "#/components/schemas/ProxyResource"
+      description: A budget resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/BudgetProperties"
+      type: object
+    BudgetProperties:
+      description: The properties of the budget.
+      properties:
+        amount:
+          description: The total amount of cost to track with the budget
+          format: decimal
+          type: number
+        category:
+          description: The category of the budget, whether the budget tracks cost or
+            something else.
+          enum:
+            - Cost
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: CategoryType
+        currentSpend:
+          $ref: "#/components/schemas/CurrentSpend"
+        notifications:
+          additionalProperties:
+            $ref: "#/components/schemas/Notification"
+          description: Dictionary of notifications associated with the budget. Budget can
+            have up to five notifications.
+          maxItems: 5
+          type: object
+        timeGrain:
+          description: The time covered by a budget. Tracking of the amount will be reset
+            based on the time grain.
+          enum:
+            - Monthly
+            - Quarterly
+            - Annually
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: TimeGrainType
+        timePeriod:
+          $ref: "#/components/schemas/BudgetTimePeriod"
+      required:
+        - category
+        - amount
+        - timeGrain
+        - timePeriod
+    BudgetTimePeriod:
+      description: The start and end date for a budget.
+      properties:
+        endDate:
+          description: The end date for the budget. If not provided, we default this to 10
+            years from the start date.
+          format: date-time
+          type: string
+        startDate:
+          description: The start date for the budget.
+          format: date-time
+          type: string
+      required:
+        - startDate
+    BudgetsListResult:
+      description: Result of listing budgets. It contains a list of available budgets in
+        the scope provided.
+      properties:
+        value:
+          description: The list of budgets.
+          items:
+            $ref: "#/components/schemas/Budget"
+          readOnly: true
+          type: array
+    CurrentSpend:
+      description: The current amount of cost which is being tracked for a budget.
+      properties:
+        amount:
+          description: The total amount of cost which is being tracked by the budget.
+          format: decimal
+          readOnly: true
+          type: number
+        unit:
+          description: The unit of measure for the budget amount.
+          readOnly: true
+          type: string
+    ErrorDetails:
+      description: The details of the error.
+      properties:
+        code:
+          description: Error code.
+          readOnly: true
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          readOnly: true
+          type: string
+    ErrorResponse:
+      description: Error response indicates that the service is not able to process the
+        incoming request. The reason is provided in the error message.
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorDetails"
+      type: object
+    Notification:
+      description: The notification associated with a budget.
+      properties:
+        contactEmails:
+          description: Email addresses to send the budget notification to when the
+            threshold is exceeded.
+          items:
+            type: string
+          maxItems: 50
+          minItems: 1
+          type: array
+        contactRoles:
+          description: Contact roles to send the budget notification to when the threshold
+            is exceeded.
+          items:
+            type: string
+          type: array
+        enabled:
+          description: The notification is enabled or not.
+          type: boolean
+        operator:
+          description: The comparison operator.
+          enum:
+            - EqualTo
+            - GreaterThan
+            - GreaterThanOrEqualTo
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: OperatorType
+        threshold:
+          description: Threshold value associated with a notification. Notification is sent
+            when the cost exceeded the threshold. It is always percent and has
+            to be between 0 and 1000.
+          format: decimal
+          type: number
+      required:
+        - enabled
+        - operator
+        - threshold
+        - contactEmails
+    Operation:
+      description: A Consumption REST API operation.
+      properties:
+        display:
+          description: The object that represents the operation.
+          properties:
+            operation:
+              description: "Operation type: Read, write, delete, etc."
+              readOnly: true
+              type: string
+            provider:
+              description: "Service provider: Microsoft.Consumption."
+              readOnly: true
+              type: string
+            resource:
+              description: "Resource on which the operation is performed: UsageDetail, etc."
+              readOnly: true
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}."
+          readOnly: true
+          type: string
+      type: object
+    OperationListResult:
+      description: Result of listing consumption operations. It contains a list of
+        operations and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          readOnly: true
+          type: string
+        value:
+          description: List of consumption operations supported by the
+            Microsoft.Consumption resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          readOnly: true
+          type: array
+    ProxyResource:
+      description: The Resource model definition.
+      properties:
+        eTag:
+          description: eTag of the resource. To handle concurrent update scenario, this
+            field will be used to determine whether the user is updating the
+            latest version or not.
+          type: string
+        id:
+          description: Resource Id.
+          readOnly: true
+          type: string
+        name:
+          description: Resource name.
+          readOnly: true
+          type: string
+        type:
+          description: Resource type.
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true

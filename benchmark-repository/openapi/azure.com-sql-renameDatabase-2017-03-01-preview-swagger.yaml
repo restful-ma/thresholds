@@ -1,0 +1,187 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2017-03-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/renameDatabase.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: sql-renameDatabase
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/move":
+    post:
+      description: Renames a database.
+      operationId: Databases_Rename
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database to rename.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Renames a database.:
+              value: testdb
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResourceMoveDefinition"
+        description: The resource move definition for renaming this database.
+        required: true
+      responses:
+        "200":
+          description: Successfully renamed the database.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidResourceMoveRequest - The resource move request is invalid.
+
+             * 400 InvalidMoveTargetResourceId - The target resource identifier in move request is invalid.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 UnsupportedServiceName - The specified name is an invalid name because it contains one or more unsupported unicode characters.
+
+             * 400 CannotMoveOrDropSyncMetadataDatabase - Cannot drop database used as sync metadata database.
+
+             * 400 InvalidIdentifier - The identifier contains NULL or an invalid unicode character.
+
+             * 400 TokenTooLong - The provided token is too long.
+
+             * 400 CannotMoveOrDropJobAccountDatabase - Cannot drop database associated with job account.
+
+             * 400 CannotUseReservedDatabaseName - Cannot use reserved database name in this operation.
+
+             * 404 SourceDatabaseNotFound - The source database does not exist.
+      tags:
+        - Databases
+servers:
+  - url: https://management.azure.com
+components:
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Renames a database.:
+          value: 2017-03-01-preview
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ManagedInstanceNameParameter:
+      description: The name of the managed instance.
+      in: path
+      name: managedInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Renames a database.:
+          value: Default-SQL-SouthEastAsia
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Renames a database.:
+          value: testsvr
+    SqlVirtualMachineContainerNameParameter:
+      description: The name of the SqlVirtualMachineContainer.
+      in: path
+      name: sqlVirtualMachineContainerName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineInstanceNameParameter:
+      description: The name of the SqlVirtualMachineInstance.
+      in: path
+      name: sqlVirtualMachineInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Renames a database.:
+          value: 00000000-1111-2222-3333-444444444444
+    VirtualClusterNameParameter:
+      description: The name of the virtual cluster.
+      in: path
+      name: virtualClusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ResourceMoveDefinition:
+      description: Contains the information necessary to perform a resource move (rename).
+      properties:
+        id:
+          description: The target ID for the resource
+          type: string
+      required:
+        - id
+      type: object

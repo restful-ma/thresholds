@@ -1,0 +1,689 @@
+openapi: 3.0.0
+info:
+  contact:
+    x-twitter: theTechComp
+  description: KeyServ API
+  title: KeyServ
+  version: 1.2.5
+  x-apisguru-categories:
+    - iot
+  x-logo:
+    url: https://twitter.com/theTechComp/profile_image?size=original
+  x-origin:
+    - format: swagger
+      url: https://keyserv.solutions/v1/s2.json
+      version: "2.0"
+  x-providerName: keyserv.solutions
+paths:
+  "/v1/KeysApi/Current/{serial}":
+    get:
+      operationId: KeysApi_Current
+      parameters:
+        - in: path
+          name: serial
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+      responses:
+        "200":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrentKey"
+      tags:
+        - KeysApi
+  "/v1/KeysApi/Custom/{serial}":
+    get:
+      operationId: KeysApi_Custom
+      parameters:
+        - in: path
+          name: serial
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+      responses:
+        "200":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+      tags:
+        - KeysApi
+  "/v1/KeysApi/Expiry/{serial}":
+    get:
+      operationId: KeysApi_Expiry
+      parameters:
+        - in: path
+          name: serial
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+      responses:
+        "200":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expiry"
+      tags:
+        - KeysApi
+  "/v1/KeysApi/Find/{serial}":
+    get:
+      operationId: KeysApi_Find
+      parameters:
+        - in: path
+          name: serial
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+      responses:
+        "200":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KeyView"
+      tags:
+        - KeysApi
+  /v1/ProductsApi:
+    patch:
+      operationId: ProductsApi_PatchProduct
+      requestBody:
+        $ref: "#/components/requestBodies/ProductCreateModify"
+      responses:
+        "204":
+          description: ""
+      tags:
+        - ProductsApi
+    post:
+      operationId: ProductsApi_PatchProduct2
+      requestBody:
+        $ref: "#/components/requestBodies/ProductCreateModify"
+      responses:
+        "204":
+          description: ""
+      tags:
+        - ProductsApi
+  /v1/ProductsApi/Count:
+    post:
+      operationId: ProductsApi_Count
+      requestBody:
+        $ref: "#/components/requestBodies/ApiKey"
+      responses:
+        "200":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountOf"
+      tags:
+        - ProductsApi
+  /v1/ProductsApi/Find:
+    post:
+      operationId: ProductsApi_Find
+      parameters:
+        - in: query
+          name: page
+          required: true
+          x-nullable: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        $ref: "#/components/requestBodies/FindCredentials"
+      responses:
+        "200":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductView"
+      tags:
+        - ProductsApi
+  /v1/ProductsApi/List:
+    post:
+      operationId: ProductsApi_List
+      parameters:
+        - in: query
+          name: page
+          required: true
+          x-nullable: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        $ref: "#/components/requestBodies/ApiKey"
+      responses:
+        "200":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ProductView"
+                type: array
+      tags:
+        - ProductsApi
+  /v1/ProductsApi/Save:
+    post:
+      operationId: ProductsApi_Save
+      requestBody:
+        $ref: "#/components/requestBodies/ProductCreateModify"
+      responses:
+        "201":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductView"
+      tags:
+        - ProductsApi
+  "/v1/ProductsApi/{serial}":
+    delete:
+      operationId: ProductsApi_DeleteProduct
+      parameters:
+        - in: header
+          name: X-Api-Key
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+        - in: path
+          name: serial
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+      responses:
+        "204":
+          description: ""
+      tags:
+        - ProductsApi
+    post:
+      operationId: ProductsApi_DeleteProduct2
+      parameters:
+        - in: header
+          name: X-Api-Key
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+        - in: path
+          name: serial
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+      responses:
+        "204":
+          description: ""
+      tags:
+        - ProductsApi
+  /v1/SubscriptionsApi:
+    post:
+      operationId: SubscriptionsApi_PutSubscription2
+      requestBody:
+        $ref: "#/components/requestBodies/SubscriptionCreateModify"
+      responses:
+        "204":
+          description: ""
+      tags:
+        - SubscriptionsApi
+    put:
+      operationId: SubscriptionsApi_PutSubscription
+      requestBody:
+        $ref: "#/components/requestBodies/SubscriptionCreateModify"
+      responses:
+        "204":
+          description: ""
+      tags:
+        - SubscriptionsApi
+  /v1/SubscriptionsApi/Count:
+    post:
+      operationId: SubscriptionsApi_Count
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiCredentials"
+        required: true
+        x-nullable: true
+      responses:
+        "200":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountOf"
+      tags:
+        - SubscriptionsApi
+  /v1/SubscriptionsApi/Disable:
+    patch:
+      operationId: SubscriptionsApi_Disable
+      requestBody:
+        $ref: "#/components/requestBodies/FindCredentials"
+      responses:
+        "204":
+          description: ""
+      tags:
+        - SubscriptionsApi
+    post:
+      operationId: SubscriptionsApi_Disable2
+      requestBody:
+        $ref: "#/components/requestBodies/FindCredentials"
+      responses:
+        "204":
+          description: ""
+      tags:
+        - SubscriptionsApi
+  /v1/SubscriptionsApi/Enable:
+    patch:
+      operationId: SubscriptionsApi_Enable
+      requestBody:
+        $ref: "#/components/requestBodies/FindCredentials"
+      responses:
+        "204":
+          description: ""
+      tags:
+        - SubscriptionsApi
+    post:
+      operationId: SubscriptionsApi_Enable2
+      requestBody:
+        $ref: "#/components/requestBodies/FindCredentials"
+      responses:
+        "204":
+          description: ""
+      tags:
+        - SubscriptionsApi
+  /v1/SubscriptionsApi/Find:
+    post:
+      operationId: SubscriptionsApi_Find
+      requestBody:
+        $ref: "#/components/requestBodies/FindCredentials"
+      responses:
+        "200":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionView"
+      tags:
+        - SubscriptionsApi
+  /v1/SubscriptionsApi/List:
+    post:
+      operationId: SubscriptionsApi_List
+      parameters:
+        - in: query
+          name: page
+          required: true
+          x-nullable: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        $ref: "#/components/requestBodies/FindCredentials"
+      responses:
+        "200":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/SubscriptionView"
+                type: array
+      tags:
+        - SubscriptionsApi
+  /v1/SubscriptionsApi/Save:
+    post:
+      operationId: SubscriptionsApi_Save
+      requestBody:
+        $ref: "#/components/requestBodies/SubscriptionCreateModify"
+      responses:
+        "201":
+          description: ""
+          x-nullable: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KeyView"
+      tags:
+        - SubscriptionsApi
+  "/v1/SubscriptionsApi/{serial}":
+    delete:
+      operationId: SubscriptionsApi_DeleteSubscription
+      parameters:
+        - in: header
+          name: X-Api-Key
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+        - in: path
+          name: serial
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+        - in: query
+          name: keep
+          required: true
+          x-nullable: true
+          schema:
+            type: boolean
+      responses:
+        "204":
+          description: ""
+      tags:
+        - SubscriptionsApi
+    post:
+      operationId: SubscriptionsApi_DeleteSubscription2
+      parameters:
+        - in: header
+          name: X-Api-Key
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+        - in: path
+          name: serial
+          required: true
+          x-nullable: false
+          schema:
+            type: string
+            format: guid
+        - in: query
+          name: keep
+          required: true
+          x-nullable: true
+          schema:
+            type: boolean
+      responses:
+        "204":
+          description: ""
+      tags:
+        - SubscriptionsApi
+x-generator: NSwag v13.0.6.0 (NJsonSchema v10.0.23.0 (Newtonsoft.Json v11.0.0.0))
+servers:
+  - url: https://keyserv.solutions
+components:
+  requestBodies:
+    ApiKey:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiKey"
+      required: true
+      x-nullable: true
+    ProductCreateModify:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProductCreateModify"
+      required: true
+      x-nullable: true
+    FindCredentials:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/FindCredentials"
+      required: true
+      x-nullable: true
+    SubscriptionCreateModify:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SubscriptionCreateModify"
+      required: true
+      x-nullable: true
+  schemas:
+    ApiCredentials:
+      properties:
+        key:
+          format: guid
+          type: string
+        serial:
+          format: guid
+          type: string
+      required:
+        - key
+      type: object
+    ApiKey:
+      properties:
+        key:
+          format: guid
+          type: string
+      required:
+        - key
+      type: object
+    CountOf:
+      properties:
+        count:
+          format: int32
+          type: integer
+      required:
+        - count
+      type: object
+    CurrentKey:
+      properties:
+        current:
+          type: boolean
+      required:
+        - current
+      type: object
+    Expiry:
+      properties:
+        expires:
+          format: date-time
+          type: string
+        time:
+          format: time-span
+          type: string
+      required:
+        - expires
+        - time
+      type: object
+    FindCredentials:
+      properties:
+        key:
+          format: guid
+          type: string
+        serial:
+          format: guid
+          type: string
+      required:
+        - key
+        - serial
+      type: object
+    KeyView:
+      properties:
+        action:
+          minLength: 1
+          type: string
+        callbackOnModify:
+          title: Callback On Modified
+          type: boolean
+        callbackUrl:
+          format: uri
+          maxLength: 800
+          minLength: 0
+          title: Callback Url
+          type: string
+        commenced:
+          format: date-time
+          minLength: 1
+          title: Start From
+          type: string
+        created:
+          format: date-time
+          type: string
+        current:
+          type: boolean
+        custom: {}
+        frequency:
+          minLength: 1
+          type: string
+        name:
+          maxLength: 80
+          minLength: 0
+          type: string
+        serial:
+          format: guid
+          type: string
+        updated:
+          format: date-time
+          type: string
+      required:
+        - serial
+        - current
+        - commenced
+        - callbackOnModify
+        - created
+        - frequency
+        - action
+      type: object
+    ProductCreateModify:
+      properties:
+        custom: {}
+        key:
+          format: guid
+          type: string
+        name:
+          type: string
+        serial:
+          format: guid
+          type: string
+      required:
+        - key
+      type: object
+    ProductView:
+      properties:
+        created:
+          format: date-time
+          type: string
+        custom: {}
+        name:
+          maxLength: 80
+          minLength: 0
+          type: string
+        serial:
+          format: guid
+          type: string
+        subscriptions:
+          items:
+            $ref: "#/components/schemas/SubscriptionView"
+          type: array
+        updated:
+          format: date-time
+          type: string
+      required:
+        - serial
+        - created
+      type: object
+    SubscriptionCreateModify:
+      properties:
+        action:
+          minLength: 1
+          type: string
+        callbackOnModify:
+          type: boolean
+        callbackUrl:
+          format: uri
+          maxLength: 800
+          minLength: 0
+          title: Callback Url
+          type: string
+        custom: {}
+        frequency:
+          minLength: 1
+          type: string
+        key:
+          format: guid
+          type: string
+        name:
+          maxLength: 80
+          minLength: 0
+          type: string
+        serial:
+          format: guid
+          type: string
+        startFrom:
+          type: string
+      required:
+        - frequency
+        - action
+        - key
+        - serial
+      type: object
+    SubscriptionView:
+      properties:
+        action:
+          minLength: 1
+          type: string
+        callbackOnModify:
+          title: Callback On Modified
+          type: boolean
+        callbackUrl:
+          format: uri
+          maxLength: 800
+          minLength: 0
+          title: Callback Url
+          type: string
+        commenced:
+          format: date-time
+          minLength: 1
+          title: Start From
+          type: string
+        created:
+          format: date-time
+          type: string
+        custom: {}
+        frequency:
+          minLength: 1
+          type: string
+        keys:
+          items:
+            $ref: "#/components/schemas/KeyView"
+          type: array
+        name:
+          maxLength: 80
+          minLength: 0
+          type: string
+        updated:
+          format: date-time
+          type: string
+      required:
+        - commenced
+        - callbackOnModify
+        - created
+        - frequency
+        - action
+      type: object

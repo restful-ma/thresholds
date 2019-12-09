@@ -1,0 +1,1162 @@
+openapi: 3.0.0
+info:
+  description: The Azure Analysis Services Web API provides a RESTful set of web services
+    that enables users to create, retrieve, update, and delete Analysis Services
+    servers
+  title: AzureAnalysisServices
+  version: 2017-08-01-beta
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-ms-code-generation-settings:
+    name: AnalysisServicesManagementClient
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/analysisservices/resource-manager/Microsoft.AnalysisServices/preview/2017-08-01-beta/analysisservices.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: analysisservices
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.AnalysisServices/operations:
+    get:
+      description: Lists all of the available consumption REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/locations/{location}/checkNameAvailability":
+    post:
+      description: Check the name availability in the target location.
+      operationId: Servers_CheckNameAvailability
+      parameters:
+        - description: The region name which the operation will lookup into.
+          in: path
+          name: location
+          required: true
+          schema:
+            type: string
+          examples:
+            Get details of a server:
+              value: West US
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckServerNameAvailabilityParameters"
+        description: Contains the information used to provision the Analysis Services
+          server.
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckServerNameAvailabilityResult"
+              examples:
+                Get details of a server:
+                  $ref: "#/components/examples/Get_details_of_a_server"
+      tags:
+        - Servers
+  "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/locations/{location}/operationresults/{operationId}":
+    get:
+      description: List the result of the specified operation.
+      operationId: Servers_ListOperationResults
+      parameters:
+        - description: The region name which the operation will lookup into.
+          in: path
+          name: location
+          required: true
+          schema:
+            type: string
+          examples:
+            Get details of a server:
+              value: West US
+        - description: The target operation Id.
+          in: path
+          name: operationId
+          required: true
+          schema:
+            type: string
+          examples:
+            Get details of a server:
+              value: "00000000000000000000000000000000"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK. The operation completed.
+        "202":
+          description: Accepted. The operation is ongoing.
+      tags:
+        - Servers
+  "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/locations/{location}/operationstatuses/{operationId}":
+    get:
+      description: List the status of operation.
+      operationId: Servers_ListOperationStatuses
+      parameters:
+        - description: The region name which the operation will lookup into.
+          in: path
+          name: location
+          required: true
+          schema:
+            type: string
+          examples:
+            Get details of a server:
+              value: West US
+        - description: The target operation Id.
+          in: path
+          name: operationId
+          required: true
+          schema:
+            type: string
+          examples:
+            Get details of a server:
+              value: testoperationid
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK. The operation completed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationStatus"
+              examples:
+                Get details of a server:
+                  $ref: "#/components/examples/Get_details_of_a_server"
+        "202":
+          description: Accepted. The operation is ongoing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationStatus"
+              examples:
+                Get details of a server:
+                  $ref: "#/components/examples/Get_details_of_a_server"
+      tags:
+        - Servers
+  "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/servers":
+    get:
+      description: Lists all the Analysis Services servers for the given subscription.
+      operationId: Servers_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisServicesServers"
+              examples:
+                List existing servers under the subscription.:
+                  $ref: "#/components/examples/List_existing_servers_under_the_subs\
+                    cription."
+      tags:
+        - Servers
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/providers/Microsoft.AnalysisServices/skus":
+    get:
+      description: Lists eligible SKUs for Analysis Services resource provider.
+      operationId: Servers_ListSkusForNew
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkuEnumerationForNewResourceResult"
+              examples:
+                List eligible SKUs for a new server:
+                  $ref: "#/components/examples/List_eligible_SKUs_for_a_new_server"
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers":
+    get:
+      description: Gets all the Analysis Services servers for the given resource group.
+      operationId: Servers_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisServicesServers"
+              examples:
+                List existing servers in the resource group.:
+                  $ref: "#/components/examples/List_existing_servers_in_the_resourc\
+                    e_group."
+      tags:
+        - Servers
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}":
+    delete:
+      description: Deletes the specified Analysis Services server.
+      operationId: Servers_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Analysis Services server. It must be at least 3
+            characters in length, and no more than 63.
+          in: path
+          name: serverName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Delete a server.:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK.
+        "202":
+          description: Accepted.
+        "204":
+          description: No Content.
+      tags:
+        - Servers
+      x-ms-long-running-operation: true
+    get:
+      description: Gets details about the specified Analysis Services server.
+      operationId: Servers_GetDetails
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Analysis Services server. It must be a minimum of 3
+            characters, and a maximum of 63.
+          in: path
+          name: serverName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Get details of a server:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK. The operation was successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisServicesServer"
+              examples:
+                Get details of a server:
+                  $ref: "#/components/examples/Get_details_of_a_server"
+      tags:
+        - Servers
+    patch:
+      description: Updates the current state of the specified Analysis Services server.
+      operationId: Servers_Update
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Analysis Services server. It must be at least 3
+            characters in length, and no more than 63.
+          in: path
+          name: serverName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Update a server.:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnalysisServicesServerUpdateParameters"
+        description: Request object that contains the updated information for the server.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisServicesServer"
+              examples:
+                Update a server.:
+                  $ref: "#/components/examples/Update_a_server."
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisServicesServer"
+              examples:
+                Update a server.:
+                  $ref: "#/components/examples/Update_a_server."
+      tags:
+        - Servers
+      x-ms-long-running-operation: true
+    put:
+      description: Provisions the specified Analysis Services server based on the
+        configuration specified in the request.
+      operationId: Servers_Create
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Analysis Services server. It must be a minimum of 3
+            characters, and a maximum of 63.
+          in: path
+          name: serverName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Create a server.:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnalysisServicesServer"
+        description: Contains the information used to provision the Analysis Services
+          server.
+        required: true
+      responses:
+        "200":
+          description: OK. The operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisServicesServer"
+              examples:
+                Create a server.:
+                  $ref: "#/components/examples/Create_a_server."
+        "201":
+          description: InProgress. The operation is still completing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisServicesServer"
+              examples:
+                Create a server.:
+                  $ref: "#/components/examples/Create_a_server."
+      tags:
+        - Servers
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}/dissociateGateway":
+    post:
+      description: Dissociates a Unified Gateway associated with the server.
+      operationId: Servers_DissociateGateway
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Analysis Services server. It must be at least 3
+            characters in length, and no more than 63.
+          in: path
+          name: serverName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Get details of a server:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK.
+      tags:
+        - Servers
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}/listGatewayStatus":
+    post:
+      description: Return the gateway status of the specified Analysis Services server
+        instance.
+      operationId: Servers_ListGatewayStatus
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Analysis Services server.
+          in: path
+          name: serverName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Get details of a server:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GatewayListStatusLive"
+              examples:
+                Get details of a server:
+                  $ref: "#/components/examples/Get_details_of_a_server"
+        default:
+          description: Default response as an error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GatewayListStatusError"
+      tags:
+        - Servers
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}/resume":
+    post:
+      description: Resumes operation of the specified Analysis Services server instance.
+      operationId: Servers_Resume
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Analysis Services server. It must be at least 3
+            characters in length, and no more than 63.
+          in: path
+          name: serverName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Resume a server.:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK
+        "202":
+          description: Accepted
+      tags:
+        - Servers
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}/skus":
+    get:
+      description: Lists eligible SKUs for an Analysis Services resource.
+      operationId: Servers_ListSkusForExisting
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Analysis Services server. It must be at least 3
+            characters in length, and no more than 63.
+          in: path
+          name: serverName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            List eligible SKUs for an existing server:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkuEnumerationForExistingResourceResult"
+              examples:
+                List eligible SKUs for an existing server:
+                  $ref: "#/components/examples/List_eligible_SKUs_for_an_existing_s\
+                    erver"
+      tags:
+        - Servers
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}/suspend":
+    post:
+      description: Suspends operation of the specified Analysis Services server instance.
+      operationId: Servers_Suspend
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: The name of the Analysis Services server. It must be at least 3
+            characters in length, and no more than 63.
+          in: path
+          name: serverName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[a-z][a-z0-9]*$
+          examples:
+            Suspend a server.:
+              value: azsdktest
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK.
+        "202":
+          description: Accepted.
+      tags:
+        - Servers
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_details_of_a_server:
+      value:
+        status: Live
+    List_existing_servers_under_the_subscription.:
+      value:
+        value:
+          - id: /subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.AnalysisServices/servers/azsdktest
+            location: West US
+            name: azsdktest
+            properties:
+              asAdministrators:
+                members:
+                  - azsdktest@microsoft.com
+              provisioningState: Provisioning
+              serverFullName: asazure://nightly1.asazure-int.windows.net/azsdktest
+              state: Provisioning
+            sku:
+              capacity: 1
+              name: S1
+              tier: Standard
+            tags:
+              testKey: testValue
+          - id: /subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG2/providers/Microsoft.AnalysisServices/servers/azsdktest
+            location: West US
+            name: azsdktest2
+            properties:
+              asAdministrators:
+                members:
+                  - azsdktest@microsoft.com
+              provisioningState: Provisioning
+              serverFullName: asazure://nightly1.asazure-int.windows.net/azsdktest
+              state: Provisioning
+            sku:
+              capacity: 1
+              name: S0
+              tier: Standard
+            tags:
+              testKey: testValue
+    List_eligible_SKUs_for_a_new_server:
+      value:
+        value:
+          - name: B1
+          - name: B2
+          - name: D1
+          - name: S0
+          - name: S1
+          - name: S2
+          - name: S3
+          - name: S4
+    List_existing_servers_in_the_resource_group.:
+      value:
+        value:
+          - id: /subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.AnalysisServices/servers/azsdktest
+            location: West US
+            name: azsdktest
+            properties:
+              asAdministrators:
+                members:
+                  - azsdktest@microsoft.com
+              provisioningState: Provisioning
+              serverFullName: asazure://nightly1.asazure-int.windows.net/azsdktest
+              state: Provisioning
+            sku:
+              capacity: 1
+              name: S1
+              tier: Standard
+            tags:
+              testKey: testValue
+          - id: /subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.AnalysisServices/servers/azsdktest
+            location: West US
+            name: azsdktest2
+            properties:
+              asAdministrators:
+                members:
+                  - azsdktest@microsoft.com
+              provisioningState: Provisioning
+              serverFullName: asazure://nightly1.asazure-int.windows.net/azsdktest
+              state: Provisioning
+            sku:
+              capacity: 1
+              name: S0
+              tier: Standard
+            tags:
+              testKey: testValue
+    Update_a_server.:
+      value:
+        id: /subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.AnalysisServices/servers/azsdktest
+        location: West US
+        name: azsdktest
+        properties:
+          asAdministrators:
+            members:
+              - azsdktest@microsoft.com
+              - azsdktest2@microsoft.com
+          provisioningState: Provisioning
+          serverFullName: asazure://nightly1.asazure-int.windows.net/azsdktest
+          state: Provisioning
+        sku:
+          capacity: 1
+          name: S1
+          tier: Standard
+        tags:
+          testKey: testValue
+    Create_a_server.:
+      value:
+        id: /subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.AnalysisServices/servers/azsdktest
+        location: West US
+        name: azsdktest
+        properties:
+          asAdministrators:
+            members:
+              - azsdktest@microsoft.com
+              - azsdktest2@microsoft.com
+          provisioningState: Provisioning
+          serverFullName: asazure://nightly1.asazure-int.windows.net/azsdktest
+          state: Provisioning
+        sku:
+          capacity: 1
+          name: S1
+          tier: Standard
+        tags:
+          testKey: testValue
+    List_eligible_SKUs_for_an_existing_server:
+      value:
+        value:
+          - sku:
+              name: B1
+              tier: Basic
+          - sku:
+              name: B2
+              tier: Basic
+          - sku:
+              name: S0
+              tier: Standard
+          - sku:
+              name: S1
+              tier: Standard
+          - sku:
+              name: S2
+              tier: Standard
+          - sku:
+              name: S3
+              tier: Standard
+          - sku:
+              name: S4
+              tier: Standard
+  parameters:
+    ApiVersionParameter:
+      description: The client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Get details of a server:
+          value: 2017-08-01-beta
+        List existing servers under the subscription.:
+          value: 2017-08-01-beta
+        List eligible SKUs for a new server:
+          value: 2017-08-01-beta
+        List existing servers in the resource group.:
+          value: 2017-08-01-beta
+        Delete a server.:
+          value: 2017-08-01-beta
+        Update a server.:
+          value: 2017-08-01-beta
+        Create a server.:
+          value: 2017-08-01-beta
+        Resume a server.:
+          value: 2017-08-01-beta
+        List eligible SKUs for an existing server:
+          value: 2017-08-01-beta
+        Suspend a server.:
+          value: 2017-08-01-beta
+    ResourceGroupNameParameter:
+      description: The name of the Azure Resource group of which a given Analysis Services
+        server is part. This name must be at least 1 character in length, and no
+        more than 90.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\._\(\)]+$
+      examples:
+        List existing servers in the resource group.:
+          value: TestRG
+        Delete a server.:
+          value: TestRG
+        Get details of a server:
+          value: TestRG
+        Update a server.:
+          value: TestRG
+        Create a server.:
+          value: TestRG
+        Resume a server.:
+          value: TestRG
+        List eligible SKUs for an existing server:
+          value: TestRG
+        Suspend a server.:
+          value: TestRG
+    SubscriptionIdParameter:
+      description: A unique identifier for a Microsoft Azure subscription. The subscription
+        ID forms part of the URI for every service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Get details of a server:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        List existing servers under the subscription.:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        List eligible SKUs for a new server:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        List existing servers in the resource group.:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        Delete a server.:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        Update a server.:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        Create a server.:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        Resume a server.:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        List eligible SKUs for an existing server:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+        Suspend a server.:
+          value: 613192d7-503f-477a-9cfe-4efc3ee2bd60
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AnalysisServicesServer:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Represents an instance of an Analysis Services resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/AnalysisServicesServerProperties"
+      type: object
+    AnalysisServicesServerMutableProperties:
+      description: An object that represents a set of mutable Analysis Services resource
+        properties.
+      properties:
+        asAdministrators:
+          $ref: "#/components/schemas/ServerAdministrators"
+        backupBlobContainerUri:
+          description: The SAS container URI to the backup container.
+          type: string
+        gatewayDetails:
+          $ref: "#/components/schemas/GatewayDetails"
+        ipV4FirewallSettings:
+          $ref: "#/components/schemas/IPv4FirewallSettings"
+        querypoolConnectionMode:
+          default: All
+          description: "How the read-write server's participation in the query pool is
+            controlled.<br/>It can have the following values: <ul><li>readOnly -
+            indicates that the read-write server is intended not to participate
+            in query operations</li><li>all - indicates that the read-write
+            server can participate in query operations</li></ul>Specifying
+            readOnly when capacity is 1 results in error."
+          enum:
+            - All
+            - ReadOnly
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: ConnectionMode
+      type: object
+    AnalysisServicesServerProperties:
+      allOf:
+        - $ref: "#/components/schemas/AnalysisServicesServerMutableProperties"
+      description: Properties of Analysis Services resource.
+      properties:
+        provisioningState:
+          description: The current deployment state of Analysis Services resource. The
+            provisioningState is to indicate states for resource provisioning.
+          enum:
+            - Deleting
+            - Succeeded
+            - Failed
+            - Paused
+            - Suspended
+            - Provisioning
+            - Updating
+            - Suspending
+            - Pausing
+            - Resuming
+            - Preparing
+            - Scaling
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ProvisioningState
+        serverFullName:
+          description: The full name of the Analysis Services resource.
+          readOnly: true
+          type: string
+        state:
+          description: The current state of Analysis Services resource. The state is to
+            indicate more states outside of resource provisioning.
+          enum:
+            - Deleting
+            - Succeeded
+            - Failed
+            - Paused
+            - Suspended
+            - Provisioning
+            - Updating
+            - Suspending
+            - Pausing
+            - Resuming
+            - Preparing
+            - Scaling
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: State
+      type: object
+    AnalysisServicesServerUpdateParameters:
+      description: Provision request specification
+      properties:
+        properties:
+          $ref: "#/components/schemas/AnalysisServicesServerMutableProperties"
+        sku:
+          $ref: "#/components/schemas/ResourceSku"
+        tags:
+          additionalProperties:
+            type: string
+          description: Key-value pairs of additional provisioning properties.
+          type: object
+      type: object
+    AnalysisServicesServers:
+      description: An array of Analysis Services resources.
+      properties:
+        value:
+          description: An array of Analysis Services resources.
+          items:
+            $ref: "#/components/schemas/AnalysisServicesServer"
+          type: array
+      required:
+        - value
+      type: object
+    CheckServerNameAvailabilityParameters:
+      description: Details of server name request body.
+      properties:
+        name:
+          description: Name for checking availability.
+          maxLength: 63
+          minLength: 3
+          pattern: ^[a-z][a-z0-9]*$
+          type: string
+        type:
+          default: Microsoft.AnalysisServices/servers
+          description: The resource type of azure analysis services.
+          type: string
+      type: object
+    CheckServerNameAvailabilityResult:
+      description: The checking result of server name availability.
+      properties:
+        message:
+          description: The detailed message of the request unavailability.
+          type: string
+        nameAvailable:
+          description: Indicator of available of the server name.
+          type: boolean
+        reason:
+          description: The reason of unavailability.
+          type: string
+      type: object
+    ErrorResponse:
+      description: Describes the format of Error response.
+      properties:
+        code:
+          description: Error code
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          type: string
+      type: object
+    GatewayDetails:
+      description: The gateway details.
+      properties:
+        dmtsClusterUri:
+          description: Uri of the DMTS cluster.
+          readOnly: true
+          type: string
+        gatewayObjectId:
+          description: Gateway object id from in the DMTS cluster for the gateway resource.
+          readOnly: true
+          type: string
+        gatewayResourceId:
+          description: Gateway resource to be associated with the server.
+          type: string
+      type: object
+    GatewayError:
+      description: Detail of gateway errors.
+      properties:
+        code:
+          description: Error code of list gateway.
+          type: string
+        message:
+          description: Error message of list gateway.
+          type: string
+      type: object
+    GatewayListStatusError:
+      description: Status of gateway is error.
+      properties:
+        error:
+          $ref: "#/components/schemas/GatewayError"
+      type: object
+    GatewayListStatusLive:
+      description: Status of gateway is live.
+      properties:
+        status:
+          description: Live message of list gateway.
+          enum:
+            - Live
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Status
+      type: object
+    IPv4FirewallRule:
+      description: The detail of firewall rule.
+      properties:
+        firewallRuleName:
+          description: The rule name.
+          type: string
+        rangeEnd:
+          description: The end range of IPv4.
+          type: string
+        rangeStart:
+          description: The start range of IPv4.
+          type: string
+      type: object
+    IPv4FirewallSettings:
+      description: An array of firewall rules.
+      properties:
+        enablePowerBIService:
+          description: The indicator of enabling PBI service.
+          type: boolean
+        firewallRules:
+          description: An array of firewall rules.
+          items:
+            $ref: "#/components/schemas/IPv4FirewallRule"
+          type: array
+      type: object
+    Operation:
+      description: A Consumption REST API operation.
+      properties:
+        display:
+          description: The object that represents the operation.
+          properties:
+            operation:
+              description: "Operation type: Read, write, delete, etc."
+              readOnly: true
+              type: string
+            provider:
+              description: "Service provider: Microsoft.Consumption."
+              readOnly: true
+              type: string
+            resource:
+              description: "Resource on which the operation is performed: UsageDetail, etc."
+              readOnly: true
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}."
+          readOnly: true
+          type: string
+      type: object
+    OperationListResult:
+      description: Result of listing consumption operations. It contains a list of
+        operations and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          readOnly: true
+          type: string
+        value:
+          description: List of analysis services operations supported by the
+            Microsoft.AnalysisServices resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          readOnly: true
+          type: array
+    OperationStatus:
+      description: The status of operation.
+      properties:
+        endTime:
+          description: The end time of the operation.
+          type: string
+        error:
+          $ref: "#/components/schemas/ErrorResponse"
+        id:
+          description: The operation Id.
+          type: string
+        name:
+          description: The operation name.
+          type: string
+        startTime:
+          description: The start time of the operation.
+          type: string
+        status:
+          description: The status of the operation.
+          type: string
+      type: object
+    Resource:
+      description: Represents an instance of an Analysis Services resource.
+      properties:
+        id:
+          description: An identifier that represents the Analysis Services resource.
+          readOnly: true
+          type: string
+        location:
+          description: Location of the Analysis Services resource.
+          type: string
+          x-ms-mutability:
+            - create
+            - read
+        name:
+          description: The name of the Analysis Services resource.
+          readOnly: true
+          type: string
+        sku:
+          $ref: "#/components/schemas/ResourceSku"
+        tags:
+          additionalProperties:
+            type: string
+          description: Key-value pairs of additional resource provisioning properties.
+          type: object
+        type:
+          description: The type of the Analysis Services resource.
+          readOnly: true
+          type: string
+      required:
+        - location
+        - sku
+      type: object
+      x-ms-azure-resource: true
+    ResourceSku:
+      description: Represents the SKU name and Azure pricing tier for Analysis Services
+        resource.
+      properties:
+        capacity:
+          default: 1
+          description: The number of instances in the read only query pool.
+          maximum: 8
+          minimum: 1
+          type: integer
+        name:
+          description: Name of the SKU level.
+          type: string
+        tier:
+          description: The name of the Azure pricing tier to which the SKU applies.
+          enum:
+            - Development
+            - Basic
+            - Standard
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SkuTier
+      required:
+        - name
+      type: object
+    ServerAdministrators:
+      description: An array of administrator user identities.
+      properties:
+        members:
+          description: An array of administrator user identities.
+          items:
+            description: "The UPN of the user. For example: johnsmith@contoso.com."
+            type: string
+          type: array
+      type: object
+    SkuDetailsForExistingResource:
+      description: An object that represents SKU details for existing resources.
+      properties:
+        sku:
+          $ref: "#/components/schemas/ResourceSku"
+      type: object
+    SkuEnumerationForExistingResourceResult:
+      description: An object that represents enumerating SKUs for existing resources.
+      properties:
+        value:
+          description: The collection of available SKUs for existing resources.
+          items:
+            $ref: "#/components/schemas/SkuDetailsForExistingResource"
+          type: array
+      type: object
+    SkuEnumerationForNewResourceResult:
+      description: An object that represents enumerating SKUs for new resources.
+      properties:
+        value:
+          description: The collection of available SKUs for new resources.
+          items:
+            $ref: "#/components/schemas/ResourceSku"
+          type: array
+      type: object

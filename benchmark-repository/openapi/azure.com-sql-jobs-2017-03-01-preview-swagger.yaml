@@ -1,0 +1,4185 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2017-03-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/jobs.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: sql-jobs
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents":
+    get:
+      description: Gets a list of job agents in a server.
+      operationId: JobAgents_ListByServer
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of job agents.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobAgentListResult"
+              examples:
+                List job agents in a server:
+                  $ref: "#/components/examples/List_job_agents_in_a_server"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobAgents
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}":
+    delete:
+      description: Deletes a job agent.
+      operationId: JobAgents_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent to be deleted.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a job agent:
+              value: agent1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully deleted the job agent.
+        "202":
+          description: Accepted
+        "204":
+          description: The specified job agent does not exist.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+      tags:
+        - JobAgents
+      x-ms-long-running-operation: true
+    get:
+      description: Gets a job agent.
+      operationId: JobAgents_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent to be retrieved.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a job agent:
+              value: agent1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the specified job agent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobAgent"
+              examples:
+                Get a job agent:
+                  $ref: "#/components/examples/Get_a_job_agent"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+      tags:
+        - JobAgents
+    patch:
+      description: Updates a job agent.
+      operationId: JobAgents_Update
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent to be updated.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Update a job agent's tags.:
+              value: agent1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobAgentUpdate"
+        description: The update to the job agent.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the job agent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobAgent"
+              examples:
+                Update a job agent's tags.:
+                  $ref: "#/components/examples/Update_a_job_agent_s_tags."
+        "202":
+          description: Accepted
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidResourceRequestBody - The resource or resource properties in the request body is empty or invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 PropertyChangeUnsupported - Property cannot be modified.
+      tags:
+        - JobAgents
+      x-ms-long-running-operation: true
+    put:
+      description: Creates or updates a job agent.
+      operationId: JobAgents_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent to be created or updated.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a job agent with all properties:
+              value: agent1
+            Create or update a job agent with minimum properties:
+              value: agent1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobAgent"
+        description: The requested job agent resource state.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the job agent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobAgent"
+              examples:
+                Create or update a job agent with all properties:
+                  $ref: "#/components/examples/Create_or_update_a_job_agent_with_al\
+                    l_properties"
+                Create or update a job agent with minimum properties:
+                  $ref: "#/components/examples/Create_or_update_a_job_agent_with_mi\
+                    nimum_properties"
+        "201":
+          description: Successfully created the job agent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobAgent"
+              examples:
+                Create or update a job agent with all properties:
+                  $ref: "#/components/examples/Create_or_update_a_job_agent_with_al\
+                    l_properties"
+                Create or update a job agent with minimum properties:
+                  $ref: "#/components/examples/Create_or_update_a_job_agent_with_mi\
+                    nimum_properties"
+        "202":
+          description: Accepted
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidResourceRequestBody - The resource or resource properties in the request body is empty or invalid.
+
+             * 400 MissingSkuName - Sku name is required.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 DatabaseDoesNotExist - The requested database was not found
+
+             * 400 JobAgentExceededQuota - Could not create job agent because it would exceed the quota.
+
+             * 400 JobAgentAlreadyExists - The job agent already exists on the server.
+
+             * 400 JobAgentDatabaseEditionUnsupported - The specified database's service level objective is not supported for use as a job agent database.
+
+             * 400 JobAgentDatabaseSecondary - A job agent cannot be linked to a geo-secondary database.
+
+             * 400 JobAgentDatabaseAlreadyLinked - The specified database is already linked to another job agent.
+
+             * 400 CannotUseReservedDatabaseName - Cannot use reserved database name in this operation.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 SubscriptionNotFound - The requested subscription was not found.
+
+             * 404 PropertyChangeUnsupported - Property cannot be modified.
+      tags:
+        - JobAgents
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials":
+    get:
+      description: Gets a list of jobs credentials.
+      operationId: JobCredentials_ListByAgent
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            List credentials in a job agent:
+              value: agent1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of job credentials.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobCredentialListResult"
+              examples:
+                List credentials in a job agent:
+                  $ref: "#/components/examples/List_credentials_in_a_job_agent"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobCredentials
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}":
+    delete:
+      description: Deletes a job credential.
+      operationId: JobCredentials_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a credential:
+              value: agent1
+        - description: The name of the credential.
+          in: path
+          name: credentialName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a credential:
+              value: cred1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully deleted the credential.
+        "204":
+          description: A credential with the specified name does not exist.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 403 JobCredentialPermissionError - Azure Resource Manager does not have permission to use or manage the credential.
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - JobCredentials
+    get:
+      description: Gets a jobs credential.
+      operationId: JobCredentials_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a credential:
+              value: agent1
+        - description: The name of the credential.
+          in: path
+          name: credentialName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a credential:
+              value: cred1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the job credential.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobCredential"
+              examples:
+                Get a credential:
+                  $ref: "#/components/examples/Get_a_credential"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - JobCredentials
+    put:
+      description: Creates or updates a job credential.
+      operationId: JobCredentials_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a credential:
+              value: agent1
+        - description: The name of the credential.
+          in: path
+          name: credentialName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a credential:
+              value: cred1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobCredential"
+        description: The requested job credential state.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the credential.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobCredential"
+              examples:
+                Create or update a credential:
+                  $ref: "#/components/examples/Create_or_update_a_credential"
+        "201":
+          description: Successfully created the credential.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobCredential"
+              examples:
+                Create or update a credential:
+                  $ref: "#/components/examples/Create_or_update_a_credential"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidResourceRequestBody - The resource or resource properties in the request body is empty or invalid.
+
+             * 400 InvalidJobCredentialUsername - Invalid credential username.
+
+             * 403 JobCredentialPermissionError - Azure Resource Manager does not have permission to use or manage the credential.
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobCredentials
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/executions":
+    get:
+      description: Lists all executions in a job agent.
+      operationId: JobExecutions_ListByAgent
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            List all job executions in a job agent with filtering.:
+              value: agent1
+            List all job executions in a job agent.:
+              value: agent1
+        - description: If specified, only job executions created at or after the specified
+            time are included.
+          in: query
+          name: createTimeMin
+          required: false
+          schema:
+            type: string
+            format: date-time
+          examples:
+            List all job executions in a job agent with filtering.:
+              value: 2017-03-21T19:00:00.0000000Z
+        - description: If specified, only job executions created before the specified time
+            are included.
+          in: query
+          name: createTimeMax
+          required: false
+          schema:
+            type: string
+            format: date-time
+          examples:
+            List all job executions in a job agent with filtering.:
+              value: 2017-03-21T19:05:00.0000000Z
+        - description: If specified, only job executions completed at or after the
+            specified time are included.
+          in: query
+          name: endTimeMin
+          required: false
+          schema:
+            type: string
+            format: date-time
+          examples:
+            List all job executions in a job agent with filtering.:
+              value: 2017-03-21T19:20:00.0000000Z
+        - description: If specified, only job executions completed before the specified
+            time are included.
+          in: query
+          name: endTimeMax
+          required: false
+          schema:
+            type: string
+            format: date-time
+          examples:
+            List all job executions in a job agent with filtering.:
+              value: 2017-03-21T19:25:00.0000000Z
+        - description: If specified, only active or only completed job executions are
+            included.
+          in: query
+          name: isActive
+          required: false
+          schema:
+            type: boolean
+          examples:
+            List all job executions in a job agent with filtering.:
+              value: false
+        - description: The number of elements in the collection to skip.
+          in: query
+          name: $skip
+          required: false
+          schema:
+            type: integer
+        - description: The number of elements to return from the collection.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved job executions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobExecutionListResult"
+              examples:
+                List all job executions in a job agent with filtering.:
+                  $ref: "#/components/examples/List_all_job_executions_in_a_job_age\
+                    nt_with_filtering."
+                List all job executions in a job agent.:
+                  $ref: "#/components/examples/List_all_job_executions_in_a_job_age\
+                    nt."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobExecutions
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs":
+    get:
+      description: Gets a list of jobs.
+      operationId: Jobs_ListByAgent
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            List jobs in a job agent:
+              value: agent1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of jobs.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobListResult"
+              examples:
+                List jobs in a job agent:
+                  $ref: "#/components/examples/List_jobs_in_a_job_agent"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - Jobs
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}":
+    delete:
+      description: Deletes a job.
+      operationId: Jobs_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a job:
+              value: agent1
+        - description: The name of the job to delete.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a job:
+              value: job1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully deleted the job.
+        "204":
+          description: The specified job does not exist.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - Jobs
+    get:
+      description: Gets a job.
+      operationId: Jobs_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a job:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a job:
+              value: job1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the job.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+              examples:
+                Get a job:
+                  $ref: "#/components/examples/Get_a_job"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - Jobs
+    put:
+      description: Creates or updates a job.
+      operationId: Jobs_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create a job with all properties specified:
+              value: agent1
+            Create a job with default properties:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create a job with all properties specified:
+              value: job1
+            Create a job with default properties:
+              value: job1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Job"
+        description: The requested job state.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the job.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+              examples:
+                Create a job with all properties specified:
+                  $ref: "#/components/examples/Create_a_job_with_all_properties_spe\
+                    cified"
+                Create a job with default properties:
+                  $ref: "#/components/examples/Create_a_job_with_default_properties"
+        "201":
+          description: Successfully created the job.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+              examples:
+                Create a job with all properties specified:
+                  $ref: "#/components/examples/Create_a_job_with_all_properties_spe\
+                    cified"
+                Create a job with default properties:
+                  $ref: "#/components/examples/Create_a_job_with_default_properties"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 400 InvalidResourceRequestBody - The resource or resource properties in the request body is empty or invalid.
+
+             * 400 InvalidDuration - Invalid duration.
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - Jobs
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions":
+    get:
+      description: Lists a job's executions.
+      operationId: JobExecutions_ListByJob
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            List a job's executions.:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            List a job's executions.:
+              value: job1
+        - description: If specified, only job executions created at or after the specified
+            time are included.
+          in: query
+          name: createTimeMin
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions created before the specified time
+            are included.
+          in: query
+          name: createTimeMax
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions completed at or after the
+            specified time are included.
+          in: query
+          name: endTimeMin
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions completed before the specified
+            time are included.
+          in: query
+          name: endTimeMax
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only active or only completed job executions are
+            included.
+          in: query
+          name: isActive
+          required: false
+          schema:
+            type: boolean
+        - description: The number of elements in the collection to skip.
+          in: query
+          name: $skip
+          required: false
+          schema:
+            type: integer
+        - description: The number of elements to return from the collection.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved job executions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobExecutionListResult"
+              examples:
+                List a job's executions.:
+                  $ref: "#/components/examples/List_a_job_s_executions."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobExecutions
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}":
+    get:
+      description: Gets a job execution.
+      operationId: JobExecutions_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a job execution.:
+              value: agent1
+        - description: The name of the job.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a job execution.:
+              value: job1
+        - description: The id of the job execution
+          in: path
+          name: jobExecutionId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            Get a job execution.:
+              value: 5555-6666-7777-8888-999999999999
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the job.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobExecution"
+              examples:
+                Get a job execution.:
+                  $ref: "#/components/examples/Get_a_job_execution."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobExecutions
+    put:
+      description: Creates or updates a job execution.
+      operationId: JobExecutions_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create job execution.:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create job execution.:
+              value: job1
+        - description: The job execution id to create the job execution under.
+          in: path
+          name: jobExecutionId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            Create job execution.:
+              value: 5555-6666-7777-8888-999999999999
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: A job execution for the job with the given id already existed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobExecution"
+              examples:
+                Create job execution.:
+                  $ref: "#/components/examples/Create_job_execution."
+        "201":
+          description: Successfully started an execution for the job.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobExecution"
+              examples:
+                Create job execution.:
+                  $ref: "#/components/examples/Create_job_execution."
+        "202":
+          description: Accepted
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobExecutions
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/cancel":
+    post:
+      description: Requests cancellation of a job execution.
+      operationId: JobExecutions_Cancel
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Cancel a job execution.:
+              value: agent1
+        - description: The name of the job.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Cancel a job execution.:
+              value: job1
+        - description: The id of the job execution to cancel.
+          in: path
+          name: jobExecutionId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            Cancel a job execution.:
+              value: 5555-6666-7777-8888-999999999999
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully requested cancellation of the job execution.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - JobExecutions
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps":
+    get:
+      description: Lists the step executions of a job execution.
+      operationId: JobStepExecutions_ListByJobExecution
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            List job step executions:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            List job step executions:
+              value: job1
+        - description: The id of the job execution
+          in: path
+          name: jobExecutionId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            List job step executions:
+              value: 5555-6666-7777-8888-999999999999
+        - description: If specified, only job executions created at or after the specified
+            time are included.
+          in: query
+          name: createTimeMin
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions created before the specified time
+            are included.
+          in: query
+          name: createTimeMax
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions completed at or after the
+            specified time are included.
+          in: query
+          name: endTimeMin
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions completed before the specified
+            time are included.
+          in: query
+          name: endTimeMax
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only active or only completed job executions are
+            included.
+          in: query
+          name: isActive
+          required: false
+          schema:
+            type: boolean
+        - description: The number of elements in the collection to skip.
+          in: query
+          name: $skip
+          required: false
+          schema:
+            type: integer
+        - description: The number of elements to return from the collection.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the step executions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobExecutionListResult"
+              examples:
+                List job step executions:
+                  $ref: "#/components/examples/List_job_step_executions"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobStepExecutions
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}":
+    get:
+      description: Gets a step execution of a job execution.
+      operationId: JobStepExecutions_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a job step execution:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a job step execution:
+              value: job1
+        - description: The unique id of the job execution
+          in: path
+          name: jobExecutionId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            Get a job step execution:
+              value: 5555-6666-7777-8888-999999999999
+        - description: The name of the step.
+          in: path
+          name: stepName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a job step execution:
+              value: step1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the step execution.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobExecution"
+              examples:
+                Get a job step execution:
+                  $ref: "#/components/examples/Get_a_job_step_execution"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - JobStepExecutions
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}/targets":
+    get:
+      description: Lists the target executions of a job step execution.
+      operationId: JobTargetExecutions_ListByStep
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            List job step target executions:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            List job step target executions:
+              value: job1
+        - description: The id of the job execution
+          in: path
+          name: jobExecutionId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            List job step target executions:
+              value: 5555-6666-7777-8888-999999999999
+        - description: The name of the step.
+          in: path
+          name: stepName
+          required: true
+          schema:
+            type: string
+          examples:
+            List job step target executions:
+              value: step1
+        - description: If specified, only job executions created at or after the specified
+            time are included.
+          in: query
+          name: createTimeMin
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions created before the specified time
+            are included.
+          in: query
+          name: createTimeMax
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions completed at or after the
+            specified time are included.
+          in: query
+          name: endTimeMin
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions completed before the specified
+            time are included.
+          in: query
+          name: endTimeMax
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only active or only completed job executions are
+            included.
+          in: query
+          name: isActive
+          required: false
+          schema:
+            type: boolean
+        - description: The number of elements in the collection to skip.
+          in: query
+          name: $skip
+          required: false
+          schema:
+            type: integer
+        - description: The number of elements to return from the collection.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the target executions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobExecutionListResult"
+              examples:
+                List job step target executions:
+                  $ref: "#/components/examples/List_job_step_target_executions"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobTargetExecutions
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}/targets/{targetId}":
+    get:
+      description: Gets a target execution.
+      operationId: JobTargetExecutions_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a job step target execution:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a job step target execution:
+              value: job1
+        - description: The unique id of the job execution
+          in: path
+          name: jobExecutionId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            Get a job step target execution:
+              value: 5555-6666-7777-8888-999999999999
+        - description: The name of the step.
+          in: path
+          name: stepName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a job step target execution:
+              value: step1
+        - description: The target id.
+          in: path
+          name: targetId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            Get a job step target execution:
+              value: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the target execution.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobExecution"
+              examples:
+                Get a job step target execution:
+                  $ref: "#/components/examples/Get_a_job_step_target_execution"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - JobTargetExecutions
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/targets":
+    get:
+      description: Lists target executions for all steps of a job execution.
+      operationId: JobTargetExecutions_ListByJobExecution
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            List job step target executions:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            List job step target executions:
+              value: job1
+        - description: The id of the job execution
+          in: path
+          name: jobExecutionId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            List job step target executions:
+              value: 5555-6666-7777-8888-999999999999
+        - description: If specified, only job executions created at or after the specified
+            time are included.
+          in: query
+          name: createTimeMin
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions created before the specified time
+            are included.
+          in: query
+          name: createTimeMax
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions completed at or after the
+            specified time are included.
+          in: query
+          name: endTimeMin
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only job executions completed before the specified
+            time are included.
+          in: query
+          name: endTimeMax
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: If specified, only active or only completed job executions are
+            included.
+          in: query
+          name: isActive
+          required: false
+          schema:
+            type: boolean
+        - description: The number of elements in the collection to skip.
+          in: query
+          name: $skip
+          required: false
+          schema:
+            type: integer
+        - description: The number of elements to return from the collection.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the target executions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobExecutionListResult"
+              examples:
+                List job step target executions:
+                  $ref: "#/components/examples/List_job_step_target_executions"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobTargetExecutions
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/start":
+    post:
+      description: Starts an elastic job execution.
+      operationId: JobExecutions_Create
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Start a job execution.:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Start a job execution.:
+              value: job1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully started an execution for the job.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobExecution"
+              examples:
+                Start a job execution.:
+                  $ref: "#/components/examples/Start_a_job_execution."
+        "202":
+          description: Accepted
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - JobExecutions
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps":
+    get:
+      description: Gets all job steps for a job's current version.
+      operationId: JobSteps_ListByJob
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            List job steps for the latest version of a job.:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            List job steps for the latest version of a job.:
+              value: job1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of job steps.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobStepListResult"
+              examples:
+                List job steps for the latest version of a job.:
+                  $ref: "#/components/examples/List_job_steps_for_the_latest_versio\
+                    n_of_a_job."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobSteps
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps/{stepName}":
+    delete:
+      description: Deletes a job step. This will implicitly create a new job version.
+      operationId: JobSteps_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a job step.:
+              value: agent1
+        - description: The name of the job.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a job step.:
+              value: job1
+        - description: The name of the job step to delete.
+          in: path
+          name: stepName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a job step.:
+              value: step1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully deleted the job step.
+        "204":
+          description: The specified job step does not exist.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - JobSteps
+    get:
+      description: Gets a job step in a job's current version.
+      operationId: JobSteps_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get the latest version of a job step.:
+              value: agent1
+        - description: The name of the job.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get the latest version of a job step.:
+              value: job1
+        - description: The name of the job step.
+          in: path
+          name: stepName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get the latest version of a job step.:
+              value: step1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the job step.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobStep"
+              examples:
+                Get the latest version of a job step.:
+                  $ref: "#/components/examples/Get_the_latest_version_of_a_job_step."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobSteps
+    put:
+      description: Creates or updates a job step. This will implicitly create a new job
+        version.
+      operationId: JobSteps_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a job step with all properties specified.:
+              value: agent1
+            Create or update a job step with minimal properties specified.:
+              value: agent1
+        - description: The name of the job.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a job step with all properties specified.:
+              value: job1
+            Create or update a job step with minimal properties specified.:
+              value: job1
+        - description: The name of the job step.
+          in: path
+          name: stepName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a job step with all properties specified.:
+              value: step1
+            Create or update a job step with minimal properties specified.:
+              value: step1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobStep"
+        description: The requested state of the job step.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the job step.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobStep"
+              examples:
+                Create or update a job step with all properties specified.:
+                  $ref: "#/components/examples/Create_or_update_a_job_step_with_all\
+                    _properties_specified."
+                Create or update a job step with minimal properties specified.:
+                  $ref: "#/components/examples/Create_or_update_a_job_step_with_min\
+                    imal_properties_specified."
+        "201":
+          description: Successfully added the job step.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobStep"
+              examples:
+                Create or update a job step with all properties specified.:
+                  $ref: "#/components/examples/Create_or_update_a_job_step_with_all\
+                    _properties_specified."
+                Create or update a job step with minimal properties specified.:
+                  $ref: "#/components/examples/Create_or_update_a_job_step_with_min\
+                    imal_properties_specified."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 JobStepIdMismatch - Step Id in the specified Job Step URI does not match step id in provided Job Step Resource.
+
+             * 400 InvalidResourceRequestBody - The resource or resource properties in the request body is empty or invalid.
+
+             * 400 InvalidResourceId - Invalid resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 MismatchingJobAccountNameWithUrl - The provided job account name did not match the name in the Url.
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobSteps
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions":
+    get:
+      description: Gets all versions of a job.
+      operationId: JobVersions_ListByJob
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get all versions of a job.:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get all versions of a job.:
+              value: job1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of versions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobVersionListResult"
+              examples:
+                Get all versions of a job.:
+                  $ref: "#/components/examples/Get_all_versions_of_a_job."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobVersions
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}":
+    get:
+      description: Gets a job version.
+      operationId: JobVersions_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a version of a job.:
+              value: agent1
+        - description: The name of the job.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a version of a job.:
+              value: job1
+        - description: The version of the job to get.
+          in: path
+          name: jobVersion
+          required: true
+          schema:
+            type: integer
+            format: int32
+          examples:
+            Get a version of a job.:
+              value: "1"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the job version.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobVersion"
+              examples:
+                Get a version of a job.:
+                  $ref: "#/components/examples/Get_a_version_of_a_job."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobVersions
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}/steps":
+    get:
+      description: Gets all job steps in the specified job version.
+      operationId: JobSteps_ListByVersion
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            List job steps for the specified version of a job.:
+              value: agent1
+        - description: The name of the job to get.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            List job steps for the specified version of a job.:
+              value: job1
+        - description: The version of the job to get.
+          in: path
+          name: jobVersion
+          required: true
+          schema:
+            type: integer
+            format: int32
+          examples:
+            List job steps for the specified version of a job.:
+              value: "1"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of job steps.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobStepListResult"
+              examples:
+                List job steps for the specified version of a job.:
+                  $ref: "#/components/examples/List_job_steps_for_the_specified_ver\
+                    sion_of_a_job."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobSteps
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}/steps/{stepName}":
+    get:
+      description: Gets the specified version of a job step.
+      operationId: JobSteps_GetByVersion
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get the specified version of a job step.:
+              value: agent1
+        - description: The name of the job.
+          in: path
+          name: jobName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get the specified version of a job step.:
+              value: job1
+        - description: The version of the job to get.
+          in: path
+          name: jobVersion
+          required: true
+          schema:
+            type: integer
+            format: int32
+          examples:
+            Get the specified version of a job step.:
+              value: "1"
+        - description: The name of the job step.
+          in: path
+          name: stepName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get the specified version of a job step.:
+              value: step1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the job step.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobStep"
+              examples:
+                Get the specified version of a job step.:
+                  $ref: "#/components/examples/Get_the_specified_version_of_a_job_s\
+                    tep."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobSteps
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/targetGroups":
+    get:
+      description: Gets all target groups in an agent.
+      operationId: JobTargetGroups_ListByAgent
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get all target groups in an agent.:
+              value: agent1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of target groups.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobTargetGroupListResult"
+              examples:
+                Get all target groups in an agent.:
+                  $ref: "#/components/examples/Get_all_target_groups_in_an_agent."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobTargetGroups
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}":
+    delete:
+      description: Deletes a target group.
+      operationId: JobTargetGroups_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a target group.:
+              value: agent1
+        - description: The name of the target group.
+          in: path
+          name: targetGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a target group.:
+              value: targetGroup1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully deleted the target group.
+        "204":
+          description: A target group with the specified name does not exist.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - JobTargetGroups
+    get:
+      description: Gets a target group.
+      operationId: JobTargetGroups_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a target group.:
+              value: agent1
+        - description: The name of the target group.
+          in: path
+          name: targetGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a target group.:
+              value: targetGroup1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the target group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobTargetGroup"
+              examples:
+                Get a target group.:
+                  $ref: "#/components/examples/Get_a_target_group."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - JobTargetGroups
+    put:
+      description: Creates or updates a target group.
+      operationId: JobTargetGroups_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the job agent.
+          in: path
+          name: jobAgentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a target group with all properties.:
+              value: agent1
+            Create or update a target group with minimal properties.:
+              value: agent1
+        - description: The name of the target group.
+          in: path
+          name: targetGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a target group with all properties.:
+              value: targetGroup1
+            Create or update a target group with minimal properties.:
+              value: targetGroup1
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobTargetGroup"
+        description: The requested state of the target group.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the target group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobTargetGroup"
+              examples:
+                Create or update a target group with all properties.:
+                  $ref: "#/components/examples/Create_or_update_a_target_group_with\
+                    _all_properties."
+                Create or update a target group with minimal properties.:
+                  $ref: "#/components/examples/Create_or_update_a_target_group_with\
+                    _minimal_properties."
+        "201":
+          description: Successfully created the target group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobTargetGroup"
+              examples:
+                Create or update a target group with all properties.:
+                  $ref: "#/components/examples/Create_or_update_a_target_group_with\
+                    _all_properties."
+                Create or update a target group with minimal properties.:
+                  $ref: "#/components/examples/Create_or_update_a_target_group_with\
+                    _minimal_properties."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidResourceRequestBody - The resource or resource properties in the request body is empty or invalid.
+
+             * 400 InvalidResourceId - Invalid resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 MismatchingJobAccountNameWithUrl - The provided job account name did not match the name in the Url.
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 400 ElasticJobsOperationFailed - Elastic jobs management operation failed.
+
+             * 404 JobAgentNotFound - Specified job agent does not exist in the specified logical server.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - JobTargetGroups
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    List_job_agents_in_a_server:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1
+            location: southeastasia
+            name: agent1
+            properties:
+              databaseId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/databases/db1
+            sku:
+              capacity: 100
+              name: Agent
+            type: Microsoft.Sql/servers/jobAgents
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/jobAgent2
+            location: southeastasia
+            name: jobAgent2
+            properties:
+              databaseId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/databases/db12
+            sku:
+              capacity: 100
+              name: Agent
+            type: Microsoft.Sql/servers/jobAgents
+    Get_a_job_agent:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1
+        location: southeastasia
+        name: agent1
+        properties:
+          databaseId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/databases/db1
+        sku:
+          capacity: 100
+          name: Agent
+        type: Microsoft.Sql/servers/jobAgents
+    Update_a_job_agent_s_tags.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1
+        location: southeastasia
+        name: agent1
+        properties:
+          databaseId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/databases/db1
+        tags:
+          mytag1: myvalue1
+        type: Microsoft.Sql/servers/jobAgents
+    Create_or_update_a_job_agent_with_all_properties:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1
+        location: southeastasia
+        name: agent1
+        properties:
+          databaseId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/databases/db1
+        sku:
+          capacity: 100
+          name: Agent
+        tags:
+          octopus: agent
+        type: Microsoft.Sql/servers/jobAgents
+    Create_or_update_a_job_agent_with_minimum_properties:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1
+        location: southeastasia
+        name: agent1
+        properties:
+          databaseId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/databases/db1
+        sku:
+          capacity: 100
+          name: Agent
+        type: Microsoft.Sql/servers/jobAgents
+    List_credentials_in_a_job_agent:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1
+            name: cred1
+            properties:
+              username: myuser
+            type: Microsoft.Sql/servers/jobAccounts/credentials
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred2
+            name: cred2
+            properties:
+              username: anotherUser
+            type: Microsoft.Sql/servers/jobAccounts/credentials
+    Get_a_credential:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1
+        name: cred1
+        properties:
+          username: myuser
+        type: Microsoft.Sql/servers/jobAccounts/credentials
+    Create_or_update_a_credential:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1
+        name: cred1
+        properties:
+          username: myuser
+        type: Microsoft.Sql/servers/jobAccounts/credentials
+    List_all_job_executions_in_a_job_agent_with_filtering.:
+      value:
+        nextLink: https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1//executions?api-version=2017-03-01-preview&%24skip=2
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999
+            name: 5555-6666-7777-8888-999999999999
+            properties:
+              createTime: 2017-03-21T19:02:00.8707045Z
+              currentAttemptStartTime: 2017-03-21T19:12:00.8707045Z
+              currentAttempts: 0
+              endTime: 2017-03-21T19:22:00.8707045Z
+              jobExecutionId: 5555-6666-7777-8888-999999999999
+              jobVersion: 1
+              lastMessage: Job execution created.
+              lifecycle: Created
+              provisioningState: Created
+              startTime: 2017-03-21T19:12:00.8707045Z
+            type: Microsoft.Sql/servers/jobAgents/jobs/executions
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job2/executions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+            name: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+            properties:
+              createTime: 2017-12-15T19:02:00.8707045Z
+              currentAttempts: 1
+              endTime: 2017-12-15T19:22:00.8707045Z
+              jobExecutionId: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+              jobVersion: 1
+              lastMessage: Job execution succeeded.
+              lifecycle: Succeeded
+              provisioningState: Succeeded
+              startTime: 2017-12-15T19:12:00.8707045Z
+            type: Microsoft.Sql/servers/jobAgents/jobs/executions
+    List_all_job_executions_in_a_job_agent.:
+      value:
+        nextLink: https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1//executions?api-version=2017-03-01-preview&%24skip=2
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999
+            name: 5555-6666-7777-8888-999999999999
+            properties:
+              createTime: 2017-03-21T19:02:00.8707045Z
+              currentAttemptStartTime: 2017-03-21T19:12:00.8707045Z
+              currentAttempts: 0
+              endTime: 2017-03-21T19:22:00.8707045Z
+              jobExecutionId: 5555-6666-7777-8888-999999999999
+              jobVersion: 1
+              lastMessage: Job execution created.
+              lifecycle: Created
+              provisioningState: Created
+              startTime: 2017-03-21T19:12:00.8707045Z
+            type: Microsoft.Sql/servers/jobAgents/jobs/executions
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job2/executions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+            name: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+            properties:
+              createTime: 2017-12-15T19:02:00.8707045Z
+              currentAttempts: 1
+              endTime: 2017-12-15T19:22:00.8707045Z
+              jobExecutionId: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+              jobVersion: 1
+              lastMessage: Job execution succeeded.
+              lifecycle: Succeeded
+              provisioningState: Succeeded
+              startTime: 2017-12-15T19:12:00.8707045Z
+            type: Microsoft.Sql/servers/jobAgents/jobs/executions
+    List_jobs_in_a_job_agent:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1
+            name: job1
+            properties:
+              description: my favourite job
+              schedule:
+                enabled: true
+                endTime: 2015-09-24T23:59:59Z
+                interval: PT5M
+                startTime: 2015-09-24T18:30:01Z
+                type: Recurring
+              version: 0
+            type: Microsoft.Sql/servers/jobAccounts/jobs
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job3
+            name: job3
+            properties:
+              description: this job will be scheduled once
+              schedule:
+                enabled: true
+                endTime: 2017-12-27T06:00:00Z
+                startTime: 2017-07-01T03:45:00Z
+                type: Once
+              version: 1
+            type: Microsoft.Sql/servers/jobAccounts/jobs
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job2
+            name: job2
+            properties:
+              description: this job will never be automatically scheduled
+              schedule:
+                enabled: false
+                endTime: 2017-12-27T06:00:00Z
+                startTime: 2017-07-01T03:45:00Z
+                type: Once
+              version: 1
+            type: Microsoft.Sql/servers/jobAccounts/jobs
+    Get_a_job:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1
+        name: job1
+        properties:
+          description: my favourite job
+          schedule:
+            enabled: true
+            endTime: 2015-09-24T23:59:59Z
+            startTime: 2015-09-24T18:30:01Z
+            type: Once
+          version: 0
+        type: Microsoft.Sql/servers/jobAccounts/jobs
+    Create_a_job_with_all_properties_specified:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1
+        name: job1
+        properties:
+          description: my favourite job
+          schedule:
+            enabled: true
+            endTime: 2015-09-24T23:59:59Z
+            interval: PT5M
+            startTime: 2015-09-24T18:30:01Z
+            type: Recurring
+          version: 0
+        type: Microsoft.Sql/servers/jobAccounts/jobs
+    Create_a_job_with_default_properties:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1
+        name: job1
+        properties:
+          description: ""
+          schedule:
+            enabled: false
+            endTime: 9999-12-31T11:59:59Z
+            startTime: 0001-01-01T00:00:00Z
+            type: Once
+          version: 0
+        type: Microsoft.Sql/servers/jobAccounts/jobs
+    List_a_job_s_executions.:
+      value:
+        nextLink: https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions?api-version=2017-03-01-preview&%24skip=2
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999
+            name: 5555-6666-7777-8888-999999999999
+            properties:
+              createTime: 2017-03-21T19:02:00.8707045Z
+              currentAttemptStartTime: 2017-03-21T19:12:00.8707045Z
+              currentAttempts: 0
+              endTime: 2017-03-21T19:22:00.8707045Z
+              jobExecutionId: 5555-6666-7777-8888-999999999999
+              jobVersion: 1
+              lastMessage: Job execution created.
+              lifecycle: Created
+              provisioningState: Created
+              startTime: 2017-03-21T19:12:00.8707045Z
+            type: Microsoft.Sql/servers/jobAgents/jobs/executions
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+            name: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+            properties:
+              createTime: 2017-12-15T19:02:00.8707045Z
+              currentAttempts: 1
+              endTime: 2017-12-15T19:22:00.8707045Z
+              jobExecutionId: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+              jobVersion: 1
+              lastMessage: Job execution succeeded.
+              lifecycle: Succeeded
+              provisioningState: Succeeded
+              startTime: 2017-12-15T19:12:00.8707045Z
+            type: Microsoft.Sql/servers/jobAgents/jobs/executions
+    Get_a_job_execution.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999
+        name: 5555-6666-7777-8888-999999999999
+        properties:
+          createTime: 2017-12-21T19:02:00.8707045Z
+          currentAttemptStartTime: 2017-11-13T19:12:00.8707045Z
+          currentAttempts: 0
+          endTime: 2017-12-21T19:22:00.8707045Z
+          jobExecutionId: 5555-6666-7777-8888-999999999999
+          jobVersion: 1
+          lastMessage: Job execution created.
+          lifecycle: Created
+          provisioningState: Created
+          startTime: 2017-12-21T19:12:00.8707045Z
+        type: Microsoft.Sql/servers/jobAgents/executions
+    Create_job_execution.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999
+        name: 5555-6666-7777-8888-999999999999
+        properties:
+          createTime: 2017-05-04T19:02:00.8707045Z
+          currentAttempts: 0
+          jobExecutionId: 5555-6666-7777-8888-999999999999
+          jobVersion: 1
+          lastMessage: Job execution created.
+          lifecycle: Created
+          provisioningState: Created
+        type: Microsoft.Sql/servers/jobAgents/executions
+    List_job_step_executions:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999/steps/step1
+            name: step1
+            properties:
+              createTime: 2017-12-03T04:33:15.7189151Z
+              currentAttemptStartTime: 2017-12-03T04:33:17.4840068Z
+              currentAttempts: 1
+              endTime: 2017-12-03T04:33:19.0600862Z
+              jobExecutionId: 5555-6666-7777-8888-999999999999
+              jobVersion: 1
+              lastMessage: Step 1 succeeded.
+              lifecycle: Succeeded
+              provisioningState: Succeeded
+              startTime: 2017-12-03T04:33:16.176937Z
+              stepId: 1
+              stepName: step1
+            type: Microsoft.Sql/servers/jobAgents/jobs/executions/steps
+    Get_a_job_step_execution:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999/steps/step1
+        name: step1
+        properties:
+          createTime: 2017-12-27T04:33:15.7189151Z
+          currentAttemptStartTime: 2017-12-27T04:33:17.4840068Z
+          currentAttempts: 1
+          endTime: 2017-12-27T04:33:19.0600862Z
+          jobExecutionId: 5555-6666-7777-8888-999999999999
+          jobVersion: 1
+          lastMessage: Step 1 succeeded.
+          lifecycle: Succeeded
+          provisioningState: Succeeded
+          startTime: 2017-12-27T04:33:16.176937Z
+          stepId: 1
+          stepName: step1
+        type: Microsoft.Sql/servers/jobAgents/jobs/executions/steps
+    List_job_step_target_executions:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999/steps/step1/targets/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+            name: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+            properties:
+              createTime: 2017-07-01T04:33:17.5133333Z
+              currentAttemptStartTime: 2017-07-01T04:33:18.2391013Z
+              currentAttempts: 1
+              endTime: 2017-07-01T04:33:18.7031029Z
+              jobExecutionId: 5555-6666-7777-8888-999999999999
+              jobVersion: 1
+              lastMessage: Step 1 succeeded execution on target (server 'server1', database
+                'database1').
+              lifecycle: Succeeded
+              provisioningState: Succeeded
+              startTime: 2017-07-01T04:33:18.1230403Z
+              stepId: 1
+              stepName: step1
+              target:
+                databaseName: database1
+                serverName: server1
+                type: SqlDatabase
+            type: Microsoft.Sql/servers/jobAgents/jobs/executions/steps/targets
+    Get_a_job_step_target_execution:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999/steps/step1/targets/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+        name: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+        properties:
+          createTime: 2017-11-05T04:33:17.5133333Z
+          currentAttemptStartTime: 2017-11-05T04:33:18.2391013Z
+          currentAttempts: 1
+          endTime: 2017-11-05T04:33:18.7031029Z
+          jobExecutionId: 5555-6666-7777-8888-999999999999
+          jobVersion: 1
+          lastMessage: Step 1 succeeded execution on target (server 'server1', database
+            'database1').
+          lifecycle: Succeeded
+          provisioningState: Succeeded
+          startTime: 2017-11-05T04:33:18.1230403Z
+          stepId: 1
+          stepName: step1
+          target:
+            databaseName: database1
+            serverName: server1
+            type: SqlDatabase
+        type: Microsoft.Sql/servers/jobAgents/jobs/executions/steps/targets
+    Start_a_job_execution.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999
+        name: 5555-6666-7777-8888-999999999999
+        properties:
+          createTime: 2016-09-23T01:00:00.0000000Z
+          currentAttempts: 0
+          jobExecutionId: 5555-6666-7777-8888-999999999999
+          jobVersion: 1
+          lastMessage: Job execution created.
+          lifecycle: Created
+          provisioningState: Created
+        type: Microsoft.Sql/servers/jobAgents/executions
+    List_job_steps_for_the_latest_version_of_a_job.:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/steps/step1
+            name: step1
+            properties:
+              action:
+                source: Inline
+                type: TSql
+                value: select 2
+              credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1
+              executionOptions:
+                initialRetryIntervalSeconds: 11
+                maximumRetryIntervalSeconds: 222
+                retryAttempts: 42
+                retryIntervalBackoffMultiplier: 3
+                timeoutSeconds: 1234
+              output:
+                credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0
+                databaseName: database3
+                resourceGroupName: group3
+                schemaName: myschema1234
+                serverName: server3
+                subscriptionId: 3501b905-a848-4b5d-96e8-b253f62d735a
+                tableName: mytable5678
+                type: SqlDatabase
+              stepId: 1
+              targetGroup: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1
+            type: Microsoft.Sql/servers/jobAgents/jobs/steps
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/steps/step2
+            name: step2
+            properties:
+              action:
+                source: Inline
+                type: TSql
+                value: select 2
+              credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1
+              executionOptions:
+                initialRetryIntervalSeconds: 11
+                maximumRetryIntervalSeconds: 222
+                retryAttempts: 42
+                retryIntervalBackoffMultiplier: 3
+                timeoutSeconds: 1234
+              output:
+                credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0
+                databaseName: database3
+                resourceGroupName: group3
+                schemaName: myschema1234
+                serverName: server3
+                subscriptionId: 3501b905-a848-4b5d-96e8-b253f62d735a
+                tableName: mytable5678
+                type: SqlDatabase
+              stepId: 2
+              targetGroup: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1
+            type: Microsoft.Sql/servers/jobAgents/jobs/steps
+    Get_the_latest_version_of_a_job_step.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/steps/step1
+        name: step1
+        properties:
+          action:
+            source: Inline
+            type: TSql
+            value: select 2
+          credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1
+          executionOptions:
+            initialRetryIntervalSeconds: 11
+            maximumRetryIntervalSeconds: 222
+            retryAttempts: 42
+            retryIntervalBackoffMultiplier: 3
+            timeoutSeconds: 1234
+          output:
+            credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0
+            databaseName: database3
+            resourceGroupName: group3
+            schemaName: myschema1234
+            serverName: server3
+            subscriptionId: 3501b905-a848-4b5d-96e8-b253f62d735a
+            tableName: mytable5678
+            type: SqlDatabase
+          stepId: 1
+          targetGroup: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1
+        type: Microsoft.Sql/servers/jobAgents/jobs/steps
+    Create_or_update_a_job_step_with_all_properties_specified.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/steps/step1
+        name: step1
+        properties:
+          action:
+            source: Inline
+            type: TSql
+            value: select 2
+          credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1
+          executionOptions:
+            initialRetryIntervalSeconds: 11
+            maximumRetryIntervalSeconds: 222
+            retryAttempts: 42
+            retryIntervalBackoffMultiplier: 3
+            timeoutSeconds: 1234
+          output:
+            credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0
+            databaseName: database3
+            resourceGroupName: group3
+            schemaName: myschema1234
+            serverName: server3
+            subscriptionId: 3501b905-a848-4b5d-96e8-b253f62d735a
+            tableName: mytable5678
+            type: SqlDatabase
+          stepId: 1
+          targetGroup: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1
+        type: Microsoft.Sql/servers/jobAgents/jobs/steps
+    Create_or_update_a_job_step_with_minimal_properties_specified.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/steps/step1
+        name: step1
+        properties:
+          action:
+            source: Inline
+            type: TSql
+            value: select 1
+          credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0
+          executionOptions:
+            initialRetryIntervalSeconds: 1
+            maximumRetryIntervalSeconds: 120
+            retryAttempts: 10
+            retryIntervalBackoffMultiplier: 2
+            timeoutSeconds: 43200
+          stepId: 1
+          targetGroup: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup0
+        type: Microsoft.Sql/servers/jobAgents/jobs/steps
+    Get_all_versions_of_a_job.:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/versions/1
+            name: "1"
+            type: Microsoft.Sql/servers/jobAgents/jobs/versions
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/versions/2
+            name: "2"
+            type: Microsoft.Sql/servers/jobAgents/jobs/versions
+    Get_a_version_of_a_job.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/versions/1
+        name: "1"
+        type: Microsoft.Sql/servers/jobAgents/jobs/versions
+    List_job_steps_for_the_specified_version_of_a_job.:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/versions/1/steps/step1
+            name: step1
+            properties:
+              action:
+                source: Inline
+                type: TSql
+                value: select 2
+              credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1
+              executionOptions:
+                initialRetryIntervalSeconds: 11
+                maximumRetryIntervalSeconds: 222
+                retryAttempts: 42
+                retryIntervalBackoffMultiplier: 3
+                timeoutSeconds: 1234
+              output:
+                credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0
+                databaseName: database3
+                resourceGroupName: group3
+                schemaName: myschema1234
+                serverName: server3
+                subscriptionId: 3501b905-a848-4b5d-96e8-b253f62d735a
+                tableName: mytable5678
+                type: SqlDatabase
+              stepId: 1
+              targetGroup: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1
+            type: Microsoft.Sql/servers/jobAgents/jobs/versions/steps
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/versions/1/steps/step2
+            name: step2
+            properties:
+              action:
+                source: Inline
+                type: TSql
+                value: select 2
+              credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1
+              executionOptions:
+                initialRetryIntervalSeconds: 11
+                maximumRetryIntervalSeconds: 222
+                retryAttempts: 42
+                retryIntervalBackoffMultiplier: 3
+                timeoutSeconds: 1234
+              output:
+                credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0
+                databaseName: database3
+                resourceGroupName: group3
+                schemaName: myschema1234
+                serverName: server3
+                subscriptionId: 3501b905-a848-4b5d-96e8-b253f62d735a
+                tableName: mytable5678
+                type: SqlDatabase
+              stepId: 2
+              targetGroup: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1
+            type: Microsoft.Sql/servers/jobAgents/jobs/versions/steps
+    Get_the_specified_version_of_a_job_step.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/versions/1/steps/step1
+        name: step1
+        properties:
+          action:
+            source: Inline
+            type: TSql
+            value: select 2
+          credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred1
+          executionOptions:
+            initialRetryIntervalSeconds: 11
+            maximumRetryIntervalSeconds: 222
+            retryAttempts: 42
+            retryIntervalBackoffMultiplier: 3
+            timeoutSeconds: 1234
+          output:
+            credential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/cred0
+            databaseName: database3
+            resourceGroupName: group3
+            schemaName: myschema1234
+            serverName: server3
+            subscriptionId: 3501b905-a848-4b5d-96e8-b253f62d735a
+            tableName: mytable5678
+            type: SqlDatabase
+          stepId: 1
+          targetGroup: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1
+        type: Microsoft.Sql/servers/jobAgents/jobs/versions/steps
+    Get_all_target_groups_in_an_agent.:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1
+            name: targetGroup1
+            properties:
+              members:
+                - databaseName: database1
+                  membershipType: Exclude
+                  serverName: server1
+                  type: SqlDatabase
+                - membershipType: Include
+                  refreshCredential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential
+                  serverName: server1
+                  type: SqlServer
+                - elasticPoolName: pool1
+                  membershipType: Include
+                  refreshCredential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential
+                  serverName: server2
+                  type: SqlElasticPool
+                - databaseName: database1
+                  membershipType: Include
+                  refreshCredential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential
+                  serverName: server3
+                  shardMapName: shardMap1
+                  type: SqlShardMap
+            type: Microsoft.Sql/servers/jobAgents/targetGroups
+    Get_a_target_group.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1
+        name: targetGroup1
+        properties:
+          members:
+            - databaseName: database1
+              membershipType: Exclude
+              serverName: server1
+              type: SqlDatabase
+            - membershipType: Include
+              refreshCredential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential
+              serverName: server1
+              type: SqlServer
+            - elasticPoolName: pool1
+              membershipType: Include
+              refreshCredential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential
+              serverName: server2
+              type: SqlElasticPool
+            - databaseName: database1
+              membershipType: Include
+              refreshCredential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential
+              serverName: server3
+              shardMapName: shardMap1
+              type: SqlShardMap
+        type: Microsoft.Sql/servers/jobAgents/targetGroups
+    Create_or_update_a_target_group_with_all_properties.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1
+        name: targetGroup1
+        properties:
+          members:
+            - databaseName: database1
+              membershipType: Exclude
+              serverName: server1
+              type: SqlDatabase
+            - membershipType: Include
+              refreshCredential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential
+              serverName: server1
+              type: SqlServer
+            - elasticPoolName: pool1
+              membershipType: Include
+              refreshCredential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential
+              serverName: server2
+              type: SqlElasticPool
+            - databaseName: database1
+              membershipType: Include
+              refreshCredential: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential
+              serverName: server3
+              shardMapName: shardMap1
+              type: SqlShardMap
+        type: Microsoft.Sql/servers/jobAgents/targetGroups
+    Create_or_update_a_target_group_with_minimal_properties.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/targetGroups/targetGroup1
+        name: targetGroup1
+        properties:
+          members: []
+        type: Microsoft.Sql/servers/jobAgents/targetGroups
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        List job agents in a server:
+          value: 2017-03-01-preview
+        Delete a job agent:
+          value: 2017-03-01-preview
+        Get a job agent:
+          value: 2017-03-01-preview
+        Update a job agent's tags.:
+          value: 2017-03-01-preview
+        Create or update a job agent with all properties:
+          value: 2017-03-01-preview
+        Create or update a job agent with minimum properties:
+          value: 2017-03-01-preview
+        List credentials in a job agent:
+          value: 2017-03-01-preview
+        Delete a credential:
+          value: 2017-03-01-preview
+        Get a credential:
+          value: 2017-03-01-preview
+        Create or update a credential:
+          value: 2017-03-01-preview
+        List all job executions in a job agent with filtering.:
+          value: 2017-03-01-preview
+        List all job executions in a job agent.:
+          value: 2017-03-01-preview
+        List jobs in a job agent:
+          value: 2017-03-01-preview
+        Delete a job:
+          value: 2017-03-01-preview
+        Get a job:
+          value: 2017-03-01-preview
+        Create a job with all properties specified:
+          value: 2017-03-01-preview
+        Create a job with default properties:
+          value: 2017-03-01-preview
+        List a job's executions.:
+          value: 2017-03-01-preview
+        Get a job execution.:
+          value: 2017-03-01-preview
+        Create job execution.:
+          value: 2017-03-01-preview
+        Cancel a job execution.:
+          value: 2017-03-01-preview
+        List job step executions:
+          value: 2017-03-01-preview
+        Get a job step execution:
+          value: 2017-03-01-preview
+        List job step target executions:
+          value: 2017-03-01-preview
+        Get a job step target execution:
+          value: 2017-03-01-preview
+        Start a job execution.:
+          value: 2017-03-01-preview
+        List job steps for the latest version of a job.:
+          value: 2017-03-01-preview
+        Delete a job step.:
+          value: 2017-03-01-preview
+        Get the latest version of a job step.:
+          value: 2017-03-01-preview
+        Create or update a job step with all properties specified.:
+          value: 2017-03-01-preview
+        Create or update a job step with minimal properties specified.:
+          value: 2017-03-01-preview
+        Get all versions of a job.:
+          value: 2017-03-01-preview
+        Get a version of a job.:
+          value: 2017-03-01-preview
+        List job steps for the specified version of a job.:
+          value: 2017-03-01-preview
+        Get the specified version of a job step.:
+          value: 2017-03-01-preview
+        Get all target groups in an agent.:
+          value: 2017-03-01-preview
+        Delete a target group.:
+          value: 2017-03-01-preview
+        Get a target group.:
+          value: 2017-03-01-preview
+        Create or update a target group with all properties.:
+          value: 2017-03-01-preview
+        Create or update a target group with minimal properties.:
+          value: 2017-03-01-preview
+    BlobAuditingPolicyNameParameter:
+      description: The name of the blob auditing policy.
+      in: path
+      name: blobAuditingPolicyName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - default
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ManagedInstanceNameParameter:
+      description: The name of the managed instance.
+      in: path
+      name: managedInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        List job agents in a server:
+          value: group1
+        Delete a job agent:
+          value: group1
+        Get a job agent:
+          value: group1
+        Update a job agent's tags.:
+          value: group1
+        Create or update a job agent with all properties:
+          value: group1
+        Create or update a job agent with minimum properties:
+          value: group1
+        List credentials in a job agent:
+          value: group1
+        Delete a credential:
+          value: group1
+        Get a credential:
+          value: group1
+        Create or update a credential:
+          value: group1
+        List all job executions in a job agent with filtering.:
+          value: group1
+        List all job executions in a job agent.:
+          value: group1
+        List jobs in a job agent:
+          value: group1
+        Delete a job:
+          value: group1
+        Get a job:
+          value: group1
+        Create a job with all properties specified:
+          value: group1
+        Create a job with default properties:
+          value: group1
+        List a job's executions.:
+          value: group1
+        Get a job execution.:
+          value: group1
+        Create job execution.:
+          value: group1
+        Cancel a job execution.:
+          value: group1
+        List job step executions:
+          value: group1
+        Get a job step execution:
+          value: group1
+        List job step target executions:
+          value: group1
+        Get a job step target execution:
+          value: group1
+        Start a job execution.:
+          value: group1
+        List job steps for the latest version of a job.:
+          value: group1
+        Delete a job step.:
+          value: group1
+        Get the latest version of a job step.:
+          value: group1
+        Create or update a job step with all properties specified.:
+          value: group1
+        Create or update a job step with minimal properties specified.:
+          value: group1
+        Get all versions of a job.:
+          value: group1
+        Get a version of a job.:
+          value: group1
+        List job steps for the specified version of a job.:
+          value: group1
+        Get the specified version of a job step.:
+          value: group1
+        Get all target groups in an agent.:
+          value: group1
+        Delete a target group.:
+          value: group1
+        Get a target group.:
+          value: group1
+        Create or update a target group with all properties.:
+          value: group1
+        Create or update a target group with minimal properties.:
+          value: group1
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        List job agents in a server:
+          value: server1
+        Delete a job agent:
+          value: server1
+        Get a job agent:
+          value: server1
+        Update a job agent's tags.:
+          value: server1
+        Create or update a job agent with all properties:
+          value: server1
+        Create or update a job agent with minimum properties:
+          value: server1
+        List credentials in a job agent:
+          value: server1
+        Delete a credential:
+          value: server1
+        Get a credential:
+          value: server1
+        Create or update a credential:
+          value: server1
+        List all job executions in a job agent with filtering.:
+          value: server1
+        List all job executions in a job agent.:
+          value: server1
+        List jobs in a job agent:
+          value: server1
+        Delete a job:
+          value: server1
+        Get a job:
+          value: server1
+        Create a job with all properties specified:
+          value: server1
+        Create a job with default properties:
+          value: server1
+        List a job's executions.:
+          value: server1
+        Get a job execution.:
+          value: server1
+        Create job execution.:
+          value: server1
+        Cancel a job execution.:
+          value: server1
+        List job step executions:
+          value: server1
+        Get a job step execution:
+          value: server1
+        List job step target executions:
+          value: server1
+        Get a job step target execution:
+          value: server1
+        Start a job execution.:
+          value: server1
+        List job steps for the latest version of a job.:
+          value: server1
+        Delete a job step.:
+          value: server1
+        Get the latest version of a job step.:
+          value: server1
+        Create or update a job step with all properties specified.:
+          value: server1
+        Create or update a job step with minimal properties specified.:
+          value: server1
+        Get all versions of a job.:
+          value: server1
+        Get a version of a job.:
+          value: server1
+        List job steps for the specified version of a job.:
+          value: server1
+        Get the specified version of a job step.:
+          value: server1
+        Get all target groups in an agent.:
+          value: server1
+        Delete a target group.:
+          value: server1
+        Get a target group.:
+          value: server1
+        Create or update a target group with all properties.:
+          value: server1
+        Create or update a target group with minimal properties.:
+          value: server1
+    SqlVirtualMachineContainerNameParameter:
+      description: The name of the SqlVirtualMachineContainer.
+      in: path
+      name: sqlVirtualMachineContainerName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineInstanceNameParameter:
+      description: The name of the SqlVirtualMachineInstance.
+      in: path
+      name: sqlVirtualMachineInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        List job agents in a server:
+          value: 00000000-1111-2222-3333-444444444444
+        Delete a job agent:
+          value: 00000000-1111-2222-3333-444444444444
+        Get a job agent:
+          value: 00000000-1111-2222-3333-444444444444
+        Update a job agent's tags.:
+          value: 00000000-1111-2222-3333-444444444444
+        Create or update a job agent with all properties:
+          value: 00000000-1111-2222-3333-444444444444
+        Create or update a job agent with minimum properties:
+          value: 00000000-1111-2222-3333-444444444444
+        List credentials in a job agent:
+          value: 00000000-1111-2222-3333-444444444444
+        Delete a credential:
+          value: 00000000-1111-2222-3333-444444444444
+        Get a credential:
+          value: 00000000-1111-2222-3333-444444444444
+        Create or update a credential:
+          value: 00000000-1111-2222-3333-444444444444
+        List all job executions in a job agent with filtering.:
+          value: 00000000-1111-2222-3333-444444444444
+        List all job executions in a job agent.:
+          value: 00000000-1111-2222-3333-444444444444
+        List jobs in a job agent:
+          value: 00000000-1111-2222-3333-444444444444
+        Delete a job:
+          value: 00000000-1111-2222-3333-444444444444
+        Get a job:
+          value: 00000000-1111-2222-3333-444444444444
+        Create a job with all properties specified:
+          value: 00000000-1111-2222-3333-444444444444
+        Create a job with default properties:
+          value: 00000000-1111-2222-3333-444444444444
+        List a job's executions.:
+          value: 00000000-1111-2222-3333-444444444444
+        Get a job execution.:
+          value: 00000000-1111-2222-3333-444444444444
+        Create job execution.:
+          value: 00000000-1111-2222-3333-444444444444
+        Cancel a job execution.:
+          value: 00000000-1111-2222-3333-444444444444
+        List job step executions:
+          value: 00000000-1111-2222-3333-444444444444
+        Get a job step execution:
+          value: 00000000-1111-2222-3333-444444444444
+        List job step target executions:
+          value: 00000000-1111-2222-3333-444444444444
+        Get a job step target execution:
+          value: 00000000-1111-2222-3333-444444444444
+        Start a job execution.:
+          value: 00000000-1111-2222-3333-444444444444
+        List job steps for the latest version of a job.:
+          value: 00000000-1111-2222-3333-444444444444
+        Delete a job step.:
+          value: 00000000-1111-2222-3333-444444444444
+        Get the latest version of a job step.:
+          value: 00000000-1111-2222-3333-444444444444
+        Create or update a job step with all properties specified.:
+          value: 00000000-1111-2222-3333-444444444444
+        Create or update a job step with minimal properties specified.:
+          value: 00000000-1111-2222-3333-444444444444
+        Get all versions of a job.:
+          value: 00000000-1111-2222-3333-444444444444
+        Get a version of a job.:
+          value: 00000000-1111-2222-3333-444444444444
+        List job steps for the specified version of a job.:
+          value: 00000000-1111-2222-3333-444444444444
+        Get the specified version of a job step.:
+          value: 00000000-1111-2222-3333-444444444444
+        Get all target groups in an agent.:
+          value: 00000000-1111-2222-3333-444444444444
+        Delete a target group.:
+          value: 00000000-1111-2222-3333-444444444444
+        Get a target group.:
+          value: 00000000-1111-2222-3333-444444444444
+        Create or update a target group with all properties.:
+          value: 00000000-1111-2222-3333-444444444444
+        Create or update a target group with minimal properties.:
+          value: 00000000-1111-2222-3333-444444444444
+    VirtualClusterNameParameter:
+      description: The name of the virtual cluster.
+      in: path
+      name: virtualClusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Job:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: A job.
+      properties:
+        properties:
+          $ref: "#/components/schemas/JobProperties"
+      type: object
+    JobAgent:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM tracked top level resource.
+          properties:
+            location:
+              description: Resource location.
+              type: string
+              x-ms-mutability:
+                - read
+                - create
+            tags:
+              additionalProperties:
+                type: string
+              description: Resource tags.
+              type: object
+          required:
+            - location
+          type: object
+      description: An Azure SQL job agent.
+      properties:
+        properties:
+          $ref: "#/components/schemas/JobAgentProperties"
+        sku:
+          description: An ARM Resource SKU.
+          properties:
+            capacity:
+              description: Capacity of the particular SKU.
+              format: int32
+              type: integer
+            family:
+              description: If the service has different generations of hardware, for the
+                same SKU, then that can be captured here.
+              type: string
+            name:
+              description: The name of the SKU, typically, a letter + Number code, e.g. P3.
+              type: string
+            size:
+              description: Size of the particular SKU
+              type: string
+            tier:
+              description: The tier or edition of the particular SKU, e.g. Basic, Premium.
+              type: string
+          required:
+            - name
+          type: object
+      required:
+        - location
+      type: object
+    JobAgentListResult:
+      description: A list of Azure SQL job agents.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/JobAgent"
+          readOnly: true
+          type: array
+      type: object
+    JobAgentProperties:
+      description: Properties of a job agent.
+      properties:
+        databaseId:
+          description: Resource ID of the database to store job metadata in.
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        state:
+          description: The state of the job agent.
+          enum:
+            - Creating
+            - Ready
+            - Updating
+            - Deleting
+            - Disabled
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: JobAgentState
+      required:
+        - databaseId
+      type: object
+    JobAgentUpdate:
+      description: An update to an Azure SQL job agent.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+      type: object
+    JobCredential:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: A stored credential that can be used by a job to connect to target
+        databases.
+      properties:
+        properties:
+          $ref: "#/components/schemas/JobCredentialProperties"
+      type: object
+    JobCredentialListResult:
+      description: A list of job credentials.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/JobCredential"
+          readOnly: true
+          type: array
+      type: object
+    JobCredentialProperties:
+      description: Properties of a job credential.
+      properties:
+        password:
+          description: The credential password.
+          type: string
+          x-ms-mutability:
+            - create
+            - update
+        username:
+          description: The credential user name.
+          type: string
+      required:
+        - username
+        - password
+      type: object
+    JobExecution:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: An execution of a job
+      properties:
+        properties:
+          $ref: "#/components/schemas/JobExecutionProperties"
+      type: object
+    JobExecutionListResult:
+      description: A list of job executions.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/JobExecution"
+          readOnly: true
+          type: array
+      type: object
+    JobExecutionProperties:
+      description: Properties for an Azure SQL Database Elastic job execution.
+      properties:
+        createTime:
+          description: The time that the job execution was created.
+          format: date-time
+          readOnly: true
+          type: string
+        currentAttemptStartTime:
+          description: Start time of the current attempt.
+          format: date-time
+          readOnly: true
+          type: string
+        currentAttempts:
+          description: Number of times the job execution has been attempted.
+          format: int32
+          type: integer
+        endTime:
+          description: The time that the job execution completed.
+          format: date-time
+          readOnly: true
+          type: string
+        jobExecutionId:
+          description: The unique identifier of the job execution.
+          format: uuid
+          readOnly: true
+          type: string
+        jobVersion:
+          description: The job version number.
+          format: int32
+          readOnly: true
+          type: integer
+        lastMessage:
+          description: The last status or error message.
+          readOnly: true
+          type: string
+        lifecycle:
+          description: The detailed state of the job execution.
+          enum:
+            - Created
+            - InProgress
+            - WaitingForChildJobExecutions
+            - WaitingForRetry
+            - Succeeded
+            - SucceededWithSkipped
+            - Failed
+            - TimedOut
+            - Canceled
+            - Skipped
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: JobExecutionLifecycle
+        provisioningState:
+          description: The ARM provisioning state of the job execution.
+          enum:
+            - Created
+            - InProgress
+            - Succeeded
+            - Failed
+            - Canceled
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ProvisioningState
+        startTime:
+          description: The time that the job execution started.
+          format: date-time
+          readOnly: true
+          type: string
+        stepId:
+          description: The job step id.
+          format: int32
+          readOnly: true
+          type: integer
+        stepName:
+          description: The job step name.
+          readOnly: true
+          type: string
+        target:
+          $ref: "#/components/schemas/JobExecutionTarget"
+      type: object
+    JobExecutionTarget:
+      description: The target that a job execution is executed on.
+      properties:
+        databaseName:
+          description: The database name.
+          readOnly: true
+          type: string
+        serverName:
+          description: The server name.
+          readOnly: true
+          type: string
+        type:
+          description: The type of the target.
+          enum:
+            - TargetGroup
+            - SqlDatabase
+            - SqlElasticPool
+            - SqlShardMap
+            - SqlServer
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: JobTargetType
+      type: object
+    JobListResult:
+      description: A list of jobs.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/Job"
+          readOnly: true
+          type: array
+      type: object
+    JobProperties:
+      description: Properties of a job.
+      properties:
+        description:
+          default: ""
+          description: User-defined description of the job.
+          type: string
+        schedule:
+          $ref: "#/components/schemas/JobSchedule"
+        version:
+          description: The job version number.
+          format: int32
+          readOnly: true
+          type: integer
+      type: object
+    JobSchedule:
+      description: Scheduling properties of a job.
+      properties:
+        enabled:
+          description: Whether or not the schedule is enabled.
+          type: boolean
+        endTime:
+          default: 9999-12-31T11:59:59Z
+          description: Schedule end time.
+          format: date-time
+          type: string
+        interval:
+          description: Value of the schedule's recurring interval, if the schedule type is
+            recurring. ISO8601 duration format.
+          type: string
+        startTime:
+          default: 0001-01-01T00:00:00Z
+          description: Schedule start time.
+          format: date-time
+          type: string
+        type:
+          default: Once
+          description: Schedule interval type
+          enum:
+            - Once
+            - Recurring
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: JobScheduleType
+      type: object
+    JobStep:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: A job step.
+      properties:
+        properties:
+          $ref: "#/components/schemas/JobStepProperties"
+      type: object
+    JobStepAction:
+      description: The action to be executed by a job step.
+      properties:
+        source:
+          default: Inline
+          description: The source of the action to execute.
+          enum:
+            - Inline
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: JobStepActionSource
+        type:
+          default: TSql
+          description: Type of action being executed by the job step.
+          enum:
+            - TSql
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: JobStepActionType
+        value:
+          description: The action value, for example the text of the T-SQL script to
+            execute.
+          type: string
+      required:
+        - value
+      type: object
+    JobStepExecutionOptions:
+      description: The execution options of a job step.
+      properties:
+        initialRetryIntervalSeconds:
+          default: 1
+          description: Initial delay between retries for job step execution.
+          format: int32
+          type: integer
+        maximumRetryIntervalSeconds:
+          default: 120
+          description: The maximum amount of time to wait between retries for job step
+            execution.
+          format: int32
+          type: integer
+        retryAttempts:
+          default: 10
+          description: Maximum number of times the job step will be reattempted if the
+            first attempt fails.
+          format: int32
+          type: integer
+        retryIntervalBackoffMultiplier:
+          default: 2
+          description: The backoff multiplier for the time between retries.
+          format: float
+          type: number
+        timeoutSeconds:
+          default: 43200
+          description: Execution timeout for the job step.
+          format: int32
+          type: integer
+      type: object
+    JobStepListResult:
+      description: A list of job steps.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/JobStep"
+          readOnly: true
+          type: array
+      type: object
+    JobStepOutput:
+      description: The output configuration of a job step.
+      properties:
+        credential:
+          description: The resource ID of the credential to use to connect to the output
+            destination.
+          type: string
+        databaseName:
+          description: The output destination database.
+          type: string
+        resourceGroupName:
+          description: The output destination resource group.
+          type: string
+        schemaName:
+          default: dbo
+          description: The output destination schema.
+          type: string
+        serverName:
+          description: The output destination server name.
+          type: string
+        subscriptionId:
+          description: The output destination subscription id.
+          format: uuid
+          type: string
+        tableName:
+          description: The output destination table.
+          type: string
+        type:
+          default: SqlDatabase
+          description: The output destination type.
+          enum:
+            - SqlDatabase
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: JobStepOutputType
+      required:
+        - serverName
+        - databaseName
+        - tableName
+        - credential
+      type: object
+    JobStepProperties:
+      description: Properties of a job step.
+      properties:
+        action:
+          $ref: "#/components/schemas/JobStepAction"
+        credential:
+          description: The resource ID of the job credential that will be used to connect
+            to the targets.
+          type: string
+        executionOptions:
+          $ref: "#/components/schemas/JobStepExecutionOptions"
+        output:
+          $ref: "#/components/schemas/JobStepOutput"
+        stepId:
+          description: The job step's index within the job. If not specified when creating
+            the job step, it will be created as the last step. If not specified
+            when updating the job step, the step id is not modified.
+          format: int32
+          type: integer
+        targetGroup:
+          description: The resource ID of the target group that the job step will be
+            executed on.
+          type: string
+      required:
+        - targetGroup
+        - credential
+        - action
+      type: object
+    JobTarget:
+      description: A job target, for example a specific database or a container of
+        databases that is evaluated during job execution.
+      properties:
+        databaseName:
+          description: The target database name.
+          type: string
+        elasticPoolName:
+          description: The target elastic pool name.
+          type: string
+        membershipType:
+          default: Include
+          description: Whether the target is included or excluded from the group.
+          enum:
+            - Include
+            - Exclude
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: JobTargetGroupMembershipType
+        refreshCredential:
+          description: The resource ID of the credential that is used during job execution
+            to connect to the target and determine the list of databases inside
+            the target.
+          type: string
+        serverName:
+          description: The target server name.
+          type: string
+        shardMapName:
+          description: The target shard map.
+          type: string
+        type:
+          description: The target type.
+          enum:
+            - TargetGroup
+            - SqlDatabase
+            - SqlElasticPool
+            - SqlShardMap
+            - SqlServer
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: JobTargetType
+      required:
+        - type
+      type: object
+    JobTargetGroup:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: A group of job targets.
+      properties:
+        properties:
+          $ref: "#/components/schemas/JobTargetGroupProperties"
+      type: object
+    JobTargetGroupListResult:
+      description: A list of target groups.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/JobTargetGroup"
+          readOnly: true
+          type: array
+      type: object
+    JobTargetGroupProperties:
+      description: Properties of job target group.
+      properties:
+        members:
+          description: Members of the target group.
+          items:
+            $ref: "#/components/schemas/JobTarget"
+          type: array
+      required:
+        - members
+      type: object
+    JobVersion:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: A job version.
+      properties: {}
+      type: object
+    JobVersionListResult:
+      description: A list of job versions.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/JobVersion"
+          readOnly: true
+          type: array
+      type: object

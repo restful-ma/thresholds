@@ -1,0 +1,528 @@
+openapi: 3.0.0
+info:
+  description: Azure software plans let users create and manage licenses for various
+    software used in Azure.
+  title: Software Plan RP
+  version: 2019-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-ms-code-generation-settings:
+    name: softwareplanClient
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/softwareplan/resource-manager/Microsoft.SoftwarePlan/preview/2019-06-01-preview/softwareplan.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: softwareplan
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.SoftwarePlan/register":
+    post:
+      description: Register to Microsoft.SoftwarePlan resource provider.
+      operationId: SoftwarePlan_Register
+      parameters:
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            HybridUseBenefitListResult:
+              value: "98df3792-7962-4f18-8be2-d5576f122de3 "
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "204":
+          description: OK - Microsoft.SoftwarePlan is registered
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      tags:
+        - Software plan
+  "/{scope}/providers/Microsoft.SoftwarePlan/hybridUseBenefits":
+    get:
+      description: Get all hybrid use benefits associated with an ARM resource.
+      operationId: HybridUseBenefit_List
+      parameters:
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - description: Supports applying filter on the type of SKU
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+          examples:
+            HybridUseBenefitListResult:
+              value: SQL_Server_EE_AHB
+      responses:
+        "200":
+          description: OK - returns an array of plans at that scope
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HybridUseBenefitListResult"
+              examples:
+                HybridUseBenefitListResult:
+                  $ref: "#/components/examples/HybridUseBenefitListResult"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      tags:
+        - Hybrid use benefits
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/{scope}/providers/Microsoft.SoftwarePlan/hybridUseBenefits/{planId}":
+    delete:
+      description: Deletes a given plan ID
+      operationId: HybridUseBenefit_Delete
+      parameters:
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/PlanIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK - successfully deleted the given plan
+        "204":
+          description: OK - there was no plan to delete
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      tags:
+        - Hybrid use benefit
+    get:
+      description: Gets a given plan ID
+      operationId: HybridUseBenefit_Get
+      parameters:
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/PlanIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK - returns the plan that is created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HybridUseBenefitModel"
+              examples:
+                HybridUseBenefit:
+                  $ref: "#/components/examples/HybridUseBenefit"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      tags:
+        - Hybrid use benefit
+    patch:
+      description: Updates an existing hybrid use benefit
+      operationId: HybridUseBenefit_Update
+      parameters:
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/PlanIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/HybridUseBenefitModel"
+      responses:
+        "200":
+          description: OK - successfully updated the given hybrid use benefit
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HybridUseBenefitModel"
+              examples:
+                HybridUseBenefit:
+                  $ref: "#/components/examples/HybridUseBenefit"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      tags:
+        - Hybrid use benefit
+    put:
+      description: Create a new hybrid use benefit under a given scope
+      operationId: HybridUseBenefit_Create
+      parameters:
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/PlanIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/HybridUseBenefitModel"
+      responses:
+        "200":
+          description: OK - returns the plan that is created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HybridUseBenefitModel"
+              examples:
+                HybridUseBenefit:
+                  $ref: "#/components/examples/HybridUseBenefit"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      tags:
+        - Hybrid use benefit
+  "/{scope}/providers/Microsoft.SoftwarePlan/hybridUseBenefits/{planId}/revisions":
+    get:
+      description: Gets the version history of a hybrid use benefit
+      operationId: HybridUseBenefitRevision_List
+      parameters:
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/PlanIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK - returns an array of plans ordered by revision
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HybridUseBenefitListResult"
+              examples:
+                HybridUseBenefitRevisionsResponse:
+                  $ref: "#/components/examples/HybridUseBenefitRevisionsResponse"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      tags:
+        - Hybrid use benefit revisions
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/{scope}/providers/Microsoft.SoftwarePlan/operations":
+    get:
+      description: List all the operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: List all the operations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationList"
+              examples:
+                GetOperations:
+                  $ref: "#/components/examples/GetOperations"
+        default:
+          description: Error response describing why the operation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Get operations.
+      tags:
+        - Software plan operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    HybridUseBenefitListResult:
+      value:
+        value:
+          - etag: 1
+            id: /subscriptions/{sub-id}/resourceGroups/{rg-name}/providers/Microsoft.Compute/HostGroups/{host-group-name}/hosts/{host-name}/providers/Microsoft.SoftwarePlan/hybridUseBenefits/SQL_hostGroup_hostName
+            name: SQL_hostGroup_hostName
+            properties:
+              createdDate: 2019-06-05T21:50:07.846Z
+              lastUpdatedDate: 2019-06-05T21:50:07.846Z
+              provisioningState: Succeeded
+            sku:
+              name: SQL_Server_EE_AHB
+            type: Microsoft.SoftwarePlans/hybridUseBenefits
+    HybridUseBenefit:
+      value:
+        etag: 1
+        id: /subscriptions/{sub-id}/resourceGroups/{rg-name}/providers/Microsoft.Compute/HostGroups/{host-group-name}/hosts/{host-name}/providers/Microsoft.SoftwarePlan/hybridUseBenefits/SQL_{hostGroupName}_{hostName}
+        name: SQL_{hostGroupName}_{hostName}
+        properties:
+          createdDate: 2019-06-05T21:50:07.846Z
+          lastUpdatedDate: 2019-06-05T21:50:07.846Z
+          provisioningState: Succeeded
+        sku:
+          name: SQL_Server_Perpetual
+        type: Microsoft.SoftwarePlans/hybridUseBenefits
+    HybridUseBenefitRevisionsResponse:
+      value:
+        value:
+          - etag: 1
+            id: /subscriptions/{sub-id}/resourceGroups/{rg-name}/providers/Microsoft.Compute/HostGroups/{host-group-name}/hosts/{host-name}/providers/Microsoft.SoftwarePlan/hybridUseBenefits/SQL_{hostGroupName}_{hostName}
+            name: SQL_{hostGroupName}_{hostName}
+            properties:
+              createdDate: 2019-06-05T21:50:07.846Z
+              lastUpdatedDate: 2019-06-05T21:50:07.846Z
+              provisioningState: Succeeded
+            sku:
+              name: SQL_Server_EE_AHB
+            type: Microsoft.SoftwarePlans/hybridUseBenefits
+    GetOperations:
+      value:
+        value:
+          - display:
+              description: Read all hybrid use benefits
+              operation: Get hybrid use benefit
+              provider: Microsoft Software Plan
+              resource: hybridUseBenefits
+            name: Microsoft.SoftwarePlan/hybridUseBenefits/read
+          - display:
+              description: Create a hybrid use benefit
+              operation: Create hybrid use benefit
+              provider: Microsoft Software Plan
+              resource: hybridUseBenefits
+            name: Microsoft.SoftwarePlan/hybridUseBenefits/write
+          - display:
+              description: Update a hybrid use benefit
+              operation: Update hybrid use benefit
+              provider: Microsoft Software Plan
+              resource: hybridUseBenefits
+            name: Microsoft.SoftwarePlan/hybridUseBenefits/action
+          - display:
+              description: Delete a hybrid use benefit
+              operation: Delete hybrid use benefit
+              provider: Microsoft Software Plan
+              resource: hybridUseBenefits
+            name: Microsoft.SoftwarePlan/hybridUseBenefits/delete
+          - display:
+              description: Read all hybrid use benefit revisions
+              operation: Get hybrid use benefit
+              provider: Microsoft Software Plan
+              resource: hybridUseBenefits
+            name: Microsoft.SoftwarePlan/hybridUseBenefits/revisions/read
+          - display:
+              description: Registers the SoftwarePlan resource provider and enables the
+                creation of SoftwarePlan resources.
+              operation: Registers the SoftwarePlan Resource Provider.
+              provider: Microsoft Software Plan
+              resource: SoftwarePlan
+            name: Microsoft.SoftwarePlan/register/action
+  parameters:
+    ApiVersionParameter:
+      description: The api-version to be used by the service
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        HybridUseBenefitListResult:
+          value: 2019-06-01-preview
+        HybridUseBenefit:
+          value: 2019-06-01-preview
+        HybridUseBenefitRevisionsResponse:
+          value: 2019-06-01-preview
+        GetOperations:
+          value: 2019-06-01-preview
+    PlanIdParameter:
+      description: This is a unique identifier for a plan. Should be a guid.
+      in: path
+      name: planId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        HybridUseBenefit:
+          value: 94f46eda-45f8-493a-8425-251921463a89
+        HybridUseBenefitRevisionsResponse:
+          value: 94f46eda-45f8-493a-8425-251921463a89
+    ScopeParameter:
+      description: The scope at which the operation is performed. This is limited to
+        Microsoft.Compute/virtualMachines and Microsoft.Compute/hostGroups/hosts
+        for now
+      in: path
+      name: scope
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        HybridUseBenefitListResult:
+          value: subscriptions/{sub-id}/resourceGroups/{rg-name}/providers/Microsoft.Compute/HostGroups/{host-group-name}/hosts/{host-name}
+        HybridUseBenefit:
+          value: subscriptions/{sub-id}/resourceGroups/{rg-name}/providers/Microsoft.Compute/HostGroups/{host-group-name}/hosts/{host-name}
+        HybridUseBenefitRevisionsResponse:
+          value: subscriptions/{sub-id}/resourceGroups/{rg-name}/providers/Microsoft.Compute/HostGroups/{host-group-name}/hosts/{host-name}
+        GetOperations:
+          value: subscriptions/{sub-id}/resourceGroups/{rg-name}/providers/Microsoft.Compute/HostGroups/{host-group-name}/hosts/{host-name}
+  requestBodies:
+    HybridUseBenefitModel:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HybridUseBenefitModel"
+      description: Request body for creating a hybrid use benefit
+      required: true
+      x-ms-parameter-location: method
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Error:
+      description: Error object returned by the RP
+      properties:
+        code:
+          $ref: "#/components/schemas/ErrorCode"
+        message:
+          description: A user readable error message. Localized based on
+            x-ms-effective-locale header in the request
+          type: string
+      type: object
+    ErrorCode:
+      description: Defined error codes to be returned to the client.
+      enum:
+        - InvalidRequestParameter
+        - MissingRequestParameter
+      type: string
+      x-ms-enum:
+        modelAsString: true
+        name: ErrorCode
+    HybridUseBenefitListResult:
+      description: List of hybrid use benefits
+      properties:
+        nextLink:
+          description: Url to get the next page of items.
+          type: string
+        value:
+          description: List of hybrid use benefits
+          items:
+            $ref: "#/components/schemas/HybridUseBenefitModel"
+          type: array
+    HybridUseBenefitModel:
+      allOf:
+        - properties:
+            id:
+              description: Fully qualified resource Id for the resource. Ex -
+                /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+              readOnly: true
+              type: string
+            name:
+              description: The name of the resource
+              readOnly: true
+              type: string
+            type:
+              description: The type of the resource. Ex- Microsoft.Compute/virtualMachines
+                or Microsoft.Storage/storageAccounts.
+              readOnly: true
+              type: string
+          x-ms-azure-resource: true
+      description: Response on GET of a hybrid use benefit
+      properties:
+        etag:
+          description: Indicates the revision of the hybrid use benefit
+          format: int32
+          readOnly: true
+          type: integer
+        properties:
+          $ref: "#/components/schemas/HybridUseBenefitProperties"
+        sku:
+          $ref: "#/components/schemas/Sku"
+      required:
+        - sku
+    HybridUseBenefitProperties:
+      description: Hybrid use benefit properties
+      properties:
+        createdDate:
+          description: Created date
+          format: date-time
+          readOnly: true
+          type: string
+        lastUpdatedDate:
+          description: Last updated date
+          format: date-time
+          readOnly: true
+          type: string
+        provisioningState:
+          $ref: "#/components/schemas/ProvisioningState"
+    OperationDisplay:
+      description: Display fields for an operation.
+      properties:
+        description:
+          description: Description of the operation
+          type: string
+        operation:
+          description: Operation to be performed
+          type: string
+        provider:
+          description: Resource Provider name
+          type: string
+        resource:
+          description: Resource that is acted upon
+          type: string
+      type: object
+    OperationList:
+      description: List all the operations.
+      properties:
+        nextLink:
+          description: Url to get the next page of items.
+          type: string
+        value:
+          description: List of all operations
+          items:
+            $ref: "#/components/schemas/OperationResponse"
+          type: array
+      type: object
+    OperationResponse:
+      description: Operation response.
+      properties:
+        display:
+          $ref: "#/components/schemas/OperationDisplay"
+        name:
+          description: Name of the operation
+          type: string
+        origin:
+          description: Origin of the response
+          type: string
+      type: object
+    ProvisioningState:
+      description: Represent the current state of the Reservation.
+      enum:
+        - Succeeded
+        - Cancelled
+        - Failed
+      type: string
+      x-ms-enum:
+        modelAsString: true
+        name: ProvisioningState
+    Sku:
+      description: The SKU to be applied for this resource
+      properties:
+        name:
+          description: Name of the SKU to be applied
+          type: string
+      type: object

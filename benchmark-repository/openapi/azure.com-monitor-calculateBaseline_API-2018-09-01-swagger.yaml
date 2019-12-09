@@ -1,0 +1,206 @@
+openapi: 3.0.0
+info:
+  title: MonitorManagementClient
+  version: 2018-09-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-ms-code-generation-settings:
+    name: MonitorManagementClient
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-09-01/calculateBaseline_API.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: monitor-calculateBaseline_API
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/{resourceUri}/providers/microsoft.insights/calculatebaseline":
+    post:
+      description: "**Lists the baseline values for a resource**."
+      operationId: MetricBaseline_CalculateBaseline
+      parameters:
+        - $ref: "#/components/parameters/ExtendedResourceUriParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimeSeriesInformation"
+        description: Information that need to be specified to calculate a baseline on a
+          time series.
+        required: true
+      responses:
+        "200":
+          description: Successful request to get the list of metric values.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CalculateBaselineResponse"
+              examples:
+                Calculate baseline:
+                  $ref: "#/components/examples/Calculate_baseline"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Baseline
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Calculate_baseline:
+      value:
+        baseline:
+          - highThresholds:
+              - 90.3453
+              - 91.3453
+            lowThresholds:
+              - 30
+              - 31.1
+            sensitivity: Low
+          - highThresholds:
+              - 70.3453
+              - 71.3453
+            lowThresholds:
+              - 50
+              - 51.1
+            sensitivity: Medium
+        type: Microsoft.Insights/calculatebaseline
+  parameters:
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Calculate baseline:
+          value: 2018-09-01
+    ExtendedResourceUriParameter:
+      description: "The identifier of the resource. It has the following structure:
+        subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/pro\
+        viders/{providerName}/{resourceName}. For example:
+        subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/p\
+        roviders/Microsoft.Compute/virtualMachines/vm1"
+      in: path
+      name: resourceUri
+      required: true
+      x-ms-parameter-location: method
+      x-ms-skip-url-encoding: true
+      schema:
+        type: string
+      examples:
+        Calculate baseline:
+          value: subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Baseline:
+      description: The baseline values for a single sensitivity value.
+      properties:
+        highThresholds:
+          description: The high thresholds of the baseline.
+          items:
+            description: A single high threshold value.
+            format: double
+            type: number
+          type: array
+        lowThresholds:
+          description: The low thresholds of the baseline.
+          items:
+            description: A single low threshold value.
+            format: double
+            type: number
+          type: array
+        sensitivity:
+          description: The sensitivity of the baseline.
+          enum:
+            - Low
+            - Medium
+            - High
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Sensitivity
+      required:
+        - sensitivity
+        - lowThresholds
+        - highThresholds
+      type: object
+    CalculateBaselineResponse:
+      description: The response to a calculate baseline call.
+      properties:
+        baseline:
+          description: The baseline values for each sensitivity.
+          items:
+            $ref: "#/components/schemas/Baseline"
+          type: array
+        timestamps:
+          description: The array of timestamps of the baselines.
+          items:
+            description: The timestamp for the baseline value in ISO 8601 format.
+            format: date-time
+            type: string
+          type: array
+        type:
+          description: The resource type of the baseline resource.
+          type: string
+      required:
+        - type
+        - baseline
+      type: object
+    ErrorResponse:
+      description: Describes the format of Error response.
+      properties:
+        code:
+          description: Error code
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          type: string
+      type: object
+    TimeSeriesInformation:
+      description: The time series info needed for calculating the baseline.
+      properties:
+        sensitivities:
+          description: The list of sensitivities for calculating the baseline.
+          items:
+            description: The requested sensitivity for calculating the baseline.
+            type: string
+          type: array
+        timestamps:
+          description: The array of timestamps of the baselines.
+          items:
+            description: The timestamp for the baseline value in ISO 8601 format.
+            format: date-time
+            type: string
+          type: array
+        values:
+          description: The metric values to calculate the baseline.
+          items:
+            description: A single metric value.
+            format: double
+            type: number
+          type: array
+      required:
+        - sensitivities
+        - values

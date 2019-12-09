@@ -1,0 +1,4179 @@
+openapi: 3.0.0
+info:
+  version: 2015-07-09
+  x-release: v4
+  title: AWS CodePipeline
+  description: <fullname>AWS CodePipeline</fullname> <p> <b>Overview</b> </p> <p>This is
+    the AWS CodePipeline API Reference. This guide provides descriptions of the
+    actions and data types for AWS CodePipeline. Some functionality for your
+    pipeline can only be configured through the API. For more information, see
+    the <a
+    href="https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html">AWS
+    CodePipeline User Guide</a>.</p> <p>You can use the AWS CodePipeline API to
+    work with pipelines, stages, actions, and transitions.</p> <p>
+    <i>Pipelines</i> are models of automated release processes. Each pipeline is
+    uniquely named, and consists of stages, actions, and transitions. </p>
+    <p>You can work with pipelines by calling:</p> <ul> <li> <p>
+    <a>CreatePipeline</a>, which creates a uniquely named pipeline.</p> </li>
+    <li> <p> <a>DeletePipeline</a>, which deletes the specified pipeline.</p>
+    </li> <li> <p> <a>GetPipeline</a>, which returns information about the
+    pipeline structure and pipeline metadata, including the pipeline Amazon
+    Resource Name (ARN).</p> </li> <li> <p> <a>GetPipelineExecution</a>, which
+    returns information about a specific execution of a pipeline.</p> </li> <li>
+    <p> <a>GetPipelineState</a>, which returns information about the current
+    state of the stages and actions of a pipeline.</p> </li> <li> <p>
+    <a>ListActionExecutions</a>, which returns action-level details for past
+    executions. The details include full stage and action-level details,
+    including individual action duration, status, any errors that occurred
+    during the execution, and input and output artifact location details.</p>
+    </li> <li> <p> <a>ListPipelines</a>, which gets a summary of all of the
+    pipelines associated with your account.</p> </li> <li> <p>
+    <a>ListPipelineExecutions</a>, which gets a summary of the most recent
+    executions for a pipeline.</p> </li> <li> <p> <a>StartPipelineExecution</a>,
+    which runs the most recent revision of an artifact through the pipeline.</p>
+    </li> <li> <p> <a>UpdatePipeline</a>, which updates a pipeline with edits or
+    changes to the structure of the pipeline.</p> </li> </ul> <p>Pipelines
+    include <i>stages</i>. Each stage contains one or more actions that must
+    complete before the next stage begins. A stage results in success or
+    failure. If a stage fails, the pipeline stops at that stage and remains
+    stopped until either a new version of an artifact appears in the source
+    location, or a user takes action to rerun the most recent artifact through
+    the pipeline. You can call <a>GetPipelineState</a>, which displays the
+    status of a pipeline, including the status of stages in the pipeline, or
+    <a>GetPipeline</a>, which returns the entire structure of the pipeline,
+    including the stages of that pipeline. For more information about the
+    structure of stages and actions, see <a
+    href="https://docs.aws.amazon.com/codepipeline/latest/userguide/pipeline-structure.html">AWS
+    CodePipeline Pipeline Structure Reference</a>.</p> <p>Pipeline stages
+    include <i>actions</i> that are categorized into categories such as source
+    or build actions performed in a stage of a pipeline. For example, you can
+    use a source action to import artifacts into a pipeline from a source such
+    as Amazon S3. Like stages, you do not work with actions directly in most
+    cases, but you do define and interact with actions when working with
+    pipeline operations such as <a>CreatePipeline</a> and
+    <a>GetPipelineState</a>. Valid action categories are:</p> <ul> <li>
+    <p>Source</p> </li> <li> <p>Build</p> </li> <li> <p>Test</p> </li> <li>
+    <p>Deploy</p> </li> <li> <p>Approval</p> </li> <li> <p>Invoke</p> </li>
+    </ul> <p>Pipelines also include <i>transitions</i>, which allow the
+    transition of artifacts from one stage to the next in a pipeline after the
+    actions in one stage complete.</p> <p>You can work with transitions by
+    calling:</p> <ul> <li> <p> <a>DisableStageTransition</a>, which prevents
+    artifacts from transitioning to the next stage in a pipeline.</p> </li> <li>
+    <p> <a>EnableStageTransition</a>, which enables transition of artifacts
+    between stages in a pipeline. </p> </li> </ul> <p> <b>Using the API to
+    integrate with AWS CodePipeline</b> </p> <p>For third-party integrators or
+    developers who want to create their own integrations with AWS CodePipeline,
+    the expected sequence varies from the standard API user. To integrate with
+    AWS CodePipeline, developers need to work with the following items:</p> <p>
+    <b>Jobs</b>, which are instances of an action. For example, a job for a
+    source action might import a revision of an artifact from a source. </p>
+    <p>You can work with jobs by calling:</p> <ul> <li> <p>
+    <a>AcknowledgeJob</a>, which confirms whether a job worker has received the
+    specified job.</p> </li> <li> <p> <a>GetJobDetails</a>, which returns the
+    details of a job.</p> </li> <li> <p> <a>PollForJobs</a>, which determines
+    whether there are any jobs to act on.</p> </li> <li> <p>
+    <a>PutJobFailureResult</a>, which provides details of a job failure. </p>
+    </li> <li> <p> <a>PutJobSuccessResult</a>, which provides details of a job
+    success.</p> </li> </ul> <p> <b>Third party jobs</b>, which are instances of
+    an action created by a partner action and integrated into AWS CodePipeline.
+    Partner actions are created by members of the AWS Partner Network.</p>
+    <p>You can work with third party jobs by calling:</p> <ul> <li> <p>
+    <a>AcknowledgeThirdPartyJob</a>, which confirms whether a job worker has
+    received the specified job.</p> </li> <li> <p>
+    <a>GetThirdPartyJobDetails</a>, which requests the details of a job for a
+    partner action.</p> </li> <li> <p> <a>PollForThirdPartyJobs</a>, which
+    determines whether there are any jobs to act on. </p> </li> <li> <p>
+    <a>PutThirdPartyJobFailureResult</a>, which provides details of a job
+    failure.</p> </li> <li> <p> <a>PutThirdPartyJobSuccessResult</a>, which
+    provides details of a job success.</p> </li> </ul>
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: codepipeline
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/codepipeline-2015-07-09.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/codepipeline/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  /#X-Amz-Target=CodePipeline_20150709.AcknowledgeJob:
+    post:
+      operationId: AcknowledgeJob
+      description: Returns information about a specified job and whether that job has been
+        received by the job worker. Used for custom actions only.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcknowledgeJobOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: InvalidNonceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNonceException"
+        "482":
+          description: JobNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.AcknowledgeJob
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcknowledgeJobInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.AcknowledgeThirdPartyJob:
+    post:
+      operationId: AcknowledgeThirdPartyJob
+      description: Confirms a job worker has received the specified job. Used for partner
+        actions only.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcknowledgeThirdPartyJobOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: InvalidNonceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNonceException"
+        "482":
+          description: JobNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobNotFoundException"
+        "483":
+          description: InvalidClientTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidClientTokenException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.AcknowledgeThirdPartyJob
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcknowledgeThirdPartyJobInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.CreateCustomActionType:
+    post:
+      operationId: CreateCustomActionType
+      description: Creates a new custom action that can be used in all pipelines associated
+        with the AWS account. Only used for custom actions.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateCustomActionTypeOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "482":
+          description: TooManyTagsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyTagsException"
+        "483":
+          description: InvalidTagsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTagsException"
+        "484":
+          description: ConcurrentModificationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcurrentModificationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.CreateCustomActionType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCustomActionTypeInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.CreatePipeline:
+    post:
+      operationId: CreatePipeline
+      description: <p>Creates a pipeline.</p> <note> <p>In the pipeline structure, you must
+        include either <code>artifactStore</code> or <code>artifactStores</code>
+        in your pipeline, but you cannot use both. If you create a cross-region
+        action in your pipeline, you must use <code>artifactStores</code>.</p>
+        </note>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatePipelineOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: PipelineNameInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNameInUseException"
+        "482":
+          description: InvalidStageDeclarationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidStageDeclarationException"
+        "483":
+          description: InvalidActionDeclarationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidActionDeclarationException"
+        "484":
+          description: InvalidBlockerDeclarationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidBlockerDeclarationException"
+        "485":
+          description: InvalidStructureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidStructureException"
+        "486":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "487":
+          description: TooManyTagsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyTagsException"
+        "488":
+          description: InvalidTagsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTagsException"
+        "489":
+          description: ConcurrentModificationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcurrentModificationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.CreatePipeline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePipelineInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.DeleteCustomActionType:
+    post:
+      operationId: DeleteCustomActionType
+      description: <p>Marks a custom action as deleted. <code>PollForJobs</code> for the
+        custom action fails after the action is marked for deletion. Used for
+        custom actions only.</p> <important> <p>To re-create a custom action
+        after it has been deleted you must use a string in the version field
+        that has never been used before. This string can be an incremented
+        version number, for example. To restore a deleted custom action, use a
+        JSON file that is identical to the deleted action, including the
+        original string in the version field.</p> </important>
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: ConcurrentModificationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcurrentModificationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.DeleteCustomActionType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteCustomActionTypeInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.DeletePipeline:
+    post:
+      operationId: DeletePipeline
+      description: Deletes the specified pipeline.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: ConcurrentModificationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcurrentModificationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.DeletePipeline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeletePipelineInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.DeleteWebhook:
+    post:
+      operationId: DeleteWebhook
+      description: Deletes a previously created webhook by name. Deleting the webhook stops
+        AWS CodePipeline from starting a pipeline every time an external event
+        occurs. The API returns successfully when trying to delete a webhook
+        that is already deleted. If a deleted webhook is re-created by calling
+        PutWebhook with the same name, it will have a different URL.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteWebhookOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: ConcurrentModificationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcurrentModificationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.DeleteWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteWebhookInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.DeregisterWebhookWithThirdParty:
+    post:
+      operationId: DeregisterWebhookWithThirdParty
+      description: Removes the connection between the webhook that was created by
+        CodePipeline and the external tool with events to be detected. Currently
+        supported only for webhooks that target an action type of GitHub.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeregisterWebhookWithThirdPartyOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: WebhookNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.DeregisterWebhookWithThirdParty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeregisterWebhookWithThirdPartyInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.DisableStageTransition:
+    post:
+      operationId: DisableStageTransition
+      description: Prevents artifacts in a pipeline from transitioning to the next stage in
+        the pipeline.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+        "482":
+          description: StageNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StageNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.DisableStageTransition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisableStageTransitionInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.EnableStageTransition:
+    post:
+      operationId: EnableStageTransition
+      description: Enables artifacts in a pipeline to transition to a stage in a pipeline.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+        "482":
+          description: StageNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StageNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.EnableStageTransition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnableStageTransitionInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.GetJobDetails:
+    post:
+      operationId: GetJobDetails
+      description: <p>Returns information about a job. Used for custom actions only.</p>
+        <important> <p>When this API is called, AWS CodePipeline returns
+        temporary credentials for the Amazon S3 bucket used to store artifacts
+        for the pipeline, if the action requires access to that Amazon S3 bucket
+        for input or output artifacts. This API also returns any secret values
+        defined for the action.</p> </important>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetJobDetailsOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: JobNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.GetJobDetails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetJobDetailsInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.GetPipeline:
+    post:
+      operationId: GetPipeline
+      description: Returns the metadata, structure, stages, and actions of a pipeline. Can
+        be used to return the entire structure of a pipeline in JSON format,
+        which can then be modified and used to update the pipeline structure
+        with <a>UpdatePipeline</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetPipelineOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+        "482":
+          description: PipelineVersionNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineVersionNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.GetPipeline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetPipelineInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.GetPipelineExecution:
+    post:
+      operationId: GetPipelineExecution
+      description: Returns information about an execution of a pipeline, including details
+        about artifacts, the pipeline execution ID, and the name, version, and
+        status of the pipeline.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetPipelineExecutionOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+        "482":
+          description: PipelineExecutionNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineExecutionNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.GetPipelineExecution
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetPipelineExecutionInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.GetPipelineState:
+    post:
+      operationId: GetPipelineState
+      description: <p>Returns information about the state of a pipeline, including the
+        stages and actions.</p> <note> <p>Values returned in the
+        <code>revisionId</code> and <code>revisionUrl</code> fields indicate the
+        source revision information, such as the commit ID, for the current
+        state.</p> </note>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetPipelineStateOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.GetPipelineState
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetPipelineStateInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.GetThirdPartyJobDetails:
+    post:
+      operationId: GetThirdPartyJobDetails
+      description: <p>Requests the details of a job for a third party action. Used for
+        partner actions only.</p> <important> <p>When this API is called, AWS
+        CodePipeline returns temporary credentials for the Amazon S3 bucket used
+        to store artifacts for the pipeline, if the action requires access to
+        that Amazon S3 bucket for input or output artifacts. This API also
+        returns any secret values defined for the action.</p> </important>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetThirdPartyJobDetailsOutput"
+        "480":
+          description: JobNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobNotFoundException"
+        "481":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "482":
+          description: InvalidClientTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidClientTokenException"
+        "483":
+          description: InvalidJobException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidJobException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.GetThirdPartyJobDetails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetThirdPartyJobDetailsInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.ListActionExecutions:
+    post:
+      operationId: ListActionExecutions
+      description: Lists the action executions that have occurred in a pipeline.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListActionExecutionsOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+        "482":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "483":
+          description: PipelineExecutionNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineExecutionNotFoundException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.ListActionExecutions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListActionExecutionsInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.ListActionTypes:
+    post:
+      operationId: ListActionTypes
+      description: Gets a summary of all AWS CodePipeline action types associated with your
+        account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListActionTypesOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.ListActionTypes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListActionTypesInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.ListPipelineExecutions:
+    post:
+      operationId: ListPipelineExecutions
+      description: Gets a summary of the most recent executions for a pipeline.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListPipelineExecutionsOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+        "482":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.ListPipelineExecutions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListPipelineExecutionsInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.ListPipelines:
+    post:
+      operationId: ListPipelines
+      description: Gets a summary of all of the pipelines associated with your account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListPipelinesOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.ListPipelines
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListPipelinesInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.ListTagsForResource:
+    post:
+      operationId: ListTagsForResource
+      description: Gets the set of key-value pairs (metadata) that are used to manage the
+        resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTagsForResourceOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "483":
+          description: InvalidArnException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArnException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.ListTagsForResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListTagsForResourceInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.ListWebhooks:
+    post:
+      operationId: ListWebhooks
+      description: Gets a listing of all the webhooks in this AWS Region for this account.
+        The output lists all webhooks and includes the webhook URL and ARN and
+        the configuration for each webhook.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListWebhooksOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.ListWebhooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListWebhooksInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.PollForJobs:
+    post:
+      operationId: PollForJobs
+      description: <p>Returns information about any jobs for AWS CodePipeline to act on.
+        <code>PollForJobs</code> is valid only for action types with "Custom" in
+        the owner field. If the action type contains "AWS" or "ThirdParty" in
+        the owner field, the <code>PollForJobs</code> action returns an
+        error.</p> <important> <p>When this API is called, AWS CodePipeline
+        returns temporary credentials for the Amazon S3 bucket used to store
+        artifacts for the pipeline, if the action requires access to that Amazon
+        S3 bucket for input or output artifacts. This API also returns any
+        secret values defined for the action.</p> </important>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PollForJobsOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: ActionTypeNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionTypeNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.PollForJobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PollForJobsInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.PollForThirdPartyJobs:
+    post:
+      operationId: PollForThirdPartyJobs
+      description: <p>Determines whether there are any third party jobs for a job worker to
+        act on. Used for partner actions only.</p> <important> <p>When this API
+        is called, AWS CodePipeline returns temporary credentials for the Amazon
+        S3 bucket used to store artifacts for the pipeline, if the action
+        requires access to that Amazon S3 bucket for input or output
+        artifacts.</p> </important>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PollForThirdPartyJobsOutput"
+        "480":
+          description: ActionTypeNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionTypeNotFoundException"
+        "481":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.PollForThirdPartyJobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PollForThirdPartyJobsInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.PutActionRevision:
+    post:
+      operationId: PutActionRevision
+      description: Provides information to AWS CodePipeline about new revisions to a source.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutActionRevisionOutput"
+        "480":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+        "481":
+          description: StageNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StageNotFoundException"
+        "482":
+          description: ActionNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionNotFoundException"
+        "483":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.PutActionRevision
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutActionRevisionInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.PutApprovalResult:
+    post:
+      operationId: PutApprovalResult
+      description: Provides the response to a manual approval request to AWS CodePipeline.
+        Valid responses include Approved and Rejected.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutApprovalResultOutput"
+        "480":
+          description: InvalidApprovalTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidApprovalTokenException"
+        "481":
+          description: ApprovalAlreadyCompletedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApprovalAlreadyCompletedException"
+        "482":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+        "483":
+          description: StageNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StageNotFoundException"
+        "484":
+          description: ActionNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionNotFoundException"
+        "485":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.PutApprovalResult
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutApprovalResultInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.PutJobFailureResult:
+    post:
+      operationId: PutJobFailureResult
+      description: Represents the failure of a job as returned to the pipeline by a job
+        worker. Used for custom actions only.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: JobNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobNotFoundException"
+        "482":
+          description: InvalidJobStateException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidJobStateException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.PutJobFailureResult
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutJobFailureResultInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.PutJobSuccessResult:
+    post:
+      operationId: PutJobSuccessResult
+      description: Represents the success of a job as returned to the pipeline by a job
+        worker. Used for custom actions only.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: JobNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobNotFoundException"
+        "482":
+          description: InvalidJobStateException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidJobStateException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.PutJobSuccessResult
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutJobSuccessResultInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.PutThirdPartyJobFailureResult:
+    post:
+      operationId: PutThirdPartyJobFailureResult
+      description: Represents the failure of a third party job as returned to the pipeline
+        by a job worker. Used for partner actions only.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: JobNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobNotFoundException"
+        "482":
+          description: InvalidJobStateException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidJobStateException"
+        "483":
+          description: InvalidClientTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidClientTokenException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.PutThirdPartyJobFailureResult
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutThirdPartyJobFailureResultInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.PutThirdPartyJobSuccessResult:
+    post:
+      operationId: PutThirdPartyJobSuccessResult
+      description: Represents the success of a third party job as returned to the pipeline
+        by a job worker. Used for partner actions only.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: JobNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobNotFoundException"
+        "482":
+          description: InvalidJobStateException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidJobStateException"
+        "483":
+          description: InvalidClientTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidClientTokenException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.PutThirdPartyJobSuccessResult
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutThirdPartyJobSuccessResultInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.PutWebhook:
+    post:
+      operationId: PutWebhook
+      description: Defines a webhook and returns a unique webhook URL generated by
+        CodePipeline. This URL can be supplied to third party source hosting
+        providers to call every time there's a code change. When CodePipeline
+        receives a POST request on this URL, the pipeline defined in the webhook
+        is started as long as the POST request satisfied the authentication and
+        filtering requirements supplied when defining the webhook.
+        RegisterWebhookWithThirdParty and DeregisterWebhookWithThirdParty APIs
+        can be used to automatically configure supported third parties to call
+        the generated webhook URL.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutWebhookOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "482":
+          description: InvalidWebhookFilterPatternException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidWebhookFilterPatternException"
+        "483":
+          description: InvalidWebhookAuthenticationParametersException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidWebhookAuthenticationParametersE\
+                  xception"
+        "484":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+        "485":
+          description: TooManyTagsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyTagsException"
+        "486":
+          description: InvalidTagsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTagsException"
+        "487":
+          description: ConcurrentModificationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcurrentModificationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.PutWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutWebhookInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.RegisterWebhookWithThirdParty:
+    post:
+      operationId: RegisterWebhookWithThirdParty
+      description: Configures a connection between the webhook that was created and the
+        external tool with events to be detected.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterWebhookWithThirdPartyOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: WebhookNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.RegisterWebhookWithThirdParty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterWebhookWithThirdPartyInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.RetryStageExecution:
+    post:
+      operationId: RetryStageExecution
+      description: Resumes the pipeline execution by retrying the last failed actions in a
+        stage. You can retry a stage immediately if any of the actions in the
+        stage fail. When you retry, all actions that are still in progress
+        continue working, and failed actions are triggered again.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RetryStageExecutionOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+        "482":
+          description: StageNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StageNotFoundException"
+        "483":
+          description: StageNotRetryableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StageNotRetryableException"
+        "484":
+          description: NotLatestPipelineExecutionException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotLatestPipelineExecutionException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.RetryStageExecution
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RetryStageExecutionInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.StartPipelineExecution:
+    post:
+      operationId: StartPipelineExecution
+      description: Starts the specified pipeline. Specifically, it begins processing the
+        latest commit to the source location specified as part of the pipeline.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartPipelineExecutionOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: PipelineNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PipelineNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.StartPipelineExecution
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartPipelineExecutionInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.TagResource:
+    post:
+      operationId: TagResource
+      description: "Adds to or modifies the tags of the given resource. Tags are metadata
+        that can be used to manage a resource. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagResourceOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: InvalidArnException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArnException"
+        "483":
+          description: TooManyTagsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyTagsException"
+        "484":
+          description: InvalidTagsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTagsException"
+        "485":
+          description: ConcurrentModificationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcurrentModificationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.TagResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TagResourceInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.UntagResource:
+    post:
+      operationId: UntagResource
+      description: Removes tags from an AWS resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UntagResourceOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: InvalidArnException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidArnException"
+        "483":
+          description: InvalidTagsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTagsException"
+        "484":
+          description: ConcurrentModificationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcurrentModificationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.UntagResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UntagResourceInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=CodePipeline_20150709.UpdatePipeline:
+    post:
+      operationId: UpdatePipeline
+      description: Updates a specified pipeline with edits or changes to its structure. Use
+        a JSON file with the pipeline structure and <code>UpdatePipeline</code>
+        to provide the full structure of the pipeline. Updating the pipeline
+        increases the version number of the pipeline by 1.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePipelineOutput"
+        "480":
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationException"
+        "481":
+          description: InvalidStageDeclarationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidStageDeclarationException"
+        "482":
+          description: InvalidActionDeclarationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidActionDeclarationException"
+        "483":
+          description: InvalidBlockerDeclarationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidBlockerDeclarationException"
+        "484":
+          description: InvalidStructureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidStructureException"
+        "485":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - CodePipeline_20150709.UpdatePipeline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePipelineInput"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://codepipeline.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The CodePipeline multi-region endpoint
+  - url: https://codepipeline.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The CodePipeline multi-region endpoint
+  - url: http://codepipeline.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The CodePipeline endpoint for China (Beijing) and China (Ningxia)
+  - url: https://codepipeline.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The CodePipeline endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    AcknowledgeJobOutput:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/JobStatus"
+      description: Represents the output of an AcknowledgeJob action.
+    AcknowledgeJobInput:
+      type: object
+      required:
+        - jobId
+        - nonce
+      properties:
+        jobId:
+          $ref: "#/components/schemas/JobId"
+        nonce:
+          $ref: "#/components/schemas/Nonce"
+      description: Represents the input of an AcknowledgeJob action.
+    ValidationException: {}
+    InvalidNonceException: {}
+    JobNotFoundException: {}
+    AcknowledgeThirdPartyJobOutput:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/JobStatus"
+      description: Represents the output of an AcknowledgeThirdPartyJob action.
+    AcknowledgeThirdPartyJobInput:
+      type: object
+      required:
+        - jobId
+        - nonce
+        - clientToken
+      properties:
+        jobId:
+          $ref: "#/components/schemas/ThirdPartyJobId"
+        nonce:
+          $ref: "#/components/schemas/Nonce"
+        clientToken:
+          $ref: "#/components/schemas/ClientToken"
+      description: Represents the input of an AcknowledgeThirdPartyJob action.
+    InvalidClientTokenException: {}
+    CreateCustomActionTypeOutput:
+      type: object
+      required:
+        - actionType
+      properties:
+        actionType:
+          $ref: "#/components/schemas/ActionType"
+        tags:
+          $ref: "#/components/schemas/TagList"
+      description: Represents the output of a <code>CreateCustomActionType</code> operation.
+    CreateCustomActionTypeInput:
+      type: object
+      required:
+        - category
+        - provider
+        - version
+        - inputArtifactDetails
+        - outputArtifactDetails
+      properties:
+        category:
+          $ref: "#/components/schemas/ActionCategory"
+        provider:
+          $ref: "#/components/schemas/ActionProvider"
+        version:
+          $ref: "#/components/schemas/Version"
+        settings:
+          $ref: "#/components/schemas/ActionTypeSettings"
+        configurationProperties:
+          $ref: "#/components/schemas/ActionConfigurationPropertyList"
+        inputArtifactDetails:
+          $ref: "#/components/schemas/ArtifactDetails"
+        outputArtifactDetails:
+          $ref: "#/components/schemas/ArtifactDetails"
+        tags:
+          $ref: "#/components/schemas/TagList"
+      description: Represents the input of a CreateCustomActionType operation.
+    LimitExceededException: {}
+    TooManyTagsException: {}
+    InvalidTagsException: {}
+    ConcurrentModificationException: {}
+    CreatePipelineOutput:
+      type: object
+      properties:
+        pipeline:
+          $ref: "#/components/schemas/PipelineDeclaration"
+        tags:
+          $ref: "#/components/schemas/TagList"
+      description: Represents the output of a <code>CreatePipeline</code> action.
+    CreatePipelineInput:
+      type: object
+      required:
+        - pipeline
+      properties:
+        pipeline:
+          $ref: "#/components/schemas/PipelineDeclaration"
+        tags:
+          $ref: "#/components/schemas/TagList"
+      description: Represents the input of a <code>CreatePipeline</code> action.
+    PipelineNameInUseException: {}
+    InvalidStageDeclarationException: {}
+    InvalidActionDeclarationException: {}
+    InvalidBlockerDeclarationException: {}
+    InvalidStructureException: {}
+    DeleteCustomActionTypeInput:
+      type: object
+      required:
+        - category
+        - provider
+        - version
+      properties:
+        category:
+          $ref: "#/components/schemas/ActionCategory"
+        provider:
+          $ref: "#/components/schemas/ActionProvider"
+        version:
+          $ref: "#/components/schemas/Version"
+      description: Represents the input of a <code>DeleteCustomActionType</code> operation.
+        The custom action will be marked as deleted.
+    DeletePipelineInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          $ref: "#/components/schemas/PipelineName"
+      description: Represents the input of a <code>DeletePipeline</code> action.
+    DeleteWebhookOutput:
+      type: object
+      properties: {}
+    DeleteWebhookInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          $ref: "#/components/schemas/WebhookName"
+    DeregisterWebhookWithThirdPartyOutput:
+      type: object
+      properties: {}
+    DeregisterWebhookWithThirdPartyInput:
+      type: object
+      properties:
+        webhookName:
+          $ref: "#/components/schemas/WebhookName"
+    WebhookNotFoundException: {}
+    DisableStageTransitionInput:
+      type: object
+      required:
+        - pipelineName
+        - stageName
+        - transitionType
+        - reason
+      properties:
+        pipelineName:
+          $ref: "#/components/schemas/PipelineName"
+        stageName:
+          $ref: "#/components/schemas/StageName"
+        transitionType:
+          $ref: "#/components/schemas/StageTransitionType"
+        reason:
+          $ref: "#/components/schemas/DisabledReason"
+      description: Represents the input of a <code>DisableStageTransition</code> action.
+    PipelineNotFoundException: {}
+    StageNotFoundException: {}
+    EnableStageTransitionInput:
+      type: object
+      required:
+        - pipelineName
+        - stageName
+        - transitionType
+      properties:
+        pipelineName:
+          $ref: "#/components/schemas/PipelineName"
+        stageName:
+          $ref: "#/components/schemas/StageName"
+        transitionType:
+          $ref: "#/components/schemas/StageTransitionType"
+      description: Represents the input of an <code>EnableStageTransition</code> action.
+    GetJobDetailsOutput:
+      type: object
+      properties:
+        jobDetails:
+          $ref: "#/components/schemas/JobDetails"
+      description: Represents the output of a <code>GetJobDetails</code> action.
+    GetJobDetailsInput:
+      type: object
+      required:
+        - jobId
+      properties:
+        jobId:
+          $ref: "#/components/schemas/JobId"
+      description: Represents the input of a <code>GetJobDetails</code> action.
+    GetPipelineOutput:
+      type: object
+      properties:
+        pipeline:
+          $ref: "#/components/schemas/PipelineDeclaration"
+        metadata:
+          $ref: "#/components/schemas/PipelineMetadata"
+      description: Represents the output of a <code>GetPipeline</code> action.
+    GetPipelineInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          $ref: "#/components/schemas/PipelineName"
+        version:
+          $ref: "#/components/schemas/PipelineVersion"
+      description: Represents the input of a <code>GetPipeline</code> action.
+    PipelineVersionNotFoundException: {}
+    GetPipelineExecutionOutput:
+      type: object
+      properties:
+        pipelineExecution:
+          $ref: "#/components/schemas/PipelineExecution"
+      description: Represents the output of a <code>GetPipelineExecution</code> action.
+    GetPipelineExecutionInput:
+      type: object
+      required:
+        - pipelineName
+        - pipelineExecutionId
+      properties:
+        pipelineName:
+          $ref: "#/components/schemas/PipelineName"
+        pipelineExecutionId:
+          $ref: "#/components/schemas/PipelineExecutionId"
+      description: Represents the input of a <code>GetPipelineExecution</code> action.
+    PipelineExecutionNotFoundException: {}
+    GetPipelineStateOutput:
+      type: object
+      properties:
+        pipelineName:
+          $ref: "#/components/schemas/PipelineName"
+        pipelineVersion:
+          $ref: "#/components/schemas/PipelineVersion"
+        stageStates:
+          $ref: "#/components/schemas/StageStateList"
+        created:
+          $ref: "#/components/schemas/Timestamp"
+        updated:
+          $ref: "#/components/schemas/Timestamp"
+      description: Represents the output of a <code>GetPipelineState</code> action.
+    GetPipelineStateInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          $ref: "#/components/schemas/PipelineName"
+      description: Represents the input of a <code>GetPipelineState</code> action.
+    GetThirdPartyJobDetailsOutput:
+      type: object
+      properties:
+        jobDetails:
+          $ref: "#/components/schemas/ThirdPartyJobDetails"
+      description: Represents the output of a <code>GetThirdPartyJobDetails</code> action.
+    GetThirdPartyJobDetailsInput:
+      type: object
+      required:
+        - jobId
+        - clientToken
+      properties:
+        jobId:
+          $ref: "#/components/schemas/ThirdPartyJobId"
+        clientToken:
+          $ref: "#/components/schemas/ClientToken"
+      description: Represents the input of a <code>GetThirdPartyJobDetails</code> action.
+    InvalidJobException: {}
+    ListActionExecutionsOutput:
+      type: object
+      properties:
+        actionExecutionDetails:
+          $ref: "#/components/schemas/ActionExecutionDetailList"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListActionExecutionsInput:
+      type: object
+      required:
+        - pipelineName
+      properties:
+        pipelineName:
+          $ref: "#/components/schemas/PipelineName"
+        filter:
+          $ref: "#/components/schemas/ActionExecutionFilter"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    InvalidNextTokenException: {}
+    ListActionTypesOutput:
+      type: object
+      required:
+        - actionTypes
+      properties:
+        actionTypes:
+          $ref: "#/components/schemas/ActionTypeList"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+      description: Represents the output of a <code>ListActionTypes</code> action.
+    ListActionTypesInput:
+      type: object
+      properties:
+        actionOwnerFilter:
+          $ref: "#/components/schemas/ActionOwner"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+      description: Represents the input of a <code>ListActionTypes</code> action.
+    ListPipelineExecutionsOutput:
+      type: object
+      properties:
+        pipelineExecutionSummaries:
+          $ref: "#/components/schemas/PipelineExecutionSummaryList"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+      description: Represents the output of a <code>ListPipelineExecutions</code> action.
+    ListPipelineExecutionsInput:
+      type: object
+      required:
+        - pipelineName
+      properties:
+        pipelineName:
+          $ref: "#/components/schemas/PipelineName"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+      description: Represents the input of a <code>ListPipelineExecutions</code> action.
+    ListPipelinesOutput:
+      type: object
+      properties:
+        pipelines:
+          $ref: "#/components/schemas/PipelineList"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+      description: Represents the output of a <code>ListPipelines</code> action.
+    ListPipelinesInput:
+      type: object
+      properties:
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+      description: Represents the input of a <code>ListPipelines</code> action.
+    ListTagsForResourceOutput:
+      type: object
+      properties:
+        tags:
+          $ref: "#/components/schemas/TagList"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListTagsForResourceInput:
+      type: object
+      required:
+        - resourceArn
+      properties:
+        resourceArn:
+          $ref: "#/components/schemas/ResourceArn"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+    ResourceNotFoundException: {}
+    InvalidArnException: {}
+    ListWebhooksOutput:
+      type: object
+      properties:
+        webhooks:
+          $ref: "#/components/schemas/WebhookList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListWebhooksInput:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+    PollForJobsOutput:
+      type: object
+      properties:
+        jobs:
+          $ref: "#/components/schemas/JobList"
+      description: Represents the output of a <code>PollForJobs</code> action.
+    PollForJobsInput:
+      type: object
+      required:
+        - actionTypeId
+      properties:
+        actionTypeId:
+          $ref: "#/components/schemas/ActionTypeId"
+        maxBatchSize:
+          $ref: "#/components/schemas/MaxBatchSize"
+        queryParam:
+          $ref: "#/components/schemas/QueryParamMap"
+      description: Represents the input of a <code>PollForJobs</code> action.
+    ActionTypeNotFoundException: {}
+    PollForThirdPartyJobsOutput:
+      type: object
+      properties:
+        jobs:
+          $ref: "#/components/schemas/ThirdPartyJobList"
+      description: Represents the output of a <code>PollForThirdPartyJobs</code> action.
+    PollForThirdPartyJobsInput:
+      type: object
+      required:
+        - actionTypeId
+      properties:
+        actionTypeId:
+          $ref: "#/components/schemas/ActionTypeId"
+        maxBatchSize:
+          $ref: "#/components/schemas/MaxBatchSize"
+      description: Represents the input of a <code>PollForThirdPartyJobs</code> action.
+    PutActionRevisionOutput:
+      type: object
+      properties:
+        newRevision:
+          $ref: "#/components/schemas/Boolean"
+        pipelineExecutionId:
+          $ref: "#/components/schemas/PipelineExecutionId"
+      description: Represents the output of a <code>PutActionRevision</code> action.
+    PutActionRevisionInput:
+      type: object
+      required:
+        - pipelineName
+        - stageName
+        - actionName
+        - actionRevision
+      properties:
+        pipelineName:
+          $ref: "#/components/schemas/PipelineName"
+        stageName:
+          $ref: "#/components/schemas/StageName"
+        actionName:
+          $ref: "#/components/schemas/ActionName"
+        actionRevision:
+          $ref: "#/components/schemas/ActionRevision"
+      description: Represents the input of a <code>PutActionRevision</code> action.
+    ActionNotFoundException: {}
+    PutApprovalResultOutput:
+      type: object
+      properties:
+        approvedAt:
+          $ref: "#/components/schemas/Timestamp"
+      description: Represents the output of a <code>PutApprovalResult</code> action.
+    PutApprovalResultInput:
+      type: object
+      required:
+        - pipelineName
+        - stageName
+        - actionName
+        - result
+        - token
+      properties:
+        pipelineName:
+          $ref: "#/components/schemas/PipelineName"
+        stageName:
+          $ref: "#/components/schemas/StageName"
+        actionName:
+          $ref: "#/components/schemas/ActionName"
+        result:
+          $ref: "#/components/schemas/ApprovalResult"
+        token:
+          $ref: "#/components/schemas/ApprovalToken"
+      description: Represents the input of a <code>PutApprovalResult</code> action.
+    InvalidApprovalTokenException: {}
+    ApprovalAlreadyCompletedException: {}
+    PutJobFailureResultInput:
+      type: object
+      required:
+        - jobId
+        - failureDetails
+      properties:
+        jobId:
+          $ref: "#/components/schemas/JobId"
+        failureDetails:
+          $ref: "#/components/schemas/FailureDetails"
+      description: Represents the input of a <code>PutJobFailureResult</code> action.
+    InvalidJobStateException: {}
+    PutJobSuccessResultInput:
+      type: object
+      required:
+        - jobId
+      properties:
+        jobId:
+          $ref: "#/components/schemas/JobId"
+        currentRevision:
+          $ref: "#/components/schemas/CurrentRevision"
+        continuationToken:
+          $ref: "#/components/schemas/ContinuationToken"
+        executionDetails:
+          $ref: "#/components/schemas/ExecutionDetails"
+      description: Represents the input of a <code>PutJobSuccessResult</code> action.
+    PutThirdPartyJobFailureResultInput:
+      type: object
+      required:
+        - jobId
+        - clientToken
+        - failureDetails
+      properties:
+        jobId:
+          $ref: "#/components/schemas/ThirdPartyJobId"
+        clientToken:
+          $ref: "#/components/schemas/ClientToken"
+        failureDetails:
+          $ref: "#/components/schemas/FailureDetails"
+      description: Represents the input of a <code>PutThirdPartyJobFailureResult</code>
+        action.
+    PutThirdPartyJobSuccessResultInput:
+      type: object
+      required:
+        - jobId
+        - clientToken
+      properties:
+        jobId:
+          $ref: "#/components/schemas/ThirdPartyJobId"
+        clientToken:
+          $ref: "#/components/schemas/ClientToken"
+        currentRevision:
+          $ref: "#/components/schemas/CurrentRevision"
+        continuationToken:
+          $ref: "#/components/schemas/ContinuationToken"
+        executionDetails:
+          $ref: "#/components/schemas/ExecutionDetails"
+      description: Represents the input of a <code>PutThirdPartyJobSuccessResult</code>
+        action.
+    PutWebhookOutput:
+      type: object
+      properties:
+        webhook:
+          $ref: "#/components/schemas/ListWebhookItem"
+    PutWebhookInput:
+      type: object
+      required:
+        - webhook
+      properties:
+        webhook:
+          $ref: "#/components/schemas/WebhookDefinition"
+        tags:
+          $ref: "#/components/schemas/TagList"
+    InvalidWebhookFilterPatternException: {}
+    InvalidWebhookAuthenticationParametersException: {}
+    RegisterWebhookWithThirdPartyOutput:
+      type: object
+      properties: {}
+    RegisterWebhookWithThirdPartyInput:
+      type: object
+      properties:
+        webhookName:
+          $ref: "#/components/schemas/WebhookName"
+    RetryStageExecutionOutput:
+      type: object
+      properties:
+        pipelineExecutionId:
+          $ref: "#/components/schemas/PipelineExecutionId"
+      description: Represents the output of a <code>RetryStageExecution</code> action.
+    RetryStageExecutionInput:
+      type: object
+      required:
+        - pipelineName
+        - stageName
+        - pipelineExecutionId
+        - retryMode
+      properties:
+        pipelineName:
+          $ref: "#/components/schemas/PipelineName"
+        stageName:
+          $ref: "#/components/schemas/StageName"
+        pipelineExecutionId:
+          $ref: "#/components/schemas/PipelineExecutionId"
+        retryMode:
+          $ref: "#/components/schemas/StageRetryMode"
+      description: Represents the input of a <code>RetryStageExecution</code> action.
+    StageNotRetryableException: {}
+    NotLatestPipelineExecutionException: {}
+    StartPipelineExecutionOutput:
+      type: object
+      properties:
+        pipelineExecutionId:
+          $ref: "#/components/schemas/PipelineExecutionId"
+      description: Represents the output of a <code>StartPipelineExecution</code> action.
+    StartPipelineExecutionInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          $ref: "#/components/schemas/PipelineName"
+        clientRequestToken:
+          $ref: "#/components/schemas/ClientRequestToken"
+      description: Represents the input of a <code>StartPipelineExecution</code> action.
+    TagResourceOutput:
+      type: object
+      properties: {}
+    TagResourceInput:
+      type: object
+      required:
+        - resourceArn
+        - tags
+      properties:
+        resourceArn:
+          $ref: "#/components/schemas/ResourceArn"
+        tags:
+          $ref: "#/components/schemas/TagList"
+    UntagResourceOutput:
+      type: object
+      properties: {}
+    UntagResourceInput:
+      type: object
+      required:
+        - resourceArn
+        - tagKeys
+      properties:
+        resourceArn:
+          $ref: "#/components/schemas/ResourceArn"
+        tagKeys:
+          $ref: "#/components/schemas/TagKeyList"
+    UpdatePipelineOutput:
+      type: object
+      properties:
+        pipeline:
+          $ref: "#/components/schemas/PipelineDeclaration"
+      description: Represents the output of an <code>UpdatePipeline</code> action.
+    UpdatePipelineInput:
+      type: object
+      required:
+        - pipeline
+      properties:
+        pipeline:
+          $ref: "#/components/schemas/PipelineDeclaration"
+      description: Represents the input of an <code>UpdatePipeline</code> action.
+    AWSRegionName:
+      type: string
+      minLength: 4
+      maxLength: 30
+    AccessKeyId:
+      type: string
+    SecretAccessKey:
+      type: string
+    SessionToken:
+      type: string
+    AWSSessionCredentials:
+      type: object
+      required:
+        - accessKeyId
+        - secretAccessKey
+        - sessionToken
+      properties:
+        accessKeyId:
+          $ref: "#/components/schemas/AccessKeyId"
+        secretAccessKey:
+          $ref: "#/components/schemas/SecretAccessKey"
+        sessionToken:
+          $ref: "#/components/schemas/SessionToken"
+      description: Represents an AWS session credentials object. These credentials are
+        temporary credentials that are issued by AWS Secure Token Service (STS).
+        They can be used to access input and output artifacts in the Amazon S3
+        bucket used to store artifact for the pipeline in AWS CodePipeline.
+    AccountId:
+      type: string
+      pattern: "[0-9]{12}"
+    JobId:
+      type: string
+      pattern: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+    Nonce:
+      type: string
+      minLength: 1
+      maxLength: 50
+    JobStatus:
+      type: string
+      enum:
+        - Created
+        - Queued
+        - Dispatched
+        - InProgress
+        - TimedOut
+        - Succeeded
+        - Failed
+    ThirdPartyJobId:
+      type: string
+      minLength: 1
+      maxLength: 512
+    ClientToken:
+      type: string
+      minLength: 1
+      maxLength: 256
+    ActionCategory:
+      type: string
+      enum:
+        - Source
+        - Build
+        - Deploy
+        - Test
+        - Invoke
+        - Approval
+    ActionConfigurationMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/ActionConfigurationValue"
+    ActionConfiguration:
+      type: object
+      properties:
+        configuration:
+          $ref: "#/components/schemas/ActionConfigurationMap"
+      description: Represents information about an action configuration.
+    ActionConfigurationKey:
+      type: string
+      minLength: 1
+      maxLength: 50
+    ActionConfigurationValue:
+      type: string
+      minLength: 1
+      maxLength: 1000
+    Boolean:
+      type: boolean
+    Description:
+      type: string
+      minLength: 1
+      maxLength: 160
+    ActionConfigurationPropertyType:
+      type: string
+      enum:
+        - String
+        - Number
+        - Boolean
+    ActionConfigurationProperty:
+      type: object
+      required:
+        - name
+        - required
+        - key
+        - secret
+      properties:
+        name:
+          $ref: "#/components/schemas/ActionConfigurationKey"
+        required:
+          $ref: "#/components/schemas/Boolean"
+        key:
+          $ref: "#/components/schemas/Boolean"
+        secret:
+          $ref: "#/components/schemas/Boolean"
+        queryable:
+          $ref: "#/components/schemas/Boolean"
+        description:
+          $ref: "#/components/schemas/Description"
+        type:
+          $ref: "#/components/schemas/ActionConfigurationPropertyType"
+      description: Represents information about an action configuration property.
+    ActionConfigurationPropertyList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ActionConfigurationProperty"
+      maxItems: 10
+    ActionConfigurationQueryableValue:
+      type: string
+      pattern: "[a-zA-Z0-9_-]+"
+      minLength: 1
+      maxLength: 50
+    ActionName:
+      type: string
+      pattern: "[A-Za-z0-9.@\\-_]+"
+      minLength: 1
+      maxLength: 100
+    ActionExecutionId:
+      type: string
+    ActionContext:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ActionName"
+        actionExecutionId:
+          $ref: "#/components/schemas/ActionExecutionId"
+      description: Represents the context of an action in the stage of a pipeline to a job
+        worker.
+    ActionTypeId:
+      type: object
+      required:
+        - category
+        - owner
+        - provider
+        - version
+      properties:
+        category:
+          $ref: "#/components/schemas/ActionCategory"
+        owner:
+          $ref: "#/components/schemas/ActionOwner"
+        provider:
+          $ref: "#/components/schemas/ActionProvider"
+        version:
+          $ref: "#/components/schemas/Version"
+      description: Represents information about an action type.
+    ActionRunOrder:
+      type: integer
+      minimum: 1
+      maximum: 999
+    OutputArtifactList:
+      type: array
+      items:
+        $ref: "#/components/schemas/OutputArtifact"
+    InputArtifactList:
+      type: array
+      items:
+        $ref: "#/components/schemas/InputArtifact"
+    RoleArn:
+      type: string
+      pattern: arn:aws(-[\w]+)*:iam::[0-9]{12}:role/.*
+      maxLength: 1024
+    ActionDeclaration:
+      type: object
+      required:
+        - name
+        - actionTypeId
+      properties:
+        name:
+          $ref: "#/components/schemas/ActionName"
+        actionTypeId:
+          $ref: "#/components/schemas/ActionTypeId"
+        runOrder:
+          $ref: "#/components/schemas/ActionRunOrder"
+        configuration:
+          $ref: "#/components/schemas/ActionConfigurationMap"
+        outputArtifacts:
+          $ref: "#/components/schemas/OutputArtifactList"
+        inputArtifacts:
+          $ref: "#/components/schemas/InputArtifactList"
+        roleArn:
+          $ref: "#/components/schemas/RoleArn"
+        region:
+          $ref: "#/components/schemas/AWSRegionName"
+      description: Represents information about an action declaration.
+    ActionExecutionStatus:
+      type: string
+      enum:
+        - InProgress
+        - Succeeded
+        - Failed
+    ExecutionSummary:
+      type: string
+      minLength: 1
+      maxLength: 2048
+    Timestamp:
+      type: string
+      format: date-time
+    ActionExecutionToken:
+      type: string
+    LastUpdatedBy:
+      type: string
+    ExecutionId:
+      type: string
+      minLength: 1
+      maxLength: 1500
+    Url:
+      type: string
+      minLength: 1
+      maxLength: 2048
+    Percentage:
+      type: integer
+      minimum: 0
+      maximum: 100
+    ErrorDetails:
+      type: object
+      properties:
+        code:
+          $ref: "#/components/schemas/Code"
+        message:
+          $ref: "#/components/schemas/Message"
+      description: Represents information about an error in AWS CodePipeline.
+    ActionExecution:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/ActionExecutionStatus"
+        summary:
+          $ref: "#/components/schemas/ExecutionSummary"
+        lastStatusChange:
+          $ref: "#/components/schemas/Timestamp"
+        token:
+          $ref: "#/components/schemas/ActionExecutionToken"
+        lastUpdatedBy:
+          $ref: "#/components/schemas/LastUpdatedBy"
+        externalExecutionId:
+          $ref: "#/components/schemas/ExecutionId"
+        externalExecutionUrl:
+          $ref: "#/components/schemas/Url"
+        percentComplete:
+          $ref: "#/components/schemas/Percentage"
+        errorDetails:
+          $ref: "#/components/schemas/ErrorDetails"
+      description: Represents information about the run of an action.
+    PipelineExecutionId:
+      type: string
+      pattern: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+    PipelineVersion:
+      type: integer
+      minimum: 1
+    StageName:
+      type: string
+      pattern: "[A-Za-z0-9.@\\-_]+"
+      minLength: 1
+      maxLength: 100
+    ActionExecutionInput:
+      type: object
+      properties:
+        actionTypeId:
+          $ref: "#/components/schemas/ActionTypeId"
+        configuration:
+          $ref: "#/components/schemas/ActionConfigurationMap"
+        roleArn:
+          $ref: "#/components/schemas/RoleArn"
+        region:
+          $ref: "#/components/schemas/AWSRegionName"
+        inputArtifacts:
+          $ref: "#/components/schemas/ArtifactDetailList"
+      description: Input information used for an action execution.
+    ActionExecutionOutput:
+      type: object
+      properties:
+        outputArtifacts:
+          $ref: "#/components/schemas/ArtifactDetailList"
+        executionResult:
+          $ref: "#/components/schemas/ActionExecutionResult"
+      description: Output details listed for an action execution, such as the action
+        execution result.
+    ActionExecutionDetail:
+      type: object
+      properties:
+        pipelineExecutionId:
+          $ref: "#/components/schemas/PipelineExecutionId"
+        actionExecutionId:
+          $ref: "#/components/schemas/ActionExecutionId"
+        pipelineVersion:
+          $ref: "#/components/schemas/PipelineVersion"
+        stageName:
+          $ref: "#/components/schemas/StageName"
+        actionName:
+          $ref: "#/components/schemas/ActionName"
+        startTime:
+          $ref: "#/components/schemas/Timestamp"
+        lastUpdateTime:
+          $ref: "#/components/schemas/Timestamp"
+        status:
+          $ref: "#/components/schemas/ActionExecutionStatus"
+        input:
+          $ref: "#/components/schemas/ActionExecutionInput"
+        output:
+          $ref: "#/components/schemas/ActionExecutionOutput"
+      description: "Returns information about an execution of an action, including the
+        action execution ID, and the name, version, and timing of the action. "
+    ActionExecutionDetailList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ActionExecutionDetail"
+    ActionExecutionFilter:
+      type: object
+      properties:
+        pipelineExecutionId:
+          $ref: "#/components/schemas/PipelineExecutionId"
+      description: Filter values for the action execution.
+    ArtifactDetailList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ArtifactDetail"
+    ActionExecutionResult:
+      type: object
+      properties:
+        externalExecutionId:
+          $ref: "#/components/schemas/ExternalExecutionId"
+        externalExecutionSummary:
+          $ref: "#/components/schemas/ExternalExecutionSummary"
+        externalExecutionUrl:
+          $ref: "#/components/schemas/Url"
+      description: Execution result information, such as the external execution ID.
+    ExternalExecutionId:
+      type: string
+    ExternalExecutionSummary:
+      type: string
+    ActionOwner:
+      type: string
+      enum:
+        - AWS
+        - ThirdParty
+        - Custom
+    ActionProvider:
+      type: string
+      pattern: "[0-9A-Za-z_-]+"
+      minLength: 1
+      maxLength: 25
+    Revision:
+      type: string
+      minLength: 1
+      maxLength: 1500
+    RevisionChangeIdentifier:
+      type: string
+      minLength: 1
+      maxLength: 100
+    ActionRevision:
+      type: object
+      required:
+        - revisionId
+        - revisionChangeId
+        - created
+      properties:
+        revisionId:
+          $ref: "#/components/schemas/Revision"
+        revisionChangeId:
+          $ref: "#/components/schemas/RevisionChangeIdentifier"
+        created:
+          $ref: "#/components/schemas/Timestamp"
+      description: Represents information about the version (or revision) of an action.
+    ActionState:
+      type: object
+      properties:
+        actionName:
+          $ref: "#/components/schemas/ActionName"
+        currentRevision:
+          $ref: "#/components/schemas/ActionRevision"
+        latestExecution:
+          $ref: "#/components/schemas/ActionExecution"
+        entityUrl:
+          $ref: "#/components/schemas/Url"
+        revisionUrl:
+          $ref: "#/components/schemas/Url"
+      description: Represents information about the state of an action.
+    ActionStateList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ActionState"
+    ActionTypeSettings:
+      type: object
+      properties:
+        thirdPartyConfigurationUrl:
+          $ref: "#/components/schemas/Url"
+        entityUrlTemplate:
+          $ref: "#/components/schemas/UrlTemplate"
+        executionUrlTemplate:
+          $ref: "#/components/schemas/UrlTemplate"
+        revisionUrlTemplate:
+          $ref: "#/components/schemas/UrlTemplate"
+      description: Returns information about the settings for an action type.
+    ArtifactDetails:
+      type: object
+      required:
+        - minimumCount
+        - maximumCount
+      properties:
+        minimumCount:
+          $ref: "#/components/schemas/MinimumArtifactCount"
+        maximumCount:
+          $ref: "#/components/schemas/MaximumArtifactCount"
+      description: Returns information about the details of an artifact.
+    ActionType:
+      type: object
+      required:
+        - id
+        - inputArtifactDetails
+        - outputArtifactDetails
+      properties:
+        id:
+          $ref: "#/components/schemas/ActionTypeId"
+        settings:
+          $ref: "#/components/schemas/ActionTypeSettings"
+        actionConfigurationProperties:
+          $ref: "#/components/schemas/ActionConfigurationPropertyList"
+        inputArtifactDetails:
+          $ref: "#/components/schemas/ArtifactDetails"
+        outputArtifactDetails:
+          $ref: "#/components/schemas/ArtifactDetails"
+      description: Returns information about the details of an action type.
+    Version:
+      type: string
+      pattern: "[0-9A-Za-z_-]+"
+      minLength: 1
+      maxLength: 9
+    ActionTypeList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ActionType"
+    UrlTemplate:
+      type: string
+      minLength: 1
+      maxLength: 2048
+    ApprovalSummary:
+      type: string
+      minLength: 0
+      maxLength: 512
+    ApprovalStatus:
+      type: string
+      enum:
+        - Approved
+        - Rejected
+    ApprovalResult:
+      type: object
+      required:
+        - summary
+        - status
+      properties:
+        summary:
+          $ref: "#/components/schemas/ApprovalSummary"
+        status:
+          $ref: "#/components/schemas/ApprovalStatus"
+      description: Represents information about the result of an approval request.
+    ApprovalToken:
+      type: string
+      pattern: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+    ArtifactName:
+      type: string
+      pattern: "[a-zA-Z0-9_\\-]+"
+      minLength: 1
+      maxLength: 100
+    ArtifactLocation:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/ArtifactLocationType"
+        s3Location:
+          $ref: "#/components/schemas/S3ArtifactLocation"
+      description: Represents information about the location of an artifact.
+    Artifact:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ArtifactName"
+        revision:
+          $ref: "#/components/schemas/Revision"
+        location:
+          $ref: "#/components/schemas/ArtifactLocation"
+      description: Represents information about an artifact that is worked on by actions in
+        the pipeline.
+    S3Location:
+      type: object
+      properties:
+        bucket:
+          $ref: "#/components/schemas/S3Bucket"
+        key:
+          $ref: "#/components/schemas/S3Key"
+      description: The Amazon S3 artifact location for an action's artifacts.
+    ArtifactDetail:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ArtifactName"
+        s3location:
+          $ref: "#/components/schemas/S3Location"
+      description: Artifact details for the action execution, such as the artifact location.
+    MinimumArtifactCount:
+      type: integer
+      minimum: 0
+      maximum: 5
+    MaximumArtifactCount:
+      type: integer
+      minimum: 0
+      maximum: 5
+    ArtifactList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Artifact"
+    ArtifactLocationType:
+      type: string
+      enum:
+        - S3
+    S3ArtifactLocation:
+      type: object
+      required:
+        - bucketName
+        - objectKey
+      properties:
+        bucketName:
+          $ref: "#/components/schemas/S3BucketName"
+        objectKey:
+          $ref: "#/components/schemas/S3ObjectKey"
+      description: The location of the Amazon S3 bucket that contains a revision.
+    RevisionSummary:
+      type: string
+      minLength: 1
+      maxLength: 2048
+    ArtifactRevision:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ArtifactName"
+        revisionId:
+          $ref: "#/components/schemas/Revision"
+        revisionChangeIdentifier:
+          $ref: "#/components/schemas/RevisionChangeIdentifier"
+        revisionSummary:
+          $ref: "#/components/schemas/RevisionSummary"
+        created:
+          $ref: "#/components/schemas/Timestamp"
+        revisionUrl:
+          $ref: "#/components/schemas/Url"
+      description: "Represents revision details of an artifact. "
+    ArtifactRevisionList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ArtifactRevision"
+    ArtifactStoreType:
+      type: string
+      enum:
+        - S3
+    ArtifactStoreLocation:
+      type: string
+      pattern: "[a-zA-Z0-9\\-\\.]+"
+      minLength: 3
+      maxLength: 63
+    EncryptionKey:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          $ref: "#/components/schemas/EncryptionKeyId"
+        type:
+          $ref: "#/components/schemas/EncryptionKeyType"
+      description: Represents information about the key used to encrypt data in the
+        artifact store, such as an AWS Key Management Service (AWS KMS) key.
+    ArtifactStore:
+      type: object
+      required:
+        - type
+        - location
+      properties:
+        type:
+          $ref: "#/components/schemas/ArtifactStoreType"
+        location:
+          $ref: "#/components/schemas/ArtifactStoreLocation"
+        encryptionKey:
+          $ref: "#/components/schemas/EncryptionKey"
+      description: <p>The Amazon S3 bucket where artifacts for the pipeline are stored.</p>
+        <note> <p>You must include either <code>artifactStore</code> or
+        <code>artifactStores</code> in your pipeline, but you cannot use both.
+        If you create a cross-region action in your pipeline, you must use
+        <code>artifactStores</code>.</p> </note>
+    ArtifactStoreMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/ArtifactStore"
+    BlockerName:
+      type: string
+      minLength: 1
+      maxLength: 100
+    BlockerType:
+      type: string
+      enum:
+        - Schedule
+    BlockerDeclaration:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          $ref: "#/components/schemas/BlockerName"
+        type:
+          $ref: "#/components/schemas/BlockerType"
+      description: Reserved for future use.
+    ClientId:
+      type: string
+      pattern: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+    ClientRequestToken:
+      type: string
+      pattern: ^[a-zA-Z0-9-]+$
+      minLength: 1
+      maxLength: 128
+    Code:
+      type: string
+    ContinuationToken:
+      type: string
+      minLength: 1
+      maxLength: 2048
+    TagList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Tag"
+    PipelineDeclaration:
+      type: object
+      required:
+        - name
+        - roleArn
+        - stages
+      properties:
+        name:
+          $ref: "#/components/schemas/PipelineName"
+        roleArn:
+          $ref: "#/components/schemas/RoleArn"
+        artifactStore:
+          $ref: "#/components/schemas/ArtifactStore"
+        artifactStores:
+          $ref: "#/components/schemas/ArtifactStoreMap"
+        stages:
+          $ref: "#/components/schemas/PipelineStageDeclarationList"
+        version:
+          $ref: "#/components/schemas/PipelineVersion"
+      description: Represents the structure of actions and stages to be performed in the
+        pipeline.
+    Time:
+      type: string
+      format: date-time
+    CurrentRevision:
+      type: object
+      required:
+        - revision
+        - changeIdentifier
+      properties:
+        revision:
+          $ref: "#/components/schemas/Revision"
+        changeIdentifier:
+          $ref: "#/components/schemas/RevisionChangeIdentifier"
+        created:
+          $ref: "#/components/schemas/Time"
+        revisionSummary:
+          $ref: "#/components/schemas/RevisionSummary"
+      description: Represents information about a current revision.
+    PipelineName:
+      type: string
+      pattern: "[A-Za-z0-9.@\\-_]+"
+      minLength: 1
+      maxLength: 100
+    WebhookName:
+      type: string
+      pattern: "[A-Za-z0-9.@\\-_]+"
+      minLength: 1
+      maxLength: 100
+    StageTransitionType:
+      type: string
+      enum:
+        - Inbound
+        - Outbound
+    DisabledReason:
+      type: string
+      pattern: "[a-zA-Z0-9!@ \\(\\)\\.\\*\\?\\-]+"
+      minLength: 1
+      maxLength: 300
+    Enabled:
+      type: boolean
+    EncryptionKeyId:
+      type: string
+      minLength: 1
+      maxLength: 100
+    EncryptionKeyType:
+      type: string
+      enum:
+        - KMS
+    Message:
+      type: string
+      minLength: 1
+      maxLength: 5000
+    ExecutionDetails:
+      type: object
+      properties:
+        summary:
+          $ref: "#/components/schemas/ExecutionSummary"
+        externalExecutionId:
+          $ref: "#/components/schemas/ExecutionId"
+        percentComplete:
+          $ref: "#/components/schemas/Percentage"
+      description: The details of the actions taken and results produced on an artifact as
+        it passes through stages in the pipeline.
+    TriggerType:
+      type: string
+      enum:
+        - CreatePipeline
+        - StartPipelineExecution
+        - PollForSourceChanges
+        - Webhook
+        - CloudWatchEvent
+        - PutActionRevision
+    TriggerDetail:
+      type: string
+      minLength: 0
+      maxLength: 1024
+    ExecutionTrigger:
+      type: object
+      properties:
+        triggerType:
+          $ref: "#/components/schemas/TriggerType"
+        triggerDetail:
+          $ref: "#/components/schemas/TriggerDetail"
+      description: The interaction or event that started a pipeline execution.
+    FailureType:
+      type: string
+      enum:
+        - JobFailed
+        - ConfigurationError
+        - PermissionError
+        - RevisionOutOfSync
+        - RevisionUnavailable
+        - SystemUnavailable
+    FailureDetails:
+      type: object
+      required:
+        - type
+        - message
+      properties:
+        type:
+          $ref: "#/components/schemas/FailureType"
+        message:
+          $ref: "#/components/schemas/Message"
+        externalExecutionId:
+          $ref: "#/components/schemas/ExecutionId"
+      description: Represents information about failure details.
+    JobDetails:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/JobId"
+        data:
+          $ref: "#/components/schemas/JobData"
+        accountId:
+          $ref: "#/components/schemas/AccountId"
+      description: Represents information about the details of a job.
+    PipelineExecution:
+      type: object
+      properties:
+        pipelineName:
+          $ref: "#/components/schemas/PipelineName"
+        pipelineVersion:
+          $ref: "#/components/schemas/PipelineVersion"
+        pipelineExecutionId:
+          $ref: "#/components/schemas/PipelineExecutionId"
+        status:
+          $ref: "#/components/schemas/PipelineExecutionStatus"
+        artifactRevisions:
+          $ref: "#/components/schemas/ArtifactRevisionList"
+      description: Represents information about an execution of a pipeline.
+    PipelineMetadata:
+      type: object
+      properties:
+        pipelineArn:
+          $ref: "#/components/schemas/PipelineArn"
+        created:
+          $ref: "#/components/schemas/Timestamp"
+        updated:
+          $ref: "#/components/schemas/Timestamp"
+      description: Information about a pipeline.
+    StageStateList:
+      type: array
+      items:
+        $ref: "#/components/schemas/StageState"
+    ThirdPartyJobDetails:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/ThirdPartyJobId"
+        data:
+          $ref: "#/components/schemas/ThirdPartyJobData"
+        nonce:
+          $ref: "#/components/schemas/Nonce"
+      description: The details of a job sent in response to a
+        <code>GetThirdPartyJobDetails</code> request.
+    InputArtifact:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          $ref: "#/components/schemas/ArtifactName"
+      description: Represents information about an artifact to be worked on, such as a test
+        or build artifact.
+    JobData:
+      type: object
+      properties:
+        actionTypeId:
+          $ref: "#/components/schemas/ActionTypeId"
+        actionConfiguration:
+          $ref: "#/components/schemas/ActionConfiguration"
+        pipelineContext:
+          $ref: "#/components/schemas/PipelineContext"
+        inputArtifacts:
+          $ref: "#/components/schemas/ArtifactList"
+        outputArtifacts:
+          $ref: "#/components/schemas/ArtifactList"
+        artifactCredentials:
+          $ref: "#/components/schemas/AWSSessionCredentials"
+        continuationToken:
+          $ref: "#/components/schemas/ContinuationToken"
+        encryptionKey:
+          $ref: "#/components/schemas/EncryptionKey"
+      description: Represents other information about a job required for a job worker to
+        complete the job.
+    Job:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/JobId"
+        data:
+          $ref: "#/components/schemas/JobData"
+        nonce:
+          $ref: "#/components/schemas/Nonce"
+        accountId:
+          $ref: "#/components/schemas/AccountId"
+      description: Represents information about a job.
+    PipelineContext:
+      type: object
+      properties:
+        pipelineName:
+          $ref: "#/components/schemas/PipelineName"
+        stage:
+          $ref: "#/components/schemas/StageContext"
+        action:
+          $ref: "#/components/schemas/ActionContext"
+        pipelineArn:
+          $ref: "#/components/schemas/PipelineArn"
+        pipelineExecutionId:
+          $ref: "#/components/schemas/PipelineExecutionId"
+      description: <p>Represents information about a pipeline to a job worker.</p> <note>
+        <p>PipelineContext contains <code>pipelineArn</code> and
+        <code>pipelineExecutionId</code> for custom action jobs. The
+        <code>pipelineArn</code> and <code>pipelineExecutionId</code> fields are
+        not populated for ThirdParty action jobs.</p> </note>
+    JobList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Job"
+    JsonPath:
+      type: string
+      minLength: 1
+      maxLength: 150
+    LastChangedAt:
+      type: string
+      format: date-time
+    LastChangedBy:
+      type: string
+    MaxResults:
+      type: integer
+      minimum: 1
+      maximum: 100
+    NextToken:
+      type: string
+      minLength: 1
+      maxLength: 2048
+    PipelineExecutionSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/PipelineExecutionSummary"
+    PipelineList:
+      type: array
+      items:
+        $ref: "#/components/schemas/PipelineSummary"
+    ResourceArn:
+      type: string
+      pattern: arn:aws(-[\w]+)*:codepipeline:.+:[0-9]{12}:.+
+    WebhookDefinition:
+      type: object
+      required:
+        - name
+        - targetPipeline
+        - targetAction
+        - filters
+        - authentication
+        - authenticationConfiguration
+      properties:
+        name:
+          $ref: "#/components/schemas/WebhookName"
+        targetPipeline:
+          $ref: "#/components/schemas/PipelineName"
+        targetAction:
+          $ref: "#/components/schemas/ActionName"
+        filters:
+          $ref: "#/components/schemas/WebhookFilters"
+        authentication:
+          $ref: "#/components/schemas/WebhookAuthenticationType"
+        authenticationConfiguration:
+          $ref: "#/components/schemas/WebhookAuthConfiguration"
+      description: Represents information about a webhook and its definition.
+    WebhookUrl:
+      type: string
+      minLength: 1
+      maxLength: 1000
+    WebhookErrorMessage:
+      type: string
+    WebhookErrorCode:
+      type: string
+    WebhookLastTriggered:
+      type: string
+      format: date-time
+    WebhookArn:
+      type: string
+    ListWebhookItem:
+      type: object
+      required:
+        - definition
+        - url
+      properties:
+        definition:
+          $ref: "#/components/schemas/WebhookDefinition"
+        url:
+          $ref: "#/components/schemas/WebhookUrl"
+        errorMessage:
+          $ref: "#/components/schemas/WebhookErrorMessage"
+        errorCode:
+          $ref: "#/components/schemas/WebhookErrorCode"
+        lastTriggered:
+          $ref: "#/components/schemas/WebhookLastTriggered"
+        arn:
+          $ref: "#/components/schemas/WebhookArn"
+        tags:
+          $ref: "#/components/schemas/TagList"
+      description: The detail returned for each webhook after listing webhooks, such as the
+        webhook URL, the webhook name, and the webhook ARN.
+    WebhookList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ListWebhookItem"
+    MatchEquals:
+      type: string
+      minLength: 1
+      maxLength: 150
+    MaxBatchSize:
+      type: integer
+      minimum: 1
+    OutputArtifact:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          $ref: "#/components/schemas/ArtifactName"
+      description: Represents information about the output of an action.
+    PipelineArn:
+      type: string
+      pattern: arn:aws(-[\w]+)*:codepipeline:.+:[0-9]{12}:.+
+    StageContext:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/StageName"
+      description: Represents information about a stage to a job worker.
+    PipelineStageDeclarationList:
+      type: array
+      items:
+        $ref: "#/components/schemas/StageDeclaration"
+    PipelineExecutionStatus:
+      type: string
+      enum:
+        - InProgress
+        - Succeeded
+        - Superseded
+        - Failed
+    SourceRevisionList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SourceRevision"
+    PipelineExecutionSummary:
+      type: object
+      properties:
+        pipelineExecutionId:
+          $ref: "#/components/schemas/PipelineExecutionId"
+        status:
+          $ref: "#/components/schemas/PipelineExecutionStatus"
+        startTime:
+          $ref: "#/components/schemas/Timestamp"
+        lastUpdateTime:
+          $ref: "#/components/schemas/Timestamp"
+        sourceRevisions:
+          $ref: "#/components/schemas/SourceRevisionList"
+        trigger:
+          $ref: "#/components/schemas/ExecutionTrigger"
+      description: Summary information about a pipeline execution.
+    PipelineSummary:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/PipelineName"
+        version:
+          $ref: "#/components/schemas/PipelineVersion"
+        created:
+          $ref: "#/components/schemas/Timestamp"
+        updated:
+          $ref: "#/components/schemas/Timestamp"
+      description: Returns a summary of a pipeline.
+    StageDeclaration:
+      type: object
+      required:
+        - name
+        - actions
+      properties:
+        name:
+          $ref: "#/components/schemas/StageName"
+        blockers:
+          $ref: "#/components/schemas/StageBlockerDeclarationList"
+        actions:
+          $ref: "#/components/schemas/StageActionDeclarationList"
+      description: Represents information about a stage and its definition.
+    QueryParamMap:
+      type: object
+      minProperties: 0
+      maxProperties: 1
+      additionalProperties:
+        $ref: "#/components/schemas/ActionConfigurationQueryableValue"
+    ThirdPartyJobList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ThirdPartyJob"
+    StageRetryMode:
+      type: string
+      enum:
+        - FAILED_ACTIONS
+    S3BucketName:
+      type: string
+    S3ObjectKey:
+      type: string
+    S3Bucket:
+      type: string
+      minLength: 3
+      maxLength: 63
+    S3Key:
+      type: string
+      minLength: 1
+      maxLength: 100
+    SourceRevision:
+      type: object
+      required:
+        - actionName
+      properties:
+        actionName:
+          $ref: "#/components/schemas/ActionName"
+        revisionId:
+          $ref: "#/components/schemas/Revision"
+        revisionSummary:
+          $ref: "#/components/schemas/RevisionSummary"
+        revisionUrl:
+          $ref: "#/components/schemas/Url"
+      description: Information about the version (or revision) of a source artifact that
+        initiated a pipeline execution.
+    StageActionDeclarationList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ActionDeclaration"
+    StageBlockerDeclarationList:
+      type: array
+      items:
+        $ref: "#/components/schemas/BlockerDeclaration"
+    StageExecutionStatus:
+      type: string
+      enum:
+        - InProgress
+        - Failed
+        - Succeeded
+    StageExecution:
+      type: object
+      required:
+        - pipelineExecutionId
+        - status
+      properties:
+        pipelineExecutionId:
+          $ref: "#/components/schemas/PipelineExecutionId"
+        status:
+          $ref: "#/components/schemas/StageExecutionStatus"
+      description: Represents information about the run of a stage.
+    TransitionState:
+      type: object
+      properties:
+        enabled:
+          $ref: "#/components/schemas/Enabled"
+        lastChangedBy:
+          $ref: "#/components/schemas/LastChangedBy"
+        lastChangedAt:
+          $ref: "#/components/schemas/LastChangedAt"
+        disabledReason:
+          $ref: "#/components/schemas/DisabledReason"
+      description: Represents information about the state of transitions between one stage
+        and another stage.
+    StageState:
+      type: object
+      properties:
+        stageName:
+          $ref: "#/components/schemas/StageName"
+        inboundTransitionState:
+          $ref: "#/components/schemas/TransitionState"
+        actionStates:
+          $ref: "#/components/schemas/ActionStateList"
+        latestExecution:
+          $ref: "#/components/schemas/StageExecution"
+      description: Represents information about the state of the stage.
+    TagKey:
+      type: string
+      minLength: 1
+      maxLength: 128
+    TagValue:
+      type: string
+      minLength: 0
+      maxLength: 256
+    Tag:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          $ref: "#/components/schemas/TagKey"
+        value:
+          $ref: "#/components/schemas/TagValue"
+      description: A tag is a key-value pair that is used to manage the resource.
+    TagKeyList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TagKey"
+    ThirdPartyJob:
+      type: object
+      properties:
+        clientId:
+          $ref: "#/components/schemas/ClientId"
+        jobId:
+          $ref: "#/components/schemas/JobId"
+      description: A response to a <code>PollForThirdPartyJobs</code> request returned by
+        AWS CodePipeline when there is a job to be worked on by a partner
+        action.
+    ThirdPartyJobData:
+      type: object
+      properties:
+        actionTypeId:
+          $ref: "#/components/schemas/ActionTypeId"
+        actionConfiguration:
+          $ref: "#/components/schemas/ActionConfiguration"
+        pipelineContext:
+          $ref: "#/components/schemas/PipelineContext"
+        inputArtifacts:
+          $ref: "#/components/schemas/ArtifactList"
+        outputArtifacts:
+          $ref: "#/components/schemas/ArtifactList"
+        artifactCredentials:
+          $ref: "#/components/schemas/AWSSessionCredentials"
+        continuationToken:
+          $ref: "#/components/schemas/ContinuationToken"
+        encryptionKey:
+          $ref: "#/components/schemas/EncryptionKey"
+      description: Represents information about the job data for a partner action.
+    WebhookAuthConfigurationAllowedIPRange:
+      type: string
+      minLength: 1
+      maxLength: 100
+    WebhookAuthConfigurationSecretToken:
+      type: string
+      minLength: 1
+      maxLength: 100
+    WebhookAuthConfiguration:
+      type: object
+      properties:
+        AllowedIPRange:
+          $ref: "#/components/schemas/WebhookAuthConfigurationAllowedIPRange"
+        SecretToken:
+          $ref: "#/components/schemas/WebhookAuthConfigurationSecretToken"
+      description: The authentication applied to incoming webhook trigger requests.
+    WebhookAuthenticationType:
+      type: string
+      enum:
+        - GITHUB_HMAC
+        - IP
+        - UNAUTHENTICATED
+    WebhookFilters:
+      type: array
+      items:
+        $ref: "#/components/schemas/WebhookFilterRule"
+      maxItems: 5
+    WebhookFilterRule:
+      type: object
+      required:
+        - jsonPath
+      properties:
+        jsonPath:
+          $ref: "#/components/schemas/JsonPath"
+        matchEquals:
+          $ref: "#/components/schemas/MatchEquals"
+      description: The event criteria that specify when a webhook notification is sent to
+        your URL.

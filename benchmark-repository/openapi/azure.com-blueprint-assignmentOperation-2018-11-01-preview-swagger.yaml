@@ -1,0 +1,277 @@
+openapi: 3.0.0
+info:
+  description: Azure Blueprints Client provides access to blueprint definitions,
+    assignments, and artifacts, and related blueprint operations.
+  title: BlueprintClient
+  version: 2018-11-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/assignmentOperation.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: blueprint-assignmentOperation
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/{scope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}/assignmentOperations":
+    get:
+      description: List operations for given blueprint assignment within a subscription.
+      operationId: AssignmentOperations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/AssignmentNameParameter"
+      responses:
+        "200":
+          description: OK -- all blueprint assignment operations retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssignmentOperationList"
+              examples:
+                Assignment:
+                  $ref: "#/components/examples/Assignment"
+      tags:
+        - AssignmentOperations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/{scope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}/assignmentOperations/{assignmentOperationName}":
+    get:
+      description: Get a blueprint assignment operation.
+      operationId: AssignmentOperations_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/AssignmentNameParameter"
+        - $ref: "#/components/parameters/AssignmentOperationNameParameter"
+      responses:
+        "200":
+          description: OK -- blueprint assignment operation retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssignmentOperation"
+              examples:
+                Assignment:
+                  $ref: "#/components/examples/Assignment"
+      tags:
+        - AssignmentOperations
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Assignment:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.blueprint/blueprintAssignments/assignSimpleBlueprint/assignmentOperations/fb5d4dcb-7ce2-4087-ba7a-459aa74e5e0f
+        name: fb5d4dcb-7ce2-4087-ba7a-459aa74e5e0f
+        properties:
+          assignmentState: succeed
+          blueprintVersion: v20181101
+          deployments:
+            - action: put
+              history:
+                - error:
+                    code: dummy
+                    message: dummy
+              jobState: succeeded
+              kind: azureResource
+              requestUri: /subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.deployments/deployments/48432786-2f1b-4925-8032-a5d57bcb5b6e
+              result:
+                resources:
+                  - id: blabla
+                    name: foobar
+                    type: foo/bar
+          timeCreated: 2018-11-13T15:19:45-08:00
+          timeFinished: 2018-11-13T15:26:02-08:00
+          timeStarted: 2018-11-13T15:21:49-08:00
+        type: microsoft.blueprint/blueprintAssignments/operations
+  parameters:
+    ApiVersionParameter:
+      description: Client API Version.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Assignment:
+          value: 2018-11-01-preview
+    AssignmentNameParameter:
+      description: Name of the blueprint assignment.
+      in: path
+      name: assignmentName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Assignment:
+          value: assignSimpleBlueprint
+    AssignmentOperationNameParameter:
+      description: Name of the blueprint assignment operation.
+      in: path
+      name: assignmentOperationName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Assignment:
+          value: fb5d4dcb-7ce2-4087-ba7a-459aa74e5e0f
+    ScopeParameter:
+      description: "The scope of the resource. Valid scopes are: management group (format:
+        '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+        subscription (format: '/subscriptions/{subscriptionId}'). For blueprint
+        assignments management group scope is reserved for future use."
+      in: path
+      name: scope
+      required: true
+      x-ms-parameter-location: method
+      x-ms-skip-url-encoding: true
+      schema:
+        type: string
+      examples:
+        Assignment:
+          value: subscriptions/00000000-0000-0000-0000-000000000000
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AssignmentDeploymentJob:
+      description: Represents individual job in given blueprint assignment operation.
+      properties:
+        action:
+          description: Name of the action performed in this job.
+          type: string
+        history:
+          description: Result of this deployment job for each retry.
+          items:
+            $ref: "#/components/schemas/AssignmentDeploymentJobResult"
+          type: array
+        jobId:
+          description: Id of this job.
+          type: string
+        jobState:
+          description: State of this job.
+          type: string
+        kind:
+          description: Kind of job.
+          type: string
+        requestUri:
+          description: Reference to deployment job resource id.
+          type: string
+        result:
+          $ref: "#/components/schemas/AssignmentDeploymentJobResult"
+      type: object
+    AssignmentDeploymentJobResult:
+      description: Result of each individual deployment in a blueprint assignment.
+      properties:
+        error:
+          $ref: "#/components/schemas/AzureResourceManagerError"
+        resources:
+          description: Resources created as result of the deployment job.
+          items:
+            $ref: "#/components/schemas/AssignmentJobCreatedResource"
+          type: array
+      type: object
+    AssignmentJobCreatedResource:
+      allOf:
+        - $ref: "#/components/schemas/AzureResourceBase"
+      description: Azure resource created from deployment job.
+      properties:
+        properties:
+          additionalProperties:
+            description: property value
+            type: string
+          description: Additional properties in a dictionary.
+          type: object
+      type: object
+    AssignmentOperation:
+      allOf:
+        - $ref: "#/components/schemas/AzureResourceBase"
+      description: Represents underlying deployment detail for each update to the blueprint
+        assignment.
+      properties:
+        properties:
+          $ref: "#/components/schemas/AssignmentOperationProperties"
+      type: object
+    AssignmentOperationList:
+      description: List of AssignmentOperation.
+      properties:
+        nextLink:
+          description: Link to the next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: List of AssignmentOperation.
+          items:
+            $ref: "#/components/schemas/AssignmentOperation"
+          type: array
+      type: object
+    AssignmentOperationProperties:
+      description: Properties of AssignmentOperation.
+      properties:
+        assignmentState:
+          description: State of this blueprint assignment operation.
+          type: string
+        blueprintVersion:
+          description: The published version of the blueprint definition used for the
+            blueprint assignment operation.
+          type: string
+        deployments:
+          description: List of jobs in this blueprint assignment operation.
+          items:
+            $ref: "#/components/schemas/AssignmentDeploymentJob"
+          type: array
+        timeCreated:
+          description: Create time of this blueprint assignment operation.
+          type: string
+        timeFinished:
+          description: Finish time of the overall underlying deployments.
+          type: string
+        timeStarted:
+          description: Start time of the underlying deployment.
+          type: string
+      type: object
+    AzureResourceBase:
+      description: Common properties for all Azure resources.
+      properties:
+        id:
+          description: String Id used to locate any resource on Azure.
+          readOnly: true
+          type: string
+        name:
+          description: Name of this resource.
+          readOnly: true
+          type: string
+        type:
+          description: Type of this resource.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    AzureResourceManagerError:
+      description: Error code and message
+      properties:
+        code:
+          description: Error code.
+          type: string
+        message:
+          description: Error message.
+          type: string
+      type: object

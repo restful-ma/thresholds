@@ -1,0 +1,297 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2018-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/PrivateLinkResources.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: sql-PrivateLinkResources
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/privateLinkResources":
+    get:
+      description: Gets the private link resources for SQL server.
+      operationId: PrivateLinkResources_ListByServer
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved private link resources.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateLinkResourceListResult"
+              examples:
+                Gets private link resources for SQL.:
+                  $ref: "#/components/examples/Gets_private_link_resources_for_SQL."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 OperationIdNotFound - The operation with Id does not exist.
+
+             * 404 OperationIdNotFound - The operation with Id does not exist.
+
+             * 409 OperationCancelled - The operation has been cancelled by user.
+
+             * 409 OperationInterrupted - The operation on the resource could not be completed because it was interrupted by another operation on the same resource.
+
+             * 500 OperationTimedOut - The operation timed out and automatically rolled back. Please retry the operation.
+      tags:
+        - PrivateLinkResources
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/privateLinkResources/{groupName}":
+    get:
+      description: Gets a private link resource for SQL server.
+      operationId: PrivateLinkResources_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the private link resource.
+          in: path
+          name: groupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Gets a private link resource for SQL.:
+              value: plr
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved private link resources.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrivateLinkResource"
+              examples:
+                Gets a private link resource for SQL.:
+                  $ref: "#/components/examples/Gets_a_private_link_resource_for_SQL."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 OperationIdNotFound - The operation with Id does not exist.
+
+             * 404 OperationIdNotFound - The operation with Id does not exist.
+
+             * 409 OperationCancelled - The operation has been cancelled by user.
+
+             * 409 OperationInterrupted - The operation on the resource could not be completed because it was interrupted by another operation on the same resource.
+
+             * 500 OperationTimedOut - The operation timed out and automatically rolled back. Please retry the operation.
+      tags:
+        - PrivateLinkResources
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Gets_private_link_resources_for_SQL.:
+      value:
+        value:
+          - id: subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/test-svr/privateLinkResources/plr
+            name: plr
+            properties:
+              groupId: sqlServer
+              requiredMembers:
+                - sqlServer
+            type: Microsoft.Sql/servers/privateLinkResources
+    Gets_a_private_link_resource_for_SQL.:
+      value:
+        id: subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/test-svr/privateLinkResources/plr
+        name: plr
+        properties:
+          groupId: sqlServer
+          requiredMembers:
+            - sqlServer
+        type: Microsoft.Sql/servers/privateLinkResources
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Gets private link resources for SQL.:
+          value: 2018-06-01-preview
+        Gets a private link resource for SQL.:
+          value: 2018-06-01-preview
+    BlobAuditingPolicyNameParameter:
+      description: The name of the blob auditing policy.
+      in: path
+      name: blobAuditingPolicyName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - default
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ManagedInstanceNameParameter:
+      description: The name of the managed instance.
+      in: path
+      name: managedInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Gets private link resources for SQL.:
+          value: Default
+        Gets a private link resource for SQL.:
+          value: Default
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Gets private link resources for SQL.:
+          value: test-svr
+        Gets a private link resource for SQL.:
+          value: test-svr
+    SqlVirtualMachineContainerNameParameter:
+      description: The name of the SqlVirtualMachineContainer.
+      in: path
+      name: sqlVirtualMachineContainerName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineInstanceNameParameter:
+      description: The name of the SqlVirtualMachineInstance.
+      in: path
+      name: sqlVirtualMachineInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Gets private link resources for SQL.:
+          value: 00000000-1111-2222-3333-444444444444
+        Gets a private link resource for SQL.:
+          value: 00000000-1111-2222-3333-444444444444
+    VirtualClusterNameParameter:
+      description: The name of the virtual cluster.
+      in: path
+      name: virtualClusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    PrivateLinkResource:
+      allOf:
+        - $ref: "#/components/schemas/ProxyResource"
+      description: A private link resource
+      properties:
+        properties:
+          $ref: "#/components/schemas/PrivateLinkResourceProperties"
+      type: object
+    PrivateLinkResourceListResult:
+      description: A list of private link resources
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/PrivateLinkResource"
+          readOnly: true
+          type: array
+      type: object
+    PrivateLinkResourceProperties:
+      description: Properties of a private link resource.
+      properties:
+        groupId:
+          description: The private link resource group id.
+          readOnly: true
+          type: string
+        requiredMembers:
+          description: The private link resource required member names.
+          items:
+            type: string
+          readOnly: true
+          type: array
+      type: object
+    ProxyResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: ARM proxy resource.
+      properties: {}
+      type: object
+    Resource:
+      description: ARM resource.
+      properties:
+        id:
+          description: Resource ID.
+          readOnly: true
+          type: string
+        name:
+          description: Resource name.
+          readOnly: true
+          type: string
+        type:
+          description: Resource type.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true

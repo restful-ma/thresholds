@@ -1,0 +1,432 @@
+openapi: 3.0.0
+info:
+  contact:
+    x-twitter: aviationdataSYS
+  title: AviationData.Systems Airports API V1
+  version: v1
+  x-apisguru-categories:
+    - transport
+  x-logo:
+    url: https://twitter.com/aviationdataSYS/profile_image?size=original
+  x-origin:
+    - format: swagger
+      url: http://api.aviationdata.systems//swagger/docs/v1
+      version: "2.0"
+  x-providerName: aviationdata.systems
+paths:
+  "/v1/airport/autocomplete/{airport_name}":
+    get:
+      description: "Required parameters: airport_name, airport_service_type. Optional
+        parameter: country code (ISO 3166-1)."
+      operationId: AutoCompleteAirportName_AirportNameSearch
+      parameters:
+        - description: "Required: The airports name"
+          in: path
+          name: airport_name
+          required: true
+          schema:
+            type: string
+        - description: "Required: Needs to be: All, Scheduled or NonScheduled"
+          in: query
+          name: airport_service_type
+          required: true
+          schema:
+            type: string
+            enum:
+              - All
+              - Scheduled
+              - NonScheduled
+        - description: "Optional: Country code (ISO 3166-1). This can be found via
+            /countries"
+          in: query
+          name: optional_country_code
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.AutoCompleteAir\
+                  portNameController.Response"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.AutoCompleteAir\
+                  portNameController.Response"
+      summary: Autocomplete airport names. Returns a maximum of 10 airport names.
+      tags:
+        - AutoCompleteAirportName
+  "/v1/airport/iata/{airport_iata}":
+    get:
+      description: "Required parameters: airport_iata"
+      operationId: AirportIATA_AirportIATASearch
+      parameters:
+        - description: "Required: The airports IATA code"
+          in: path
+          name: airport_iata
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.AirportIATACont\
+                  roller.Response"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.AirportIATACont\
+                  roller.Response"
+      summary: Search for airport by IATA code
+      tags:
+        - AirportIATA
+  "/v1/airport/name/{airport_name}":
+    get:
+      description: "Required parameters: airport_name, api_mode"
+      operationId: AirportDetails_AirportNameSearch
+      parameters:
+        - description: "Required: The airports name"
+          in: path
+          name: airport_name
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.AirportDetailsC\
+                  ontroller.Response"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.AirportDetailsC\
+                  ontroller.Response"
+      summary: Search for airport by name
+      tags:
+        - AirportDetails
+  "/v1/airport/nearest/{result_count}/{latitude}/{longitude}":
+    get:
+      description: "Required parameters: result_count, latitude, longitude,
+        airport_service_type"
+      operationId: NearestAirports_NearestAirportList
+      parameters:
+        - description: "Required: Number of airports to return. Min: 1 Max: 20"
+          in: path
+          name: result_count
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - description: "Required: Latitude"
+          in: path
+          name: latitude
+          required: true
+          schema:
+            type: number
+            format: double
+        - description: "Required: Longitude"
+          in: path
+          name: longitude
+          required: true
+          schema:
+            type: number
+            format: double
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.NearestAirports\
+                  Controller.Response"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.NearestAirports\
+                  Controller.Response"
+      summary: Search for airports by location
+      tags:
+        - NearestAirports
+  "/v1/country/code/{country_code}":
+    get:
+      description: "Required parameters: country code (ISO 3166-1), airport_service_type."
+      operationId: CountryAirportList_CountryAirportList
+      parameters:
+        - description: Country code (ISO 3166-1). This can be found via /countries
+          in: path
+          name: country_code
+          required: true
+          schema:
+            type: string
+        - description: "Required: Needs to be: All, Scheduled or NonScheduled"
+          in: query
+          name: airport_service_type
+          required: true
+          schema:
+            type: string
+            enum:
+              - All
+              - Scheduled
+              - NonScheduled
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.CountryAirportL\
+                  istController.AirportListResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.CountryAirportL\
+                  istController.AirportListResponse"
+      summary: Country airports. Returns a list of airports for a country code(ISO
+        3166-1 alpha-2 code)
+      tags:
+        - CountryAirportList
+  /v1/country_list:
+    get:
+      operationId: CountryList_CountryAirportList
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.CountryListCont\
+                  roller.CountryListResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/AirportsAPI.Controllers.CountryListCont\
+                  roller.CountryListResponse"
+      summary: Country list. Returns a list of countries where airport data is available
+      tags:
+        - CountryList
+servers:
+  - url: https://api.aviationdata.systems
+components:
+  securitySchemes:
+    basic:
+      description: Basic HTTP Authentication
+      type: http
+      scheme: basic
+  schemas:
+    AirportsAPI.Controllers.AirportDetailsController.Response:
+      properties:
+        airport_list:
+          items:
+            $ref: "#/components/schemas/AirportsAPI.Models.Airport"
+          type: array
+        disclaimer:
+          type: string
+        message:
+          type: string
+        status_code:
+          type: string
+      type: object
+    AirportsAPI.Controllers.AirportIATAController.Response:
+      properties:
+        airport_list:
+          items:
+            $ref: "#/components/schemas/AirportsAPI.Models.Airport"
+          type: array
+        disclaimer:
+          type: string
+        message:
+          type: string
+        status_code:
+          type: string
+      type: object
+    AirportsAPI.Controllers.AutoCompleteAirportNameController.Response:
+      properties:
+        airport_list:
+          items:
+            $ref: "#/components/schemas/AirportsAPI.Models.AirportListAutocomplete"
+          type: array
+        disclaimer:
+          type: string
+        message:
+          type: string
+        status_code:
+          type: string
+      type: object
+    AirportsAPI.Controllers.CountryAirportListController.AirportListResponse:
+      properties:
+        airport_list:
+          items:
+            $ref: "#/components/schemas/AirportsAPI.Models.AirportList"
+          type: array
+        country:
+          $ref: "#/components/schemas/AirportsAPI.Models.Country"
+        disclaimer:
+          type: string
+        message:
+          type: string
+        status_code:
+          type: string
+      type: object
+    AirportsAPI.Controllers.CountryListController.CountryListResponse:
+      properties:
+        country:
+          items:
+            $ref: "#/components/schemas/AirportsAPI.Models.Country"
+          type: array
+        disclaimer:
+          type: string
+        message:
+          type: string
+        status_code:
+          type: string
+      type: object
+    AirportsAPI.Controllers.NearestAirportsController.Response:
+      properties:
+        airport_list:
+          items:
+            $ref: "#/components/schemas/AirportsAPI.Models.Airport"
+          type: array
+        disclaimer:
+          type: string
+        message:
+          type: string
+        status_code:
+          type: string
+      type: object
+    AirportsAPI.Models.Airport:
+      properties:
+        Country:
+          $ref: "#/components/schemas/AirportsAPI.Models.Location.Country"
+        Frequency:
+          items:
+            $ref: "#/components/schemas/AirportsAPI.Models.Frequency"
+          type: array
+        Region:
+          $ref: "#/components/schemas/AirportsAPI.Models.Location.Region"
+        Runway:
+          items:
+            $ref: "#/components/schemas/AirportsAPI.Models.Runway"
+          type: array
+        airport_name:
+          type: string
+        airport_type:
+          type: string
+        elevation_ft:
+          type: string
+        gps_code:
+          type: string
+        iata_code:
+          type: string
+        latitude:
+          type: string
+        local_code:
+          type: string
+        location:
+          type: string
+        logo_url:
+          type: string
+        longitude:
+          type: string
+        scheduled_service:
+          type: boolean
+        website:
+          type: string
+        wikipedia:
+          type: string
+      type: object
+    AirportsAPI.Models.AirportList:
+      properties:
+        airport_name:
+          type: string
+        airport_type:
+          type: string
+        iata_code:
+          type: string
+        latitude:
+          type: string
+        location:
+          type: string
+        longitude:
+          type: string
+      type: object
+    AirportsAPI.Models.AirportListAutocomplete:
+      properties:
+        label:
+          type: string
+        value:
+          type: string
+      type: object
+    AirportsAPI.Models.Country:
+      properties:
+        continent:
+          type: string
+        country_code:
+          type: string
+        flag_url:
+          type: string
+        name:
+          type: string
+      type: object
+    AirportsAPI.Models.Frequency:
+      properties:
+        desc:
+          type: string
+        frequency_mhz:
+          type: string
+        frequency_type:
+          type: string
+      type: object
+    AirportsAPI.Models.Location.Country:
+      properties:
+        country_code:
+          type: string
+        flag_url:
+          type: string
+        name:
+          type: string
+      type: object
+    AirportsAPI.Models.Location.Region:
+      properties:
+        local_code:
+          type: string
+        name:
+          type: string
+        region_code:
+          type: string
+      type: object
+    AirportsAPI.Models.Runway:
+      properties:
+        closed:
+          type: boolean
+        hE_latitude:
+          type: string
+        hE_longitude:
+          type: string
+        he_displaced_threshold_ft:
+          type: string
+        he_elevation_ft:
+          type: string
+        he_heading_deg:
+          type: string
+        le_displaced_threshold_ft:
+          type: string
+        le_elevation_ft:
+          type: string
+        le_heading_deg:
+          type: string
+        le_latitude:
+          type: string
+        le_longitude:
+          type: string
+        length_ft:
+          type: string
+        lighted:
+          type: boolean
+        surface_type:
+          type: string
+        width_ft:
+          type: string
+      type: object

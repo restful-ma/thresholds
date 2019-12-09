@@ -1,0 +1,249 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Server management API provides a RESTful set of web services
+    that interact with Azure SQL Server services to manage your databases. The
+    API enables users update server connection policy.
+  title: Azure SQL Server API spec
+  version: 2014-04-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/connectionPolicies.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: sql-connectionPolicies
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/connectionPolicies/{connectionPolicyName}":
+    get:
+      description: Gets the server's secure connection policy.
+      operationId: ServerConnectionPolicies_Get
+      parameters:
+        - description: The API version to use for the request.
+          in: query
+          name: api-version
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Get a server's secure connection policy:
+              value: 2014-04-01
+        - description: The subscription ID that identifies an Azure subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Get a server's secure connection policy:
+              value: 00000000-1111-2222-3333-444444444444
+        - description: The name of the resource group that contains the resource. You can
+            obtain this value from the Azure Resource Manager API or the portal.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Get a server's secure connection policy:
+              value: test-1234
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/ConnectionPolicyNameParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerConnectionPolicy"
+              examples:
+                Get a server's secure connection policy:
+                  $ref: "#/components/examples/Get_a_server_s_secure_connection_pol\
+                    icy"
+      tags:
+        - ConnectionPolicies
+    put:
+      description: Creates or updates the server's connection policy.
+      operationId: ServerConnectionPolicies_CreateOrUpdate
+      parameters:
+        - description: The API version to use for the request.
+          in: query
+          name: api-version
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Create or update a server's secure connection policy:
+              value: 2014-04-01
+        - description: The subscription ID that identifies an Azure subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Create or update a server's secure connection policy:
+              value: 00000000-1111-2222-3333-444444444444
+        - description: The name of the resource group that contains the resource. You can
+            obtain this value from the Azure Resource Manager API or the portal.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Create or update a server's secure connection policy:
+              value: test-1234
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/ConnectionPolicyNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServerConnectionPolicy"
+        description: The required parameters for updating a secure connection policy.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerConnectionPolicy"
+              examples:
+                Create or update a server's secure connection policy:
+                  $ref: "#/components/examples/Create_or_update_a_server_s_secure_c\
+                    onnection_policy"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerConnectionPolicy"
+              examples:
+                Create or update a server's secure connection policy:
+                  $ref: "#/components/examples/Create_or_update_a_server_s_secure_c\
+                    onnection_policy"
+      tags:
+        - ConnectionPolicies
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_a_server_s_secure_connection_policy:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-1234/providers/Microsoft.Sql/servers/test-5678/connectionPolicies/default
+        location: West US
+        name: default
+        properties:
+          connectionType: Default
+        type: Microsoft.Sql/servers/connectionPolicies
+    Create_or_update_a_server_s_secure_connection_policy:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-1234/providers/Microsoft.Sql/servers/test-5678/connectionPolicies/default
+        location: West US
+        name: default
+        properties:
+          connectionType: Proxy
+        type: Microsoft.Sql/servers/connectionPolicies
+  parameters:
+    ConnectionPolicyNameParameter:
+      description: The name of the connection policy.
+      in: path
+      name: connectionPolicyName
+      required: true
+      x-ms-enum:
+        modelAsString: true
+        name: ConnectionPolicyName
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - default
+      examples:
+        Get a server's secure connection policy:
+          value: default
+        Create or update a server's secure connection policy:
+          value: default
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get a server's secure connection policy:
+          value: test-5678
+        Create or update a server's secure connection policy:
+          value: test-5678
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ServerConnectionPolicy:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: A server secure connection policy.
+      properties:
+        kind:
+          description: Metadata used for the Azure portal experience.
+          readOnly: true
+          type: string
+        location:
+          description: Resource location.
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/ServerConnectionPolicyProperties"
+    ServerConnectionPolicyProperties:
+      description: The properties of a server secure connection policy.
+      properties:
+        connectionType:
+          description: The server connection type.
+          enum:
+            - Default
+            - Proxy
+            - Redirect
+          type: string
+          x-ms-enum:
+            name: ServerConnectionType
+      required:
+        - connectionType

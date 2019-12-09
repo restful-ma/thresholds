@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<application xmlns="http://wadl.dev.java.net/2009/02"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:apigee="http://api.apigee.com/wadl/2010/07/"
+             xsi:schemaLocation="http://wadl.dev.java.net/2009/02 http://apigee.com/schemas/wadl-schema.xsd http://api.apigee.com/wadl/2010/07/ http://apigee.com/schemas/apigee-wadl-extensions.xsd">
+
+	<resources base="http://api.face.com">
+		
+		<!-- Recognition Engine methods -->
+		
+		<resource path="faces/detect.{format}">
+			<param name="format" type="xsd:string" style="template" default="json" required="true">
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+			</param>
+			<param name="urls" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Comma separated list of JPG photos]]></doc>
+			</param>
+			<param name="detector" type="xsd:string" style="query" default="Normal" required="false">
+				<doc><![CDATA[Set the face detector work mode: Normal (default) or Aggressive. Aggressive mode may find a bit more faces, and is also slower. Usage of this detector counts as two Normal detections.]]></doc>
+				<option value="Normal" />
+				<option value="Aggressive" />
+			</param>
+			<param name="attributes" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Can be all, none or a list of specific comma-separated attributes (see list of available attributes on the return values page. Unless specified, it returns the default 3 attributes of gender, glasses and smiling. The face attribute, marking whether there's a face present is always returned.]]></doc>
+			</param>
+			<param name="callback" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[JavaScript method to wrap a json-formatted response (for JSONP support, ignored if format=xml).]]></doc>
+			</param>
+			<param name="callback_url" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Asynchronously invoke the method, and POST the response to the specified url. Suitable for calling lengthy operations. Reponse is POSTed to the callback_url as JSON/XML in a field called 'data'. If response is not required "no-reply" constant may be used.]]></doc>
+			</param>
+
+			<method id="faces.detect" name="POST" apigee:displayName="Detect Faces">
+				<apigee:tags>
+					<apigee:tag primary="true">Recognition Engine</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="faces/detect.{format}?urls={urls}" />
+
+				<doc apigee:url="http://developers.face.com/docs/api/faces-detect">
+					<![CDATA[Returns tags for detected faces in one or more photos, with geometric information of the tag, eyes, nose and mouth, as well as various attributes such as gender, is wearing glasses, and is smiling.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="faces/recognize.{format}">
+			<param name="format" type="xsd:string" style="template" default="json" required="true">
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+			</param>
+			<param name="uids" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Comma separated list of user IDs to search for in the photos passed in the request]]></doc>
+			</param>
+			<param name="urls" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Comma separated list of JPG photos]]></doc>
+			</param>
+			<param name="namespace" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Default user namespace to be used for all users specified in the short-hand syntax (just the user ID, without the '@namespace')]]></doc>
+			</param>
+			<param name="detector" type="xsd:string" style="query" default="Normal" required="false">
+				<doc><![CDATA[Set the face detector work mode: Normal (default) or Aggressive. Aggressive mode may find a bit more faces, and is also slower. Usage of this detector counts as two Normal detections.]]></doc>
+				<option value="Normal" />
+				<option value="Aggressive" />
+			</param>
+			<param name="attributes" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Can be all, none or a list of specific comma-separated attributes (see list of available attributes on the return values page. Unless specified, it returns the default 3 attributes of gender, glasses and smiling. The face attribute, marking whether there's a face present is always returned.]]></doc>
+			</param>
+			<param name="callback" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[JavaScript method to wrap a json-formatted response (for JSONP support, ignored if format=xml).]]></doc>
+			</param>
+			<param name="callback_url" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Asynchronously invoke the method, and POST the response to the specified url. Suitable for calling lengthy operations. Reponse is POSTed to the callback_url as JSON/XML in a field called 'data'. If response is not required "no-reply" constant may be used.]]></doc>
+			</param>
+			<param name="user_auth" type="xsd:string" style="query" required="false">
+				<doc>
+				<![CDATA[Signed-in facebook or twitter user credentials. Required only when specifying UIDsin these namespaces.
+Use name:value pairs, separated by comma:
+- fb_user:[facebook user id]
+- [Deprecated] fb_session:[facebook session id]
+- fb_oauth_token [facebook oauth 2.0 access token]
+and/or:
+- twitter_username:[twitter screen name]
+- twitter_password:[twitter password]
+or:
+- twitter_oauth_user:[twitter OAuth user]
+- twitter_oauth_secret:[twitter OAuth secret]
+- twitter_oauth_token:[twitter OAuth token]						
+				]]>
+				</doc>
+			</param>
+		
+			<method id="faces.recognize" name="POST" apigee:displayName="Recognize Faces">
+				<apigee:tags>
+					<apigee:tag primary="true">Recognition Engine</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="faces/recognize.{format}?uids={uids}&amp;urls={urls}" />
+
+				<doc apigee:url="http://developers.face.com/docs/api/faces-recognize">
+					<![CDATA[Attempts to detect and recognize one or more user IDs' faces, in one or more photos. For each detected face, the face.com engine will return the most likely user IDs, or empty result for unrecognized faces. In addition, each tag includes a threshold score - any score below this number is considered a low-probability hit.]]>
+				</doc>
+			</method>
+		</resource>
+	
+		<resource path="faces/train.{format}">
+			<param name="format" type="xsd:string" style="template" default="json" required="true">
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+			</param>
+			<param name="uids" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Comma separated list of user IDs to search for in the photos passed in the request]]></doc>
+			</param>
+			<param name="namespace" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Default user namespace to be used for all users specified in the short-hand syntax (just the user ID, without the '@namespace')]]></doc>
+			</param>
+			<param name="callback" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[JavaScript method to wrap a json-formatted response (for JSONP support, ignored if format=xml).]]></doc>
+			</param>
+			<param name="callback_url" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Asynchronously invoke the method, and POST the response to the specified url. Suitable for calling lengthy operations. Reponse is POSTed to the callback_url as JSON/XML in a field called 'data'. If response is not required "no-reply" constant may be used.]]></doc>
+			</param>
+			<param name="user_auth" type="xsd:string" style="query" required="false">
+				<doc>
+				<![CDATA[Signed-in facebook or twitter user credentials. Required only when specifying UIDsin these namespaces.
+Use name:value pairs, separated by comma:
+- fb_user:[facebook user id]
+- [Deprecated] fb_session:[facebook session id]
+- fb_oauth_token [facebook oauth 2.0 access token]
+and/or:
+- twitter_username:[twitter screen name]
+- twitter_password:[twitter password]
+or:
+- twitter_oauth_user:[twitter OAuth user]
+- twitter_oauth_secret:[twitter OAuth secret]
+- twitter_oauth_token:[twitter OAuth token]						
+				]]>
+				</doc>
+			</param>
+		
+			<method id="faces.train" name="GET" apigee:displayName="Train Faces">
+				<apigee:tags>
+					<apigee:tag primary="true">Recognition Engine</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="faces/train.{format}?uids={uids}" />
+
+				<doc apigee:url="http://developers.face.com/docs/api/faces-train">
+					<![CDATA[Calls the training procedure for the specified UIDs, and reports back changes.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="faces/status.{format}">
+			<param name="format" type="xsd:string" style="template" default="json" required="true">
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+			</param>
+			<param name="uids" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Comma separated list of user IDs to search for in the photos passed in the request]]></doc>
+			</param>
+			<param name="namespace" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Default user namespace to be used for all users specified in the short-hand syntax (just the user ID, without the '@namespace')]]></doc>
+			</param>
+			<param name="callback" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[JavaScript method to wrap a json-formatted response (for JSONP support, ignored if format=xml).]]></doc>
+			</param>
+			<param name="callback_url" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Asynchronously invoke the method, and POST the response to the specified url. Suitable for calling lengthy operations. Reponse is POSTed to the callback_url as JSON/XML in a field called 'data'. If response is not required "no-reply" constant may be used.]]></doc>
+			</param>
+			<param name="user_auth" type="xsd:string" style="query" required="false">
+				<doc>
+				<![CDATA[Signed-in facebook or twitter user credentials. Required only when specifying UIDsin these namespaces.
+Use name:value pairs, separated by comma:
+- fb_user:[facebook user id]
+- [Deprecated] fb_session:[facebook session id]
+- fb_oauth_token [facebook oauth 2.0 access token]
+and/or:
+- twitter_username:[twitter screen name]
+- twitter_password:[twitter password]
+or:
+- twitter_oauth_user:[twitter OAuth user]
+- twitter_oauth_secret:[twitter OAuth secret]
+- twitter_oauth_token:[twitter OAuth token]						
+				]]>
+				</doc>
+			</param>
+		
+			<method id="faces.status" name="GET" apigee:displayName="Faces Status">
+				<apigee:tags>
+					<apigee:tag primary="true">Recognition Engine</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="faces/status.{format}?uids={uids}" />
+
+				<doc apigee:url="http://developers.face.com/docs/api/faces-status">
+					<![CDATA[Reports training set status for the specified UIDs.]]>
+				</doc>
+			</method>
+		</resource>
+	
+	    <!-- Methods for managing face tags -->
+	    
+		<resource path="tags/get.{format}">
+			<param name="format" type="xsd:string" style="template" default="json" required="true">
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+			</param>
+			<apigee:choice required="true" countMin="1" countMax="3"> 
+				<param name="uids" type="xsd:string" style="query">
+					<doc><![CDATA[Comma separated list of user IDs to fetch]]></doc>
+				</param>
+				<param name="urls" type="xsd:string" style="query">
+					<doc><![CDATA[Comma separated list of JPG photos to fetch tags from]]></doc>
+				</param>
+				<param name="pids" type="xsd:string" style="query">
+					<doc><![CDATA[Photo IDs to fetch tags from (as returned by faces.detect and faces.recognize)]]></doc>
+				</param>
+			</apigee:choice>
+			<param name="order" type="xsd:string" style="query" default="recent" required="false">
+				<doc><![CDATA[Specify 'recent' for latest tags, and 'random' to randomly select tags.]]></doc>
+				<option value="recent" />
+				<option value="random" />
+			</param>
+			<param name="limit" type="xsd:integer" style="query" default="5" required="false">
+				<doc><![CDATA[Set maximum limit for number of tags to return.)]]></doc>
+			</param>
+			<param name="together" type="xsd:boolean" style="query" default="false" required="false">
+				<doc><![CDATA[When providing multiple uids, return only photos where ALL uids appear together in the photo(s).)]]></doc>
+			</param>
+			<param name="filter" type="xsd:string" style="query" required="false">
+				<doc>
+				<![CDATA[Provide advanced facial geometry and attribute filtering.
+Where:
+uid - user id
+gender - male/female
+glasses - true/false
+smiling - true/false
+yaw - left/right/center OR range (x~y) of angle
+roll - left/right/center OR range (x~y) of angle
+pitch - up/down/center OR range (x~y) of angle
+size - range (x~y) of size in pixels
+
+Separators:
+:  separates key:value pair
+,  separates filter component
+|  separates filter set for new person/group
+~ range (i.e. 40~100)
+				]]>
+				</doc>
+			</param>
+			<param name="namespace" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Default user namespace to be used for all users specified in the short-hand syntax (just the user ID, without the '@namespace')]]></doc>
+			</param>
+			<param name="callback" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[JavaScript method to wrap a json-formatted response (for JSONP support, ignored if format=xml).]]></doc>
+			</param>
+			<param name="user_auth" type="xsd:string" style="query" required="false">
+				<doc>
+				<![CDATA[Signed-in facebook or twitter user credentials. Required only when specifying UIDsin these namespaces.
+Use name:value pairs, separated by comma:
+- fb_user:[facebook user id]
+- [Deprecated] fb_session:[facebook session id]
+- fb_oauth_token [facebook oauth 2.0 access token]
+and/or:
+- twitter_username:[twitter screen name]
+- twitter_password:[twitter password]
+or:
+- twitter_oauth_user:[twitter OAuth user]
+- twitter_oauth_secret:[twitter OAuth secret]
+- twitter_oauth_token:[twitter OAuth token]						
+				]]>
+				</doc>
+			</param>
+		
+			<method id="tags.get" name="GET" apigee:displayName="Get Photos And Users Tags">
+				<apigee:tags>
+					<apigee:tag primary="true">Face Tags Management</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="tags/get.{format}?uids={uids}&amp;urls={urls}&amp;pids={pids}" />
+
+				<doc apigee:url="http://developers.face.com/docs/api/tags-get">
+					<![CDATA[Returns saved tags in one or more photos, or for the specified User ID(s). This method also accepts multiple filters for finding tags corresponding to a more specific criteria such as front-facing, recent, or where two or more users appear together in same photos.]]>
+				</doc>
+			</method>
+		</resource>
+	
+		<resource path="tags/add">
+			<param name="url" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Url of the JPG photo to add the tag to.]]></doc>
+			</param>
+			<param name="x" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[The horizontal center position of the tag, as a percentage from 0 to 100, from the left of the photo.]]></doc>
+			</param>
+			<param name="y" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[The vertical center position of the tag, as a percentage from 0 to 100, from the top of the photo.]]></doc>
+			</param>
+	    	<param name="width" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Width of the tag, as a percentage from 0 to 100 (height is currently the same as the width).]]></doc>
+			</param>
+			<param name="uid" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[The ID of the user being tagged.]]></doc>
+			</param>
+			<param name="tagger_id" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[The ID of the user who's adding the tag.]]></doc>
+			</param>
+			<param name="label" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[The display name of the user (usually First and Last name).]]></doc>
+			</param>
+			<param name="format" type="xsd:string" style="query" default="json" required="false">
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+			</param>
+			<param name="callback" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[JavaScript method to wrap a json-formatted response (for JSONP support, ignored if format=xml).]]></doc>
+			</param>
+			<param name="password" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[For use when saving tags is a privileged action in your client-side application (must be enabled in application settings).]]></doc>
+			</param>
+			<param name="user_auth" type="xsd:string" style="query" required="false">
+				<doc>
+				<![CDATA[Signed-in facebook or twitter user credentials. Required only when specifying UIDsin these namespaces.
+Use name:value pairs, separated by comma:
+- fb_user:[facebook user id]
+- [Deprecated] fb_session:[facebook session id]
+- fb_oauth_token [facebook oauth 2.0 access token]
+and/or:
+- twitter_username:[twitter screen name]
+- twitter_password:[twitter password]
+or:
+- twitter_oauth_user:[twitter OAuth user]
+- twitter_oauth_secret:[twitter OAuth secret]
+- twitter_oauth_token:[twitter OAuth token]						
+				]]>
+				</doc>
+			</param>
+		
+			<method id="tags.add" name="POST" apigee:displayName="Add Manual Face Tag">
+				<apigee:tags>
+					<apigee:tag primary="true">Face Tags Management</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="tags/add?url={url}&amp;x={x}&amp;y={y}&amp;width={width}&amp;height={height}&amp;uid={uid}&amp;tagger_id={tagger_id}" />
+				
+				<doc apigee:url="http://developers.face.com/docs/api/tags-add">
+					<![CDATA[Add a (manual) face tag to a photo. Use this method to add face tags where those were not detected for completeness of your service. Manual tags are treated like automatic tags, except they are not used to train the system how a user looks like.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="tags/save.{format}">
+			<param name="format" type="xsd:string" style="template" default="json" required="true">
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+			</param>
+			<param name="tids" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[One or more tag ids to associate with the passed uid. The tag id is a reference field in the response of faces.detect and faces.recognize methods.]]></doc>
+			</param>
+			<param name="uid" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[the user ID of the user being tagged]]></doc>
+			</param>
+			<param name="tagger_id" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[The ID of the user who's adding the tag.]]></doc>
+			</param>
+			<param name="label" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[The display name of the user (usually First and Last name).]]></doc>
+			</param>
+			<param name="callback" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[JavaScript method to wrap a json-formatted response (for JSONP support, ignored if format=xml).]]></doc>
+			</param>
+			<param name="password" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[For use when saving tags is a privileged action in your client-side application (must be enabled in application settings).]]></doc>
+			</param>
+			<param name="user_auth" type="xsd:string" style="query" required="false">
+				<doc>
+				<![CDATA[Signed-in facebook or twitter user credentials. Required only when specifying UIDsin these namespaces.
+Use name:value pairs, separated by comma:
+- fb_user:[facebook user id]
+- [Deprecated] fb_session:[facebook session id]
+- fb_oauth_token [facebook oauth 2.0 access token]
+and/or:
+- twitter_username:[twitter screen name]
+- twitter_password:[twitter password]
+or:
+- twitter_oauth_user:[twitter OAuth user]
+- twitter_oauth_secret:[twitter OAuth secret]
+- twitter_oauth_token:[twitter OAuth token]						
+				]]>
+				</doc>
+			</param>
+			
+			<method id="tags.save" name="POST" apigee:displayName="Save Face Tag">
+				<apigee:tags>
+					<apigee:tag primary="true">Face Tags Management</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="tags/save.{format}?tids={tids}&amp;uid={uid}" />
+
+				<doc apigee:url="http://developers.face.com/docs/api/tags-save">
+					<![CDATA[Saves a face tag. Use this method to save tags for training the face.com index, or for future use of the faces.detect and tags.get methods.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="tags/remove.{format}">
+			<param name="format" type="xsd:string" style="template" default="json" required="true">
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+			</param>
+			<param name="tids" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[List of the tag ids to remove. The tag ID (tid) is a reference field in the response of tags.get, faces.detect and faces.recognize.]]></doc>
+			</param>
+			<param name="callback" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[JavaScript method to wrap a json-formatted response (for JSONP support, ignored if format=xml).]]></doc>
+			</param>
+			<param name="password" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[For use when saving tags is a privileged action in your client-side application (must be enabled in application settings).]]></doc>
+			</param>
+			<param name="user_auth" type="xsd:string" style="query" required="false">
+				<doc>
+				<![CDATA[Signed-in facebook or twitter user credentials. Required only when specifying UIDsin these namespaces.
+Use name:value pairs, separated by comma:
+- fb_user:[facebook user id]
+- [Deprecated] fb_session:[facebook session id]
+- fb_oauth_token [facebook oauth 2.0 access token]
+and/or:
+- twitter_username:[twitter screen name]
+- twitter_password:[twitter password]
+or:
+- twitter_oauth_user:[twitter OAuth user]
+- twitter_oauth_secret:[twitter OAuth secret]
+- twitter_oauth_token:[twitter OAuth token]						
+				]]>
+				</doc>
+			</param>
+			
+			<method id="tags.remove" name="DELETE" apigee:displayName="Remove Face Tag">
+				<apigee:tags>
+					<apigee:tag primary="true">Face Tags Management</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="tags/remove.{format}?tids={tids}" />
+
+				<doc apigee:url="http://developers.face.com/docs/api/tags-remove">
+					<![CDATA[Remove a previously saved face tag from a photo.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<!-- Account management methods -->
+		
+		<resource path="account/limits.{format}">
+			<param name="format" type="xsd:string" style="template" default="json" required="true">
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+			</param>
+			<param name="callback" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[JavaScript method to wrap a json-formatted response (for JSONP support, ignored if format=xml).]]></doc>
+			</param>
+					
+			<method id="account.limits" name="GET" apigee:displayName="Account Limits">
+				<apigee:tags>
+					<apigee:tag primary="true">Account Management</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="account/limits.{format}" />
+
+				<doc apigee:url="http://developers.face.com/docs/api/account-limits">
+					<![CDATA[Returns current rate limits for the account represented by the passed API key and Secret.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="account/users.{format}">
+			<param name="format" type="xsd:string" style="template" default="json" required="true">
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+			</param>
+			<param name="namespaces" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Comma separated list of one or more private namespaces.]]></doc>
+			</param>
+			<param name="callback" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[JavaScript method to wrap a json-formatted response (for JSONP support, ignored if format=xml).]]></doc>
+			</param>
+					
+			<method id="account.users" name="GET" apigee:displayName="Account Users">
+				<apigee:tags>
+					<apigee:tag primary="true">Account Management</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="account/users.{format}?namespaces={namespaces}" />
+
+				<doc apigee:url="http://developers.face.com/docs/api/account-users">
+					<![CDATA[Returns current users registered in the account's private namespaces. Users in a private namespace get registered implicitly through tags.save calls.]]>
+				</doc>
+			</method>
+		</resource>
+
+	</resources>
+</application>

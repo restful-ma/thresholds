@@ -1,0 +1,197 @@
+openapi: 3.0.0
+info:
+  description: The Microsoft Azure Network management API provides a RESTful set of web
+    services that interact with Microsoft Azure Networks service to manage your
+    network resources. The API has entities that capture the relationship
+    between an end user and the Microsoft Azure Networks service.
+  title: NetworkManagementClient
+  version: 2019-04-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/network/resource-manager/Microsoft.Network/stable/2019-04-01/availableDelegations.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: network-availableDelegations
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/availableDelegations":
+    get:
+      description: Gets all of the available subnet delegations for this subscription in
+        this region.
+      operationId: AvailableDelegations_List
+      parameters:
+        - description: The location of the subnet.
+          in: path
+          name: location
+          required: true
+          schema:
+            type: string
+          examples:
+            Get available delegations:
+              value: regionName
+        - description: Client API version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Get available delegations:
+              value: 2019-04-01
+        - description: The subscription credentials which uniquely identify the Microsoft
+            Azure subscription. The subscription ID forms part of the URI for
+            every service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Get available delegations:
+              value: subId
+      responses:
+        "200":
+          description: Request successful. Returns all of the possible delegations for a
+            subnet in this subscription in the region.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailableDelegationsResult"
+              examples:
+                Get available delegations:
+                  $ref: "#/components/examples/Get_available_delegations"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/availableDelegations":
+    get:
+      description: Gets all of the available subnet delegations for this resource group in
+        this region.
+      operationId: AvailableResourceGroupDelegations_List
+      parameters:
+        - description: The location of the domain name.
+          in: path
+          name: location
+          required: true
+          schema:
+            type: string
+          examples:
+            Get available delegations in the resource group:
+              value: regionName
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get available delegations in the resource group:
+              value: rg1
+        - description: The subscription credentials which uniquely identify the Microsoft
+            Azure subscription. The subscription ID forms part of the URI for
+            every service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Get available delegations in the resource group:
+              value: subId
+        - description: Client API version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Get available delegations in the resource group:
+              value: 2019-04-01
+      responses:
+        "200":
+          description: Request successful. Returns all of the possible delegations for a
+            subnet in this subscription in the region.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailableDelegationsResult"
+              examples:
+                Get available delegations in the resource group:
+                  $ref: "#/components/examples/Get_available_delegations_in_the_res\
+                    ource_group"
+      x-ms-pageable:
+        nextLinkName: nextLink
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_available_delegations:
+      value:
+        value:
+          - actions:
+              - Microsoft.Network/resource/action
+            id: /subscriptions/subId/providers/Microsoft.Network/availableDelegations/Microsoft.Provider.resourceType
+            name: Microsoft.Provider.resourceType
+            serviceName: Microsoft.Provider/resourceType
+            type: Microsoft.Network/availableDelegations
+    Get_available_delegations_in_the_resource_group:
+      value:
+        value:
+          - actions:
+              - Microsoft.Network/resource/action
+            id: /subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/availableDelegations/Microsoft.Provider.resourceType
+            name: Microsoft.Provider.resourceType
+            serviceName: Microsoft.Provider/resourceType
+            type: Microsoft.Network/availableDelegations
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AvailableDelegation:
+      description: The serviceName of an AvailableDelegation indicates a possible
+        delegation for a subnet.
+      properties:
+        actions:
+          description: Describes the actions permitted to the service upon delegation.
+          items:
+            type: string
+          type: array
+        id:
+          description: A unique identifier of the AvailableDelegation resource.
+          type: string
+        name:
+          description: The name of the AvailableDelegation resource.
+          type: string
+        serviceName:
+          description: The name of the service and resource.
+          type: string
+        type:
+          description: Resource type.
+          type: string
+    AvailableDelegationsResult:
+      description: An array of available delegations.
+      properties:
+        nextLink:
+          description: The URL to get the next set of results.
+          readOnly: true
+          type: string
+        value:
+          description: An array of available delegations.
+          items:
+            $ref: "#/components/schemas/AvailableDelegation"
+          type: array

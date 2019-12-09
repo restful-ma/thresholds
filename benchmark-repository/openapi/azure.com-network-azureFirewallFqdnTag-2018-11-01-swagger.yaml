@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  description: The Microsoft Azure Network management API provides a RESTful set of web
+    services that interact with Microsoft Azure Networks service to manage your
+    network resources. The API has entities that capture the relationship
+    between an end user and the Microsoft Azure Networks service.
+  title: NetworkManagementClient
+  version: 2018-11-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/network/resource-manager/Microsoft.Network/stable/2018-11-01/azureFirewallFqdnTag.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: network-azureFirewallFqdnTag
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureFirewallFqdnTags":
+    get:
+      description: Gets all the Azure Firewall FQDN Tags in a subscription.
+      operationId: AzureFirewallFqdnTags_ListAll
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Success. The operation returns a list of Azure Firewall FQDN Tag
+            resources.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AzureFirewallFqdnTagListResult"
+              examples:
+                List all Azure Firewall FQDN Tags for a given subscription:
+                  $ref: "#/components/examples/List_all_Azure_Firewall_FQDN_Tags_fo\
+                    r_a_given_subscription"
+      tags:
+        - AzureFirewallFqdnTags
+      x-ms-pageable:
+        nextLinkName: nextLink
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    List_all_Azure_Firewall_FQDN_Tags_for_a_given_subscription:
+      value:
+        value:
+          - etag: w/\00000000-0000-0000-0000-000000000000\
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewallFqdnTags/azfwfqdntag
+            location: West US
+            name: azfwfqdntag
+            properties:
+              fqdnTagName: azfwfqdntag
+              provisioningState: Succeeded
+            tags:
+              key1: value1
+            type: Microsoft.Network/azureFirewallFqdnTags
+  parameters:
+    ApiVersionParameter:
+      description: Client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        List all Azure Firewall FQDN Tags for a given subscription:
+          value: 2018-11-01
+    SubscriptionIdParameter:
+      description: The subscription credentials which uniquely identify the Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        List all Azure Firewall FQDN Tags for a given subscription:
+          value: subid
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AzureFirewallFqdnTag:
+      allOf:
+        - description: Common resource representation.
+          properties:
+            id:
+              description: Resource ID.
+              type: string
+            location:
+              description: Resource location.
+              type: string
+            name:
+              description: Resource name.
+              readOnly: true
+              type: string
+            tags:
+              additionalProperties:
+                type: string
+              description: Resource tags.
+              type: object
+            type:
+              description: Resource type.
+              readOnly: true
+              type: string
+          x-ms-azure-resource: true
+      description: Azure Firewall FQDN Tag Resource
+      properties:
+        etag:
+          description: Gets a unique read-only string that changes whenever the resource is
+            updated.
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/AzureFirewallFqdnTagPropertiesFormat"
+    AzureFirewallFqdnTagListResult:
+      description: Response for ListAzureFirewallFqdnTags API service call.
+      properties:
+        nextLink:
+          description: URL to get the next set of results.
+          type: string
+        value:
+          description: List of Azure Firewall FQDN Tags in a resource group.
+          items:
+            $ref: "#/components/schemas/AzureFirewallFqdnTag"
+          type: array
+    AzureFirewallFqdnTagPropertiesFormat:
+      description: Azure Firewall FQDN Tag Properties
+      properties:
+        fqdnTagName:
+          description: The name of this FQDN Tag.
+          readOnly: true
+          type: string
+        provisioningState:
+          description: The provisioning state of the resource.
+          readOnly: true
+          type: string

@@ -1,0 +1,50 @@
+#%RAML 1.0 DocumentationItem
+title: Usage Examples
+content: |
+  1) Get an access token for the Audit Query API. The response will include an access_token field with your token. This should be used in every request to the Audit Query API. The token should be sent on the Authorization header.
+  ```
+  curl -s 
+    https://anypoint.mulesoft.com/accounts/login -d "username=<YOUR-USERNAME>&password=<YOUR-PASSWORD>"
+  ```
+  Response : 
+  ```
+  {
+    "access_token": "54545454-5454-5454-5454-545454545454",
+    "token_type": "Bearer",
+    "redirectUrl": "/home"
+  }
+  ```
+  2) API to get all platforms in an org : 
+
+  ```
+  curl -X GET
+    https://anypoint.mulesoft.com/audit/v2/organizations/f0c9b011-980e-4928-9430-e60e3a97c043/platforms?include_internal=false
+    -H 'Content-Type: application/json' 
+    -H 'Authorization:Bearer <access_token>'
+    ```
+    3) Get supported object types for each platform :
+
+    ```
+  curl -X GET
+    https://anypoint.mulesoft.com/audit/v2/organizations/f0c9b011-980e-4928-9430-e60e3a97c043/objectTypes?include_internal=false
+    -H 'Content-Type: application/json' 
+    -H 'Authorization:Bearer <access_token>'
+    ```
+    4) Get a list of actions associated with every object type :
+    
+    ```
+  curl -X GET
+    https://anypoint.mulesoft.com/audit/v2/organizations/f0c9b011-980e-4928-9430-e60e3a97c043/actions?include_internal=false
+    -H 'Content-Type: application/json' 
+    -H 'Authorization:Bearer <access_token>'
+    ```
+    5) Query for log entries for an org with different filters. Query parameters are documented in the logQuery schema. Entries returned will match the entries that were passed in, and are sorted in ascending timestamp order (oldest to newest). E.g. below query searches for log entries for a duration of 1 day regardless of any platform, object types or actions.
+    
+    ```
+  curl -X POST
+    https://anypoint.mulesoft.com/audit/v2/organizations/f0c9b011-980e-4928-9430-e60e3a97c043/query?include_internal=false
+    -H 'Content-Type: application/json' 
+    -H 'Authorization:Bearer <access_token>'
+    -d '{"startDate":"2018-01-28T21:45:41.609Z","endDate":"2018-01-29T21:45:41.609Z","platforms":[],"objectTypes":[],"actions":[],"objectIds":[],"userIds":[],"ascending":false,"organizationId":"f0c9b011-980e-4928-9430-e60e3a97c043","offset":0,"limit":25}'
+    ```
+

@@ -1,0 +1,3965 @@
+openapi: 3.0.0
+info:
+  version: 2019-01-25
+  x-release: v4
+  title: AWS App Mesh
+  description: >-
+    <p>AWS App Mesh is a service mesh based on the Envoy proxy that makes it
+    easy to monitor and
+             control microservices. App Mesh standardizes how your microservices communicate, giving you
+             end-to-end visibility and helping to ensure high availability for your applications.</p>
+             <p>App Mesh gives you consistent visibility and network traffic controls for every
+             microservice in an application. You can use App Mesh with AWS Fargate, Amazon ECS, Amazon EKS,
+             Kubernetes on AWS, and Amazon EC2.</p>
+             <note>
+                <p>App Mesh supports microservice applications that use service discovery naming for their
+                components. For more information about service discovery on Amazon ECS, see <a href="http://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-discovery.html">Service Discovery</a> in the
+                   <i>Amazon Elastic Container Service Developer Guide</i>. Kubernetes <code>kube-dns</code> and
+                   <code>coredns</code> are supported. For more information, see <a href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/">DNS
+                   for Services and Pods</a> in the Kubernetes documentation.</p>
+             </note>
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: appmesh
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/appmesh-2019-01-25.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/appmesh/
+security:
+  - hmac: []
+paths:
+  /v20190125/meshes:
+    put:
+      operationId: CreateMesh
+      description: >-
+        <p>Creates a service mesh. A service mesh is a logical boundary for
+        network traffic between
+                 the services that reside within it.</p>
+                 <p>After you create your service mesh, you can create virtual services, virtual nodes,
+                 virtual routers, and routes to distribute traffic between the applications in your
+                 mesh.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateMeshOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "482":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "486":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "487":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - meshName
+              properties:
+                clientToken:
+                  description: >-
+                    Unique, case-sensitive identifier that you provide to ensure
+                    the idempotency of the
+
+                    request. Up to 36 letters, numbers, hyphens, and underscores are allowed.
+                  type: string
+                meshName:
+                  description: The name to use for the service mesh.
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                spec:
+                  description: An object representing the specification of a service mesh.
+                  type: object
+                  properties:
+                    egressFilter:
+                      $ref: "#/components/schemas/EgressFilter"
+                tags:
+                  description: >-
+                    Optional metadata that you can apply to the service mesh to
+                    assist with categorization
+                             and organization. Each tag consists of a key and an optional value, both of which you
+                             define. Tag keys can have a maximum character length of 128 characters, and tag values can have
+                                a maximum length of 256 characters.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TagRef"
+                  minItems: 0
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListMeshes
+      description: Returns a list of existing service meshes.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListMeshesOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: >-
+            The maximum number of results returned by <code>ListMeshes</code> in
+            paginated output.
+                     When you use this parameter, <code>ListMeshes</code> returns only <code>limit</code>
+                     results in a single page along with a <code>nextToken</code> response element. You can see
+                     the remaining results of the initial request by sending another <code>ListMeshes</code>
+                     request with the returned <code>nextToken</code> value. This value can be between
+                     1 and 100. If you don't use this parameter,
+                        <code>ListMeshes</code> returns up to 100 results and a
+                        <code>nextToken</code> value if applicable.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: >-
+            <p>The <code>nextToken</code> value returned from a previous
+            paginated
+                        <code>ListMeshes</code> request where <code>limit</code> was used and the results
+                     exceeded the value of that parameter. Pagination continues from the end of the previous
+                     results that returned the <code>nextToken</code> value.</p> 
+                     <note>
+                        <p>This token should be treated as an opaque identifier that is used only to
+                            retrieve the next items in a list and not for other programmatic purposes.</p>
+                    </note>
+          schema:
+            type: string
+  "/v20190125/meshes/{meshName}/virtualRouter/{virtualRouterName}/routes":
+    put:
+      operationId: CreateRoute
+      description: >-
+        <p>Creates a route that is associated with a virtual router.</p>
+                 <p>You can use the <code>prefix</code> parameter in your route specification for path-based
+                 routing of requests. For example, if your virtual service name is
+                    <code>my-service.local</code> and you want the route to match requests to
+                    <code>my-service.local/metrics</code>, your prefix should be
+                 <code>/metrics</code>.</p>
+                 <p>If your route matches a request, you can distribute traffic to one or more target
+                 virtual nodes with relative weighting.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateRouteOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "482":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "486":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "487":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to create the route in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualRouterName
+          in: path
+          required: true
+          description: The name of the virtual router in which to create the route.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - routeName
+                - spec
+              properties:
+                clientToken:
+                  description: >-
+                    Unique, case-sensitive identifier that you provide to ensure
+                    the idempotency of the
+
+                    request. Up to 36 letters, numbers, hyphens, and underscores are allowed.
+                  type: string
+                routeName:
+                  description: The name to use for the route.
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                spec:
+                  description: An object representing the specification of a route.
+                  type: object
+                  properties:
+                    httpRoute:
+                      $ref: "#/components/schemas/HttpRoute"
+                    priority:
+                      $ref: "#/components/schemas/RoutePriority"
+                    tcpRoute:
+                      $ref: "#/components/schemas/TcpRoute"
+                tags:
+                  description: >-
+                    Optional metadata that you can apply to the route to assist
+                    with categorization and
+                             organization. Each tag consists of a key and an optional value, both of which you define.
+                             Tag keys can have a maximum character length of 128 characters, and tag values can have
+                                a maximum length of 256 characters.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TagRef"
+                  minItems: 0
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListRoutes
+      description: Returns a list of existing routes in a service mesh.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListRoutesOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: >-
+            The maximum number of results returned by <code>ListRoutes</code> in
+            paginated output.
+                     When you use this parameter, <code>ListRoutes</code> returns only <code>limit</code>
+                     results in a single page along with a <code>nextToken</code> response element. You can see
+                     the remaining results of the initial request by sending another <code>ListRoutes</code>
+                     request with the returned <code>nextToken</code> value. This value can be between
+                     1 and 100. If you don't use this parameter,
+                        <code>ListRoutes</code> returns up to 100 results and a
+                        <code>nextToken</code> value if applicable.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to list routes in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: nextToken
+          in: query
+          required: false
+          description: >-
+            The <code>nextToken</code> value returned from a previous paginated
+                        <code>ListRoutes</code> request where <code>limit</code> was used and the results
+                     exceeded the value of that parameter. Pagination continues from the end of the previous
+                     results that returned the <code>nextToken</code> value.
+          schema:
+            type: string
+        - name: virtualRouterName
+          in: path
+          required: true
+          description: The name of the virtual router to list routes in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+  "/v20190125/meshes/{meshName}/virtualNodes":
+    put:
+      operationId: CreateVirtualNode
+      description: >-
+        <p>Creates a virtual node within a service mesh.</p>
+                 <p>A virtual node acts as a logical pointer to a particular task group, such as an Amazon ECS
+                 service or a Kubernetes deployment. When you create a virtual node, you can specify the
+                 service discovery information for your task group.</p>
+                 <p>Any inbound traffic that your virtual node expects should be specified as a
+                    <code>listener</code>. Any outbound traffic that your virtual node expects to reach
+                 should be specified as a <code>backend</code>.</p>
+                 <p>The response metadata for your new virtual node contains the <code>arn</code> that is
+                 associated with the virtual node. Set this value (either the full ARN or the truncated
+                 resource name: for example, <code>mesh/default/virtualNode/simpleapp</code>) as the
+                    <code>APPMESH_VIRTUAL_NODE_NAME</code> environment variable for your task group's Envoy
+                 proxy container in your task definition or pod spec. This is then mapped to the
+                    <code>node.id</code> and <code>node.cluster</code> Envoy parameters.</p>
+                 <note>
+                    <p>If you require your Envoy stats or tracing to use a different name, you can override
+                    the <code>node.cluster</code> value that is set by
+                       <code>APPMESH_VIRTUAL_NODE_NAME</code> with the
+                       <code>APPMESH_VIRTUAL_NODE_CLUSTER</code> environment variable.</p>
+                 </note>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateVirtualNodeOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "482":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "486":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "487":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to create the virtual node in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - spec
+                - virtualNodeName
+              properties:
+                clientToken:
+                  description: >-
+                    Unique, case-sensitive identifier that you provide to ensure
+                    the idempotency of the
+
+                    request. Up to 36 letters, numbers, hyphens, and underscores are allowed.
+                  type: string
+                spec:
+                  description: An object representing the specification of a virtual node.
+                  type: object
+                  properties:
+                    backends:
+                      $ref: "#/components/schemas/Backends"
+                    listeners:
+                      $ref: "#/components/schemas/Listeners"
+                    logging:
+                      $ref: "#/components/schemas/Logging"
+                    serviceDiscovery:
+                      $ref: "#/components/schemas/ServiceDiscovery"
+                tags:
+                  description: >-
+                    Optional metadata that you can apply to the virtual node to
+                    assist with categorization
+                             and organization. Each tag consists of a key and an optional value, both of which you
+                             define. Tag keys can have a maximum character length of 128 characters, and tag values can have
+                                a maximum length of 256 characters.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TagRef"
+                  minItems: 0
+                  maxItems: 50
+                virtualNodeName:
+                  description: The name to use for the virtual node.
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListVirtualNodes
+      description: Returns a list of existing virtual nodes.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListVirtualNodesOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: >-
+            The maximum number of results returned by
+            <code>ListVirtualNodes</code> in paginated
+                     output. When you use this parameter, <code>ListVirtualNodes</code> returns only
+                        <code>limit</code> results in a single page along with a <code>nextToken</code> response
+                     element. You can see the remaining results of the initial request by sending another
+                        <code>ListVirtualNodes</code> request with the returned <code>nextToken</code> value.
+                     This value can be between 1 and 100. If you don't use this
+                     parameter, <code>ListVirtualNodes</code> returns up to 100 results and a
+                        <code>nextToken</code> value if applicable.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to list virtual nodes in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: nextToken
+          in: query
+          required: false
+          description: >-
+            The <code>nextToken</code> value returned from a previous paginated
+                        <code>ListVirtualNodes</code> request where <code>limit</code> was used and the results
+                     exceeded the value of that parameter. Pagination continues from the end of the previous
+                     results that returned the <code>nextToken</code> value.
+          schema:
+            type: string
+  "/v20190125/meshes/{meshName}/virtualRouters":
+    put:
+      operationId: CreateVirtualRouter
+      description: >-
+        <p>Creates a virtual router within a service mesh.</p>
+                 <p>Any inbound traffic that your virtual router expects should be specified as a
+                    <code>listener</code>. </p>
+                 <p>Virtual routers handle traffic for one or more virtual services within your mesh. After
+                 you create your virtual router, create and associate routes for your virtual router that
+                 direct incoming requests to different virtual nodes.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateVirtualRouterOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "482":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "486":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "487":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to create the virtual router in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - spec
+                - virtualRouterName
+              properties:
+                clientToken:
+                  description: >-
+                    Unique, case-sensitive identifier that you provide to ensure
+                    the idempotency of the
+
+                    request. Up to 36 letters, numbers, hyphens, and underscores are allowed.
+                  type: string
+                spec:
+                  description: An object representing the specification of a virtual router.
+                  type: object
+                  properties:
+                    listeners:
+                      $ref: "#/components/schemas/VirtualRouterListeners"
+                tags:
+                  description: >-
+                    Optional metadata that you can apply to the virtual router
+                    to assist with categorization
+                             and organization. Each tag consists of a key and an optional value, both of which you
+                             define. Tag keys can have a maximum character length of 128 characters, and tag values can have
+                                a maximum length of 256 characters.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TagRef"
+                  minItems: 0
+                  maxItems: 50
+                virtualRouterName:
+                  description: The name to use for the virtual router.
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListVirtualRouters
+      description: Returns a list of existing virtual routers in a service mesh.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListVirtualRoutersOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: >-
+            The maximum number of results returned by
+            <code>ListVirtualRouters</code> in paginated
+                     output. When you use this parameter, <code>ListVirtualRouters</code> returns only
+                        <code>limit</code> results in a single page along with a <code>nextToken</code> response
+                     element. You can see the remaining results of the initial request by sending another
+                        <code>ListVirtualRouters</code> request with the returned <code>nextToken</code> value.
+                     This value can be between 1 and 100. If you don't use this
+                     parameter, <code>ListVirtualRouters</code> returns up to 100 results and
+                     a <code>nextToken</code> value if applicable.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to list virtual routers in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: nextToken
+          in: query
+          required: false
+          description: >-
+            The <code>nextToken</code> value returned from a previous paginated
+                        <code>ListVirtualRouters</code> request where <code>limit</code> was used and the
+                     results exceeded the value of that parameter. Pagination continues from the end of the
+                     previous results that returned the <code>nextToken</code> value.
+          schema:
+            type: string
+  "/v20190125/meshes/{meshName}/virtualServices":
+    put:
+      operationId: CreateVirtualService
+      description: >-
+        <p>Creates a virtual service within a service mesh.</p>
+                 <p>A virtual service is an abstraction of a real service that is provided by a virtual node
+                 directly or indirectly by means of a virtual router. Dependent services call your virtual
+                 service by its <code>virtualServiceName</code>, and those requests are routed to the
+                 virtual node or virtual router that is specified as the provider for the virtual
+                 service.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateVirtualServiceOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "482":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "486":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "487":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to create the virtual service in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - spec
+                - virtualServiceName
+              properties:
+                clientToken:
+                  description: >-
+                    Unique, case-sensitive identifier that you provide to ensure
+                    the idempotency of the
+
+                    request. Up to 36 letters, numbers, hyphens, and underscores are allowed.
+                  type: string
+                spec:
+                  description: An object representing the specification of a virtual
+                    service.
+                  type: object
+                  properties:
+                    provider:
+                      $ref: "#/components/schemas/VirtualServiceProvider"
+                tags:
+                  description: >-
+                    Optional metadata that you can apply to the virtual service
+                    to assist with
+                             categorization and organization. Each tag consists of a key and an optional value, both of
+                             which you define. Tag keys can have a maximum character length of 128 characters, and tag values can have
+                                a maximum length of 256 characters.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TagRef"
+                  minItems: 0
+                  maxItems: 50
+                virtualServiceName:
+                  description: The name to use for the virtual service.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListVirtualServices
+      description: Returns a list of existing virtual services in a service mesh.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListVirtualServicesOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: >-
+            The maximum number of results returned by
+            <code>ListVirtualServices</code> in paginated
+                     output. When you use this parameter, <code>ListVirtualServices</code> returns only
+                        <code>limit</code> results in a single page along with a <code>nextToken</code> response
+                     element. You can see the remaining results of the initial request by sending another
+                        <code>ListVirtualServices</code> request with the returned <code>nextToken</code> value.
+                     This value can be between 1 and 100. If you don't use this
+                     parameter, <code>ListVirtualServices</code> returns up to 100 results and
+                     a <code>nextToken</code> value if applicable.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to list virtual services in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: nextToken
+          in: query
+          required: false
+          description: >-
+            The <code>nextToken</code> value returned from a previous paginated
+                        <code>ListVirtualServices</code> request where <code>limit</code> was used and the
+                     results exceeded the value of that parameter. Pagination continues from the end of the
+                     previous results that returned the <code>nextToken</code> value.
+          schema:
+            type: string
+  "/v20190125/meshes/{meshName}":
+    delete:
+      operationId: DeleteMesh
+      description: >-
+        <p>Deletes an existing service mesh.</p>
+                 <p>You must delete all resources (virtual services, routes, virtual routers, and virtual
+                 nodes) in the service mesh before you can delete the mesh itself.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteMeshOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+        "485":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "486":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to delete.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeMesh
+      description: Describes an existing service mesh.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeMeshOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to describe.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+    put:
+      operationId: UpdateMesh
+      description: Updates an existing service mesh.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateMeshOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "482":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "485":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "486":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to update.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientToken:
+                  description: >-
+                    Unique, case-sensitive identifier that you provide to ensure
+                    the idempotency of the
+
+                    request. Up to 36 letters, numbers, hyphens, and underscores are allowed.
+                  type: string
+                spec:
+                  description: An object representing the specification of a service mesh.
+                  type: object
+                  properties:
+                    egressFilter:
+                      $ref: "#/components/schemas/EgressFilter"
+        required: true
+  "/v20190125/meshes/{meshName}/virtualRouter/{virtualRouterName}/routes/{routeName}":
+    delete:
+      operationId: DeleteRoute
+      description: Deletes an existing route.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteRouteOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+        "485":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "486":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to delete the route in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: routeName
+          in: path
+          required: true
+          description: The name of the route to delete.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualRouterName
+          in: path
+          required: true
+          description: The name of the virtual router to delete the route in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeRoute
+      description: Describes an existing route.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeRouteOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh that the route resides in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: routeName
+          in: path
+          required: true
+          description: The name of the route to describe.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualRouterName
+          in: path
+          required: true
+          description: The name of the virtual router that the route is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+    put:
+      operationId: UpdateRoute
+      description: Updates an existing route for a specified service mesh and virtual
+        router.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateRouteOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "482":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "486":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "487":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh that the route resides in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: routeName
+          in: path
+          required: true
+          description: The name of the route to update.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualRouterName
+          in: path
+          required: true
+          description: The name of the virtual router that the route is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - spec
+              properties:
+                clientToken:
+                  description: >-
+                    Unique, case-sensitive identifier that you provide to ensure
+                    the idempotency of the
+
+                    request. Up to 36 letters, numbers, hyphens, and underscores are allowed.
+                  type: string
+                spec:
+                  description: An object representing the specification of a route.
+                  type: object
+                  properties:
+                    httpRoute:
+                      $ref: "#/components/schemas/HttpRoute"
+                    priority:
+                      $ref: "#/components/schemas/RoutePriority"
+                    tcpRoute:
+                      $ref: "#/components/schemas/TcpRoute"
+        required: true
+  "/v20190125/meshes/{meshName}/virtualNodes/{virtualNodeName}":
+    delete:
+      operationId: DeleteVirtualNode
+      description: >-
+        <p>Deletes an existing virtual node.</p>
+                 <p>You must delete any virtual services that list a virtual node as a service provider
+                 before you can delete the virtual node itself.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteVirtualNodeOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+        "485":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "486":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to delete the virtual node in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualNodeName
+          in: path
+          required: true
+          description: The name of the virtual node to delete.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeVirtualNode
+      description: Describes an existing virtual node.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeVirtualNodeOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh that the virtual node resides in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualNodeName
+          in: path
+          required: true
+          description: The name of the virtual node to describe.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+    put:
+      operationId: UpdateVirtualNode
+      description: Updates an existing virtual node in a specified service mesh.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateVirtualNodeOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "482":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "486":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "487":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh that the virtual node resides in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualNodeName
+          in: path
+          required: true
+          description: The name of the virtual node to update.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - spec
+              properties:
+                clientToken:
+                  description: >-
+                    Unique, case-sensitive identifier that you provide to ensure
+                    the idempotency of the
+
+                    request. Up to 36 letters, numbers, hyphens, and underscores are allowed.
+                  type: string
+                spec:
+                  description: An object representing the specification of a virtual node.
+                  type: object
+                  properties:
+                    backends:
+                      $ref: "#/components/schemas/Backends"
+                    listeners:
+                      $ref: "#/components/schemas/Listeners"
+                    logging:
+                      $ref: "#/components/schemas/Logging"
+                    serviceDiscovery:
+                      $ref: "#/components/schemas/ServiceDiscovery"
+        required: true
+  "/v20190125/meshes/{meshName}/virtualRouters/{virtualRouterName}":
+    delete:
+      operationId: DeleteVirtualRouter
+      description: >-
+        <p>Deletes an existing virtual router.</p>
+                 <p>You must delete any routes associated with the virtual router before you can delete the
+                 router itself.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteVirtualRouterOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+        "485":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "486":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to delete the virtual router in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualRouterName
+          in: path
+          required: true
+          description: The name of the virtual router to delete.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeVirtualRouter
+      description: Describes an existing virtual router.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeVirtualRouterOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh that the virtual router resides in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualRouterName
+          in: path
+          required: true
+          description: The name of the virtual router to describe.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+    put:
+      operationId: UpdateVirtualRouter
+      description: Updates an existing virtual router in a specified service mesh.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateVirtualRouterOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "482":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "486":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "487":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh that the virtual router resides in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualRouterName
+          in: path
+          required: true
+          description: The name of the virtual router to update.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - spec
+              properties:
+                clientToken:
+                  description: >-
+                    Unique, case-sensitive identifier that you provide to ensure
+                    the idempotency of the
+
+                    request. Up to 36 letters, numbers, hyphens, and underscores are allowed.
+                  type: string
+                spec:
+                  description: An object representing the specification of a virtual router.
+                  type: object
+                  properties:
+                    listeners:
+                      $ref: "#/components/schemas/VirtualRouterListeners"
+        required: true
+  "/v20190125/meshes/{meshName}/virtualServices/{virtualServiceName}":
+    delete:
+      operationId: DeleteVirtualService
+      description: Deletes an existing virtual service.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteVirtualServiceOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh to delete the virtual service in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualServiceName
+          in: path
+          required: true
+          description: The name of the virtual service to delete.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeVirtualService
+      description: Describes an existing virtual service.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeVirtualServiceOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh that the virtual service resides in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualServiceName
+          in: path
+          required: true
+          description: The name of the virtual service to describe.
+          schema:
+            type: string
+    put:
+      operationId: UpdateVirtualService
+      description: Updates an existing virtual service in a specified service mesh.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateVirtualServiceOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "482":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "486":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "487":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: meshName
+          in: path
+          required: true
+          description: The name of the service mesh that the virtual service resides in.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: virtualServiceName
+          in: path
+          required: true
+          description: The name of the virtual service to update.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - spec
+              properties:
+                clientToken:
+                  description: >-
+                    Unique, case-sensitive identifier that you provide to ensure
+                    the idempotency of the
+
+                    request. Up to 36 letters, numbers, hyphens, and underscores are allowed.
+                  type: string
+                spec:
+                  description: An object representing the specification of a virtual
+                    service.
+                  type: object
+                  properties:
+                    provider:
+                      $ref: "#/components/schemas/VirtualServiceProvider"
+        required: true
+  /v20190125/tags#resourceArn:
+    get:
+      operationId: ListTagsForResource
+      description: List the tags for an App Mesh resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTagsForResourceOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: >-
+            The maximum number of tag results returned by
+            <code>ListTagsForResource</code> in
+                     paginated output. When this parameter is used, <code>ListTagsForResource</code> returns
+                     only <code>limit</code> results in a single page along with a <code>nextToken</code>
+                     response element. You can see the remaining results of the initial request by sending
+                     another <code>ListTagsForResource</code> request with the returned <code>nextToken</code>
+                     value. This value can be between 1 and 100. If you don't use
+                     this parameter, <code>ListTagsForResource</code> returns up to 100
+                     results and a <code>nextToken</code> value if applicable.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+        - name: nextToken
+          in: query
+          required: false
+          description: >-
+            The <code>nextToken</code> value returned from a previous paginated
+                        <code>ListTagsForResource</code> request where <code>limit</code> was used and the
+                     results exceeded the value of that parameter. Pagination continues from the end of the
+                     previous results that returned the <code>nextToken</code> value.
+          schema:
+            type: string
+        - name: resourceArn
+          in: query
+          required: true
+          description: The Amazon Resource Name (ARN) that identifies the resource to list
+            the tags for.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v20190125/tag#resourceArn:
+    put:
+      operationId: TagResource
+      description: >-
+        Associates the specified tags to a resource with the specified
+        <code>resourceArn</code>.
+                 If existing tags on a resource aren't specified in the request parameters, they aren't
+                 changed. When a resource is deleted, the tags associated with that resource are also
+                 deleted.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagResourceOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+        "486":
+          description: TooManyTagsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyTagsException"
+      parameters:
+        - name: resourceArn
+          in: query
+          required: true
+          description: The Amazon Resource Name (ARN) of the resource to add tags to.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tags
+              properties:
+                tags:
+                  description: >-
+                    The tags to add to the resource. A tag is an array of
+                    key-value pairs.
+                             Tag keys can have a maximum character length of 128 characters, and tag values can have
+                                a maximum length of 256 characters.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TagRef"
+                  minItems: 0
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v20190125/untag#resourceArn:
+    put:
+      operationId: UntagResource
+      description: Deletes specified tags from a resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UntagResourceOutput"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+      parameters:
+        - name: resourceArn
+          in: query
+          required: true
+          description: The Amazon Resource Name (ARN) of the resource to delete tags from.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tagKeys
+              properties:
+                tagKeys:
+                  description: The keys of the tags to be removed.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TagKey"
+                  minItems: 0
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://appmesh.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS App Mesh multi-region endpoint
+  - url: https://appmesh.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS App Mesh multi-region endpoint
+  - url: http://appmesh.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS App Mesh endpoint for China (Beijing) and China (Ningxia)
+  - url: https://appmesh.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS App Mesh endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    CreateMeshOutput:
+      type: object
+      required:
+        - mesh
+      properties:
+        mesh:
+          $ref: "#/components/schemas/MeshData"
+      description: ""
+    EgressFilter:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          $ref: "#/components/schemas/EgressFilterType"
+      description: An object representing the egress filter rules for a service mesh.
+    TagRef:
+      type: object
+      required:
+        - key
+      properties:
+        key:
+          $ref: "#/components/schemas/TagKey"
+        value:
+          $ref: "#/components/schemas/TagValue"
+      description: >-
+        Optional metadata that you apply to a resource to assist with
+        categorization and
+                 organization. Each tag consists of a key and an optional value, both of which you define.
+                 Tag keys can have a maximum character length of 128 characters, and tag values can have
+                    a maximum length of 256 characters.
+    BadRequestException: {}
+    ConflictException: {}
+    ForbiddenException: {}
+    InternalServerErrorException: {}
+    LimitExceededException: {}
+    NotFoundException: {}
+    ServiceUnavailableException: {}
+    TooManyRequestsException: {}
+    CreateRouteOutput:
+      type: object
+      required:
+        - route
+      properties:
+        route:
+          $ref: "#/components/schemas/RouteData"
+      description: ""
+    HttpRoute:
+      type: object
+      required:
+        - action
+        - match
+      properties:
+        action:
+          $ref: "#/components/schemas/HttpRouteAction"
+        match:
+          $ref: "#/components/schemas/HttpRouteMatch"
+        retryPolicy:
+          $ref: "#/components/schemas/HttpRetryPolicy"
+      description: An object representing the HTTP routing specification for a route.
+    RoutePriority:
+      type: integer
+      minimum: 0
+      maximum: 1000
+    TcpRoute:
+      type: object
+      required:
+        - action
+      properties:
+        action:
+          $ref: "#/components/schemas/TcpRouteAction"
+      description: An object representing the TCP routing specification for a route.
+    CreateVirtualNodeOutput:
+      type: object
+      required:
+        - virtualNode
+      properties:
+        virtualNode:
+          $ref: "#/components/schemas/VirtualNodeData"
+      description: ""
+    Backends:
+      type: array
+      items:
+        $ref: "#/components/schemas/Backend"
+      minItems: 0
+      maxItems: 25
+    Listeners:
+      type: array
+      items:
+        $ref: "#/components/schemas/Listener"
+      minItems: 0
+      maxItems: 1
+    Logging:
+      type: object
+      properties:
+        accessLog:
+          $ref: "#/components/schemas/AccessLog"
+      description: An object representing the logging information for a virtual node.
+    ServiceDiscovery:
+      type: object
+      properties:
+        awsCloudMap:
+          $ref: "#/components/schemas/AwsCloudMapServiceDiscovery"
+        dns:
+          $ref: "#/components/schemas/DnsServiceDiscovery"
+      description: An object representing the service discovery information for a virtual
+        node.
+    CreateVirtualRouterOutput:
+      type: object
+      required:
+        - virtualRouter
+      properties:
+        virtualRouter:
+          $ref: "#/components/schemas/VirtualRouterData"
+      description: ""
+    VirtualRouterListeners:
+      type: array
+      items:
+        $ref: "#/components/schemas/VirtualRouterListener"
+      minItems: 1
+      maxItems: 1
+    CreateVirtualServiceOutput:
+      type: object
+      required:
+        - virtualService
+      properties:
+        virtualService:
+          $ref: "#/components/schemas/VirtualServiceData"
+      description: ""
+    VirtualServiceProvider:
+      type: object
+      properties:
+        virtualNode:
+          $ref: "#/components/schemas/VirtualNodeServiceProvider"
+        virtualRouter:
+          $ref: "#/components/schemas/VirtualRouterServiceProvider"
+      description: An object representing the provider for a virtual service.
+    DeleteMeshOutput:
+      type: object
+      required:
+        - mesh
+      properties:
+        mesh:
+          $ref: "#/components/schemas/MeshData"
+      description: ""
+    ResourceInUseException: {}
+    DeleteRouteOutput:
+      type: object
+      required:
+        - route
+      properties:
+        route:
+          $ref: "#/components/schemas/RouteData"
+      description: ""
+    DeleteVirtualNodeOutput:
+      type: object
+      required:
+        - virtualNode
+      properties:
+        virtualNode:
+          $ref: "#/components/schemas/VirtualNodeData"
+      description: ""
+    DeleteVirtualRouterOutput:
+      type: object
+      required:
+        - virtualRouter
+      properties:
+        virtualRouter:
+          $ref: "#/components/schemas/VirtualRouterData"
+      description: ""
+    DeleteVirtualServiceOutput:
+      type: object
+      required:
+        - virtualService
+      properties:
+        virtualService:
+          $ref: "#/components/schemas/VirtualServiceData"
+      description: ""
+    DescribeMeshOutput:
+      type: object
+      required:
+        - mesh
+      properties:
+        mesh:
+          $ref: "#/components/schemas/MeshData"
+      description: ""
+    DescribeRouteOutput:
+      type: object
+      required:
+        - route
+      properties:
+        route:
+          $ref: "#/components/schemas/RouteData"
+      description: ""
+    DescribeVirtualNodeOutput:
+      type: object
+      required:
+        - virtualNode
+      properties:
+        virtualNode:
+          $ref: "#/components/schemas/VirtualNodeData"
+      description: ""
+    DescribeVirtualRouterOutput:
+      type: object
+      required:
+        - virtualRouter
+      properties:
+        virtualRouter:
+          $ref: "#/components/schemas/VirtualRouterData"
+      description: ""
+    DescribeVirtualServiceOutput:
+      type: object
+      required:
+        - virtualService
+      properties:
+        virtualService:
+          $ref: "#/components/schemas/VirtualServiceData"
+      description: ""
+    ListMeshesOutput:
+      type: object
+      required:
+        - meshes
+      properties:
+        meshes:
+          $ref: "#/components/schemas/MeshList"
+        nextToken:
+          $ref: "#/components/schemas/String"
+      description: ""
+    ListRoutesOutput:
+      type: object
+      required:
+        - routes
+      properties:
+        nextToken:
+          $ref: "#/components/schemas/String"
+        routes:
+          $ref: "#/components/schemas/RouteList"
+      description: ""
+    ListTagsForResourceOutput:
+      type: object
+      required:
+        - tags
+      properties:
+        nextToken:
+          $ref: "#/components/schemas/String"
+        tags:
+          $ref: "#/components/schemas/TagList"
+      description: ""
+    ListVirtualNodesOutput:
+      type: object
+      required:
+        - virtualNodes
+      properties:
+        nextToken:
+          $ref: "#/components/schemas/String"
+        virtualNodes:
+          $ref: "#/components/schemas/VirtualNodeList"
+      description: ""
+    ListVirtualRoutersOutput:
+      type: object
+      required:
+        - virtualRouters
+      properties:
+        nextToken:
+          $ref: "#/components/schemas/String"
+        virtualRouters:
+          $ref: "#/components/schemas/VirtualRouterList"
+      description: ""
+    ListVirtualServicesOutput:
+      type: object
+      required:
+        - virtualServices
+      properties:
+        nextToken:
+          $ref: "#/components/schemas/String"
+        virtualServices:
+          $ref: "#/components/schemas/VirtualServiceList"
+      description: ""
+    TagResourceOutput:
+      type: object
+      properties: {}
+      description: ""
+    TooManyTagsException: {}
+    UntagResourceOutput:
+      type: object
+      properties: {}
+      description: ""
+    TagKey:
+      type: string
+      minLength: 1
+      maxLength: 128
+    UpdateMeshOutput:
+      type: object
+      required:
+        - mesh
+      properties:
+        mesh:
+          $ref: "#/components/schemas/MeshData"
+      description: ""
+    UpdateRouteOutput:
+      type: object
+      required:
+        - route
+      properties:
+        route:
+          $ref: "#/components/schemas/RouteData"
+      description: ""
+    UpdateVirtualNodeOutput:
+      type: object
+      required:
+        - virtualNode
+      properties:
+        virtualNode:
+          $ref: "#/components/schemas/VirtualNodeData"
+      description: ""
+    UpdateVirtualRouterOutput:
+      type: object
+      required:
+        - virtualRouter
+      properties:
+        virtualRouter:
+          $ref: "#/components/schemas/VirtualRouterData"
+      description: ""
+    UpdateVirtualServiceOutput:
+      type: object
+      required:
+        - virtualService
+      properties:
+        virtualService:
+          $ref: "#/components/schemas/VirtualServiceData"
+      description: ""
+    PortMapping:
+      type: object
+      required:
+        - port
+        - protocol
+      properties:
+        port:
+          $ref: "#/components/schemas/PortNumber"
+        protocol:
+          $ref: "#/components/schemas/PortProtocol"
+      description: An object representing a virtual node or virtual router listener port
+        mapping.
+    VirtualRouterListener:
+      type: object
+      required:
+        - portMapping
+      properties:
+        portMapping:
+          $ref: "#/components/schemas/PortMapping"
+      description: An object representing a virtual router listener.
+    String:
+      type: string
+    ResourceName:
+      type: string
+      minLength: 1
+      maxLength: 255
+    VirtualNodeSpec:
+      type: object
+      properties:
+        backends:
+          $ref: "#/components/schemas/Backends"
+        listeners:
+          $ref: "#/components/schemas/Listeners"
+        logging:
+          $ref: "#/components/schemas/Logging"
+        serviceDiscovery:
+          $ref: "#/components/schemas/ServiceDiscovery"
+      description: An object representing the specification of a virtual node.
+    UpdateVirtualNodeInput:
+      type: object
+      required:
+        - spec
+      properties:
+        clientToken:
+          $ref: "#/components/schemas/String"
+        spec:
+          $ref: "#/components/schemas/VirtualNodeSpec"
+      description: ""
+    DeleteMeshInput:
+      type: object
+      properties: {}
+      description: ""
+    TcpRetryPolicyEvent:
+      type: string
+      enum:
+        - connection-error
+    TcpRetryPolicyEvents:
+      type: array
+      items:
+        $ref: "#/components/schemas/TcpRetryPolicyEvent"
+      minItems: 1
+      maxItems: 1
+    VirtualServiceSpec:
+      type: object
+      properties:
+        provider:
+          $ref: "#/components/schemas/VirtualServiceProvider"
+      description: An object representing the specification of a virtual service.
+    TagList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TagRef"
+      minItems: 0
+      maxItems: 50
+    ServiceName:
+      type: string
+    CreateVirtualServiceInput:
+      type: object
+      required:
+        - spec
+        - virtualServiceName
+      properties:
+        clientToken:
+          $ref: "#/components/schemas/String"
+        spec:
+          $ref: "#/components/schemas/VirtualServiceSpec"
+        tags:
+          $ref: "#/components/schemas/TagList"
+        virtualServiceName:
+          $ref: "#/components/schemas/ServiceName"
+      description: ""
+    VirtualRouterStatusCode:
+      type: string
+      enum:
+        - ACTIVE
+        - DELETED
+        - INACTIVE
+    VirtualRouterSpec:
+      type: object
+      properties:
+        listeners:
+          $ref: "#/components/schemas/VirtualRouterListeners"
+      description: An object representing the specification of a virtual router.
+    UpdateVirtualRouterInput:
+      type: object
+      required:
+        - spec
+      properties:
+        clientToken:
+          $ref: "#/components/schemas/String"
+        spec:
+          $ref: "#/components/schemas/VirtualRouterSpec"
+      description: ""
+    TagKeyList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TagKey"
+      minItems: 0
+      maxItems: 50
+    TagsLimit:
+      type: integer
+      minimum: 1
+      maximum: 50
+    Arn:
+      type: string
+    ListTagsForResourceInput:
+      type: object
+      properties: {}
+      description: ""
+    VirtualNodeData:
+      type: object
+      required:
+        - meshName
+        - metadata
+        - spec
+        - status
+        - virtualNodeName
+      properties:
+        meshName:
+          $ref: "#/components/schemas/ResourceName"
+        metadata:
+          $ref: "#/components/schemas/ResourceMetadata"
+        spec:
+          $ref: "#/components/schemas/VirtualNodeSpec"
+        status:
+          $ref: "#/components/schemas/VirtualNodeStatus"
+        virtualNodeName:
+          $ref: "#/components/schemas/ResourceName"
+      description: An object representing a virtual node returned by a describe operation.
+    AccessLog:
+      type: object
+      properties:
+        file:
+          $ref: "#/components/schemas/FileAccessLog"
+      description: An object representing the access logging information for a virtual node.
+    Long:
+      type: integer
+    VirtualRouterData:
+      type: object
+      required:
+        - meshName
+        - metadata
+        - spec
+        - status
+        - virtualRouterName
+      properties:
+        meshName:
+          $ref: "#/components/schemas/ResourceName"
+        metadata:
+          $ref: "#/components/schemas/ResourceMetadata"
+        spec:
+          $ref: "#/components/schemas/VirtualRouterSpec"
+        status:
+          $ref: "#/components/schemas/VirtualRouterStatus"
+        virtualRouterName:
+          $ref: "#/components/schemas/ResourceName"
+      description: An object representing a virtual router returned by a describe operation.
+    MeshData:
+      type: object
+      required:
+        - meshName
+        - metadata
+        - spec
+        - status
+      properties:
+        meshName:
+          $ref: "#/components/schemas/ResourceName"
+        metadata:
+          $ref: "#/components/schemas/ResourceMetadata"
+        spec:
+          $ref: "#/components/schemas/MeshSpec"
+        status:
+          $ref: "#/components/schemas/MeshStatus"
+      description: An object representing a service mesh returned by a describe operation.
+    DeleteVirtualRouterInput:
+      type: object
+      properties: {}
+      description: ""
+    VirtualRouterList:
+      type: array
+      items:
+        $ref: "#/components/schemas/VirtualRouterRef"
+    DescribeRouteInput:
+      type: object
+      properties: {}
+      description: ""
+    RouteData:
+      type: object
+      required:
+        - meshName
+        - metadata
+        - routeName
+        - spec
+        - status
+        - virtualRouterName
+      properties:
+        meshName:
+          $ref: "#/components/schemas/ResourceName"
+        metadata:
+          $ref: "#/components/schemas/ResourceMetadata"
+        routeName:
+          $ref: "#/components/schemas/ResourceName"
+        spec:
+          $ref: "#/components/schemas/RouteSpec"
+        status:
+          $ref: "#/components/schemas/RouteStatus"
+        virtualRouterName:
+          $ref: "#/components/schemas/ResourceName"
+      description: An object representing a route returned by a describe operation.
+    Timestamp:
+      type: string
+      format: date-time
+    ResourceMetadata:
+      type: object
+      required:
+        - arn
+        - createdAt
+        - lastUpdatedAt
+        - uid
+        - version
+      properties:
+        arn:
+          $ref: "#/components/schemas/Arn"
+        createdAt:
+          $ref: "#/components/schemas/Timestamp"
+        lastUpdatedAt:
+          $ref: "#/components/schemas/Timestamp"
+        uid:
+          $ref: "#/components/schemas/String"
+        version:
+          $ref: "#/components/schemas/Long"
+      description: An object representing metadata for a resource.
+    Listener:
+      type: object
+      required:
+        - portMapping
+      properties:
+        healthCheck:
+          $ref: "#/components/schemas/HealthCheckPolicy"
+        portMapping:
+          $ref: "#/components/schemas/PortMapping"
+      description: An object representing a listener for a virtual node.
+    Backend:
+      type: object
+      properties:
+        virtualService:
+          $ref: "#/components/schemas/VirtualServiceBackend"
+      description: >-
+        An object representing the backends that a virtual node is expected to
+        send outbound
+                 traffic to. 
+    PortProtocol:
+      type: string
+      enum:
+        - http
+        - tcp
+    RouteList:
+      type: array
+      items:
+        $ref: "#/components/schemas/RouteRef"
+    VirtualServiceBackend:
+      type: object
+      required:
+        - virtualServiceName
+      properties:
+        virtualServiceName:
+          $ref: "#/components/schemas/ServiceName"
+      description: An object representing a virtual service backend for a virtual node.
+    VirtualNodeStatusCode:
+      type: string
+      enum:
+        - ACTIVE
+        - DELETED
+        - INACTIVE
+    UpdateVirtualServiceInput:
+      type: object
+      required:
+        - spec
+      properties:
+        clientToken:
+          $ref: "#/components/schemas/String"
+        spec:
+          $ref: "#/components/schemas/VirtualServiceSpec"
+      description: ""
+    HealthCheckThreshold:
+      type: integer
+      minimum: 2
+      maximum: 10
+    PercentInt:
+      type: integer
+      minimum: 0
+      maximum: 100
+    TagValue:
+      type: string
+      minLength: 0
+      maxLength: 256
+    WeightedTargets:
+      type: array
+      items:
+        $ref: "#/components/schemas/WeightedTarget"
+      minItems: 1
+      maxItems: 10
+    HttpRouteAction:
+      type: object
+      required:
+        - weightedTargets
+      properties:
+        weightedTargets:
+          $ref: "#/components/schemas/WeightedTargets"
+      description: >-
+        An object representing the traffic distribution requirements for matched
+        HTTP
+                 requests.
+    ListRoutesLimit:
+      type: integer
+      minimum: 1
+      maximum: 100
+    ListRoutesInput:
+      type: object
+      properties: {}
+      description: ""
+    HealthCheckIntervalMillis:
+      type: integer
+      minimum: 5000
+      maximum: 300000
+    PortNumber:
+      type: integer
+      minimum: 1
+      maximum: 65535
+    HealthCheckTimeoutMillis:
+      type: integer
+      minimum: 2000
+      maximum: 60000
+    HealthCheckPolicy:
+      type: object
+      required:
+        - healthyThreshold
+        - intervalMillis
+        - protocol
+        - timeoutMillis
+        - unhealthyThreshold
+      properties:
+        healthyThreshold:
+          $ref: "#/components/schemas/HealthCheckThreshold"
+        intervalMillis:
+          $ref: "#/components/schemas/HealthCheckIntervalMillis"
+        path:
+          $ref: "#/components/schemas/String"
+        port:
+          $ref: "#/components/schemas/PortNumber"
+        protocol:
+          $ref: "#/components/schemas/PortProtocol"
+        timeoutMillis:
+          $ref: "#/components/schemas/HealthCheckTimeoutMillis"
+        unhealthyThreshold:
+          $ref: "#/components/schemas/HealthCheckThreshold"
+      description: An object representing the health check policy for a virtual node's
+        listener.
+    VirtualServiceRef:
+      type: object
+      required:
+        - arn
+        - meshName
+        - virtualServiceName
+      properties:
+        arn:
+          $ref: "#/components/schemas/Arn"
+        meshName:
+          $ref: "#/components/schemas/ResourceName"
+        virtualServiceName:
+          $ref: "#/components/schemas/ServiceName"
+      description: An object representing a virtual service returned by a list operation.
+    EgressFilterType:
+      type: string
+      enum:
+        - ALLOW_ALL
+        - DROP_ALL
+    VirtualServiceList:
+      type: array
+      items:
+        $ref: "#/components/schemas/VirtualServiceRef"
+    VirtualNodeStatus:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          $ref: "#/components/schemas/VirtualNodeStatusCode"
+      description: An object representing the current status of the virtual node.
+    VirtualRouterRef:
+      type: object
+      required:
+        - arn
+        - meshName
+        - virtualRouterName
+      properties:
+        arn:
+          $ref: "#/components/schemas/Arn"
+        meshName:
+          $ref: "#/components/schemas/ResourceName"
+        virtualRouterName:
+          $ref: "#/components/schemas/ResourceName"
+      description: An object representing a virtual router returned by a list operation.
+    VirtualServiceStatus:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          $ref: "#/components/schemas/VirtualServiceStatusCode"
+      description: An object representing the status of a virtual service.
+    VirtualServiceData:
+      type: object
+      required:
+        - meshName
+        - metadata
+        - spec
+        - status
+        - virtualServiceName
+      properties:
+        meshName:
+          $ref: "#/components/schemas/ResourceName"
+        metadata:
+          $ref: "#/components/schemas/ResourceMetadata"
+        spec:
+          $ref: "#/components/schemas/VirtualServiceSpec"
+        status:
+          $ref: "#/components/schemas/VirtualServiceStatus"
+        virtualServiceName:
+          $ref: "#/components/schemas/ServiceName"
+      description: An object representing a virtual service returned by a describe
+        operation.
+    Boolean:
+      type: boolean
+    HeaderMatchMethod:
+      type: object
+      properties:
+        exact:
+          $ref: "#/components/schemas/HeaderMatch"
+        prefix:
+          $ref: "#/components/schemas/HeaderMatch"
+        range:
+          $ref: "#/components/schemas/MatchRange"
+        regex:
+          $ref: "#/components/schemas/HeaderMatch"
+        suffix:
+          $ref: "#/components/schemas/HeaderMatch"
+      description: An object representing the method and value to match the header value
+        sent with a request. Specify one match method.
+    HeaderName:
+      type: string
+      minLength: 1
+      maxLength: 50
+    HttpRouteHeader:
+      type: object
+      required:
+        - name
+      properties:
+        invert:
+          $ref: "#/components/schemas/Boolean"
+        match:
+          $ref: "#/components/schemas/HeaderMatchMethod"
+        name:
+          $ref: "#/components/schemas/HeaderName"
+      description: An object representing the HTTP header in the request.
+    HttpRetryPolicyEvent:
+      type: string
+      minLength: 1
+      maxLength: 25
+    FilePath:
+      type: string
+      minLength: 1
+      maxLength: 255
+    AwsCloudMapInstanceAttribute:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          $ref: "#/components/schemas/AwsCloudMapInstanceAttributeKey"
+        value:
+          $ref: "#/components/schemas/AwsCloudMapInstanceAttributeValue"
+      description: An object representing the AWS Cloud Map attribute information for your
+        virtual node.
+    AwsCloudMapInstanceAttributes:
+      type: array
+      items:
+        $ref: "#/components/schemas/AwsCloudMapInstanceAttribute"
+    VirtualNodeRef:
+      type: object
+      required:
+        - arn
+        - meshName
+        - virtualNodeName
+      properties:
+        arn:
+          $ref: "#/components/schemas/Arn"
+        meshName:
+          $ref: "#/components/schemas/ResourceName"
+        virtualNodeName:
+          $ref: "#/components/schemas/ResourceName"
+      description: An object representing a virtual node returned by a list operation.
+    MeshSpec:
+      type: object
+      properties:
+        egressFilter:
+          $ref: "#/components/schemas/EgressFilter"
+      description: An object representing the specification of a service mesh.
+    CreateMeshInput:
+      type: object
+      required:
+        - meshName
+      properties:
+        clientToken:
+          $ref: "#/components/schemas/String"
+        meshName:
+          $ref: "#/components/schemas/ResourceName"
+        spec:
+          $ref: "#/components/schemas/MeshSpec"
+        tags:
+          $ref: "#/components/schemas/TagList"
+      description: ""
+    AwsCloudMapName:
+      type: string
+      pattern: ((?=^.{1,127}$)^([a-zA-Z0-9_][a-zA-Z0-9-_]{0,61}[a-zA-Z0-9_]|[a-zA-Z0-9])(.([a-zA-Z0-9_][a-zA-Z0-9-_]{0,61}[a-zA-Z0-9_]|[a-zA-Z0-9]))*$)|(^.$)
+      minLength: 1
+      maxLength: 1024
+    Hostname:
+      type: string
+    DnsServiceDiscovery:
+      type: object
+      required:
+        - hostname
+      properties:
+        hostname:
+          $ref: "#/components/schemas/Hostname"
+      description: >-
+        An object representing the DNS service discovery information for your
+        virtual
+                 node.
+    DescribeVirtualServiceInput:
+      type: object
+      properties: {}
+      description: ""
+    ListVirtualServicesLimit:
+      type: integer
+      minimum: 1
+      maximum: 100
+    DeleteRouteInput:
+      type: object
+      properties: {}
+      description: ""
+    AwsCloudMapInstanceAttributeKey:
+      type: string
+      pattern: ^[a-zA-Z0-9!-~]+$
+      minLength: 1
+      maxLength: 255
+    AwsCloudMapInstanceAttributeValue:
+      type: string
+      pattern: ^([a-zA-Z0-9!-~][ ta-zA-Z0-9!-~]*){0,1}[a-zA-Z0-9!-~]{0,1}$
+      minLength: 1
+      maxLength: 1024
+    MatchRange:
+      type: object
+      required:
+        - end
+        - start
+      properties:
+        end:
+          $ref: "#/components/schemas/Long"
+        start:
+          $ref: "#/components/schemas/Long"
+      description: The range of values to match on. The first character of the range is
+        included in the range, though the last character is not. For example, if
+        the range specified were 1-100, only values 1-99 would be matched.
+    ListVirtualRoutersLimit:
+      type: integer
+      minimum: 1
+      maximum: 100
+    ListMeshesLimit:
+      type: integer
+      minimum: 1
+      maximum: 100
+    ListMeshesInput:
+      type: object
+      properties: {}
+      description: ""
+    TcpRouteAction:
+      type: object
+      required:
+        - weightedTargets
+      properties:
+        weightedTargets:
+          $ref: "#/components/schemas/WeightedTargets"
+      description: >-
+        An object representing the traffic distribution requirements for matched
+        TCP
+                 requests.
+    VirtualNodeList:
+      type: array
+      items:
+        $ref: "#/components/schemas/VirtualNodeRef"
+    ListVirtualRoutersInput:
+      type: object
+      properties: {}
+      description: ""
+    VirtualRouterStatus:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          $ref: "#/components/schemas/VirtualRouterStatusCode"
+      description: "An object representing the status of a virtual router. "
+    UpdateMeshInput:
+      type: object
+      properties:
+        clientToken:
+          $ref: "#/components/schemas/String"
+        spec:
+          $ref: "#/components/schemas/MeshSpec"
+      description: ""
+    DurationUnit:
+      type: string
+      enum:
+        - ms
+        - s
+    ListVirtualServicesInput:
+      type: object
+      properties: {}
+      description: ""
+    CreateVirtualRouterInput:
+      type: object
+      required:
+        - spec
+        - virtualRouterName
+      properties:
+        clientToken:
+          $ref: "#/components/schemas/String"
+        spec:
+          $ref: "#/components/schemas/VirtualRouterSpec"
+        tags:
+          $ref: "#/components/schemas/TagList"
+        virtualRouterName:
+          $ref: "#/components/schemas/ResourceName"
+      description: ""
+    FileAccessLog:
+      type: object
+      required:
+        - path
+      properties:
+        path:
+          $ref: "#/components/schemas/FilePath"
+      description: An object representing an access log file.
+    ListVirtualNodesLimit:
+      type: integer
+      minimum: 1
+      maximum: 100
+    ListVirtualNodesInput:
+      type: object
+      properties: {}
+      description: ""
+    VirtualServiceStatusCode:
+      type: string
+      enum:
+        - ACTIVE
+        - DELETED
+        - INACTIVE
+    HttpRetryPolicyEvents:
+      type: array
+      items:
+        $ref: "#/components/schemas/HttpRetryPolicyEvent"
+      minItems: 1
+      maxItems: 25
+    HeaderMatch:
+      type: string
+      minLength: 1
+      maxLength: 255
+    MeshList:
+      type: array
+      items:
+        $ref: "#/components/schemas/MeshRef"
+    HttpMethod:
+      type: string
+      enum:
+        - CONNECT
+        - DELETE
+        - GET
+        - HEAD
+        - OPTIONS
+        - PATCH
+        - POST
+        - PUT
+        - TRACE
+    DurationValue:
+      type: integer
+      minimum: 0
+    Duration:
+      type: object
+      properties:
+        unit:
+          $ref: "#/components/schemas/DurationUnit"
+        value:
+          $ref: "#/components/schemas/DurationValue"
+      description: An object representing the duration between retry attempts.
+    HttpRouteHeaders:
+      type: array
+      items:
+        $ref: "#/components/schemas/HttpRouteHeader"
+      minItems: 1
+      maxItems: 10
+    HttpScheme:
+      type: string
+      enum:
+        - http
+        - https
+    HttpRouteMatch:
+      type: object
+      required:
+        - prefix
+      properties:
+        headers:
+          $ref: "#/components/schemas/HttpRouteHeaders"
+        method:
+          $ref: "#/components/schemas/HttpMethod"
+        prefix:
+          $ref: "#/components/schemas/String"
+        scheme:
+          $ref: "#/components/schemas/HttpScheme"
+      description: >-
+        An object representing the requirements for a route to match HTTP
+        requests for a virtual
+                 router.
+    MeshRef:
+      type: object
+      required:
+        - arn
+        - meshName
+      properties:
+        arn:
+          $ref: "#/components/schemas/Arn"
+        meshName:
+          $ref: "#/components/schemas/ResourceName"
+      description: An object representing a service mesh returned by a list operation.
+    MaxRetries:
+      type: integer
+      minimum: 0
+    MeshStatusCode:
+      type: string
+      enum:
+        - ACTIVE
+        - DELETED
+        - INACTIVE
+    MeshStatus:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/MeshStatusCode"
+      description: An object representing the status of a service mesh.
+    WeightedTarget:
+      type: object
+      required:
+        - virtualNode
+        - weight
+      properties:
+        virtualNode:
+          $ref: "#/components/schemas/ResourceName"
+        weight:
+          $ref: "#/components/schemas/PercentInt"
+      description: >-
+        An object representing a target and its relative weight. Traffic is
+        distributed across
+                 targets according to their relative weight. For example, a weighted target with a relative
+                 weight of 50 receives five times as much traffic as one with a relative weight of
+                 10.
+    DescribeVirtualNodeInput:
+      type: object
+      properties: {}
+      description: ""
+    RouteStatusCode:
+      type: string
+      enum:
+        - ACTIVE
+        - DELETED
+        - INACTIVE
+    RouteStatus:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          $ref: "#/components/schemas/RouteStatusCode"
+      description: An object representing the current status of a route.
+    RouteRef:
+      type: object
+      required:
+        - arn
+        - meshName
+        - routeName
+        - virtualRouterName
+      properties:
+        arn:
+          $ref: "#/components/schemas/Arn"
+        meshName:
+          $ref: "#/components/schemas/ResourceName"
+        routeName:
+          $ref: "#/components/schemas/ResourceName"
+        virtualRouterName:
+          $ref: "#/components/schemas/ResourceName"
+      description: An object representing a route returned by a list operation.
+    DeleteVirtualNodeInput:
+      type: object
+      properties: {}
+      description: ""
+    RouteSpec:
+      type: object
+      properties:
+        httpRoute:
+          $ref: "#/components/schemas/HttpRoute"
+        priority:
+          $ref: "#/components/schemas/RoutePriority"
+        tcpRoute:
+          $ref: "#/components/schemas/TcpRoute"
+      description: An object representing the specification of a route.
+    VirtualNodeServiceProvider:
+      type: object
+      required:
+        - virtualNodeName
+      properties:
+        virtualNodeName:
+          $ref: "#/components/schemas/ResourceName"
+      description: An object representing a virtual node service provider.
+    HttpRetryPolicy:
+      type: object
+      required:
+        - maxRetries
+        - perRetryTimeout
+      properties:
+        httpRetryEvents:
+          $ref: "#/components/schemas/HttpRetryPolicyEvents"
+        maxRetries:
+          $ref: "#/components/schemas/MaxRetries"
+        perRetryTimeout:
+          $ref: "#/components/schemas/Duration"
+        tcpRetryEvents:
+          $ref: "#/components/schemas/TcpRetryPolicyEvents"
+      description: An object that represents a retry policy.
+    DescribeVirtualRouterInput:
+      type: object
+      properties: {}
+      description: ""
+    TagResourceInput:
+      type: object
+      required:
+        - tags
+      properties:
+        tags:
+          $ref: "#/components/schemas/TagList"
+      description: ""
+    CreateRouteInput:
+      type: object
+      required:
+        - routeName
+        - spec
+      properties:
+        clientToken:
+          $ref: "#/components/schemas/String"
+        routeName:
+          $ref: "#/components/schemas/ResourceName"
+        spec:
+          $ref: "#/components/schemas/RouteSpec"
+        tags:
+          $ref: "#/components/schemas/TagList"
+      description: ""
+    VirtualRouterServiceProvider:
+      type: object
+      required:
+        - virtualRouterName
+      properties:
+        virtualRouterName:
+          $ref: "#/components/schemas/ResourceName"
+      description: An object representing a virtual node service provider.
+    AwsCloudMapServiceDiscovery:
+      type: object
+      required:
+        - namespaceName
+        - serviceName
+      properties:
+        attributes:
+          $ref: "#/components/schemas/AwsCloudMapInstanceAttributes"
+        namespaceName:
+          $ref: "#/components/schemas/AwsCloudMapName"
+        serviceName:
+          $ref: "#/components/schemas/AwsCloudMapName"
+      description: >-
+        An object representing the AWS Cloud Map service discovery information
+        for your virtual
+                 node.
+    UpdateRouteInput:
+      type: object
+      required:
+        - spec
+      properties:
+        clientToken:
+          $ref: "#/components/schemas/String"
+        spec:
+          $ref: "#/components/schemas/RouteSpec"
+      description: ""
+    CreateVirtualNodeInput:
+      type: object
+      required:
+        - spec
+        - virtualNodeName
+      properties:
+        clientToken:
+          $ref: "#/components/schemas/String"
+        spec:
+          $ref: "#/components/schemas/VirtualNodeSpec"
+        tags:
+          $ref: "#/components/schemas/TagList"
+        virtualNodeName:
+          $ref: "#/components/schemas/ResourceName"
+      description: ""
+    DescribeMeshInput:
+      type: object
+      properties: {}
+      description: ""
+    DeleteVirtualServiceInput:
+      type: object
+      properties: {}
+      description: ""
+    UntagResourceInput:
+      type: object
+      required:
+        - tagKeys
+      properties:
+        tagKeys:
+          $ref: "#/components/schemas/TagKeyList"
+      description: ""

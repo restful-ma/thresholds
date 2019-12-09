@@ -1,0 +1,832 @@
+openapi: 3.0.0
+info:
+  description: The Resource Health Client.
+  title: Microsoft.ResourceHealth
+  version: 2015-01-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2015-01-01/resourcehealth.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: resourcehealth
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.ResourceHealth/operations:
+    get:
+      description: Lists available operations for the resourcehealth resource provider
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The body contains the list of available operations for the
+            resourcehealth resource provider
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/operationListResult"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operations
+  "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/availabilityStatuses":
+    get:
+      description: Lists the current availability status for all the resources in the
+        subscription. Use the nextLink property in the response to get the next
+        page of availability statuses.
+      operationId: AvailabilityStatuses_ListBySubscriptionId
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/FilterParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ExpandParameter"
+      responses:
+        "200":
+          description: The body contains the list of the current availability status for
+            all the resources in the subscription
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/availabilityStatusListResult"
+              examples:
+                ListHealthBySubscriptionId:
+                  $ref: "#/components/examples/ListHealthBySubscriptionId"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - AvailabilityStatuses
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ResourceHealth/availabilityStatuses":
+    get:
+      description: Lists the current availability status for all the resources in the
+        resource group. Use the nextLink property in the response to get the
+        next page of availability statuses.
+      operationId: AvailabilityStatuses_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/FilterParameter"
+        - $ref: "#/components/parameters/ExpandParameter"
+      responses:
+        "200":
+          description: The body contains the list of the current availability status for
+            all the resources in the resource group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/availabilityStatusListResult"
+              examples:
+                ListByResourceGroup:
+                  $ref: "#/components/examples/ListByResourceGroup"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - AvailabilityStatuses
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses":
+    get:
+      description: Lists the historical availability statuses for a single resource. Use
+        the nextLink property in the response to get the next page of
+        availability status
+      operationId: AvailabilityStatuses_List
+      parameters:
+        - description: "The fully qualified ID of the resource, including the resource name
+            and resource type. Currently the API support not nested and one
+            nesting level resource types :
+            /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name\
+            }/providers/{resource-provider-name}/{resource-type}/{resource-name}
+            and
+            /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/\
+            providers/{resource-provider-name}/{parentResourceType}/{parentReso\
+            urceName}/{resourceType}/{resourceName}"
+          in: path
+          name: resourceUri
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+          examples:
+            GetHealthHistoryByResource:
+              value: resourceUri
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/FilterParameter"
+        - $ref: "#/components/parameters/ExpandParameter"
+      responses:
+        "200":
+          description: The body contains the list of the historical availability statuses
+            for a single resource
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/availabilityStatusListResult"
+              examples:
+                GetHealthHistoryByResource:
+                  $ref: "#/components/examples/GetHealthHistoryByResource"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - AvailabilityStatuses
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses/current":
+    get:
+      description: Gets current availability status for a single resource
+      operationId: AvailabilityStatuses_GetByResource
+      parameters:
+        - description: "The fully qualified ID of the resource, including the resource name
+            and resource type. Currently the API support not nested and one
+            nesting level resource types :
+            /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name\
+            }/providers/{resource-provider-name}/{resource-type}/{resource-name}
+            and
+            /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/\
+            providers/{resource-provider-name}/{parentResourceType}/{parentReso\
+            urceName}/{resourceType}/{resourceName}"
+          in: path
+          name: resourceUri
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+          examples:
+            GetCurrentHealthByResource:
+              value: resourceUri
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/FilterParameter"
+        - $ref: "#/components/parameters/ExpandParameter"
+      responses:
+        "200":
+          description: The body contains the current availability status for a single
+            resource
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/availabilityStatus"
+              examples:
+                GetCurrentHealthByResource:
+                  $ref: "#/components/examples/GetCurrentHealthByResource"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - AvailabilityStatuses
+  "/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses":
+    get:
+      description: Lists the historical availability statuses for a single child resource.
+        Use the nextLink property in the response to get the next page of
+        availability status
+      operationId: ChildAvailabilityStatuses_List
+      parameters:
+        - description: "The fully qualified ID of the resource, including the resource name
+            and resource type. Currently the API only support one nesting level
+            resource types :
+            /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/\
+            providers/{resource-provider-name}/{parentResourceType}/{parentReso\
+            urceName}/{resourceType}/{resourceName}"
+          in: path
+          name: resourceUri
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+          examples:
+            GetHealthHistoryByResource:
+              value: resourceUri
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/FilterParameter"
+        - $ref: "#/components/parameters/ExpandParameter"
+      responses:
+        "200":
+          description: The body contains the list of the historical availability statuses
+            for a single child resource
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/availabilityStatusListResult"
+              examples:
+                GetHealthHistoryByResource:
+                  $ref: "#/components/examples/GetHealthHistoryByResource"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ChildAvailabilityStatuses
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses/current":
+    get:
+      description: Gets current availability status for a single resource
+      operationId: ChildAvailabilityStatuses_GetByResource
+      parameters:
+        - description: "The fully qualified ID of the resource, including the resource name
+            and resource type. Currently the API only support one nesting level
+            resource types :
+            /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/\
+            providers/{resource-provider-name}/{parentResourceType}/{parentReso\
+            urceName}/{resourceType}/{resourceName}"
+          in: path
+          name: resourceUri
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+          examples:
+            GetCurrentHealthByResource:
+              value: resourceUri
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/FilterParameter"
+        - $ref: "#/components/parameters/ExpandParameter"
+      responses:
+        "200":
+          description: The body contains the current availability status for a single
+            resource
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/availabilityStatus"
+              examples:
+                GetCurrentHealthByResource:
+                  $ref: "#/components/examples/GetCurrentHealthByResource"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ChildAvailabilityStatuses
+  "/{resourceUri}/providers/Microsoft.ResourceHealth/childResources":
+    get:
+      description: Lists the all the children and its current health status for a parent
+        resource. Use the nextLink property in the response to get the next page
+        of children current health
+      operationId: ChildResources_List
+      parameters:
+        - description: "The fully qualified ID of the resource, including the resource name
+            and resource type. Currently the API only support not nested parent
+            resource type:
+            /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name\
+            }/providers/{resource-provider-name}/{resource-type}/{resource-name\
+            }"
+          in: path
+          name: resourceUri
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+          examples:
+            GetHealthHistoryByResource:
+              value: resourceUri
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/FilterParameter"
+        - $ref: "#/components/parameters/ExpandParameter"
+      responses:
+        "200":
+          description: The body contains the list of the children's current availability
+            statuses for a single resource which contains children
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/availabilityStatusListResult"
+              examples:
+                GetHealthHistoryByResource:
+                  $ref: "#/components/examples/GetHealthHistoryByResource"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ChildResources
+      x-ms-pageable:
+        nextLinkName: nextLink
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ListHealthBySubscriptionId:
+      value:
+        nextLink: "{originalRequestUrl}?$skipToken={OpaquePageNumber}"
+        value:
+          - id: <resourceId>/providers/Microsoft.ResourceHealth/AvailabilityStatueses/current
+            location: eastus
+            name: current
+            properties:
+              availabilityState: Available
+              detailedStatus: We have not seen any issues with your virtual machine
+              occuredTime: 2016-03-29T09:12:00Z
+              reasonChronicity: Persistent
+              reasonType: Unplanned
+              recentlyResolvedState:
+                resolvedTime: 2017-02-28T00:49:00Z
+                unavailabilitySummary: We are sorry your SQL database is unavailable
+                unavailableOccurredTime: 2017-02-28T00:48:00Z
+              recommendedActions:
+                - action: To start this virtualmachine, open the resource blade and
+                    click Start
+                  actionUrl: <#ResourceBlade>
+                  actionUrlText: resourceblade
+              reportedTime: 2016-05-04T14:11:29.7598931Z
+              summary: Vm is available
+            type: Microsoft.ResourceHealth/AvailabilityStatuses
+          - id: <resourceId>/providers/Microsoft.ResourceHealth/AvailabilityStatueses/current
+            location: eastus
+            name: current
+            properties:
+              availabilityState: Unavailable
+              detailedStatus: Diskproblemsarepreventingusfromautomaticallyrecoveringyourvirtualmachine
+              occuredTime: 2016-03-29T09:12:00Z
+              reasonChronicity: Persistent
+              reasonType: Unplanned
+              recommendedActions:
+                - action: To start this virtualmachine, open the resource blade
+                  actionUrl: <#ResourceBlade>
+                  actionUrlText: resourceblade
+                - action: If you are experiencing problems you believe are caused by
+                    Azure, contact support
+                  actionUrl: <#SupportCase>
+                  actionUrlText: contactsupport
+              reportedTime: 2016-05-04T14:11:29.7598931Z
+              resolutionETA: 2016-03-29T09:37:00Z
+              rootCauseAttributionTime: 2016-03-29T09:13:00Z
+              summary: We are sorry, we couldn't automatically recovery our
+                virtualmachine
+            type: Microsoft.ResourceHealth/AvailabilityStatuses
+    ListByResourceGroup:
+      value:
+        nextLink: "{originalRequestUrl}?$skipToken={OpaquePageNumber}"
+        value:
+          - id: <resourceId>/providers/Microsoft.ResourceHealth/AvailabilityStatueses/current
+            location: eastus
+            name: current
+            properties:
+              availabilityState: Available
+              detailedStatus: We have not seen any issues with your virtual machine
+              occuredTime: 2016-03-29T09:12:00Z
+              reasonChronicity: Persistent
+              reasonType: Unplanned
+              recentlyResolvedState:
+                resolvedTime: 2017-02-28T00:49:00Z
+                unavailabilitySummary: We are sorry your SQL database is unavailable
+                unavailableOccurredTime: 2017-02-28T00:48:00Z
+              recommendedActions:
+                - action: To start this virtualmachine, open the resource blade and
+                    click Start
+                  actionUrl: <#ResourceBlade>
+                  actionUrlText: resourceblade
+              reportedTime: 2016-05-04T14:11:29.7598931Z
+              summary: Vm is available
+            type: Microsoft.ResourceHealth/AvailabilityStatuses
+          - id: <resourceId>/providers/Microsoft.ResourceHealth/AvailabilityStatueses/current
+            location: eastus
+            name: current
+            properties:
+              availabilityState: Unavailable
+              detailedStatus: Diskproblemsarepreventingusfromautomaticallyrecoveringyourvirtualmachine
+              occuredTime: 2016-03-29T09:12:00Z
+              reasonChronicity: Persistent
+              reasonType: Unplanned
+              recommendedActions:
+                - action: To start this virtualmachine, open the resource blade
+                  actionUrl: <#ResourceBlade>
+                  actionUrlText: resourceblade
+                - action: If you are experiencing problems you believe are caused by
+                    Azure, contact support
+                  actionUrl: <#SupportCase>
+                  actionUrlText: contactsupport
+              reportedTime: 2016-05-04T14:11:29.7598931Z
+              resolutionETA: 2016-03-29T09:37:00Z
+              rootCauseAttributionTime: 2016-03-29T09:13:00Z
+              summary: We are sorry, we couldn't automatically recovery our
+                virtualmachine
+            type: Microsoft.ResourceHealth/AvailabilityStatuses
+    GetHealthHistoryByResource:
+      value:
+        value:
+          - id: /subscriptions/227b734f-e14f-4de6-b7fc-3190c21e69f6/resourceGroups/JUHACKETRHCTEST/providers/Microsoft.Compute/virtualMachineScaleSets/rhctest/virtualMachines/0/providers/Microsoft.ResourceHealth/child/availabilityStatuses/current
+            location: southcentralus
+            name: rhctest_0
+            properties:
+              availabilityState: Available
+              detailedStatus: ""
+              isArmResource: true
+              occuredTime: 2018-11-30T23:37:43Z
+              reasonChronicity: Persistent
+              reasonType: ""
+              reportedTime: 2018-12-04T01:18:25.575477Z
+              summary: There aren't any known Azure platform problems affecting this
+                virtual machine
+            type: Microsoft.ResourceHealth/AvailabilityStatuses
+          - id: /subscriptions/227b734f-e14f-4de6-b7fc-3190c21e69f6/resourceGroups/JUHACKETRHCTEST/providers/Microsoft.Compute/virtualMachineScaleSets/rhctest/virtualMachines/3/providers/Microsoft.ResourceHealth/child/availabilityStatuses/current
+            location: southcentralus
+            name: rhctest_3
+            properties:
+              availabilityState: Available
+              detailedStatus: ""
+              isArmResource: true
+              occuredTime: 2018-11-30T23:37:41Z
+              reasonChronicity: Persistent
+              reasonType: ""
+              reportedTime: 2018-12-04T01:18:25.575477Z
+              summary: There aren't any known Azure platform problems affecting this
+                virtual machine
+            type: Microsoft.ResourceHealth/AvailabilityStatuses
+          - id: /subscriptions/227b734f-e14f-4de6-b7fc-3190c21e69f6/resourceGroups/JUHACKETRHCTEST/providers/Microsoft.Compute/virtualMachineScaleSets/rhctest/virtualMachines/1/providers/Microsoft.ResourceHealth/child/availabilityStatuses/current
+            location: southcentralus
+            name: rhctest_1
+            properties:
+              availabilityState: Available
+              detailedStatus: ""
+              isArmResource: true
+              occuredTime: 2018-11-30T23:37:48Z
+              reasonChronicity: Persistent
+              reasonType: ""
+              reportedTime: 2018-12-04T01:18:25.575477Z
+              summary: There aren't any known Azure platform problems affecting this
+                virtual machine
+            type: Microsoft.ResourceHealth/AvailabilityStatuses
+          - id: /subscriptions/227b734f-e14f-4de6-b7fc-3190c21e69f6/resourceGroups/JUHACKETRHCTEST/providers/Microsoft.Compute/virtualMachineScaleSets/rhctest/virtualMachines/2/providers/Microsoft.ResourceHealth/child/availabilityStatuses/current
+            location: southcentralus
+            name: rhctest_2
+            properties:
+              availabilityState: Available
+              detailedStatus: ""
+              isArmResource: true
+              occuredTime: 2018-11-30T23:37:43Z
+              reasonChronicity: Persistent
+              reasonType: ""
+              reportedTime: 2018-12-04T01:18:25.575477Z
+              summary: There aren't any known Azure platform problems affecting this
+                virtual machine
+            type: Microsoft.ResourceHealth/AvailabilityStatuses
+          - id: /subscriptions/227b734f-e14f-4de6-b7fc-3190c21e69f6/resourceGroups/JUHACKETRHCTEST/providers/Microsoft.Compute/virtualMachineScaleSets/rhctest/virtualMachines/4/providers/Microsoft.ResourceHealth/child/availabilityStatuses/current
+            location: southcentralus
+            name: rhctest_4
+            properties:
+              availabilityState: Available
+              detailedStatus: ""
+              isArmResource: true
+              occuredTime: 2018-11-30T23:37:44Z
+              reasonChronicity: Persistent
+              reasonType: ""
+              reportedTime: 2018-12-04T01:18:25.575477Z
+              summary: There aren't any known Azure platform problems affecting this
+                virtual machine
+            type: Microsoft.ResourceHealth/AvailabilityStatuses
+    GetCurrentHealthByResource:
+      value:
+        id: /subscriptions/227b734f-e14f-4de6-b7fc-3190c21e69f6/resourceGroups/JUHACKETRHCTEST/providers/Microsoft.Compute/virtualMachineScaleSets/rhctest/virtualMachines/4/providers/Microsoft.ResourceHealth/child/availabilityStatuses/current
+        location: southcentralus
+        name: current
+        properties:
+          availabilityState: Available
+          detailedStatus: ""
+          occuredTime: 2018-11-30T23:37:44Z
+          reasonChronicity: Persistent
+          reasonType: ""
+          recommendedActions:
+            - action: To start this virtual machine, open the resource blade and click
+                Start
+              actionUrl: <#ResourceBlade>
+              actionUrlText: resource blade
+            - action: If you are experiencing problems you believe are caused by
+                Azure, contact support
+              actionUrl: <#SupportCase>
+              actionUrlText: contact support
+          reportedTime: 2018-12-04T01:19:11.955255Z
+          summary: There aren't any known Azure platform problems affecting this
+            virtual machine
+        type: Microsoft.ResourceHealth/AvailabilityStatuses
+  parameters:
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        ListHealthBySubscriptionId:
+          value: 2015-01-01
+        ListByResourceGroup:
+          value: 2015-01-01
+        GetHealthHistoryByResource:
+          value: 2015-01-01
+        GetCurrentHealthByResource:
+          value: 2015-01-01
+    ExpandParameter:
+      description: Setting $expand=recommendedactions in url query expands the
+        recommendedactions in the response.
+      in: query
+      name: $expand
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        ListHealthBySubscriptionId:
+          value: recommendedactions
+        ListByResourceGroup:
+          value: recommendedactions
+        GetCurrentHealthByResource:
+          value: recommendedactions
+    FilterParameter:
+      description: The filter to apply on the operation. For more information please see
+        https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+      in: query
+      name: $filter
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupNameParameter:
+      description: The name of the resource group.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        ListByResourceGroup:
+          value: resourceGroupName
+    SubscriptionIdParameter:
+      description: Subscription credentials which uniquely identify Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        ListHealthBySubscriptionId:
+          value: subscriptionId
+        ListByResourceGroup:
+          value: subscriptionId
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ErrorResponse:
+      description: Error details.
+      properties:
+        code:
+          description: The error code.
+          readOnly: true
+          type: string
+        details:
+          description: The error details.
+          readOnly: true
+          type: string
+        message:
+          description: The error message.
+          readOnly: true
+          type: string
+      type: object
+    availabilityStatus:
+      description: availabilityStatus of a resource.
+      properties:
+        id:
+          description: Azure Resource Manager Identity for the availabilityStatuses
+            resource.
+          type: string
+        location:
+          description: Azure Resource Manager geo location of the resource.
+          type: string
+        name:
+          description: current.
+          type: string
+        properties:
+          description: Properties of availability state.
+          properties:
+            availabilityState:
+              description: Availability status of the resource.
+              enum:
+                - Available
+                - Unavailable
+                - Unknown
+              type: string
+              x-ms-enum:
+                modelAsString: false
+                name: AvailabilityStateValues
+            detailedStatus:
+              description: Details of the availability status.
+              type: string
+            isArmResource:
+              description: "flag to show if child resource need detail health. "
+              type: boolean
+            occuredTime:
+              description: Timestamp for when last change in health status occurred.
+              format: date-time
+              type: string
+            reasonChronicity:
+              description: Chronicity of the availability transition.
+              enum:
+                - Transient
+                - Persistent
+              type: string
+              x-ms-enum:
+                modelAsString: false
+                name: reasonChronicityTypes
+            reasonType:
+              description: When the resource's availabilityState is Unavailable, it
+                describes where the health impacting event was originated.
+                Examples are planned, unplanned, user initiated or an outage
+                etc.
+              type: string
+            recentlyResolvedState:
+              description: An annotation describing a change in the availabilityState to
+                Available from Unavailable with a reasonType of type Unplanned
+              properties:
+                resolvedTime:
+                  description: Timestamp when the availabilityState changes to Available.
+                  format: date-time
+                  type: string
+                unavailabilitySummary:
+                  description: Brief description of cause of the resource becoming
+                    unavailable.
+                  type: string
+                unavailableOccurredTime:
+                  description: Timestamp for when the availabilityState changed to
+                    Unavailable
+                  format: date-time
+                  type: string
+              type: object
+            recommendedActions:
+              description: Lists actions the user can take based on the current
+                availabilityState of the resource.
+              items:
+                $ref: "#/components/schemas/recommendedAction"
+              type: array
+            reportedTime:
+              description: "Timestamp for when the health was last checked. "
+              format: date-time
+              type: string
+            resolutionETA:
+              description: When the resource's availabilityState is Unavailable and the
+                reasonType is not User Initiated, it provides the date and time
+                for when the issue is expected to be resolved.
+              format: date-time
+              type: string
+            rootCauseAttributionTime:
+              description: When the resource's availabilityState is Unavailable, it
+                provides the Timestamp for when the health impacting event was
+                received.
+              format: date-time
+              type: string
+            serviceImpactingEvents:
+              description: Lists the service impacting events that may be affecting the
+                health of the resource.
+              items:
+                $ref: "#/components/schemas/serviceImpactingEvent"
+              type: array
+            summary:
+              description: Summary description of the availability state.
+              type: string
+          type: object
+        type:
+          description: Microsoft.ResourceHealth/AvailabilityStatuses.
+          type: string
+      type: object
+    availabilityStatusListResult:
+      description: The List availabilityStatus operation response.
+      properties:
+        nextLink:
+          description: The URI to fetch the next page of availabilityStatuses. Call
+            ListNext() with this URI to fetch the next page of
+            availabilityStatuses.
+          type: string
+        value:
+          description: The list of availabilityStatuses.
+          items:
+            $ref: "#/components/schemas/availabilityStatus"
+          type: array
+      required:
+        - value
+    operation:
+      description: Operation available in the resourcehealth resource provider.
+      properties:
+        display:
+          description: Properties of the operation.
+          properties:
+            description:
+              description: Description of the operation.
+              type: string
+            operation:
+              description: Operation name.
+              type: string
+            provider:
+              description: Provider name.
+              type: string
+            resource:
+              description: Resource name.
+              type: string
+          type: object
+        name:
+          description: Name of the operation.
+          type: string
+    operationListResult:
+      description: Lists the operations response.
+      properties:
+        value:
+          description: List of operations available in the resourcehealth resource provider.
+          items:
+            $ref: "#/components/schemas/operation"
+          type: array
+      required:
+        - value
+    recommendedAction:
+      description: Lists actions the user can take based on the current availabilityState
+        of the resource.
+      properties:
+        action:
+          description: Recommended action.
+          type: string
+        actionUrl:
+          description: Link to the action
+          type: string
+        actionUrlText:
+          description: Substring of action, it describes which text should host the action
+            url.
+          type: string
+    serviceImpactingEvent:
+      description: Lists the service impacting events that may be affecting the health of
+        the resource.
+      properties:
+        correlationId:
+          description: Correlation id for the event
+          type: string
+        eventStartTime:
+          description: Timestamp for when the event started.
+          format: date-time
+          type: string
+        eventStatusLastModifiedTime:
+          description: Timestamp for when event was submitted/detected.
+          format: date-time
+          type: string
+        incidentProperties:
+          description: Properties of the service impacting event.
+          properties:
+            incidentType:
+              description: Type of Event.
+              type: string
+            region:
+              description: Region impacted by the event.
+              type: string
+            service:
+              description: Service impacted by the event.
+              type: string
+            title:
+              description: Title of the incident.
+              type: string
+          type: object
+        status:
+          description: Status of the service impacting event.
+          properties:
+            value:
+              description: Current status of the event
+              type: string
+          type: object

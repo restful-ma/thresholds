@@ -1,0 +1,2442 @@
+openapi: 3.0.0
+info:
+  version: 2018-09-24
+  x-release: v4
+  title: Amazon Managed Blockchain
+  description: <p/> <p>Amazon Managed Blockchain is a fully managed service for creating
+    and managing blockchain networks using open source frameworks. Blockchain
+    allows you to build applications where multiple parties can securely and
+    transparently run transactions and share data without the need for a
+    trusted, central authority. Currently, Managed Blockchain supports the
+    Hyperledger Fabric open source framework. </p>
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: managedblockchain
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/managedblockchain-2018-09-24.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/managedblockchain/
+security:
+  - hmac: []
+paths:
+  "/networks/{networkId}/members":
+    post:
+      operationId: CreateMember
+      description: Creates a member within a Managed Blockchain network.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateMemberOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "484":
+          description: ResourceNotReadyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotReadyException"
+        "485":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "486":
+          description: ResourceLimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceLimitExceededException"
+        "487":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: The unique identifier of the network in which the member is created.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ClientRequestToken
+                - InvitationId
+                - MemberConfiguration
+              properties:
+                ClientRequestToken:
+                  description: A unique, case-sensitive identifier that you provide to
+                    ensure the idempotency of the operation. An idempotent
+                    operation completes no more than one time. This identifier
+                    is required only if you make a service request directly
+                    using an HTTP client. It is generated automatically if you
+                    use an AWS SDK or the AWS CLI.
+                  type: string
+                  minLength: 1
+                  maxLength: 64
+                InvitationId:
+                  description: The unique identifier of the invitation that is sent to the
+                    member to join the network.
+                  type: string
+                  minLength: 1
+                  maxLength: 32
+                MemberConfiguration:
+                  description: Configuration properties of the member.
+                  type: object
+                  properties:
+                    Name:
+                      $ref: "#/components/schemas/NetworkMemberNameString"
+                    Description:
+                      $ref: "#/components/schemas/DescriptionString"
+                    FrameworkConfiguration:
+                      $ref: "#/components/schemas/MemberFrameworkConfiguration"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListMembers
+      description: Returns a listing of the members in a network and properties of their
+        configurations.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListMembersOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: The unique identifier of the network for which to list members.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: name
+          in: query
+          required: false
+          description: The optional name of the member to list.
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          description: An optional status specifier. If provided, only members currently in
+            this status are listed.
+          schema:
+            type: string
+            enum:
+              - CREATING
+              - AVAILABLE
+              - CREATE_FAILED
+              - DELETING
+              - DELETED
+        - name: isOwned
+          in: query
+          required: false
+          description: An optional Boolean value. If provided, the request is limited
+            either to members that the current AWS account owns
+            (<code>true</code>) or that other AWS accounts own
+            (<code>false</code>). If omitted, all members are listed.
+          schema:
+            type: boolean
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of members to return in the request.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+        - name: nextToken
+          in: query
+          required: false
+          description: The pagination token that indicates the next set of results to
+            retrieve.
+          schema:
+            type: string
+            maxLength: 128
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  /networks:
+    post:
+      operationId: CreateNetwork
+      description: Creates a new blockchain network using Amazon Managed Blockchain.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateNetworkOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: ResourceLimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceLimitExceededException"
+        "485":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ClientRequestToken
+                - Name
+                - Framework
+                - FrameworkVersion
+                - VotingPolicy
+                - MemberConfiguration
+              properties:
+                ClientRequestToken:
+                  description: A unique, case-sensitive identifier that you provide to
+                    ensure the idempotency of the operation. An idempotent
+                    operation completes no more than one time. This identifier
+                    is required only if you make a service request directly
+                    using an HTTP client. It is generated automatically if you
+                    use an AWS SDK or the AWS CLI.
+                  type: string
+                  minLength: 1
+                  maxLength: 64
+                Name:
+                  description: The name of the network.
+                  type: string
+                  pattern: .*\S.*
+                  minLength: 1
+                  maxLength: 64
+                Description:
+                  description: An optional description for the network.
+                  type: string
+                  maxLength: 128
+                Framework:
+                  description: The blockchain framework that the network uses.
+                  type: string
+                  enum:
+                    - HYPERLEDGER_FABRIC
+                FrameworkVersion:
+                  description: The version of the blockchain framework that the network
+                    uses.
+                  type: string
+                  minLength: 1
+                  maxLength: 8
+                FrameworkConfiguration:
+                  description: " Configuration properties relevant to the network for the
+                    blockchain framework that the network uses. "
+                  type: object
+                  properties:
+                    Fabric:
+                      $ref: "#/components/schemas/NetworkFabricConfiguration"
+                VotingPolicy:
+                  description: " The voting rules for the network to decide if a proposal
+                    is accepted "
+                  type: object
+                  properties:
+                    ApprovalThresholdPolicy:
+                      $ref: "#/components/schemas/ApprovalThresholdPolicy"
+                MemberConfiguration:
+                  description: Configuration properties of the member.
+                  type: object
+                  properties:
+                    Name:
+                      $ref: "#/components/schemas/NetworkMemberNameString"
+                    Description:
+                      $ref: "#/components/schemas/DescriptionString"
+                    FrameworkConfiguration:
+                      $ref: "#/components/schemas/MemberFrameworkConfiguration"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListNetworks
+      description: Returns information about the networks in which the current AWS account
+        has members.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListNetworksOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: name
+          in: query
+          required: false
+          description: The name of the network.
+          schema:
+            type: string
+        - name: framework
+          in: query
+          required: false
+          description: An optional framework specifier. If provided, only networks of this
+            framework type are listed.
+          schema:
+            type: string
+            enum:
+              - HYPERLEDGER_FABRIC
+        - name: status
+          in: query
+          required: false
+          description: An optional status specifier. If provided, only networks currently
+            in this status are listed.
+          schema:
+            type: string
+            enum:
+              - CREATING
+              - AVAILABLE
+              - CREATE_FAILED
+              - DELETING
+              - DELETED
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of networks to list.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+        - name: nextToken
+          in: query
+          required: false
+          description: The pagination token that indicates the next set of results to
+            retrieve.
+          schema:
+            type: string
+            maxLength: 128
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  "/networks/{networkId}/members/{memberId}/nodes":
+    post:
+      operationId: CreateNode
+      description: Creates a peer node in a member.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateNodeOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "484":
+          description: ResourceNotReadyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotReadyException"
+        "485":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "486":
+          description: ResourceLimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceLimitExceededException"
+        "487":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: The unique identifier of the network in which this node runs.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: memberId
+          in: path
+          required: true
+          description: The unique identifier of the member that owns this node.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ClientRequestToken
+                - NodeConfiguration
+              properties:
+                ClientRequestToken:
+                  description: A unique, case-sensitive identifier that you provide to
+                    ensure the idempotency of the operation. An idempotent
+                    operation completes no more than one time. This identifier
+                    is required only if you make a service request directly
+                    using an HTTP client. It is generated automatically if you
+                    use an AWS SDK or the AWS CLI.
+                  type: string
+                  minLength: 1
+                  maxLength: 64
+                NodeConfiguration:
+                  description: Configuration properties of a peer node.
+                  type: object
+                  properties:
+                    InstanceType:
+                      $ref: "#/components/schemas/InstanceTypeString"
+                    AvailabilityZone:
+                      $ref: "#/components/schemas/AvailabilityZoneString"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListNodes
+      description: Returns information about the nodes within a network.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListNodesOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: The unique identifier of the network for which to list nodes.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: memberId
+          in: path
+          required: true
+          description: The unique identifier of the member who owns the nodes to list.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: status
+          in: query
+          required: false
+          description: An optional status specifier. If provided, only nodes currently in
+            this status are listed.
+          schema:
+            type: string
+            enum:
+              - CREATING
+              - AVAILABLE
+              - CREATE_FAILED
+              - DELETING
+              - DELETED
+              - FAILED
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of nodes to list.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+        - name: nextToken
+          in: query
+          required: false
+          description: The pagination token that indicates the next set of results to
+            retrieve.
+          schema:
+            type: string
+            maxLength: 128
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  "/networks/{networkId}/proposals":
+    post:
+      operationId: CreateProposal
+      description: Creates a proposal for a change to the network that other members of the
+        network can vote on, for example, a proposal to add a new member to the
+        network. Any member can create a proposal.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateProposalOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ResourceNotReadyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotReadyException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "485":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: " The unique identifier of the network for which the proposal is
+            made."
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ClientRequestToken
+                - MemberId
+                - Actions
+              properties:
+                ClientRequestToken:
+                  description: A unique, case-sensitive identifier that you provide to
+                    ensure the idempotency of the operation. An idempotent
+                    operation completes no more than one time. This identifier
+                    is required only if you make a service request directly
+                    using an HTTP client. It is generated automatically if you
+                    use an AWS SDK or the AWS CLI.
+                  type: string
+                  minLength: 1
+                  maxLength: 64
+                MemberId:
+                  description: The unique identifier of the member that is creating the
+                    proposal. This identifier is especially useful for
+                    identifying the member making the proposal when multiple
+                    members exist in a single AWS account.
+                  type: string
+                  minLength: 1
+                  maxLength: 32
+                Actions:
+                  description: " The actions to carry out if a proposal is
+                    <code>APPROVED</code>. "
+                  type: object
+                  properties:
+                    Invitations:
+                      $ref: "#/components/schemas/InviteActionList"
+                    Removals:
+                      $ref: "#/components/schemas/RemoveActionList"
+                Description:
+                  description: A description for the proposal that is visible to voting
+                    members, for example, "Proposal to add Example Corp. as
+                    member."
+                  type: string
+                  maxLength: 128
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListProposals
+      description: Returns a listing of proposals for the network.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListProposalsOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: " The unique identifier of the network. "
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: maxResults
+          in: query
+          required: false
+          description: " The maximum number of proposals to return. "
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: " The pagination token that indicates the next set of results to
+            retrieve. "
+          schema:
+            type: string
+            maxLength: 128
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  "/networks/{networkId}/members/{memberId}":
+    delete:
+      operationId: DeleteMember
+      description: Deletes a member. Deleting a member removes the member and all
+        associated resources from the network. <code>DeleteMember</code> can
+        only be called for a specified <code>MemberId</code> if the principal
+        performing the action is associated with the AWS account that owns the
+        member. In all other cases, the <code>DeleteMember</code> action is
+        carried out as the result of an approved proposal to remove a member. If
+        <code>MemberId</code> is the last member in a network specified by the
+        last AWS account, the network is deleted also.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteMemberOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ResourceNotReadyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotReadyException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "485":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: The unique identifier of the network from which the member is
+            removed.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: memberId
+          in: path
+          required: true
+          description: The unique identifier of the member to remove.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetMember
+      description: Returns detailed information about a member.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMemberOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: The unique identifier of the network to which the member belongs.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: memberId
+          in: path
+          required: true
+          description: The unique identifier of the member.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+  "/networks/{networkId}/members/{memberId}/nodes/{nodeId}":
+    delete:
+      operationId: DeleteNode
+      description: Deletes a peer node from a member that your AWS account owns. All data
+        on the node is lost and cannot be recovered.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteNodeOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ResourceNotReadyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotReadyException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "485":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: The unique identifier of the network that the node belongs to.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: memberId
+          in: path
+          required: true
+          description: The unique identifier of the member that owns this node.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: nodeId
+          in: path
+          required: true
+          description: The unique identifier of the node.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetNode
+      description: Returns detailed information about a peer node.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetNodeOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: The unique identifier of the network to which the node belongs.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: memberId
+          in: path
+          required: true
+          description: The unique identifier of the member that owns the node.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: nodeId
+          in: path
+          required: true
+          description: The unique identifier of the node.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+  "/networks/{networkId}":
+    get:
+      operationId: GetNetwork
+      description: Returns detailed information about a network.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetNetworkOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: The unique identifier of the network to get information about.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/networks/{networkId}/proposals/{proposalId}":
+    get:
+      operationId: GetProposal
+      description: Returns detailed information about a proposal.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetProposalOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: The unique identifier of the network for which the proposal is made.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: proposalId
+          in: path
+          required: true
+          description: The unique identifier of the proposal.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /invitations:
+    get:
+      operationId: ListInvitations
+      description: Returns a listing of all invitations made on the specified network.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListInvitationsOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: ResourceLimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceLimitExceededException"
+        "485":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of invitations to return.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: The pagination token that indicates the next set of results to
+            retrieve.
+          schema:
+            type: string
+            maxLength: 128
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/networks/{networkId}/proposals/{proposalId}/votes":
+    get:
+      operationId: ListProposalVotes
+      description: Returns the listing of votes for a specified proposal, including the
+        value of each vote and the unique identifier of the member that cast the
+        vote.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListProposalVotesOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: " The unique identifier of the network. "
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: proposalId
+          in: path
+          required: true
+          description: " The unique identifier of the proposal. "
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: maxResults
+          in: query
+          required: false
+          description: " The maximum number of votes to return. "
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: " The pagination token that indicates the next set of results to
+            retrieve. "
+          schema:
+            type: string
+            maxLength: 128
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    post:
+      operationId: VoteOnProposal
+      description: Casts a vote for a specified <code>ProposalId</code> on behalf of a
+        member. The member to vote as, specified by <code>VoterMemberId</code>,
+        must be in the same AWS account as the principal that calls the action.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoteOnProposalOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: IllegalActionException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IllegalActionException"
+        "482":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "485":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: networkId
+          in: path
+          required: true
+          description: " The unique identifier of the network. "
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+        - name: proposalId
+          in: path
+          required: true
+          description: " The unique identifier of the proposal. "
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - VoterMemberId
+                - Vote
+              properties:
+                VoterMemberId:
+                  description: "The unique identifier of the member casting the vote. "
+                  type: string
+                  minLength: 1
+                  maxLength: 32
+                Vote:
+                  description: " The value of the vote. "
+                  type: string
+                  enum:
+                    - YES
+                    - NO
+        required: true
+  "/invitations/{invitationId}":
+    delete:
+      operationId: RejectInvitation
+      description: Rejects an invitation to join a network. This action can be called by a
+        principal in an AWS account that has received an invitation to create a
+        member and join a network.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RejectInvitationOutput"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: IllegalActionException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IllegalActionException"
+        "482":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "485":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: invitationId
+          in: path
+          required: true
+          description: The unique identifier of the invitation to reject.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 32
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://managedblockchain.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The ManagedBlockchain multi-region endpoint
+  - url: https://managedblockchain.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The ManagedBlockchain multi-region endpoint
+  - url: http://managedblockchain.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The ManagedBlockchain endpoint for China (Beijing) and China (Ningxia)
+  - url: https://managedblockchain.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The ManagedBlockchain endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    CreateMemberOutput:
+      type: object
+      properties:
+        MemberId:
+          $ref: "#/components/schemas/ResourceIdString"
+    NetworkMemberNameString:
+      type: string
+      pattern: ^(?!-)^[^0-9](?!.*--)[A-Za-z0-9-]+[^- ]$
+      minLength: 1
+      maxLength: 64
+    DescriptionString:
+      type: string
+      maxLength: 128
+    MemberFrameworkConfiguration:
+      type: object
+      properties:
+        Fabric:
+          $ref: "#/components/schemas/MemberFabricConfiguration"
+      description: Configuration properties relevant to a member for the blockchain
+        framework that the Managed Blockchain network uses.
+    InvalidRequestException: {}
+    AccessDeniedException: {}
+    ResourceNotFoundException: {}
+    ResourceAlreadyExistsException: {}
+    ResourceNotReadyException: {}
+    ThrottlingException: {}
+    ResourceLimitExceededException: {}
+    InternalServiceErrorException: {}
+    CreateNetworkOutput:
+      type: object
+      properties:
+        NetworkId:
+          $ref: "#/components/schemas/ResourceIdString"
+        MemberId:
+          $ref: "#/components/schemas/ResourceIdString"
+    NetworkFabricConfiguration:
+      type: object
+      required:
+        - Edition
+      properties:
+        Edition:
+          $ref: "#/components/schemas/Edition"
+      description: Hyperledger Fabric configuration properties for the network.
+    ApprovalThresholdPolicy:
+      type: object
+      properties:
+        ThresholdPercentage:
+          $ref: "#/components/schemas/ThresholdPercentageInt"
+        ProposalDurationInHours:
+          $ref: "#/components/schemas/ProposalDurationInt"
+        ThresholdComparator:
+          $ref: "#/components/schemas/ThresholdComparator"
+      description: A policy type that defines the voting rules for the network. The rules
+        decide if a proposal is approved. Approval may be based on criteria such
+        as the percentage of <code>YES</code> votes and the duration of the
+        proposal. The policy applies to all proposals and is specified when the
+        network is created.
+    CreateNodeOutput:
+      type: object
+      properties:
+        NodeId:
+          $ref: "#/components/schemas/ResourceIdString"
+    InstanceTypeString:
+      type: string
+    AvailabilityZoneString:
+      type: string
+    CreateProposalOutput:
+      type: object
+      properties:
+        ProposalId:
+          $ref: "#/components/schemas/ResourceIdString"
+    InviteActionList:
+      type: array
+      items:
+        $ref: "#/components/schemas/InviteAction"
+    RemoveActionList:
+      type: array
+      items:
+        $ref: "#/components/schemas/RemoveAction"
+    DeleteMemberOutput:
+      type: object
+      properties: {}
+    DeleteNodeOutput:
+      type: object
+      properties: {}
+    GetMemberOutput:
+      type: object
+      properties:
+        Member:
+          $ref: "#/components/schemas/Member"
+    GetNetworkOutput:
+      type: object
+      properties:
+        Network:
+          $ref: "#/components/schemas/Network"
+    GetNodeOutput:
+      type: object
+      properties:
+        Node:
+          $ref: "#/components/schemas/Node"
+    GetProposalOutput:
+      type: object
+      properties:
+        Proposal:
+          $ref: "#/components/schemas/Proposal"
+    ListInvitationsOutput:
+      type: object
+      properties:
+        Invitations:
+          $ref: "#/components/schemas/InvitationList"
+        NextToken:
+          $ref: "#/components/schemas/PaginationToken"
+    ListMembersOutput:
+      type: object
+      properties:
+        Members:
+          $ref: "#/components/schemas/MemberSummaryList"
+        NextToken:
+          $ref: "#/components/schemas/PaginationToken"
+    ListNetworksOutput:
+      type: object
+      properties:
+        Networks:
+          $ref: "#/components/schemas/NetworkSummaryList"
+        NextToken:
+          $ref: "#/components/schemas/PaginationToken"
+    ListNodesOutput:
+      type: object
+      properties:
+        Nodes:
+          $ref: "#/components/schemas/NodeSummaryList"
+        NextToken:
+          $ref: "#/components/schemas/PaginationToken"
+    ListProposalVotesOutput:
+      type: object
+      properties:
+        ProposalVotes:
+          $ref: "#/components/schemas/ProposalVoteList"
+        NextToken:
+          $ref: "#/components/schemas/PaginationToken"
+    ListProposalsOutput:
+      type: object
+      properties:
+        Proposals:
+          $ref: "#/components/schemas/ProposalSummaryList"
+        NextToken:
+          $ref: "#/components/schemas/PaginationToken"
+    RejectInvitationOutput:
+      type: object
+      properties: {}
+    IllegalActionException: {}
+    VoteOnProposalOutput:
+      type: object
+      properties: {}
+    ThresholdPercentageInt:
+      type: integer
+      minimum: 0
+      maximum: 100
+    ProposalDurationInt:
+      type: integer
+      minimum: 1
+      maximum: 168
+    ThresholdComparator:
+      type: string
+      enum:
+        - GREATER_THAN
+        - GREATER_THAN_OR_EQUAL_TO
+    ClientRequestTokenString:
+      type: string
+      minLength: 1
+      maxLength: 64
+    ResourceIdString:
+      type: string
+      minLength: 1
+      maxLength: 32
+    MemberConfiguration:
+      type: object
+      required:
+        - Name
+        - FrameworkConfiguration
+      properties:
+        Name:
+          $ref: "#/components/schemas/NetworkMemberNameString"
+        Description:
+          $ref: "#/components/schemas/DescriptionString"
+        FrameworkConfiguration:
+          $ref: "#/components/schemas/MemberFrameworkConfiguration"
+      description: Configuration properties of the member.
+    CreateMemberInput:
+      type: object
+      required:
+        - ClientRequestToken
+        - InvitationId
+        - MemberConfiguration
+      properties:
+        ClientRequestToken:
+          $ref: "#/components/schemas/ClientRequestTokenString"
+        InvitationId:
+          $ref: "#/components/schemas/ResourceIdString"
+        MemberConfiguration:
+          $ref: "#/components/schemas/MemberConfiguration"
+    NameString:
+      type: string
+      pattern: .*\S.*
+      minLength: 1
+      maxLength: 64
+    Framework:
+      type: string
+      enum:
+        - HYPERLEDGER_FABRIC
+    FrameworkVersionString:
+      type: string
+      minLength: 1
+      maxLength: 8
+    NetworkFrameworkConfiguration:
+      type: object
+      properties:
+        Fabric:
+          $ref: "#/components/schemas/NetworkFabricConfiguration"
+      description: " Configuration properties relevant to the network for the blockchain
+        framework that the network uses. "
+    VotingPolicy:
+      type: object
+      properties:
+        ApprovalThresholdPolicy:
+          $ref: "#/components/schemas/ApprovalThresholdPolicy"
+      description: " The voting rules for the network to decide if a proposal is accepted "
+    CreateNetworkInput:
+      type: object
+      required:
+        - ClientRequestToken
+        - Name
+        - Framework
+        - FrameworkVersion
+        - VotingPolicy
+        - MemberConfiguration
+      properties:
+        ClientRequestToken:
+          $ref: "#/components/schemas/ClientRequestTokenString"
+        Name:
+          $ref: "#/components/schemas/NameString"
+        Description:
+          $ref: "#/components/schemas/DescriptionString"
+        Framework:
+          $ref: "#/components/schemas/Framework"
+        FrameworkVersion:
+          $ref: "#/components/schemas/FrameworkVersionString"
+        FrameworkConfiguration:
+          $ref: "#/components/schemas/NetworkFrameworkConfiguration"
+        VotingPolicy:
+          $ref: "#/components/schemas/VotingPolicy"
+        MemberConfiguration:
+          $ref: "#/components/schemas/MemberConfiguration"
+    NodeConfiguration:
+      type: object
+      required:
+        - InstanceType
+        - AvailabilityZone
+      properties:
+        InstanceType:
+          $ref: "#/components/schemas/InstanceTypeString"
+        AvailabilityZone:
+          $ref: "#/components/schemas/AvailabilityZoneString"
+      description: Configuration properties of a peer node.
+    CreateNodeInput:
+      type: object
+      required:
+        - ClientRequestToken
+        - NodeConfiguration
+      properties:
+        ClientRequestToken:
+          $ref: "#/components/schemas/ClientRequestTokenString"
+        NodeConfiguration:
+          $ref: "#/components/schemas/NodeConfiguration"
+    ProposalActions:
+      type: object
+      properties:
+        Invitations:
+          $ref: "#/components/schemas/InviteActionList"
+        Removals:
+          $ref: "#/components/schemas/RemoveActionList"
+      description: " The actions to carry out if a proposal is <code>APPROVED</code>. "
+    CreateProposalInput:
+      type: object
+      required:
+        - ClientRequestToken
+        - MemberId
+        - Actions
+      properties:
+        ClientRequestToken:
+          $ref: "#/components/schemas/ClientRequestTokenString"
+        MemberId:
+          $ref: "#/components/schemas/ResourceIdString"
+        Actions:
+          $ref: "#/components/schemas/ProposalActions"
+        Description:
+          $ref: "#/components/schemas/DescriptionString"
+    DeleteMemberInput:
+      type: object
+      properties: {}
+    DeleteNodeInput:
+      type: object
+      properties: {}
+    Edition:
+      type: string
+      enum:
+        - STARTER
+        - STANDARD
+    GetMemberInput:
+      type: object
+      properties: {}
+    Member:
+      type: object
+      properties:
+        NetworkId:
+          $ref: "#/components/schemas/ResourceIdString"
+        Id:
+          $ref: "#/components/schemas/ResourceIdString"
+        Name:
+          $ref: "#/components/schemas/NetworkMemberNameString"
+        Description:
+          $ref: "#/components/schemas/DescriptionString"
+        FrameworkAttributes:
+          $ref: "#/components/schemas/MemberFrameworkAttributes"
+        Status:
+          $ref: "#/components/schemas/MemberStatus"
+        CreationDate:
+          $ref: "#/components/schemas/Timestamp"
+      description: Member configuration properties.
+    GetNetworkInput:
+      type: object
+      properties: {}
+    Network:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/ResourceIdString"
+        Name:
+          $ref: "#/components/schemas/NameString"
+        Description:
+          $ref: "#/components/schemas/DescriptionString"
+        Framework:
+          $ref: "#/components/schemas/Framework"
+        FrameworkVersion:
+          $ref: "#/components/schemas/FrameworkVersionString"
+        FrameworkAttributes:
+          $ref: "#/components/schemas/NetworkFrameworkAttributes"
+        VpcEndpointServiceName:
+          $ref: "#/components/schemas/String"
+        VotingPolicy:
+          $ref: "#/components/schemas/VotingPolicy"
+        Status:
+          $ref: "#/components/schemas/NetworkStatus"
+        CreationDate:
+          $ref: "#/components/schemas/Timestamp"
+      description: Network configuration properties.
+    GetNodeInput:
+      type: object
+      properties: {}
+    Node:
+      type: object
+      properties:
+        NetworkId:
+          $ref: "#/components/schemas/ResourceIdString"
+        MemberId:
+          $ref: "#/components/schemas/ResourceIdString"
+        Id:
+          $ref: "#/components/schemas/ResourceIdString"
+        InstanceType:
+          $ref: "#/components/schemas/InstanceTypeString"
+        AvailabilityZone:
+          $ref: "#/components/schemas/AvailabilityZoneString"
+        FrameworkAttributes:
+          $ref: "#/components/schemas/NodeFrameworkAttributes"
+        Status:
+          $ref: "#/components/schemas/NodeStatus"
+        CreationDate:
+          $ref: "#/components/schemas/Timestamp"
+      description: Configuration properties of a peer node.
+    GetProposalInput:
+      type: object
+      properties: {}
+    Proposal:
+      type: object
+      properties:
+        ProposalId:
+          $ref: "#/components/schemas/ResourceIdString"
+        NetworkId:
+          $ref: "#/components/schemas/ResourceIdString"
+        Description:
+          $ref: "#/components/schemas/DescriptionString"
+        Actions:
+          $ref: "#/components/schemas/ProposalActions"
+        ProposedByMemberId:
+          $ref: "#/components/schemas/ResourceIdString"
+        ProposedByMemberName:
+          $ref: "#/components/schemas/NetworkMemberNameString"
+        Status:
+          $ref: "#/components/schemas/ProposalStatus"
+        CreationDate:
+          $ref: "#/components/schemas/Timestamp"
+        ExpirationDate:
+          $ref: "#/components/schemas/Timestamp"
+        YesVoteCount:
+          $ref: "#/components/schemas/VoteCount"
+        NoVoteCount:
+          $ref: "#/components/schemas/VoteCount"
+        OutstandingVoteCount:
+          $ref: "#/components/schemas/VoteCount"
+      description: Properties of a proposal on a Managed Blockchain network.
+    Timestamp:
+      type: string
+      format: date-time
+    InvitationStatus:
+      type: string
+      enum:
+        - PENDING
+        - ACCEPTED
+        - ACCEPTING
+        - REJECTED
+        - EXPIRED
+    NetworkSummary:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/ResourceIdString"
+        Name:
+          $ref: "#/components/schemas/NameString"
+        Description:
+          $ref: "#/components/schemas/DescriptionString"
+        Framework:
+          $ref: "#/components/schemas/Framework"
+        FrameworkVersion:
+          $ref: "#/components/schemas/FrameworkVersionString"
+        Status:
+          $ref: "#/components/schemas/NetworkStatus"
+        CreationDate:
+          $ref: "#/components/schemas/Timestamp"
+      description: A summary of network configuration properties.
+    Invitation:
+      type: object
+      properties:
+        InvitationId:
+          $ref: "#/components/schemas/ResourceIdString"
+        CreationDate:
+          $ref: "#/components/schemas/Timestamp"
+        ExpirationDate:
+          $ref: "#/components/schemas/Timestamp"
+        Status:
+          $ref: "#/components/schemas/InvitationStatus"
+        NetworkSummary:
+          $ref: "#/components/schemas/NetworkSummary"
+      description: An invitation to an AWS account to create a member and join the network.
+    InvitationList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Invitation"
+    PrincipalString:
+      type: string
+    InviteAction:
+      type: object
+      required:
+        - Principal
+      properties:
+        Principal:
+          $ref: "#/components/schemas/PrincipalString"
+      description: An action to invite a specific AWS account to create a member and join
+        the network. The <code>InviteAction</code> is carried out when a
+        <code>Proposal</code> is <code>APPROVED</code>.
+    IsOwned:
+      type: boolean
+    ProposalListMaxResults:
+      type: integer
+      minimum: 1
+      maximum: 100
+    PaginationToken:
+      type: string
+      maxLength: 128
+    ListInvitationsInput:
+      type: object
+      properties: {}
+    String:
+      type: string
+    MemberStatus:
+      type: string
+      enum:
+        - CREATING
+        - AVAILABLE
+        - CREATE_FAILED
+        - DELETING
+        - DELETED
+    MemberListMaxResults:
+      type: integer
+      minimum: 1
+      maximum: 20
+    ListMembersInput:
+      type: object
+      properties: {}
+    MemberSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/MemberSummary"
+    NetworkStatus:
+      type: string
+      enum:
+        - CREATING
+        - AVAILABLE
+        - CREATE_FAILED
+        - DELETING
+        - DELETED
+    NetworkListMaxResults:
+      type: integer
+      minimum: 1
+      maximum: 10
+    ListNetworksInput:
+      type: object
+      properties: {}
+    NetworkSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/NetworkSummary"
+    NodeStatus:
+      type: string
+      enum:
+        - CREATING
+        - AVAILABLE
+        - CREATE_FAILED
+        - DELETING
+        - DELETED
+        - FAILED
+    NodeListMaxResults:
+      type: integer
+      minimum: 1
+      maximum: 20
+    ListNodesInput:
+      type: object
+      properties: {}
+    NodeSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/NodeSummary"
+    ListProposalVotesInput:
+      type: object
+      properties: {}
+    ProposalVoteList:
+      type: array
+      items:
+        $ref: "#/components/schemas/VoteSummary"
+    ListProposalsInput:
+      type: object
+      properties: {}
+    ProposalSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ProposalSummary"
+    MemberFrameworkAttributes:
+      type: object
+      properties:
+        Fabric:
+          $ref: "#/components/schemas/MemberFabricAttributes"
+      description: Attributes relevant to a member for the blockchain framework that the
+        Managed Blockchain network uses.
+    UsernameString:
+      type: string
+      pattern: ^[a-zA-Z][a-zA-Z0-9]*$
+      minLength: 1
+      maxLength: 16
+    MemberFabricAttributes:
+      type: object
+      properties:
+        AdminUsername:
+          $ref: "#/components/schemas/UsernameString"
+        CaEndpoint:
+          $ref: "#/components/schemas/String"
+      description: Attributes of Hyperledger Fabric for a member in a Managed Blockchain
+        network using the Hyperledger Fabric framework.
+    PasswordString:
+      type: string
+      pattern: ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*[@'\\"/])[a-zA-Z0-9\S]*$
+      minLength: 8
+      maxLength: 32
+      format: password
+    MemberFabricConfiguration:
+      type: object
+      required:
+        - AdminUsername
+        - AdminPassword
+      properties:
+        AdminUsername:
+          $ref: "#/components/schemas/UsernameString"
+        AdminPassword:
+          $ref: "#/components/schemas/PasswordString"
+      description: Configuration properties for Hyperledger Fabric for a member in a
+        Managed Blockchain network using the Hyperledger Fabric framework.
+    MemberSummary:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/ResourceIdString"
+        Name:
+          $ref: "#/components/schemas/NetworkMemberNameString"
+        Description:
+          $ref: "#/components/schemas/DescriptionString"
+        Status:
+          $ref: "#/components/schemas/MemberStatus"
+        CreationDate:
+          $ref: "#/components/schemas/Timestamp"
+        IsOwned:
+          $ref: "#/components/schemas/IsOwned"
+      description: A summary of configuration properties for a member.
+    NetworkFrameworkAttributes:
+      type: object
+      properties:
+        Fabric:
+          $ref: "#/components/schemas/NetworkFabricAttributes"
+      description: Attributes relevant to the network for the blockchain framework that the
+        network uses.
+    NetworkFabricAttributes:
+      type: object
+      properties:
+        OrderingServiceEndpoint:
+          $ref: "#/components/schemas/String"
+        Edition:
+          $ref: "#/components/schemas/Edition"
+      description: Attributes of Hyperledger Fabric for a network.
+    NodeFrameworkAttributes:
+      type: object
+      properties:
+        Fabric:
+          $ref: "#/components/schemas/NodeFabricAttributes"
+      description: Attributes relevant to a peer node on a Managed Blockchain network for
+        the blockchain framework that the network uses.
+    NodeFabricAttributes:
+      type: object
+      properties:
+        PeerEndpoint:
+          $ref: "#/components/schemas/String"
+        PeerEventEndpoint:
+          $ref: "#/components/schemas/String"
+      description: Attributes of Hyperledger Fabric for a peer node on a Managed Blockchain
+        network that uses Hyperledger Fabric.
+    NodeSummary:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/ResourceIdString"
+        Status:
+          $ref: "#/components/schemas/NodeStatus"
+        CreationDate:
+          $ref: "#/components/schemas/Timestamp"
+        AvailabilityZone:
+          $ref: "#/components/schemas/AvailabilityZoneString"
+        InstanceType:
+          $ref: "#/components/schemas/InstanceTypeString"
+      description: A summary of configuration properties for a peer node.
+    ProposalStatus:
+      type: string
+      enum:
+        - IN_PROGRESS
+        - APPROVED
+        - REJECTED
+        - EXPIRED
+        - ACTION_FAILED
+    VoteCount:
+      type: integer
+    ProposalSummary:
+      type: object
+      properties:
+        ProposalId:
+          $ref: "#/components/schemas/ResourceIdString"
+        Description:
+          $ref: "#/components/schemas/DescriptionString"
+        ProposedByMemberId:
+          $ref: "#/components/schemas/ResourceIdString"
+        ProposedByMemberName:
+          $ref: "#/components/schemas/NetworkMemberNameString"
+        Status:
+          $ref: "#/components/schemas/ProposalStatus"
+        CreationDate:
+          $ref: "#/components/schemas/Timestamp"
+        ExpirationDate:
+          $ref: "#/components/schemas/Timestamp"
+      description: Properties of a proposal.
+    VoteSummary:
+      type: object
+      properties:
+        Vote:
+          $ref: "#/components/schemas/VoteValue"
+        MemberName:
+          $ref: "#/components/schemas/NetworkMemberNameString"
+        MemberId:
+          $ref: "#/components/schemas/ResourceIdString"
+      description: " Properties of an individual vote that a member cast for a proposal. "
+    RejectInvitationInput:
+      type: object
+      properties: {}
+    RemoveAction:
+      type: object
+      required:
+        - MemberId
+      properties:
+        MemberId:
+          $ref: "#/components/schemas/ResourceIdString"
+      description: An action to remove a member from a Managed Blockchain network as the
+        result of a removal proposal that is <code>APPROVED</code>. The member
+        and all associated resources are deleted from the network.
+    VoteValue:
+      type: string
+      enum:
+        - YES
+        - NO
+    VoteOnProposalInput:
+      type: object
+      required:
+        - VoterMemberId
+        - Vote
+      properties:
+        VoterMemberId:
+          $ref: "#/components/schemas/ResourceIdString"
+        Vote:
+          $ref: "#/components/schemas/VoteValue"

@@ -1,0 +1,2616 @@
+openapi: 3.0.0
+info:
+  version: 2016-08-10
+  x-release: v4
+  title: AWS Batch
+  description: <p>AWS Batch enables you to run batch computing workloads on the AWS Cloud.
+    Batch computing is a common way for developers, scientists, and engineers to
+    access large amounts of compute resources, and AWS Batch removes the
+    undifferentiated heavy lifting of configuring and managing the required
+    infrastructure. AWS Batch will be familiar to users of traditional batch
+    computing software. This service can efficiently provision resources in
+    response to jobs submitted in order to eliminate capacity constraints,
+    reduce compute costs, and deliver results quickly.</p> <p>As a fully managed
+    service, AWS Batch enables developers, scientists, and engineers to run
+    batch computing workloads of any scale. AWS Batch automatically provisions
+    compute resources and optimizes the workload distribution based on the
+    quantity and scale of the workloads. With AWS Batch, there is no need to
+    install or manage batch computing software, which allows you to focus on
+    analyzing results and solving problems. AWS Batch reduces operational
+    complexities, saves time, and reduces costs, which makes it easy for
+    developers, scientists, and engineers to run their batch jobs in the AWS
+    Cloud.</p>
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: batch
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/batch-2016-08-10.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/batch/
+security:
+  - hmac: []
+paths:
+  /v1/canceljob:
+    post:
+      operationId: CancelJob
+      description: Cancels a job in an AWS Batch job queue. Jobs that are in the
+        <code>SUBMITTED</code>, <code>PENDING</code>, or <code>RUNNABLE</code>
+        state are cancelled. Jobs that have progressed to <code>STARTING</code>
+        or <code>RUNNING</code> are not cancelled (but the API operation still
+        succeeds, even if no job is cancelled); these jobs must be terminated
+        with the <a>TerminateJob</a> operation.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancelJobResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobId
+                - reason
+              properties:
+                jobId:
+                  description: The AWS Batch job ID of the job to cancel.
+                  type: string
+                reason:
+                  description: "A message to attach to the job that explains the reason for
+                    canceling it. This message is returned by future
+                    <a>DescribeJobs</a> operations on the job. This message is
+                    also recorded in the AWS Batch activity logs. "
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/createcomputeenvironment:
+    post:
+      operationId: CreateComputeEnvironment
+      description: <p>Creates an AWS Batch compute environment. You can create
+        <code>MANAGED</code> or <code>UNMANAGED</code> compute environments.</p>
+        <p>In a managed compute environment, AWS Batch manages the capacity and
+        instance types of the compute resources within the environment. This is
+        based on the compute resource specification that you define or the <a
+        href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-launch-templates.html">launch
+        template</a> that you specify when you create the compute environment.
+        You can choose to use Amazon EC2 On-Demand Instances or Spot Instances
+        in your managed compute environment. You can optionally set a maximum
+        price so that Spot Instances only launch when the Spot Instance price is
+        below a specified percentage of the On-Demand price.</p> <note>
+        <p>Multi-node parallel jobs are not supported on Spot Instances.</p>
+        </note> <p>In an unmanaged compute environment, you can manage your own
+        compute resources. This provides more compute resource configuration
+        options, such as using a custom AMI, but you must ensure that your AMI
+        meets the Amazon ECS container instance AMI specification. For more
+        information, see <a
+        href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/container_instance_AMIs.html">Container
+        Instance AMIs</a> in the <i>Amazon Elastic Container Service Developer
+        Guide</i>. After you have created your unmanaged compute environment,
+        you can use the <a>DescribeComputeEnvironments</a> operation to find the
+        Amazon ECS cluster that is associated with it. Then, manually launch
+        your container instances into that Amazon ECS cluster. For more
+        information, see <a
+        href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_container_instance.html">Launching
+        an Amazon ECS Container Instance</a> in the <i>Amazon Elastic Container
+        Service Developer Guide</i>.</p> <note> <p>AWS Batch does not upgrade
+        the AMIs in a compute environment after it is created (for example, when
+        a newer version of the Amazon ECS-optimized AMI is available). You are
+        responsible for the management of the guest operating system (including
+        updates and security patches) and any additional application software or
+        utilities that you install on the compute resources. To use a new AMI
+        for your AWS Batch jobs:</p> <ol> <li> <p>Create a new compute
+        environment with the new AMI.</p> </li> <li> <p>Add the compute
+        environment to an existing job queue.</p> </li> <li> <p>Remove the old
+        compute environment from your job queue.</p> </li> <li> <p>Delete the
+        old compute environment.</p> </li> </ol> </note>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateComputeEnvironmentResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - computeEnvironmentName
+                - type
+                - computeResources
+                - serviceRole
+              properties:
+                computeEnvironmentName:
+                  description: The name for your compute environment. Up to 128 letters
+                    (uppercase and lowercase), numbers, hyphens, and underscores
+                    are allowed.
+                  type: string
+                type:
+                  description: The type of the compute environment. For more information,
+                    see <a
+                    href="https://docs.aws.amazon.com/batch/latest/userguide/compute_environments.html">Compute
+                    Environments</a> in the <i>AWS Batch User Guide</i>.
+                  type: string
+                  enum:
+                    - MANAGED
+                    - UNMANAGED
+                state:
+                  description: The state of the compute environment. If the state is
+                    <code>ENABLED</code>, then the compute environment accepts
+                    jobs from a queue and can scale out automatically based on
+                    queues.
+                  type: string
+                  enum:
+                    - ENABLED
+                    - DISABLED
+                computeResources:
+                  description: An object representing an AWS Batch compute resource.
+                  type: object
+                  properties:
+                    type:
+                      $ref: "#/components/schemas/CRType"
+                    minvCpus:
+                      $ref: "#/components/schemas/Integer"
+                    maxvCpus:
+                      $ref: "#/components/schemas/Integer"
+                    desiredvCpus:
+                      $ref: "#/components/schemas/Integer"
+                    instanceTypes:
+                      $ref: "#/components/schemas/StringList"
+                    imageId:
+                      $ref: "#/components/schemas/String"
+                    subnets:
+                      $ref: "#/components/schemas/StringList"
+                    securityGroupIds:
+                      $ref: "#/components/schemas/StringList"
+                    ec2KeyPair:
+                      $ref: "#/components/schemas/String"
+                    instanceRole:
+                      $ref: "#/components/schemas/String"
+                    tags:
+                      $ref: "#/components/schemas/TagsMap"
+                    placementGroup:
+                      $ref: "#/components/schemas/String"
+                    bidPercentage:
+                      $ref: "#/components/schemas/Integer"
+                    spotIamFleetRole:
+                      $ref: "#/components/schemas/String"
+                    launchTemplate:
+                      $ref: "#/components/schemas/LaunchTemplateSpecification"
+                serviceRole:
+                  description: <p>The full Amazon Resource Name (ARN) of the IAM role that
+                    allows AWS Batch to make calls to other AWS services on your
+                    behalf.</p> <p>If your specified role has a path other than
+                    <code>/</code>, then you must either specify the full role
+                    ARN (this is recommended) or prefix the role name with the
+                    path.</p> <note> <p>Depending on how you created your AWS
+                    Batch service role, its ARN may contain the
+                    <code>service-role</code> path prefix. When you only specify
+                    the name of the service role, AWS Batch assumes that your
+                    ARN does not use the <code>service-role</code> path prefix.
+                    Because of this, we recommend that you specify the full ARN
+                    of your service role when you create compute
+                    environments.</p> </note>
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/createjobqueue:
+    post:
+      operationId: CreateJobQueue
+      description: <p>Creates an AWS Batch job queue. When you create a job queue, you
+        associate one or more compute environments to the queue and assign an
+        order of preference for the compute environments.</p> <p>You also set a
+        priority to the job queue that determines the order in which the AWS
+        Batch scheduler places jobs onto its associated compute environments.
+        For example, if a compute environment is associated with more than one
+        job queue, the job queue with a higher priority is given preference for
+        scheduling jobs to that compute environment.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateJobQueueResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobQueueName
+                - priority
+                - computeEnvironmentOrder
+              properties:
+                jobQueueName:
+                  description: The name of the job queue.
+                  type: string
+                state:
+                  description: The state of the job queue. If the job queue state is
+                    <code>ENABLED</code>, it is able to accept jobs.
+                  type: string
+                  enum:
+                    - ENABLED
+                    - DISABLED
+                priority:
+                  description: The priority of the job queue. Job queues with a higher
+                    priority (or a higher integer value for the
+                    <code>priority</code> parameter) are evaluated first when
+                    associated with the same compute environment. Priority is
+                    determined in descending order, for example, a job queue
+                    with a priority value of <code>10</code> is given scheduling
+                    preference over a job queue with a priority value of
+                    <code>1</code>.
+                  type: integer
+                computeEnvironmentOrder:
+                  description: The set of compute environments mapped to a job queue and
+                    their order relative to each other. The job scheduler uses
+                    this parameter to determine which compute environment should
+                    execute a given job. Compute environments must be in the
+                    <code>VALID</code> state before you can associate them with
+                    a job queue. You can associate up to three compute
+                    environments with a job queue.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ComputeEnvironmentOrder"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/deletecomputeenvironment:
+    post:
+      operationId: DeleteComputeEnvironment
+      description: <p>Deletes an AWS Batch compute environment.</p> <p>Before you can
+        delete a compute environment, you must set its state to
+        <code>DISABLED</code> with the <a>UpdateComputeEnvironment</a> API
+        operation and disassociate it from any job queues with the
+        <a>UpdateJobQueue</a> API operation.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteComputeEnvironmentResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - computeEnvironment
+              properties:
+                computeEnvironment:
+                  description: "The name or Amazon Resource Name (ARN) of the compute
+                    environment to delete. "
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/deletejobqueue:
+    post:
+      operationId: DeleteJobQueue
+      description: <p>Deletes the specified job queue. You must first disable submissions
+        for a queue with the <a>UpdateJobQueue</a> operation. All jobs in the
+        queue are terminated when you delete a job queue.</p> <p>It is not
+        necessary to disassociate compute environments from a queue before
+        submitting a <code>DeleteJobQueue</code> request. </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteJobQueueResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobQueue
+              properties:
+                jobQueue:
+                  description: "The short name or full Amazon Resource Name (ARN) of the
+                    queue to delete. "
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/deregisterjobdefinition:
+    post:
+      operationId: DeregisterJobDefinition
+      description: Deregisters an AWS Batch job definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeregisterJobDefinitionResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobDefinition
+              properties:
+                jobDefinition:
+                  description: "The name and revision (<code>name:revision</code>) or full
+                    Amazon Resource Name (ARN) of the job definition to
+                    deregister. "
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/describecomputeenvironments:
+    post:
+      operationId: DescribeComputeEnvironments
+      description: <p>Describes one or more of your compute environments.</p> <p>If you are
+        using an unmanaged compute environment, you can use the
+        <code>DescribeComputeEnvironment</code> operation to determine the
+        <code>ecsClusterArn</code> that you should launch your Amazon ECS
+        container instances into.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeComputeEnvironmentsResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                computeEnvironments:
+                  description: "A list of up to 100 compute environment names or full
+                    Amazon Resource Name (ARN) entries. "
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/String"
+                maxResults:
+                  description: The maximum number of cluster results returned by
+                    <code>DescribeComputeEnvironments</code> in paginated
+                    output. When this parameter is used,
+                    <code>DescribeComputeEnvironments</code> only returns
+                    <code>maxResults</code> results in a single page along with
+                    a <code>nextToken</code> response element. The remaining
+                    results of the initial request can be seen by sending
+                    another <code>DescribeComputeEnvironments</code> request
+                    with the returned <code>nextToken</code> value. This value
+                    can be between 1 and 100. If this parameter is not used,
+                    then <code>DescribeComputeEnvironments</code> returns up to
+                    100 results and a <code>nextToken</code> value if
+                    applicable.
+                  type: integer
+                nextToken:
+                  description: <p>The <code>nextToken</code> value returned from a previous
+                    paginated <code>DescribeComputeEnvironments</code> request
+                    where <code>maxResults</code> was used and the results
+                    exceeded the value of that parameter. Pagination continues
+                    from the end of the previous results that returned the
+                    <code>nextToken</code> value. This value is
+                    <code>null</code> when there are no more results to
+                    return.</p> <note> <p>This token should be treated as an
+                    opaque identifier that is only used to retrieve the next
+                    items in a list and not for other programmatic purposes.</p>
+                    </note>
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/describejobdefinitions:
+    post:
+      operationId: DescribeJobDefinitions
+      description: Describes a list of job definitions. You can specify a
+        <code>status</code> (such as <code>ACTIVE</code>) to only return job
+        definitions that match that status.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeJobDefinitionsResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jobDefinitions:
+                  description: A list of up to 100 job definition names or full Amazon
+                    Resource Name (ARN) entries.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/String"
+                maxResults:
+                  description: The maximum number of results returned by
+                    <code>DescribeJobDefinitions</code> in paginated output.
+                    When this parameter is used,
+                    <code>DescribeJobDefinitions</code> only returns
+                    <code>maxResults</code> results in a single page along with
+                    a <code>nextToken</code> response element. The remaining
+                    results of the initial request can be seen by sending
+                    another <code>DescribeJobDefinitions</code> request with the
+                    returned <code>nextToken</code> value. This value can be
+                    between 1 and 100. If this parameter is not used, then
+                    <code>DescribeJobDefinitions</code> returns up to 100
+                    results and a <code>nextToken</code> value if applicable.
+                  type: integer
+                jobDefinitionName:
+                  description: The name of the job definition to describe.
+                  type: string
+                status:
+                  description: The status with which to filter job definitions.
+                  type: string
+                nextToken:
+                  description: <p>The <code>nextToken</code> value returned from a previous
+                    paginated <code>DescribeJobDefinitions</code> request where
+                    <code>maxResults</code> was used and the results exceeded
+                    the value of that parameter. Pagination continues from the
+                    end of the previous results that returned the
+                    <code>nextToken</code> value. This value is
+                    <code>null</code> when there are no more results to
+                    return.</p> <note> <p>This token should be treated as an
+                    opaque identifier that is only used to retrieve the next
+                    items in a list and not for other programmatic purposes.</p>
+                    </note>
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/describejobqueues:
+    post:
+      operationId: DescribeJobQueues
+      description: Describes one or more of your job queues.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeJobQueuesResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jobQueues:
+                  description: A list of up to 100 queue names or full queue Amazon
+                    Resource Name (ARN) entries.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/String"
+                maxResults:
+                  description: The maximum number of results returned by
+                    <code>DescribeJobQueues</code> in paginated output. When
+                    this parameter is used, <code>DescribeJobQueues</code> only
+                    returns <code>maxResults</code> results in a single page
+                    along with a <code>nextToken</code> response element. The
+                    remaining results of the initial request can be seen by
+                    sending another <code>DescribeJobQueues</code> request with
+                    the returned <code>nextToken</code> value. This value can be
+                    between 1 and 100. If this parameter is not used, then
+                    <code>DescribeJobQueues</code> returns up to 100 results and
+                    a <code>nextToken</code> value if applicable.
+                  type: integer
+                nextToken:
+                  description: <p>The <code>nextToken</code> value returned from a previous
+                    paginated <code>DescribeJobQueues</code> request where
+                    <code>maxResults</code> was used and the results exceeded
+                    the value of that parameter. Pagination continues from the
+                    end of the previous results that returned the
+                    <code>nextToken</code> value. This value is
+                    <code>null</code> when there are no more results to
+                    return.</p> <note> <p>This token should be treated as an
+                    opaque identifier that is only used to retrieve the next
+                    items in a list and not for other programmatic purposes.</p>
+                    </note>
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/describejobs:
+    post:
+      operationId: DescribeJobs
+      description: Describes a list of AWS Batch jobs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeJobsResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobs
+              properties:
+                jobs:
+                  description: A list of up to 100 job IDs.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/String"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/listjobs:
+    post:
+      operationId: ListJobs
+      description: <p>Returns a list of AWS Batch jobs.</p> <p>You must specify only one of
+        the following:</p> <ul> <li> <p>a job queue ID to return a list of jobs
+        in that job queue</p> </li> <li> <p>a multi-node parallel job ID to
+        return a list of that job's nodes</p> </li> <li> <p>an array job ID to
+        return a list of that job's children</p> </li> </ul> <p>You can filter
+        the results by job status with the <code>jobStatus</code> parameter. If
+        you do not specify a status, only <code>RUNNING</code> jobs are
+        returned.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListJobsResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jobQueue:
+                  description: The name or full Amazon Resource Name (ARN) of the job queue
+                    with which to list jobs.
+                  type: string
+                arrayJobId:
+                  description: The job ID for an array job. Specifying an array job ID with
+                    this parameter lists all child jobs from within the
+                    specified array.
+                  type: string
+                multiNodeJobId:
+                  description: The job ID for a multi-node parallel job. Specifying a
+                    multi-node parallel job ID with this parameter lists all
+                    nodes that are associated with the specified job.
+                  type: string
+                jobStatus:
+                  description: The job status with which to filter jobs in the specified
+                    queue. If you do not specify a status, only
+                    <code>RUNNING</code> jobs are returned.
+                  type: string
+                  enum:
+                    - SUBMITTED
+                    - PENDING
+                    - RUNNABLE
+                    - STARTING
+                    - RUNNING
+                    - SUCCEEDED
+                    - FAILED
+                maxResults:
+                  description: The maximum number of results returned by
+                    <code>ListJobs</code> in paginated output. When this
+                    parameter is used, <code>ListJobs</code> only returns
+                    <code>maxResults</code> results in a single page along with
+                    a <code>nextToken</code> response element. The remaining
+                    results of the initial request can be seen by sending
+                    another <code>ListJobs</code> request with the returned
+                    <code>nextToken</code> value. This value can be between 1
+                    and 100. If this parameter is not used, then
+                    <code>ListJobs</code> returns up to 100 results and a
+                    <code>nextToken</code> value if applicable.
+                  type: integer
+                nextToken:
+                  description: <p>The <code>nextToken</code> value returned from a previous
+                    paginated <code>ListJobs</code> request where
+                    <code>maxResults</code> was used and the results exceeded
+                    the value of that parameter. Pagination continues from the
+                    end of the previous results that returned the
+                    <code>nextToken</code> value. This value is
+                    <code>null</code> when there are no more results to
+                    return.</p> <note> <p>This token should be treated as an
+                    opaque identifier that is only used to retrieve the next
+                    items in a list and not for other programmatic purposes.</p>
+                    </note>
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/registerjobdefinition:
+    post:
+      operationId: RegisterJobDefinition
+      description: "Registers an AWS Batch job definition. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterJobDefinitionResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobDefinitionName
+                - type
+                - nodeProperties
+              properties:
+                jobDefinitionName:
+                  description: The name of the job definition to register. Up to 128
+                    letters (uppercase and lowercase), numbers, hyphens, and
+                    underscores are allowed.
+                  type: string
+                type:
+                  description: The type of job definition.
+                  type: string
+                  enum:
+                    - container
+                    - multinode
+                parameters:
+                  description: Default parameter substitution placeholders to set in the
+                    job definition. Parameters are specified as a key-value pair
+                    mapping. Parameters in a <code>SubmitJob</code> request
+                    override any corresponding parameter defaults from the job
+                    definition.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/String"
+                containerProperties:
+                  description: Container properties are used in job definitions to describe
+                    the container that is launched as part of a job.
+                  type: object
+                  properties:
+                    image:
+                      $ref: "#/components/schemas/String"
+                    vcpus:
+                      $ref: "#/components/schemas/Integer"
+                    memory:
+                      $ref: "#/components/schemas/Integer"
+                    command:
+                      $ref: "#/components/schemas/StringList"
+                    jobRoleArn:
+                      $ref: "#/components/schemas/String"
+                    volumes:
+                      $ref: "#/components/schemas/Volumes"
+                    environment:
+                      $ref: "#/components/schemas/EnvironmentVariables"
+                    mountPoints:
+                      $ref: "#/components/schemas/MountPoints"
+                    readonlyRootFilesystem:
+                      $ref: "#/components/schemas/Boolean"
+                    privileged:
+                      $ref: "#/components/schemas/Boolean"
+                    ulimits:
+                      $ref: "#/components/schemas/Ulimits"
+                    user:
+                      $ref: "#/components/schemas/String"
+                    instanceType:
+                      $ref: "#/components/schemas/String"
+                    resourceRequirements:
+                      $ref: "#/components/schemas/ResourceRequirements"
+                    linuxParameters:
+                      $ref: "#/components/schemas/LinuxParameters"
+                nodeProperties:
+                  description: An object representing the node properties of a multi-node
+                    parallel job.
+                  type: object
+                  properties:
+                    numNodes:
+                      $ref: "#/components/schemas/Integer"
+                    mainNode:
+                      $ref: "#/components/schemas/Integer"
+                    nodeRangeProperties:
+                      $ref: "#/components/schemas/NodeRangeProperties"
+                retryStrategy:
+                  description: The retry strategy associated with a job.
+                  type: object
+                  properties:
+                    attempts:
+                      $ref: "#/components/schemas/Integer"
+                timeout:
+                  description: An object representing a job timeout configuration.
+                  type: object
+                  properties:
+                    attemptDurationSeconds:
+                      $ref: "#/components/schemas/Integer"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/submitjob:
+    post:
+      operationId: SubmitJob
+      description: "Submits an AWS Batch job from a job definition. Parameters specified
+        during <a>SubmitJob</a> override parameters defined in the job
+        definition. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubmitJobResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobName
+                - jobQueue
+                - jobDefinition
+              properties:
+                jobName:
+                  description: "The name of the job. The first character must be
+                    alphanumeric, and up to 128 letters (uppercase and
+                    lowercase), numbers, hyphens, and underscores are allowed. "
+                  type: string
+                jobQueue:
+                  description: "The job queue into which the job is submitted. You can
+                    specify either the name or the Amazon Resource Name (ARN) of
+                    the queue. "
+                  type: string
+                arrayProperties:
+                  description: An object representing an AWS Batch array job.
+                  type: object
+                  properties:
+                    size:
+                      $ref: "#/components/schemas/Integer"
+                dependsOn:
+                  description: A list of dependencies for the job. A job can depend upon a
+                    maximum of 20 jobs. You can specify a
+                    <code>SEQUENTIAL</code> type dependency without specifying a
+                    job ID for array jobs so that each child array job completes
+                    sequentially, starting at index 0. You can also specify an
+                    <code>N_TO_N</code> type dependency with a job ID for array
+                    jobs. In that case, each index child of this job must wait
+                    for the corresponding index child of each dependency to
+                    complete before it can begin.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/JobDependency"
+                jobDefinition:
+                  description: The job definition used by this job. This value can be
+                    either a <code>name:revision</code> or the Amazon Resource
+                    Name (ARN) for the job definition.
+                  type: string
+                parameters:
+                  description: Additional parameters passed to the job that replace
+                    parameter substitution placeholders that are set in the job
+                    definition. Parameters are specified as a key and value pair
+                    mapping. Parameters in a <code>SubmitJob</code> request
+                    override any corresponding parameter defaults from the job
+                    definition.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/String"
+                containerOverrides:
+                  description: The overrides that should be sent to a container.
+                  type: object
+                  properties:
+                    vcpus:
+                      $ref: "#/components/schemas/Integer"
+                    memory:
+                      $ref: "#/components/schemas/Integer"
+                    command:
+                      $ref: "#/components/schemas/StringList"
+                    instanceType:
+                      $ref: "#/components/schemas/String"
+                    environment:
+                      $ref: "#/components/schemas/EnvironmentVariables"
+                    resourceRequirements:
+                      $ref: "#/components/schemas/ResourceRequirements"
+                nodeOverrides:
+                  description: Object representing any node overrides to a job definition
+                    that is used in a <a>SubmitJob</a> API operation.
+                  type: object
+                  properties:
+                    numNodes:
+                      $ref: "#/components/schemas/Integer"
+                    nodePropertyOverrides:
+                      $ref: "#/components/schemas/NodePropertyOverrides"
+                retryStrategy:
+                  description: The retry strategy associated with a job.
+                  type: object
+                  properties:
+                    attempts:
+                      $ref: "#/components/schemas/Integer"
+                timeout:
+                  description: An object representing a job timeout configuration.
+                  type: object
+                  properties:
+                    attemptDurationSeconds:
+                      $ref: "#/components/schemas/Integer"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/terminatejob:
+    post:
+      operationId: TerminateJob
+      description: Terminates a job in a job queue. Jobs that are in the
+        <code>STARTING</code> or <code>RUNNING</code> state are terminated,
+        which causes them to transition to <code>FAILED</code>. Jobs that have
+        not progressed to the <code>STARTING</code> state are cancelled.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TerminateJobResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobId
+                - reason
+              properties:
+                jobId:
+                  description: The AWS Batch job ID of the job to terminate.
+                  type: string
+                reason:
+                  description: "A message to attach to the job that explains the reason for
+                    canceling it. This message is returned by future
+                    <a>DescribeJobs</a> operations on the job. This message is
+                    also recorded in the AWS Batch activity logs. "
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/updatecomputeenvironment:
+    post:
+      operationId: UpdateComputeEnvironment
+      description: Updates an AWS Batch compute environment.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateComputeEnvironmentResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - computeEnvironment
+              properties:
+                computeEnvironment:
+                  description: The name or full Amazon Resource Name (ARN) of the compute
+                    environment to update.
+                  type: string
+                state:
+                  description: The state of the compute environment. Compute environments
+                    in the <code>ENABLED</code> state can accept jobs from a
+                    queue and scale in or out automatically based on the
+                    workload demand of its associated queues.
+                  type: string
+                  enum:
+                    - ENABLED
+                    - DISABLED
+                computeResources:
+                  description: An object representing the attributes of a compute
+                    environment that can be updated.
+                  type: object
+                  properties:
+                    minvCpus:
+                      $ref: "#/components/schemas/Integer"
+                    maxvCpus:
+                      $ref: "#/components/schemas/Integer"
+                    desiredvCpus:
+                      $ref: "#/components/schemas/Integer"
+                serviceRole:
+                  description: <p>The full Amazon Resource Name (ARN) of the IAM role that
+                    allows AWS Batch to make calls to other AWS services on your
+                    behalf.</p> <p>If your specified role has a path other than
+                    <code>/</code>, then you must either specify the full role
+                    ARN (this is recommended) or prefix the role name with the
+                    path.</p> <note> <p>Depending on how you created your AWS
+                    Batch service role, its ARN may contain the
+                    <code>service-role</code> path prefix. When you only specify
+                    the name of the service role, AWS Batch assumes that your
+                    ARN does not use the <code>service-role</code> path prefix.
+                    Because of this, we recommend that you specify the full ARN
+                    of your service role when you create compute
+                    environments.</p> </note>
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /v1/updatejobqueue:
+    post:
+      operationId: UpdateJobQueue
+      description: Updates a job queue.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateJobQueueResponse"
+        "480":
+          description: ClientException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientException"
+        "481":
+          description: ServerException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobQueue
+              properties:
+                jobQueue:
+                  description: The name or the Amazon Resource Name (ARN) of the job queue.
+                  type: string
+                state:
+                  description: Describes the queue's ability to accept new jobs.
+                  type: string
+                  enum:
+                    - ENABLED
+                    - DISABLED
+                priority:
+                  description: The priority of the job queue. Job queues with a higher
+                    priority (or a higher integer value for the
+                    <code>priority</code> parameter) are evaluated first when
+                    associated with the same compute environment. Priority is
+                    determined in descending order, for example, a job queue
+                    with a priority value of <code>10</code> is given scheduling
+                    preference over a job queue with a priority value of
+                    <code>1</code>.
+                  type: integer
+                computeEnvironmentOrder:
+                  description: "Details the set of compute environments mapped to a job
+                    queue and their order relative to each other. This is one of
+                    the parameters used by the job scheduler to determine which
+                    compute environment should execute a given job. "
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ComputeEnvironmentOrder"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://batch.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Batch multi-region endpoint
+  - url: https://batch.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Batch multi-region endpoint
+  - url: http://batch.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Batch endpoint for China (Beijing) and China (Ningxia)
+  - url: https://batch.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Batch endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    CancelJobResponse:
+      type: object
+      example: {}
+      properties: {}
+    ClientException: {}
+    ServerException: {}
+    CreateComputeEnvironmentResponse:
+      type: object
+      example:
+        computeEnvironmentArn: arn:aws:batch:us-east-1:012345678910:compute-environment/M4Spot
+        computeEnvironmentName: M4Spot
+      properties:
+        computeEnvironmentName:
+          $ref: "#/components/schemas/String"
+        computeEnvironmentArn:
+          $ref: "#/components/schemas/String"
+    CRType:
+      type: string
+      enum:
+        - EC2
+        - SPOT
+    Integer:
+      type: integer
+    StringList:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    String:
+      type: string
+    TagsMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/String"
+    LaunchTemplateSpecification:
+      type: object
+      properties:
+        launchTemplateId:
+          $ref: "#/components/schemas/String"
+        launchTemplateName:
+          $ref: "#/components/schemas/String"
+        version:
+          $ref: "#/components/schemas/String"
+      description: "An object representing a launch template associated with a compute
+        resource. You must specify either the launch template ID or launch
+        template name in the request, but not both. "
+    CreateJobQueueResponse:
+      type: object
+      required:
+        - jobQueueName
+        - jobQueueArn
+      example:
+        jobQueueArn: arn:aws:batch:us-east-1:012345678910:job-queue/HighPriority
+        jobQueueName: HighPriority
+      properties:
+        jobQueueName:
+          $ref: "#/components/schemas/String"
+        jobQueueArn:
+          $ref: "#/components/schemas/String"
+    ComputeEnvironmentOrder:
+      type: object
+      required:
+        - order
+        - computeEnvironment
+      properties:
+        order:
+          $ref: "#/components/schemas/Integer"
+        computeEnvironment:
+          $ref: "#/components/schemas/String"
+      description: The order in which compute environments are tried for job placement
+        within a queue. Compute environments are tried in ascending order. For
+        example, if two compute environments are associated with a job queue,
+        the compute environment with a lower order integer value is tried for
+        job placement first.
+    DeleteComputeEnvironmentResponse:
+      type: object
+      example: {}
+      properties: {}
+    DeleteJobQueueResponse:
+      type: object
+      example: {}
+      properties: {}
+    DeregisterJobDefinitionResponse:
+      type: object
+      example: {}
+      properties: {}
+    DescribeComputeEnvironmentsResponse:
+      type: object
+      example:
+        computeEnvironments:
+          - type: MANAGED
+            computeEnvironmentArn: arn:aws:batch:us-east-1:012345678910:compute-environment/P2OnDemand
+            computeEnvironmentName: P2OnDemand
+            computeResources:
+              type: EC2
+              desiredvCpus: 48
+              ec2KeyPair: id_rsa
+              instanceRole: ecsInstanceRole
+              instanceTypes:
+                - p2
+              maxvCpus: 128
+              minvCpus: 0
+              securityGroupIds:
+                - sg-cf5093b2
+              subnets:
+                - subnet-220c0e0a
+                - subnet-1a95556d
+                - subnet-978f6dce
+              tags:
+                Name: Batch Instance - P2OnDemand
+            ecsClusterArn: arn:aws:ecs:us-east-1:012345678910:cluster/P2OnDemand_Batch_2c06f29d-d1fe-3a49-879d-42394c86effc
+            serviceRole: arn:aws:iam::012345678910:role/AWSBatchServiceRole
+            state: ENABLED
+            status: VALID
+            statusReason: ComputeEnvironment Healthy
+      properties:
+        computeEnvironments:
+          $ref: "#/components/schemas/ComputeEnvironmentDetailList"
+        nextToken:
+          $ref: "#/components/schemas/String"
+    DescribeJobDefinitionsResponse:
+      type: object
+      example:
+        jobDefinitions:
+          - type: container
+            containerProperties:
+              command:
+                - sleep
+                - "60"
+              environment: []
+              image: busybox
+              memory: 128
+              mountPoints: []
+              ulimits: []
+              vcpus: 1
+              volumes: []
+            jobDefinitionArn: arn:aws:batch:us-east-1:012345678910:job-definition/sleep60:1
+            jobDefinitionName: sleep60
+            revision: 1
+            status: ACTIVE
+      properties:
+        jobDefinitions:
+          $ref: "#/components/schemas/JobDefinitionList"
+        nextToken:
+          $ref: "#/components/schemas/String"
+    DescribeJobQueuesResponse:
+      type: object
+      example:
+        jobQueues:
+          - computeEnvironmentOrder:
+              - computeEnvironment: arn:aws:batch:us-east-1:012345678910:compute-environment/C4OnDemand
+                order: 1
+            jobQueueArn: arn:aws:batch:us-east-1:012345678910:job-queue/HighPriority
+            jobQueueName: HighPriority
+            priority: 1
+            state: ENABLED
+            status: VALID
+            statusReason: JobQueue Healthy
+      properties:
+        jobQueues:
+          $ref: "#/components/schemas/JobQueueDetailList"
+        nextToken:
+          $ref: "#/components/schemas/String"
+    DescribeJobsResponse:
+      type: object
+      example:
+        jobs:
+          - container:
+              command:
+                - sleep
+                - "60"
+              containerInstanceArn: arn:aws:ecs:us-east-1:012345678910:container-instance/5406d7cd-58bd-4b8f-9936-48d7c6b1526c
+              environment: []
+              exitCode: 0
+              image: busybox
+              memory: 128
+              mountPoints: []
+              ulimits: []
+              vcpus: 1
+              volumes: []
+            createdAt: 1480460782010
+            dependsOn: []
+            jobDefinition: sleep60
+            jobId: 24fa2d7a-64c4-49d2-8b47-f8da4fbde8e9
+            jobName: example
+            jobQueue: arn:aws:batch:us-east-1:012345678910:job-queue/HighPriority
+            parameters: {}
+            startedAt: 1480460816500
+            status: SUCCEEDED
+            stoppedAt: 1480460880699
+      properties:
+        jobs:
+          $ref: "#/components/schemas/JobDetailList"
+    ListJobsResponse:
+      type: object
+      required:
+        - jobSummaryList
+      example:
+        jobSummaryList:
+          - jobId: 68f0c163-fbd4-44e6-9fd1-25b14a434786
+            jobName: example
+      properties:
+        jobSummaryList:
+          $ref: "#/components/schemas/JobSummaryList"
+        nextToken:
+          $ref: "#/components/schemas/String"
+    RegisterJobDefinitionResponse:
+      type: object
+      required:
+        - jobDefinitionName
+        - jobDefinitionArn
+        - revision
+      example:
+        jobDefinitionArn: arn:aws:batch:us-east-1:012345678910:job-definition/sleep10:1
+        jobDefinitionName: sleep10
+        revision: 1
+      properties:
+        jobDefinitionName:
+          $ref: "#/components/schemas/String"
+        jobDefinitionArn:
+          $ref: "#/components/schemas/String"
+        revision:
+          $ref: "#/components/schemas/Integer"
+    Volumes:
+      type: array
+      items:
+        $ref: "#/components/schemas/Volume"
+    EnvironmentVariables:
+      type: array
+      items:
+        $ref: "#/components/schemas/KeyValuePair"
+    MountPoints:
+      type: array
+      items:
+        $ref: "#/components/schemas/MountPoint"
+    Boolean:
+      type: boolean
+    Ulimits:
+      type: array
+      items:
+        $ref: "#/components/schemas/Ulimit"
+    ResourceRequirements:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResourceRequirement"
+    LinuxParameters:
+      type: object
+      properties:
+        devices:
+          $ref: "#/components/schemas/DevicesList"
+      description: Linux-specific modifications that are applied to the container, such as
+        details for device mappings.
+    NodeRangeProperties:
+      type: array
+      items:
+        $ref: "#/components/schemas/NodeRangeProperty"
+    SubmitJobResponse:
+      type: object
+      required:
+        - jobName
+        - jobId
+      example:
+        jobId: 876da822-4198-45f2-a252-6cea32512ea8
+        jobName: example
+      properties:
+        jobName:
+          $ref: "#/components/schemas/String"
+        jobId:
+          $ref: "#/components/schemas/String"
+    JobDependency:
+      type: object
+      properties:
+        jobId:
+          $ref: "#/components/schemas/String"
+        type:
+          $ref: "#/components/schemas/ArrayJobDependency"
+      description: An object representing an AWS Batch job dependency.
+    NodePropertyOverrides:
+      type: array
+      items:
+        $ref: "#/components/schemas/NodePropertyOverride"
+    TerminateJobResponse:
+      type: object
+      example: {}
+      properties: {}
+    UpdateComputeEnvironmentResponse:
+      type: object
+      example:
+        computeEnvironmentArn: arn:aws:batch:us-east-1:012345678910:compute-environment/P2OnDemand
+        computeEnvironmentName: P2OnDemand
+      properties:
+        computeEnvironmentName:
+          $ref: "#/components/schemas/String"
+        computeEnvironmentArn:
+          $ref: "#/components/schemas/String"
+    UpdateJobQueueResponse:
+      type: object
+      example:
+        jobQueueArn: arn:aws:batch:us-east-1:012345678910:job-queue/GPGPU
+        jobQueueName: GPGPU
+      properties:
+        jobQueueName:
+          $ref: "#/components/schemas/String"
+        jobQueueArn:
+          $ref: "#/components/schemas/String"
+    ArrayJobDependency:
+      type: string
+      enum:
+        - N_TO_N
+        - SEQUENTIAL
+    ArrayJobStatusSummary:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/Integer"
+    ArrayProperties:
+      type: object
+      properties:
+        size:
+          $ref: "#/components/schemas/Integer"
+      description: An object representing an AWS Batch array job.
+    ArrayPropertiesDetail:
+      type: object
+      properties:
+        statusSummary:
+          $ref: "#/components/schemas/ArrayJobStatusSummary"
+        size:
+          $ref: "#/components/schemas/Integer"
+        index:
+          $ref: "#/components/schemas/Integer"
+      description: An object representing the array properties of a job.
+    ArrayPropertiesSummary:
+      type: object
+      properties:
+        size:
+          $ref: "#/components/schemas/Integer"
+        index:
+          $ref: "#/components/schemas/Integer"
+      description: An object representing the array properties of a job.
+    NetworkInterfaceList:
+      type: array
+      items:
+        $ref: "#/components/schemas/NetworkInterface"
+    AttemptContainerDetail:
+      type: object
+      properties:
+        containerInstanceArn:
+          $ref: "#/components/schemas/String"
+        taskArn:
+          $ref: "#/components/schemas/String"
+        exitCode:
+          $ref: "#/components/schemas/Integer"
+        reason:
+          $ref: "#/components/schemas/String"
+        logStreamName:
+          $ref: "#/components/schemas/String"
+        networkInterfaces:
+          $ref: "#/components/schemas/NetworkInterfaceList"
+      description: An object representing the details of a container that is part of a job
+        attempt.
+    Long:
+      type: integer
+    AttemptDetail:
+      type: object
+      properties:
+        container:
+          $ref: "#/components/schemas/AttemptContainerDetail"
+        startedAt:
+          $ref: "#/components/schemas/Long"
+        stoppedAt:
+          $ref: "#/components/schemas/Long"
+        statusReason:
+          $ref: "#/components/schemas/String"
+      description: An object representing a job attempt.
+    AttemptDetails:
+      type: array
+      items:
+        $ref: "#/components/schemas/AttemptDetail"
+    CEState:
+      type: string
+      enum:
+        - ENABLED
+        - DISABLED
+    CEStatus:
+      type: string
+      enum:
+        - CREATING
+        - UPDATING
+        - DELETING
+        - DELETED
+        - VALID
+        - INVALID
+    CEType:
+      type: string
+      enum:
+        - MANAGED
+        - UNMANAGED
+    CancelJobRequest:
+      type: object
+      required:
+        - jobId
+        - reason
+      properties:
+        jobId:
+          $ref: "#/components/schemas/String"
+        reason:
+          $ref: "#/components/schemas/String"
+    ComputeResource:
+      type: object
+      required:
+        - type
+        - minvCpus
+        - maxvCpus
+        - instanceTypes
+        - subnets
+        - instanceRole
+      properties:
+        type:
+          $ref: "#/components/schemas/CRType"
+        minvCpus:
+          $ref: "#/components/schemas/Integer"
+        maxvCpus:
+          $ref: "#/components/schemas/Integer"
+        desiredvCpus:
+          $ref: "#/components/schemas/Integer"
+        instanceTypes:
+          $ref: "#/components/schemas/StringList"
+        imageId:
+          $ref: "#/components/schemas/String"
+        subnets:
+          $ref: "#/components/schemas/StringList"
+        securityGroupIds:
+          $ref: "#/components/schemas/StringList"
+        ec2KeyPair:
+          $ref: "#/components/schemas/String"
+        instanceRole:
+          $ref: "#/components/schemas/String"
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+        placementGroup:
+          $ref: "#/components/schemas/String"
+        bidPercentage:
+          $ref: "#/components/schemas/Integer"
+        spotIamFleetRole:
+          $ref: "#/components/schemas/String"
+        launchTemplate:
+          $ref: "#/components/schemas/LaunchTemplateSpecification"
+      description: An object representing an AWS Batch compute resource.
+    ComputeEnvironmentDetail:
+      type: object
+      required:
+        - computeEnvironmentName
+        - computeEnvironmentArn
+        - ecsClusterArn
+      properties:
+        computeEnvironmentName:
+          $ref: "#/components/schemas/String"
+        computeEnvironmentArn:
+          $ref: "#/components/schemas/String"
+        ecsClusterArn:
+          $ref: "#/components/schemas/String"
+        type:
+          $ref: "#/components/schemas/CEType"
+        state:
+          $ref: "#/components/schemas/CEState"
+        status:
+          $ref: "#/components/schemas/CEStatus"
+        statusReason:
+          $ref: "#/components/schemas/String"
+        computeResources:
+          $ref: "#/components/schemas/ComputeResource"
+        serviceRole:
+          $ref: "#/components/schemas/String"
+      description: An object representing an AWS Batch compute environment.
+    ComputeEnvironmentDetailList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ComputeEnvironmentDetail"
+    ComputeEnvironmentOrders:
+      type: array
+      items:
+        $ref: "#/components/schemas/ComputeEnvironmentOrder"
+    ComputeResourceUpdate:
+      type: object
+      properties:
+        minvCpus:
+          $ref: "#/components/schemas/Integer"
+        maxvCpus:
+          $ref: "#/components/schemas/Integer"
+        desiredvCpus:
+          $ref: "#/components/schemas/Integer"
+      description: An object representing the attributes of a compute environment that can
+        be updated.
+    ContainerDetail:
+      type: object
+      properties:
+        image:
+          $ref: "#/components/schemas/String"
+        vcpus:
+          $ref: "#/components/schemas/Integer"
+        memory:
+          $ref: "#/components/schemas/Integer"
+        command:
+          $ref: "#/components/schemas/StringList"
+        jobRoleArn:
+          $ref: "#/components/schemas/String"
+        volumes:
+          $ref: "#/components/schemas/Volumes"
+        environment:
+          $ref: "#/components/schemas/EnvironmentVariables"
+        mountPoints:
+          $ref: "#/components/schemas/MountPoints"
+        readonlyRootFilesystem:
+          $ref: "#/components/schemas/Boolean"
+        ulimits:
+          $ref: "#/components/schemas/Ulimits"
+        privileged:
+          $ref: "#/components/schemas/Boolean"
+        user:
+          $ref: "#/components/schemas/String"
+        exitCode:
+          $ref: "#/components/schemas/Integer"
+        reason:
+          $ref: "#/components/schemas/String"
+        containerInstanceArn:
+          $ref: "#/components/schemas/String"
+        taskArn:
+          $ref: "#/components/schemas/String"
+        logStreamName:
+          $ref: "#/components/schemas/String"
+        instanceType:
+          $ref: "#/components/schemas/String"
+        networkInterfaces:
+          $ref: "#/components/schemas/NetworkInterfaceList"
+        resourceRequirements:
+          $ref: "#/components/schemas/ResourceRequirements"
+        linuxParameters:
+          $ref: "#/components/schemas/LinuxParameters"
+      description: An object representing the details of a container that is part of a job.
+    ContainerOverrides:
+      type: object
+      properties:
+        vcpus:
+          $ref: "#/components/schemas/Integer"
+        memory:
+          $ref: "#/components/schemas/Integer"
+        command:
+          $ref: "#/components/schemas/StringList"
+        instanceType:
+          $ref: "#/components/schemas/String"
+        environment:
+          $ref: "#/components/schemas/EnvironmentVariables"
+        resourceRequirements:
+          $ref: "#/components/schemas/ResourceRequirements"
+      description: The overrides that should be sent to a container.
+    ContainerProperties:
+      type: object
+      properties:
+        image:
+          $ref: "#/components/schemas/String"
+        vcpus:
+          $ref: "#/components/schemas/Integer"
+        memory:
+          $ref: "#/components/schemas/Integer"
+        command:
+          $ref: "#/components/schemas/StringList"
+        jobRoleArn:
+          $ref: "#/components/schemas/String"
+        volumes:
+          $ref: "#/components/schemas/Volumes"
+        environment:
+          $ref: "#/components/schemas/EnvironmentVariables"
+        mountPoints:
+          $ref: "#/components/schemas/MountPoints"
+        readonlyRootFilesystem:
+          $ref: "#/components/schemas/Boolean"
+        privileged:
+          $ref: "#/components/schemas/Boolean"
+        ulimits:
+          $ref: "#/components/schemas/Ulimits"
+        user:
+          $ref: "#/components/schemas/String"
+        instanceType:
+          $ref: "#/components/schemas/String"
+        resourceRequirements:
+          $ref: "#/components/schemas/ResourceRequirements"
+        linuxParameters:
+          $ref: "#/components/schemas/LinuxParameters"
+      description: Container properties are used in job definitions to describe the
+        container that is launched as part of a job.
+    ContainerSummary:
+      type: object
+      properties:
+        exitCode:
+          $ref: "#/components/schemas/Integer"
+        reason:
+          $ref: "#/components/schemas/String"
+      description: An object representing summary details of a container within a job.
+    CreateComputeEnvironmentRequest:
+      type: object
+      required:
+        - computeEnvironmentName
+        - type
+        - serviceRole
+      properties:
+        computeEnvironmentName:
+          $ref: "#/components/schemas/String"
+        type:
+          $ref: "#/components/schemas/CEType"
+        state:
+          $ref: "#/components/schemas/CEState"
+        computeResources:
+          $ref: "#/components/schemas/ComputeResource"
+        serviceRole:
+          $ref: "#/components/schemas/String"
+    JQState:
+      type: string
+      enum:
+        - ENABLED
+        - DISABLED
+    CreateJobQueueRequest:
+      type: object
+      required:
+        - jobQueueName
+        - priority
+        - computeEnvironmentOrder
+      properties:
+        jobQueueName:
+          $ref: "#/components/schemas/String"
+        state:
+          $ref: "#/components/schemas/JQState"
+        priority:
+          $ref: "#/components/schemas/Integer"
+        computeEnvironmentOrder:
+          $ref: "#/components/schemas/ComputeEnvironmentOrders"
+    DeleteComputeEnvironmentRequest:
+      type: object
+      required:
+        - computeEnvironment
+      properties:
+        computeEnvironment:
+          $ref: "#/components/schemas/String"
+    DeleteJobQueueRequest:
+      type: object
+      required:
+        - jobQueue
+      properties:
+        jobQueue:
+          $ref: "#/components/schemas/String"
+    DeregisterJobDefinitionRequest:
+      type: object
+      required:
+        - jobDefinition
+      properties:
+        jobDefinition:
+          $ref: "#/components/schemas/String"
+    DescribeComputeEnvironmentsRequest:
+      type: object
+      properties:
+        computeEnvironments:
+          $ref: "#/components/schemas/StringList"
+        maxResults:
+          $ref: "#/components/schemas/Integer"
+        nextToken:
+          $ref: "#/components/schemas/String"
+    DescribeJobDefinitionsRequest:
+      type: object
+      properties:
+        jobDefinitions:
+          $ref: "#/components/schemas/StringList"
+        maxResults:
+          $ref: "#/components/schemas/Integer"
+        jobDefinitionName:
+          $ref: "#/components/schemas/String"
+        status:
+          $ref: "#/components/schemas/String"
+        nextToken:
+          $ref: "#/components/schemas/String"
+    JobDefinitionList:
+      type: array
+      items:
+        $ref: "#/components/schemas/JobDefinition"
+    DescribeJobQueuesRequest:
+      type: object
+      properties:
+        jobQueues:
+          $ref: "#/components/schemas/StringList"
+        maxResults:
+          $ref: "#/components/schemas/Integer"
+        nextToken:
+          $ref: "#/components/schemas/String"
+    JobQueueDetailList:
+      type: array
+      items:
+        $ref: "#/components/schemas/JobQueueDetail"
+    DescribeJobsRequest:
+      type: object
+      required:
+        - jobs
+      properties:
+        jobs:
+          $ref: "#/components/schemas/StringList"
+    JobDetailList:
+      type: array
+      items:
+        $ref: "#/components/schemas/JobDetail"
+    DeviceCgroupPermissions:
+      type: array
+      items:
+        $ref: "#/components/schemas/DeviceCgroupPermission"
+    Device:
+      type: object
+      required:
+        - hostPath
+      properties:
+        hostPath:
+          $ref: "#/components/schemas/String"
+        containerPath:
+          $ref: "#/components/schemas/String"
+        permissions:
+          $ref: "#/components/schemas/DeviceCgroupPermissions"
+      description: An object representing a container instance host device.
+    DeviceCgroupPermission:
+      type: string
+      enum:
+        - READ
+        - WRITE
+        - MKNOD
+    DevicesList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Device"
+    KeyValuePair:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/String"
+        value:
+          $ref: "#/components/schemas/String"
+      description: A key-value pair object.
+    Host:
+      type: object
+      properties:
+        sourcePath:
+          $ref: "#/components/schemas/String"
+      description: Determine whether your data volume persists on the host container
+        instance and where it is stored. If this parameter is empty, then the
+        Docker daemon assigns a host path for your data volume, but the data is
+        not guaranteed to persist after the containers associated with it stop
+        running.
+    JQStatus:
+      type: string
+      enum:
+        - CREATING
+        - UPDATING
+        - DELETING
+        - DELETED
+        - VALID
+        - INVALID
+    ParametersMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/String"
+    RetryStrategy:
+      type: object
+      properties:
+        attempts:
+          $ref: "#/components/schemas/Integer"
+      description: The retry strategy associated with a job.
+    JobTimeout:
+      type: object
+      properties:
+        attemptDurationSeconds:
+          $ref: "#/components/schemas/Integer"
+      description: An object representing a job timeout configuration.
+    NodeProperties:
+      type: object
+      required:
+        - numNodes
+        - mainNode
+        - nodeRangeProperties
+      properties:
+        numNodes:
+          $ref: "#/components/schemas/Integer"
+        mainNode:
+          $ref: "#/components/schemas/Integer"
+        nodeRangeProperties:
+          $ref: "#/components/schemas/NodeRangeProperties"
+      description: An object representing the node properties of a multi-node parallel job.
+    JobDefinition:
+      type: object
+      required:
+        - jobDefinitionName
+        - jobDefinitionArn
+        - revision
+        - type
+      properties:
+        jobDefinitionName:
+          $ref: "#/components/schemas/String"
+        jobDefinitionArn:
+          $ref: "#/components/schemas/String"
+        revision:
+          $ref: "#/components/schemas/Integer"
+        status:
+          $ref: "#/components/schemas/String"
+        type:
+          $ref: "#/components/schemas/String"
+        parameters:
+          $ref: "#/components/schemas/ParametersMap"
+        retryStrategy:
+          $ref: "#/components/schemas/RetryStrategy"
+        containerProperties:
+          $ref: "#/components/schemas/ContainerProperties"
+        timeout:
+          $ref: "#/components/schemas/JobTimeout"
+        nodeProperties:
+          $ref: "#/components/schemas/NodeProperties"
+      description: An object representing an AWS Batch job definition.
+    JobDefinitionType:
+      type: string
+      enum:
+        - container
+        - multinode
+    JobDependencyList:
+      type: array
+      items:
+        $ref: "#/components/schemas/JobDependency"
+    JobStatus:
+      type: string
+      enum:
+        - SUBMITTED
+        - PENDING
+        - RUNNABLE
+        - STARTING
+        - RUNNING
+        - SUCCEEDED
+        - FAILED
+    NodeDetails:
+      type: object
+      properties:
+        nodeIndex:
+          $ref: "#/components/schemas/Integer"
+        isMainNode:
+          $ref: "#/components/schemas/Boolean"
+      description: An object representing the details of a multi-node parallel job node.
+    JobDetail:
+      type: object
+      required:
+        - jobName
+        - jobId
+        - jobQueue
+        - status
+        - startedAt
+        - jobDefinition
+      properties:
+        jobName:
+          $ref: "#/components/schemas/String"
+        jobId:
+          $ref: "#/components/schemas/String"
+        jobQueue:
+          $ref: "#/components/schemas/String"
+        status:
+          $ref: "#/components/schemas/JobStatus"
+        attempts:
+          $ref: "#/components/schemas/AttemptDetails"
+        statusReason:
+          $ref: "#/components/schemas/String"
+        createdAt:
+          $ref: "#/components/schemas/Long"
+        retryStrategy:
+          $ref: "#/components/schemas/RetryStrategy"
+        startedAt:
+          $ref: "#/components/schemas/Long"
+        stoppedAt:
+          $ref: "#/components/schemas/Long"
+        dependsOn:
+          $ref: "#/components/schemas/JobDependencyList"
+        jobDefinition:
+          $ref: "#/components/schemas/String"
+        parameters:
+          $ref: "#/components/schemas/ParametersMap"
+        container:
+          $ref: "#/components/schemas/ContainerDetail"
+        nodeDetails:
+          $ref: "#/components/schemas/NodeDetails"
+        nodeProperties:
+          $ref: "#/components/schemas/NodeProperties"
+        arrayProperties:
+          $ref: "#/components/schemas/ArrayPropertiesDetail"
+        timeout:
+          $ref: "#/components/schemas/JobTimeout"
+      description: An object representing an AWS Batch job.
+    JobQueueDetail:
+      type: object
+      required:
+        - jobQueueName
+        - jobQueueArn
+        - state
+        - priority
+        - computeEnvironmentOrder
+      properties:
+        jobQueueName:
+          $ref: "#/components/schemas/String"
+        jobQueueArn:
+          $ref: "#/components/schemas/String"
+        state:
+          $ref: "#/components/schemas/JQState"
+        status:
+          $ref: "#/components/schemas/JQStatus"
+        statusReason:
+          $ref: "#/components/schemas/String"
+        priority:
+          $ref: "#/components/schemas/Integer"
+        computeEnvironmentOrder:
+          $ref: "#/components/schemas/ComputeEnvironmentOrders"
+      description: An object representing the details of an AWS Batch job queue.
+    NodePropertiesSummary:
+      type: object
+      properties:
+        isMainNode:
+          $ref: "#/components/schemas/Boolean"
+        numNodes:
+          $ref: "#/components/schemas/Integer"
+        nodeIndex:
+          $ref: "#/components/schemas/Integer"
+      description: An object representing the properties of a node that is associated with
+        a multi-node parallel job.
+    JobSummary:
+      type: object
+      required:
+        - jobId
+        - jobName
+      properties:
+        jobId:
+          $ref: "#/components/schemas/String"
+        jobName:
+          $ref: "#/components/schemas/String"
+        createdAt:
+          $ref: "#/components/schemas/Long"
+        status:
+          $ref: "#/components/schemas/JobStatus"
+        statusReason:
+          $ref: "#/components/schemas/String"
+        startedAt:
+          $ref: "#/components/schemas/Long"
+        stoppedAt:
+          $ref: "#/components/schemas/Long"
+        container:
+          $ref: "#/components/schemas/ContainerSummary"
+        arrayProperties:
+          $ref: "#/components/schemas/ArrayPropertiesSummary"
+        nodeProperties:
+          $ref: "#/components/schemas/NodePropertiesSummary"
+      description: An object representing summary details of a job.
+    JobSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/JobSummary"
+    ListJobsRequest:
+      type: object
+      properties:
+        jobQueue:
+          $ref: "#/components/schemas/String"
+        arrayJobId:
+          $ref: "#/components/schemas/String"
+        multiNodeJobId:
+          $ref: "#/components/schemas/String"
+        jobStatus:
+          $ref: "#/components/schemas/JobStatus"
+        maxResults:
+          $ref: "#/components/schemas/Integer"
+        nextToken:
+          $ref: "#/components/schemas/String"
+    MountPoint:
+      type: object
+      properties:
+        containerPath:
+          $ref: "#/components/schemas/String"
+        readOnly:
+          $ref: "#/components/schemas/Boolean"
+        sourceVolume:
+          $ref: "#/components/schemas/String"
+      description: Details on a Docker volume mount point that is used in a job's container
+        properties. This parameter maps to <code>Volumes</code> in the <a
+        href="https://docs.docker.com/engine/reference/api/docker_remote_api_v1.19/#create-a-container">Create
+        a container</a> section of the Docker Remote API and the
+        <code>--volume</code> option to docker run.
+    NetworkInterface:
+      type: object
+      properties:
+        attachmentId:
+          $ref: "#/components/schemas/String"
+        ipv6Address:
+          $ref: "#/components/schemas/String"
+        privateIpv4Address:
+          $ref: "#/components/schemas/String"
+      description: An object representing the elastic network interface for a multi-node
+        parallel job node.
+    NodeOverrides:
+      type: object
+      properties:
+        numNodes:
+          $ref: "#/components/schemas/Integer"
+        nodePropertyOverrides:
+          $ref: "#/components/schemas/NodePropertyOverrides"
+      description: Object representing any node overrides to a job definition that is used
+        in a <a>SubmitJob</a> API operation.
+    NodePropertyOverride:
+      type: object
+      required:
+        - targetNodes
+      properties:
+        targetNodes:
+          $ref: "#/components/schemas/String"
+        containerOverrides:
+          $ref: "#/components/schemas/ContainerOverrides"
+      description: Object representing any node overrides to a job definition that is used
+        in a <a>SubmitJob</a> API operation.
+    NodeRangeProperty:
+      type: object
+      required:
+        - targetNodes
+      properties:
+        targetNodes:
+          $ref: "#/components/schemas/String"
+        container:
+          $ref: "#/components/schemas/ContainerProperties"
+      description: An object representing the properties of the node range for a multi-node
+        parallel job.
+    RegisterJobDefinitionRequest:
+      type: object
+      required:
+        - jobDefinitionName
+        - type
+      properties:
+        jobDefinitionName:
+          $ref: "#/components/schemas/String"
+        type:
+          $ref: "#/components/schemas/JobDefinitionType"
+        parameters:
+          $ref: "#/components/schemas/ParametersMap"
+        containerProperties:
+          $ref: "#/components/schemas/ContainerProperties"
+        nodeProperties:
+          $ref: "#/components/schemas/NodeProperties"
+        retryStrategy:
+          $ref: "#/components/schemas/RetryStrategy"
+        timeout:
+          $ref: "#/components/schemas/JobTimeout"
+    ResourceType:
+      type: string
+      enum:
+        - GPU
+    ResourceRequirement:
+      type: object
+      required:
+        - value
+        - type
+      properties:
+        value:
+          $ref: "#/components/schemas/String"
+        type:
+          $ref: "#/components/schemas/ResourceType"
+      description: The type and amount of a resource to assign to a container. Currently,
+        the only supported resource type is <code>GPU</code>.
+    SubmitJobRequest:
+      type: object
+      required:
+        - jobName
+        - jobQueue
+        - jobDefinition
+      properties:
+        jobName:
+          $ref: "#/components/schemas/String"
+        jobQueue:
+          $ref: "#/components/schemas/String"
+        arrayProperties:
+          $ref: "#/components/schemas/ArrayProperties"
+        dependsOn:
+          $ref: "#/components/schemas/JobDependencyList"
+        jobDefinition:
+          $ref: "#/components/schemas/String"
+        parameters:
+          $ref: "#/components/schemas/ParametersMap"
+        containerOverrides:
+          $ref: "#/components/schemas/ContainerOverrides"
+        nodeOverrides:
+          $ref: "#/components/schemas/NodeOverrides"
+        retryStrategy:
+          $ref: "#/components/schemas/RetryStrategy"
+        timeout:
+          $ref: "#/components/schemas/JobTimeout"
+    TerminateJobRequest:
+      type: object
+      required:
+        - jobId
+        - reason
+      properties:
+        jobId:
+          $ref: "#/components/schemas/String"
+        reason:
+          $ref: "#/components/schemas/String"
+    Ulimit:
+      type: object
+      required:
+        - hardLimit
+        - name
+        - softLimit
+      properties:
+        hardLimit:
+          $ref: "#/components/schemas/Integer"
+        name:
+          $ref: "#/components/schemas/String"
+        softLimit:
+          $ref: "#/components/schemas/Integer"
+      description: The <code>ulimit</code> settings to pass to the container.
+    UpdateComputeEnvironmentRequest:
+      type: object
+      required:
+        - computeEnvironment
+      properties:
+        computeEnvironment:
+          $ref: "#/components/schemas/String"
+        state:
+          $ref: "#/components/schemas/CEState"
+        computeResources:
+          $ref: "#/components/schemas/ComputeResourceUpdate"
+        serviceRole:
+          $ref: "#/components/schemas/String"
+    UpdateJobQueueRequest:
+      type: object
+      required:
+        - jobQueue
+      properties:
+        jobQueue:
+          $ref: "#/components/schemas/String"
+        state:
+          $ref: "#/components/schemas/JQState"
+        priority:
+          $ref: "#/components/schemas/Integer"
+        computeEnvironmentOrder:
+          $ref: "#/components/schemas/ComputeEnvironmentOrders"
+    Volume:
+      type: object
+      properties:
+        host:
+          $ref: "#/components/schemas/Host"
+        name:
+          $ref: "#/components/schemas/String"
+      description: A data volume used in a job's container properties.

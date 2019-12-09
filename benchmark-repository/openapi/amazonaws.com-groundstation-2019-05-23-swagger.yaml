@@ -1,0 +1,2420 @@
+openapi: 3.0.0
+info:
+  version: 2019-05-23
+  x-release: v4
+  title: AWS Ground Station
+  description: >-
+    Welcome to the AWS Ground Station API Reference. AWS Ground Station is a
+    fully managed service that
+          enables you to control satellite communications, downlink and process satellite data, and
+          scale your satellite operations efficiently and cost-effectively without having
+          to build or manage your own ground station infrastructure.
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: groundstation
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/groundstation-2019-05-23.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/groundstation/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  "/contact/{contactId}":
+    delete:
+      operationId: CancelContact
+      description: Cancels a contact with a specified contact ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactIdResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          description: UUID of a contact.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeContact
+      description: Describes an existing contact.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeContactResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: contactId
+          in: path
+          required: true
+          description: UUID of a contact.
+          schema:
+            type: string
+  /config:
+    post:
+      operationId: CreateConfig
+      description: >-
+        <p>Creates a <code>Config</code> with the specified
+        <code>configData</code> parameters.</p>
+                 <p>Only one type of <code>configData</code> can be specified.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfigIdResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - configData
+                - name
+              properties:
+                configData:
+                  description: >-
+                    <p>Object containing the parameters for a
+                    <code>Config</code>.</p>
+                             <p>See the subtype definitions for what each type of <code>Config</code> contains.</p>
+                  type: object
+                  properties:
+                    antennaDownlinkConfig:
+                      $ref: "#/components/schemas/AntennaDownlinkConfig"
+                    antennaDownlinkDemodDecodeConfig:
+                      $ref: "#/components/schemas/AntennaDownlinkDemodDecodeConfig"
+                    antennaUplinkConfig:
+                      $ref: "#/components/schemas/AntennaUplinkConfig"
+                    dataflowEndpointConfig:
+                      $ref: "#/components/schemas/DataflowEndpointConfig"
+                    trackingConfig:
+                      $ref: "#/components/schemas/TrackingConfig"
+                    uplinkEchoConfig:
+                      $ref: "#/components/schemas/UplinkEchoConfig"
+                name:
+                  description: Name of a <code>Config</code>.
+                  type: string
+                  pattern: ^[ a-zA-Z0-9_:-]+$
+                  minLength: 1
+                  maxLength: 256
+                tags:
+                  description: Tags assigned to a <code>Config</code>.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/String"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListConfigs
+      description: Returns a list of <code>Config</code> objects.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListConfigsResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: maxResults
+          in: query
+          required: false
+          description: Maximum number of <code>Configs</code> returned.
+          schema:
+            type: integer
+        - name: nextToken
+          in: query
+          required: false
+          description: Next token returned in the request of a previous
+            <code>ListConfigs</code> call. Used to get the next page of results.
+          schema:
+            type: string
+  /dataflowEndpointGroup:
+    post:
+      operationId: CreateDataflowEndpointGroup
+      description: >-
+        <p>Creates a <code>DataflowEndpoint</code> group containing the
+        specified list of <code>DataflowEndpoint</code> objects.</p>
+                 <p>The <code>name</code> field in each endpoint is used in your mission profile <code>DataflowEndpointConfig</code> 
+                 to specify which endpoints to use during a contact.</p> 
+                 <p>When a contact uses multiple <code>DataflowEndpointConfig</code> objects, each <code>Config</code> 
+                 must match a <code>DataflowEndpoint</code> in the same group.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataflowEndpointGroupIdResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - endpointDetails
+              properties:
+                endpointDetails:
+                  description: Endpoint details of each endpoint in the dataflow endpoint
+                    group.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/EndpointDetails"
+                tags:
+                  description: Tags of a dataflow endpoint group.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/String"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListDataflowEndpointGroups
+      description: Returns a list of <code>DataflowEndpoint</code> groups.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListDataflowEndpointGroupsResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: maxResults
+          in: query
+          required: false
+          description: Maximum number of dataflow endpoint groups returned.
+          schema:
+            type: integer
+        - name: nextToken
+          in: query
+          required: false
+          description: Next token returned in the request of a previous
+            <code>ListDataflowEndpointGroups</code> call. Used to get the next
+            page of results.
+          schema:
+            type: string
+  /missionprofile:
+    post:
+      operationId: CreateMissionProfile
+      description: >-
+        <p>Creates a mission profile.</p>
+                 <p>
+                    <code>dataflowEdges</code> is a list of lists of strings. Each lower level list of strings
+                 has two elements: a <i>from ARN</i> and a <i>to ARN</i>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissionProfileIdResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - dataflowEdges
+                - minimumViableContactDurationSeconds
+                - name
+                - trackingConfigArn
+              properties:
+                contactPostPassDurationSeconds:
+                  description: Amount of time after a contact ends that you’d like to
+                    receive a CloudWatch event indicating the pass has finished.
+                  type: integer
+                  minimum: 1
+                  maximum: 21600
+                contactPrePassDurationSeconds:
+                  description: Amount of time prior to contact start you’d like to receive
+                    a CloudWatch event indicating an upcoming pass.
+                  type: integer
+                  minimum: 1
+                  maximum: 21600
+                dataflowEdges:
+                  description: >-
+                    A list of lists of ARNs. Each list of ARNs is an edge, with
+                    a from <code>Config</code> and a to 
+                             <code>Config</code>.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/DataflowEdge"
+                minimumViableContactDurationSeconds:
+                  description: Smallest amount of time in seconds that you’d like to see
+                    for an available contact. AWS Ground Station will not
+                    present you with contacts shorter than this duration.
+                  type: integer
+                  minimum: 1
+                  maximum: 21600
+                name:
+                  description: Name of a mission profile.
+                  type: string
+                  pattern: ^[ a-zA-Z0-9_:-]+$
+                  minLength: 1
+                  maxLength: 256
+                tags:
+                  description: Tags assigned to a mission profile.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/String"
+                trackingConfigArn:
+                  description: ARN of a tracking <code>Config</code>.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListMissionProfiles
+      description: Returns a list of mission profiles.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListMissionProfilesResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: maxResults
+          in: query
+          required: false
+          description: Maximum number of mission profiles returned.
+          schema:
+            type: integer
+        - name: nextToken
+          in: query
+          required: false
+          description: Next token returned in the request of a previous
+            <code>ListMissionProfiles</code> call. Used to get the next page of
+            results.
+          schema:
+            type: string
+  "/config/{configType}/{configId}":
+    delete:
+      operationId: DeleteConfig
+      description: Deletes a <code>Config</code>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfigIdResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: configId
+          in: path
+          required: true
+          description: UUID of a <code>Config</code>.
+          schema:
+            type: string
+        - name: configType
+          in: path
+          required: true
+          description: Type of a <code>Config</code>.
+          schema:
+            type: string
+            enum:
+              - antenna-downlink
+              - antenna-downlink-demod-decode
+              - antenna-uplink
+              - dataflow-endpoint
+              - tracking
+              - uplink-echo
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetConfig
+      description: |-
+        <p>Returns <code>Config</code> information.</p>
+                 <p>Only one <code>Config</code> response can be returned.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetConfigResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: configId
+          in: path
+          required: true
+          description: UUID of a <code>Config</code>.
+          schema:
+            type: string
+        - name: configType
+          in: path
+          required: true
+          description: Type of a <code>Config</code>.
+          schema:
+            type: string
+            enum:
+              - antenna-downlink
+              - antenna-downlink-demod-decode
+              - antenna-uplink
+              - dataflow-endpoint
+              - tracking
+              - uplink-echo
+    put:
+      operationId: UpdateConfig
+      description: >-
+        <p>Updates the <code>Config</code> used when scheduling contacts.</p>
+                 <p>Updating a <code>Config</code> will not update the execution parameters
+                 for existing future contacts scheduled with this <code>Config</code>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfigIdResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: configId
+          in: path
+          required: true
+          description: UUID of a <code>Config</code>.
+          schema:
+            type: string
+        - name: configType
+          in: path
+          required: true
+          description: Type of a <code>Config</code>.
+          schema:
+            type: string
+            enum:
+              - antenna-downlink
+              - antenna-downlink-demod-decode
+              - antenna-uplink
+              - dataflow-endpoint
+              - tracking
+              - uplink-echo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - configData
+                - name
+              properties:
+                configData:
+                  description: >-
+                    <p>Object containing the parameters for a
+                    <code>Config</code>.</p>
+                             <p>See the subtype definitions for what each type of <code>Config</code> contains.</p>
+                  type: object
+                  properties:
+                    antennaDownlinkConfig:
+                      $ref: "#/components/schemas/AntennaDownlinkConfig"
+                    antennaDownlinkDemodDecodeConfig:
+                      $ref: "#/components/schemas/AntennaDownlinkDemodDecodeConfig"
+                    antennaUplinkConfig:
+                      $ref: "#/components/schemas/AntennaUplinkConfig"
+                    dataflowEndpointConfig:
+                      $ref: "#/components/schemas/DataflowEndpointConfig"
+                    trackingConfig:
+                      $ref: "#/components/schemas/TrackingConfig"
+                    uplinkEchoConfig:
+                      $ref: "#/components/schemas/UplinkEchoConfig"
+                name:
+                  description: Name of a <code>Config</code>.
+                  type: string
+                  pattern: ^[ a-zA-Z0-9_:-]+$
+                  minLength: 1
+                  maxLength: 256
+        required: true
+  "/dataflowEndpointGroup/{dataflowEndpointGroupId}":
+    delete:
+      operationId: DeleteDataflowEndpointGroup
+      description: Deletes a dataflow endpoint group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataflowEndpointGroupIdResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: dataflowEndpointGroupId
+          in: path
+          required: true
+          description: ID of a dataflow endpoint group.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetDataflowEndpointGroup
+      description: Returns the dataflow endpoint group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetDataflowEndpointGroupResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: dataflowEndpointGroupId
+          in: path
+          required: true
+          description: UUID of a dataflow endpoint group.
+          schema:
+            type: string
+  "/missionprofile/{missionProfileId}":
+    delete:
+      operationId: DeleteMissionProfile
+      description: Deletes a mission profile.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissionProfileIdResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: missionProfileId
+          in: path
+          required: true
+          description: UUID of a mission profile.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetMissionProfile
+      description: Returns a mission profile.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMissionProfileResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: missionProfileId
+          in: path
+          required: true
+          description: UUID of a mission profile.
+          schema:
+            type: string
+    put:
+      operationId: UpdateMissionProfile
+      description: >-
+        <p>Updates a mission profile.</p>
+                 <p>Updating a mission profile will not update the execution parameters
+                 for existing future contacts.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissionProfileIdResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: missionProfileId
+          in: path
+          required: true
+          description: ID of a mission profile.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contactPostPassDurationSeconds:
+                  description: Amount of time after a contact ends that you’d like to
+                    receive a CloudWatch event indicating the pass has finished.
+                  type: integer
+                  minimum: 1
+                  maximum: 21600
+                contactPrePassDurationSeconds:
+                  description: Amount of time after a contact ends that you’d like to
+                    receive a CloudWatch event indicating the pass has finished.
+                  type: integer
+                  minimum: 1
+                  maximum: 21600
+                dataflowEdges:
+                  description: >-
+                    A list of lists of ARNs. Each list of ARNs is an edge, with
+                    a from <code>Config</code> and a to 
+                             <code>Config</code>.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/DataflowEdge"
+                minimumViableContactDurationSeconds:
+                  description: Smallest amount of time in seconds that you’d like to see
+                    for an available contact. AWS Ground Station will not
+                    present you with contacts shorter than this duration.
+                  type: integer
+                  minimum: 1
+                  maximum: 21600
+                name:
+                  description: Name of a mission profile.
+                  type: string
+                  pattern: ^[ a-zA-Z0-9_:-]+$
+                  minLength: 1
+                  maxLength: 256
+                trackingConfigArn:
+                  description: ARN of a tracking <code>Config</code>.
+                  type: string
+        required: true
+  /contacts:
+    post:
+      operationId: ListContacts
+      description: >-
+        <p>Returns a list of contacts.</p>
+                 <p>If <code>statusList</code> contains AVAILABLE, the request must include
+              <code>groundstation</code>, <code>missionprofileArn</code>, and <code>satelliteArn</code>.
+              </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListContactsResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - endTime
+                - startTime
+                - statusList
+              properties:
+                endTime:
+                  description: End time of a contact.
+                  type: string
+                  format: date-time
+                groundStation:
+                  description: Name of a ground station.
+                  type: string
+                maxResults:
+                  description: Maximum number of contacts returned.
+                  type: integer
+                missionProfileArn:
+                  description: ARN of a mission profile.
+                  type: string
+                nextToken:
+                  description: Next token returned in the request of a previous
+                    <code>ListContacts</code> call. Used to get the next page of
+                    results.
+                  type: string
+                satelliteArn:
+                  description: ARN of a satellite.
+                  type: string
+                startTime:
+                  description: Start time of a contact.
+                  type: string
+                  format: date-time
+                statusList:
+                  description: Status of a contact reservation.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ContactStatus"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /contact:
+    post:
+      operationId: ReserveContact
+      description: Reserves a contact using specified parameters.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactIdResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - endTime
+                - groundStation
+                - missionProfileArn
+                - satelliteArn
+                - startTime
+              properties:
+                endTime:
+                  description: End time of a contact.
+                  type: string
+                  format: date-time
+                groundStation:
+                  description: Name of a ground station.
+                  type: string
+                missionProfileArn:
+                  description: ARN of a mission profile.
+                  type: string
+                satelliteArn:
+                  description: ARN of a satellite
+                  type: string
+                startTime:
+                  description: Start time of a contact.
+                  type: string
+                  format: date-time
+                tags:
+                  description: Tags assigned to a contact.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/String"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /minute-usage:
+    post:
+      operationId: GetMinuteUsage
+      description: Returns the number of minutes used by account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMinuteUsageResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - month
+                - year
+              properties:
+                month:
+                  description: The month being requested, with a value of 1-12.
+                  type: integer
+                year:
+                  description: The year being requested, in the format of YYYY.
+                  type: integer
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/satellite/{satelliteId}":
+    get:
+      operationId: GetSatellite
+      description: Returns a satellite.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSatelliteResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: satelliteId
+          in: path
+          required: true
+          description: UUID of a satellite.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /groundstation:
+    get:
+      operationId: ListGroundStations
+      description: "Returns a list of ground stations. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListGroundStationsResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: maxResults
+          in: query
+          required: false
+          description: Maximum number of ground stations returned.
+          schema:
+            type: integer
+        - name: nextToken
+          in: query
+          required: false
+          description: Next token that can be supplied in the next call to get the next
+            page of ground stations.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /satellite:
+    get:
+      operationId: ListSatellites
+      description: Returns a list of satellites.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSatellitesResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: maxResults
+          in: query
+          required: false
+          description: Maximum number of satellites returned.
+          schema:
+            type: integer
+        - name: nextToken
+          in: query
+          required: false
+          description: Next token that can be supplied in the next call to get the next
+            page of satellites.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/tags/{resourceArn}":
+    get:
+      operationId: ListTagsForResource
+      description: Returns a list of tags or a specified resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTagsForResourceResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: ARN of a resource.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    post:
+      operationId: TagResource
+      description: Assigns a tag to a resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagResourceResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: ARN of a resource tag.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tags:
+                  description: Tags assigned to a resource.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/String"
+        required: true
+  "/tags/{resourceArn}#tagKeys":
+    delete:
+      operationId: UntagResource
+      description: Deassigns a resource tag.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UntagResourceResponse"
+        "480":
+          description: DependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: ARN of a resource.
+          schema:
+            type: string
+        - name: tagKeys
+          in: query
+          required: true
+          description: Keys of a resource tag.
+          schema:
+            type: array
+            items:
+              type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://groundstation.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Ground Station multi-region endpoint
+  - url: https://groundstation.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Ground Station multi-region endpoint
+  - url: http://groundstation.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Ground Station endpoint for China (Beijing) and China (Ningxia)
+  - url: https://groundstation.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Ground Station endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    ContactIdResponse:
+      type: object
+      properties:
+        contactId:
+          $ref: "#/components/schemas/String"
+      description: <p/>
+    DependencyException: {}
+    InvalidParameterException: {}
+    ResourceNotFoundException: {}
+    ConfigIdResponse:
+      type: object
+      properties:
+        configArn:
+          $ref: "#/components/schemas/ConfigArn"
+        configId:
+          $ref: "#/components/schemas/String"
+        configType:
+          $ref: "#/components/schemas/ConfigCapabilityType"
+      description: <p/>
+    AntennaDownlinkConfig:
+      type: object
+      required:
+        - spectrumConfig
+      properties:
+        spectrumConfig:
+          $ref: "#/components/schemas/SpectrumConfig"
+      description: |-
+        Information about how AWS Ground Station should configure an
+                 antenna for downlink during a contact.
+    AntennaDownlinkDemodDecodeConfig:
+      type: object
+      required:
+        - decodeConfig
+        - demodulationConfig
+        - spectrumConfig
+      properties:
+        decodeConfig:
+          $ref: "#/components/schemas/DecodeConfig"
+        demodulationConfig:
+          $ref: "#/components/schemas/DemodulationConfig"
+        spectrumConfig:
+          $ref: "#/components/schemas/SpectrumConfig"
+      description: Information about how AWS Ground Station should conﬁgure an antenna for
+        downlink demod decode during a contact.
+    AntennaUplinkConfig:
+      type: object
+      required:
+        - spectrumConfig
+        - targetEirp
+      properties:
+        spectrumConfig:
+          $ref: "#/components/schemas/UplinkSpectrumConfig"
+        targetEirp:
+          $ref: "#/components/schemas/Eirp"
+      description: Information about the uplink <code>Config</code> of an antenna.
+    DataflowEndpointConfig:
+      type: object
+      required:
+        - dataflowEndpointName
+      properties:
+        dataflowEndpointName:
+          $ref: "#/components/schemas/String"
+      description: Information about the dataflow endpoint <code>Config</code>.
+    TrackingConfig:
+      type: object
+      required:
+        - autotrack
+      properties:
+        autotrack:
+          $ref: "#/components/schemas/Criticality"
+      description: |-
+        Object that determines whether tracking should be used during a contact
+                 executed with this <code>Config</code> in the mission profile.
+    UplinkEchoConfig:
+      type: object
+      required:
+        - antennaUplinkConfigArn
+        - enabled
+      properties:
+        antennaUplinkConfigArn:
+          $ref: "#/components/schemas/ConfigArn"
+        enabled:
+          $ref: "#/components/schemas/Boolean"
+      description: >-
+        <p>Information about an uplink echo <code>Config</code>.</p>
+                 <p>Parameters from the <code>AntennaUplinkConfig</code>, corresponding to the 
+                 specified <code>AntennaUplinkConfigArn</code>, are used when this <code>UplinkEchoConfig</code> 
+                 is used in a contact.</p>
+    String:
+      type: string
+    DataflowEndpointGroupIdResponse:
+      type: object
+      properties:
+        dataflowEndpointGroupId:
+          $ref: "#/components/schemas/String"
+      description: <p/>
+    EndpointDetails:
+      type: object
+      properties:
+        endpoint:
+          $ref: "#/components/schemas/DataflowEndpoint"
+        securityDetails:
+          $ref: "#/components/schemas/SecurityDetails"
+      description: Information about the endpoint details.
+    MissionProfileIdResponse:
+      type: object
+      properties:
+        missionProfileId:
+          $ref: "#/components/schemas/String"
+      description: <p/>
+    DataflowEdge:
+      type: array
+      items:
+        $ref: "#/components/schemas/ConfigArn"
+      minItems: 2
+      maxItems: 2
+    DescribeContactResponse:
+      type: object
+      properties:
+        contactId:
+          $ref: "#/components/schemas/String"
+        contactStatus:
+          $ref: "#/components/schemas/ContactStatus"
+        endTime:
+          $ref: "#/components/schemas/Timestamp"
+        errorMessage:
+          $ref: "#/components/schemas/String"
+        groundStation:
+          $ref: "#/components/schemas/String"
+        maximumElevation:
+          $ref: "#/components/schemas/Elevation"
+        missionProfileArn:
+          $ref: "#/components/schemas/MissionProfileArn"
+        postPassEndTime:
+          $ref: "#/components/schemas/Timestamp"
+        prePassStartTime:
+          $ref: "#/components/schemas/Timestamp"
+        satelliteArn:
+          $ref: "#/components/schemas/satelliteArn"
+        startTime:
+          $ref: "#/components/schemas/Timestamp"
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+      description: <p/>
+    GetConfigResponse:
+      type: object
+      required:
+        - configArn
+        - configData
+        - configId
+        - name
+      properties:
+        configArn:
+          $ref: "#/components/schemas/ConfigArn"
+        configData:
+          $ref: "#/components/schemas/ConfigTypeData"
+        configId:
+          $ref: "#/components/schemas/String"
+        configType:
+          $ref: "#/components/schemas/ConfigCapabilityType"
+        name:
+          $ref: "#/components/schemas/String"
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+      description: <p/>
+    GetDataflowEndpointGroupResponse:
+      type: object
+      properties:
+        dataflowEndpointGroupArn:
+          $ref: "#/components/schemas/DataflowEndpointGroupArn"
+        dataflowEndpointGroupId:
+          $ref: "#/components/schemas/String"
+        endpointsDetails:
+          $ref: "#/components/schemas/EndpointDetailsList"
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+      description: <p/>
+    GetMissionProfileResponse:
+      type: object
+      properties:
+        contactPostPassDurationSeconds:
+          $ref: "#/components/schemas/DurationInSeconds"
+        contactPrePassDurationSeconds:
+          $ref: "#/components/schemas/DurationInSeconds"
+        dataflowEdges:
+          $ref: "#/components/schemas/DataflowEdgeList"
+        minimumViableContactDurationSeconds:
+          $ref: "#/components/schemas/DurationInSeconds"
+        missionProfileArn:
+          $ref: "#/components/schemas/MissionProfileArn"
+        missionProfileId:
+          $ref: "#/components/schemas/String"
+        name:
+          $ref: "#/components/schemas/String"
+        region:
+          $ref: "#/components/schemas/String"
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+        trackingConfigArn:
+          $ref: "#/components/schemas/ConfigArn"
+      description: <p/>
+    ListConfigsResponse:
+      type: object
+      properties:
+        configList:
+          $ref: "#/components/schemas/ConfigList"
+        nextToken:
+          $ref: "#/components/schemas/String"
+      description: <p/>
+    ListContactsResponse:
+      type: object
+      properties:
+        contactList:
+          $ref: "#/components/schemas/ContactList"
+        nextToken:
+          $ref: "#/components/schemas/String"
+      description: <p/>
+    ContactStatus:
+      type: string
+      enum:
+        - AVAILABLE
+        - AWS_CANCELLED
+        - CANCELLED
+        - COMPLETED
+        - FAILED
+        - FAILED_TO_SCHEDULE
+        - PASS
+        - POSTPASS
+        - PREPASS
+        - SCHEDULED
+        - SCHEDULING
+    ListDataflowEndpointGroupsResponse:
+      type: object
+      properties:
+        dataflowEndpointGroupList:
+          $ref: "#/components/schemas/DataflowEndpointGroupList"
+        nextToken:
+          $ref: "#/components/schemas/String"
+      description: <p/>
+    ListMissionProfilesResponse:
+      type: object
+      properties:
+        missionProfileList:
+          $ref: "#/components/schemas/MissionProfileList"
+        nextToken:
+          $ref: "#/components/schemas/String"
+      description: <p/>
+    GetMinuteUsageResponse:
+      type: object
+      properties:
+        estimatedMinutesRemaining:
+          $ref: "#/components/schemas/Integer"
+        isReservedMinutesCustomer:
+          $ref: "#/components/schemas/Boolean"
+        totalReservedMinuteAllocation:
+          $ref: "#/components/schemas/Integer"
+        totalScheduledMinutes:
+          $ref: "#/components/schemas/Integer"
+        upcomingMinutesScheduled:
+          $ref: "#/components/schemas/Integer"
+      description: <p/>
+    GetSatelliteResponse:
+      type: object
+      properties:
+        dateCreated:
+          $ref: "#/components/schemas/Timestamp"
+        lastUpdated:
+          $ref: "#/components/schemas/Timestamp"
+        noradSatelliteID:
+          $ref: "#/components/schemas/noradSatelliteID"
+        satelliteArn:
+          $ref: "#/components/schemas/satelliteArn"
+        satelliteId:
+          $ref: "#/components/schemas/Uuid"
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+      description: <p/>
+    ListGroundStationsResponse:
+      type: object
+      properties:
+        groundStationList:
+          $ref: "#/components/schemas/GroundStationList"
+        nextToken:
+          $ref: "#/components/schemas/String"
+      description: <p/>
+    ListSatellitesResponse:
+      type: object
+      properties:
+        nextToken:
+          $ref: "#/components/schemas/String"
+        satellites:
+          $ref: "#/components/schemas/SatelliteList"
+      description: <p/>
+    ListTagsForResourceResponse:
+      type: object
+      properties:
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+      description: <p/>
+    TagResourceResponse:
+      type: object
+      properties: {}
+      description: <p/>
+    UntagResourceResponse:
+      type: object
+      properties: {}
+      description: <p/>
+    ConfigTypeData:
+      type: object
+      properties:
+        antennaDownlinkConfig:
+          $ref: "#/components/schemas/AntennaDownlinkConfig"
+        antennaDownlinkDemodDecodeConfig:
+          $ref: "#/components/schemas/AntennaDownlinkDemodDecodeConfig"
+        antennaUplinkConfig:
+          $ref: "#/components/schemas/AntennaUplinkConfig"
+        dataflowEndpointConfig:
+          $ref: "#/components/schemas/DataflowEndpointConfig"
+        trackingConfig:
+          $ref: "#/components/schemas/TrackingConfig"
+        uplinkEchoConfig:
+          $ref: "#/components/schemas/UplinkEchoConfig"
+      description: >-
+        <p>Object containing the parameters for a <code>Config</code>.</p>
+                 <p>See the subtype definitions for what each type of <code>Config</code> contains.</p>
+    ConfigCapabilityType:
+      type: string
+      enum:
+        - antenna-downlink
+        - antenna-downlink-demod-decode
+        - antenna-uplink
+        - dataflow-endpoint
+        - tracking
+        - uplink-echo
+    SafeName:
+      type: string
+      pattern: ^[ a-zA-Z0-9_:-]+$
+      minLength: 1
+      maxLength: 256
+    UpdateConfigRequest:
+      type: object
+      required:
+        - configData
+        - name
+      properties:
+        configData:
+          $ref: "#/components/schemas/ConfigTypeData"
+        name:
+          $ref: "#/components/schemas/SafeName"
+      description: <p/>
+    noradSatelliteID:
+      type: integer
+      minimum: 1
+      maximum: 99999
+    GroundStationData:
+      type: object
+      properties:
+        groundStationId:
+          $ref: "#/components/schemas/String"
+        groundStationName:
+          $ref: "#/components/schemas/String"
+        region:
+          $ref: "#/components/schemas/String"
+      description: Information about the ground station data.
+    GetConfigRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    GroundStationList:
+      type: array
+      items:
+        $ref: "#/components/schemas/GroundStationData"
+    SecurityGroupIdList:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    DataflowEndpoint:
+      type: object
+      properties:
+        address:
+          $ref: "#/components/schemas/SocketAddress"
+        name:
+          $ref: "#/components/schemas/SafeName"
+        status:
+          $ref: "#/components/schemas/EndpointStatus"
+      description: Information about a dataflow endpoint.
+    SecurityDetails:
+      type: object
+      required:
+        - roleArn
+        - securityGroupIds
+        - subnetIds
+      properties:
+        roleArn:
+          $ref: "#/components/schemas/RoleArn"
+        securityGroupIds:
+          $ref: "#/components/schemas/SecurityGroupIdList"
+        subnetIds:
+          $ref: "#/components/schemas/SubnetList"
+      description: Information about endpoints.
+    DataflowEndpointGroupArn:
+      type: string
+    Integer:
+      type: integer
+    Boolean:
+      type: boolean
+    MissionProfileArn:
+      type: string
+    MissionProfileListItem:
+      type: object
+      properties:
+        missionProfileArn:
+          $ref: "#/components/schemas/MissionProfileArn"
+        missionProfileId:
+          $ref: "#/components/schemas/String"
+        name:
+          $ref: "#/components/schemas/String"
+        region:
+          $ref: "#/components/schemas/String"
+      description: Item in a list of mission profiles.
+    SatelliteListItem:
+      type: object
+      properties:
+        noradSatelliteID:
+          $ref: "#/components/schemas/noradSatelliteID"
+        satelliteArn:
+          $ref: "#/components/schemas/satelliteArn"
+        satelliteId:
+          $ref: "#/components/schemas/Uuid"
+      description: Item in a list of satellites.
+    SatelliteList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SatelliteListItem"
+    DataflowEndpointGroupList:
+      type: array
+      items:
+        $ref: "#/components/schemas/DataflowEndpointListItem"
+    DecodeConfig:
+      type: object
+      required:
+        - unvalidatedJSON
+      properties:
+        unvalidatedJSON:
+          $ref: "#/components/schemas/JsonString"
+      description: Information about the decode <code>Config</code>.
+    DemodulationConfig:
+      type: object
+      required:
+        - unvalidatedJSON
+      properties:
+        unvalidatedJSON:
+          $ref: "#/components/schemas/JsonString"
+      description: Information about the demodulation <code>Config</code>.
+    SpectrumConfig:
+      type: object
+      required:
+        - bandwidth
+        - centerFrequency
+      properties:
+        bandwidth:
+          $ref: "#/components/schemas/FrequencyBandwidth"
+        centerFrequency:
+          $ref: "#/components/schemas/Frequency"
+        polarization:
+          $ref: "#/components/schemas/Polarization"
+      description: Object that describes a spectral <code>Config</code>.
+    SubnetList:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    Polarization:
+      type: string
+      enum:
+        - LEFT_HAND
+        - NONE
+        - RIGHT_HAND
+    ConfigListItem:
+      type: object
+      properties:
+        configArn:
+          $ref: "#/components/schemas/ConfigArn"
+        configId:
+          $ref: "#/components/schemas/String"
+        configType:
+          $ref: "#/components/schemas/ConfigCapabilityType"
+        name:
+          $ref: "#/components/schemas/String"
+      description: An item in a list of <code>Config</code> objects.
+    ConfigList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ConfigListItem"
+    UplinkSpectrumConfig:
+      type: object
+      required:
+        - centerFrequency
+      properties:
+        centerFrequency:
+          $ref: "#/components/schemas/Frequency"
+        polarization:
+          $ref: "#/components/schemas/Polarization"
+      description: Information about the uplink spectral <code>Config</code>.
+    Eirp:
+      type: object
+      required:
+        - units
+        - value
+      properties:
+        units:
+          $ref: "#/components/schemas/EirpUnits"
+        value:
+          $ref: "#/components/schemas/Double"
+      description: Object that represents EIRP.
+    EndpointStatus:
+      type: string
+      enum:
+        - created
+        - creating
+        - deleted
+        - deleting
+        - failed
+    ConfigArn:
+      type: string
+    JsonString:
+      type: string
+      minLength: 2
+      maxLength: 8192
+    DeleteDataflowEndpointGroupRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    MissionProfileList:
+      type: array
+      items:
+        $ref: "#/components/schemas/MissionProfileListItem"
+    TagsMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/String"
+    CreateConfigRequest:
+      type: object
+      required:
+        - configData
+        - name
+      properties:
+        configData:
+          $ref: "#/components/schemas/ConfigTypeData"
+        name:
+          $ref: "#/components/schemas/SafeName"
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+      description: <p/>
+    FrequencyUnits:
+      type: string
+      enum:
+        - GHz
+        - MHz
+        - kHz
+    Double:
+      type: number
+      format: double
+    Frequency:
+      type: object
+      required:
+        - units
+        - value
+      properties:
+        units:
+          $ref: "#/components/schemas/FrequencyUnits"
+        value:
+          $ref: "#/components/schemas/Double"
+      description: Object that describes the frequency.
+    RoleArn:
+      type: string
+    Criticality:
+      type: string
+      enum:
+        - PREFERRED
+        - REMOVED
+        - REQUIRED
+    EndpointDetailsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/EndpointDetails"
+    CreateDataflowEndpointGroupRequest:
+      type: object
+      required:
+        - endpointDetails
+      properties:
+        endpointDetails:
+          $ref: "#/components/schemas/EndpointDetailsList"
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+      description: <p/>
+    AngleUnits:
+      type: string
+      enum:
+        - DEGREE_ANGLE
+        - RADIAN
+    Elevation:
+      type: object
+      required:
+        - unit
+        - value
+      properties:
+        unit:
+          $ref: "#/components/schemas/AngleUnits"
+        value:
+          $ref: "#/components/schemas/Double"
+      description: Elevation angle of the satellite in the sky during a contact.
+    GetSatelliteRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    CancelContactRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    TagKeys:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    UntagResourceRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    satelliteArn:
+      type: string
+    DurationInSeconds:
+      type: integer
+      minimum: 1
+      maximum: 21600
+    DataflowEdgeList:
+      type: array
+      items:
+        $ref: "#/components/schemas/DataflowEdge"
+    ListGroundStationsRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    DescribeContactRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    Timestamp:
+      type: string
+      format: date-time
+    DeleteConfigRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    BandwidthUnits:
+      type: string
+      enum:
+        - GHz
+        - MHz
+        - kHz
+    FrequencyBandwidth:
+      type: object
+      required:
+        - units
+        - value
+      properties:
+        units:
+          $ref: "#/components/schemas/BandwidthUnits"
+        value:
+          $ref: "#/components/schemas/Double"
+      description: Object that describes the frequency bandwidth.
+    EirpUnits:
+      type: string
+      enum:
+        - dBW
+    ListMissionProfilesRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    Uuid:
+      type: string
+      pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9\
+        ]{12}"
+      minLength: 1
+      maxLength: 128
+    StatusList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ContactStatus"
+    ListContactsRequest:
+      type: object
+      required:
+        - endTime
+        - startTime
+        - statusList
+      properties:
+        endTime:
+          $ref: "#/components/schemas/Timestamp"
+        groundStation:
+          $ref: "#/components/schemas/String"
+        maxResults:
+          $ref: "#/components/schemas/Integer"
+        missionProfileArn:
+          $ref: "#/components/schemas/MissionProfileArn"
+        nextToken:
+          $ref: "#/components/schemas/String"
+        satelliteArn:
+          $ref: "#/components/schemas/satelliteArn"
+        startTime:
+          $ref: "#/components/schemas/Timestamp"
+        statusList:
+          $ref: "#/components/schemas/StatusList"
+      description: <p/>
+    ContactData:
+      type: object
+      properties:
+        contactId:
+          $ref: "#/components/schemas/String"
+        contactStatus:
+          $ref: "#/components/schemas/ContactStatus"
+        endTime:
+          $ref: "#/components/schemas/Timestamp"
+        errorMessage:
+          $ref: "#/components/schemas/String"
+        groundStation:
+          $ref: "#/components/schemas/String"
+        maximumElevation:
+          $ref: "#/components/schemas/Elevation"
+        missionProfileArn:
+          $ref: "#/components/schemas/MissionProfileArn"
+        postPassEndTime:
+          $ref: "#/components/schemas/Timestamp"
+        prePassStartTime:
+          $ref: "#/components/schemas/Timestamp"
+        satelliteArn:
+          $ref: "#/components/schemas/satelliteArn"
+        startTime:
+          $ref: "#/components/schemas/Timestamp"
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+      description: Data describing a contact.
+    SocketAddress:
+      type: object
+      required:
+        - name
+        - port
+      properties:
+        name:
+          $ref: "#/components/schemas/String"
+        port:
+          $ref: "#/components/schemas/Integer"
+      description: Information about the socket address.
+    ListConfigsRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    DeleteMissionProfileRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    DataflowEndpointListItem:
+      type: object
+      properties:
+        dataflowEndpointGroupArn:
+          $ref: "#/components/schemas/DataflowEndpointGroupArn"
+        dataflowEndpointGroupId:
+          $ref: "#/components/schemas/String"
+      description: Item in a list of <code>DataflowEndpoint</code> groups.
+    ContactList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ContactData"
+    GetMissionProfileRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    CreateMissionProfileRequest:
+      type: object
+      required:
+        - dataflowEdges
+        - minimumViableContactDurationSeconds
+        - name
+        - trackingConfigArn
+      properties:
+        contactPostPassDurationSeconds:
+          $ref: "#/components/schemas/DurationInSeconds"
+        contactPrePassDurationSeconds:
+          $ref: "#/components/schemas/DurationInSeconds"
+        dataflowEdges:
+          $ref: "#/components/schemas/DataflowEdgeList"
+        minimumViableContactDurationSeconds:
+          $ref: "#/components/schemas/DurationInSeconds"
+        name:
+          $ref: "#/components/schemas/SafeName"
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+        trackingConfigArn:
+          $ref: "#/components/schemas/ConfigArn"
+      description: <p/>
+    ReserveContactRequest:
+      type: object
+      required:
+        - endTime
+        - groundStation
+        - missionProfileArn
+        - satelliteArn
+        - startTime
+      properties:
+        endTime:
+          $ref: "#/components/schemas/Timestamp"
+        groundStation:
+          $ref: "#/components/schemas/String"
+        missionProfileArn:
+          $ref: "#/components/schemas/MissionProfileArn"
+        satelliteArn:
+          $ref: "#/components/schemas/satelliteArn"
+        startTime:
+          $ref: "#/components/schemas/Timestamp"
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+      description: <p/>
+    ListTagsForResourceRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    ListDataflowEndpointGroupsRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    ListSatellitesRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    UpdateMissionProfileRequest:
+      type: object
+      properties:
+        contactPostPassDurationSeconds:
+          $ref: "#/components/schemas/DurationInSeconds"
+        contactPrePassDurationSeconds:
+          $ref: "#/components/schemas/DurationInSeconds"
+        dataflowEdges:
+          $ref: "#/components/schemas/DataflowEdgeList"
+        minimumViableContactDurationSeconds:
+          $ref: "#/components/schemas/DurationInSeconds"
+        name:
+          $ref: "#/components/schemas/SafeName"
+        trackingConfigArn:
+          $ref: "#/components/schemas/ConfigArn"
+      description: <p/>
+    TagResourceRequest:
+      type: object
+      properties:
+        tags:
+          $ref: "#/components/schemas/TagsMap"
+      description: <p/>
+    GetDataflowEndpointGroupRequest:
+      type: object
+      properties: {}
+      description: <p/>
+    GetMinuteUsageRequest:
+      type: object
+      required:
+        - month
+        - year
+      properties:
+        month:
+          $ref: "#/components/schemas/Integer"
+        year:
+          $ref: "#/components/schemas/Integer"
+      description: <p/>

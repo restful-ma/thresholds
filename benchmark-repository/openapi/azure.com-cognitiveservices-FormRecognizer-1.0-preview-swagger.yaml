@@ -1,0 +1,687 @@
+openapi: 3.0.0
+info:
+  description: Extracts information from forms and images into structured data based on a
+    model created by a set of representative training forms.
+  title: Form Recognizer Client
+  version: 1.0-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/FormRecognizer/preview/v1.0/FormRecognizer.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: cognitiveservices-FormRecognizer
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - apim_key: []
+paths:
+  /custom/models:
+    get:
+      description: Get information about all trained custom models
+      operationId: GetCustomModels
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModelsResult"
+              examples:
+                Get Model from id:
+                  $ref: "#/components/examples/Get_Model_from_id"
+        default:
+          description: Response entity accompanying non-successful responses containing
+            additional details about the error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Get Models
+  "/custom/models/{id}":
+    delete:
+      description: Delete model artifacts.
+      operationId: DeleteCustomModel
+      parameters:
+        - description: The identifier of the model to delete.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            Get Model from id:
+              value: "{Model Id}"
+      responses:
+        "204":
+          description: Successfully removed model artifacts.
+        default:
+          description: Response entity accompanying non-successful responses containing
+            additional details about the error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Delete Model
+    get:
+      description: Get information about a model.
+      operationId: GetCustomModel
+      parameters:
+        - description: Model identifier.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            Get Model from id:
+              value: "{Model Id}"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModelResult"
+              examples:
+                Get Model from id:
+                  $ref: "#/components/examples/Get_Model_from_id"
+        default:
+          description: Response entity accompanying non-successful responses containing
+            additional details about the error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Get Model
+  "/custom/models/{id}/analyze":
+    post:
+      description: Extract key-value pairs from a given document. The input document must
+        be of one of the supported content types - 'application/pdf',
+        'image/jpeg' or 'image/png'. A success response is returned in JSON.
+      operationId: AnalyzeWithCustomModel
+      parameters:
+        - description: Model Identifier to analyze the document with.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            Get Model from id:
+              value: "{Model Id}"
+        - description: An optional list of known keys to extract the values for.
+          in: query
+          name: keys
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            uniqueItems: false
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                form_stream:
+                  description: A pdf document or image (jpg,png) file to analyze.
+                  type: string
+                  format: binary
+              required:
+                - form_stream
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyzeResult"
+              examples:
+                Get Model from id:
+                  $ref: "#/components/examples/Get_Model_from_id"
+        default:
+          description: Response entity accompanying non-successful responses containing
+            additional details about the error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Analyze Form
+  "/custom/models/{id}/keys":
+    get:
+      description: "Retrieve the keys that were\r
+
+        \ extracted during the training of the specified model."
+      operationId: GetExtractedKeys
+      parameters:
+        - description: Model identifier.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          examples:
+            Get Keys from Model:
+              value: "{Model Id}"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KeysResult"
+              examples:
+                Get Keys from Model:
+                  $ref: "#/components/examples/Get_Keys_from_Model"
+        default:
+          description: Response entity accompanying non-successful responses containing
+            additional details about the error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Get Keys
+  /custom/train:
+    post:
+      description: "Create and train a custom model. The train request must include a
+        source parameter that is either an externally accessible Azure Storage
+        blob container Uri (preferably a Shared Access Signature Uri) or valid
+        path to a data folder in a locally mounted drive. When local paths are
+        specified, they must follow the Linux/Unix path format and be an
+        absolute path rooted to the input mount configuration\r
+
+        \ setting value e.g., if '{Mounts:Input}' configuration setting
+        value is '/input' then a valid source path would be
+        '/input/contosodataset'. All data to be trained is expected to be
+        directly under the source folder. Subfolders are not supported. Models
+        are trained using documents that are of the following content type -
+        'application/pdf', 'image/jpeg' and 'image/png'.\"\r
+
+        \ Other type of content is ignored."
+      operationId: TrainCustomModel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrainRequest"
+        description: Request object for training.
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrainResult"
+              examples:
+                Train new model example:
+                  $ref: "#/components/examples/Train_new_model_example"
+                "Train new model example, subfolder filter options":
+                  $ref: "#/components/examples/Train_new_model_example_subfolder_fi\
+                    lter_options"
+        default:
+          description: Response entity accompanying non-successful responses containing
+            additional details about the error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Train Model
+servers:
+  - url: https://azure.local
+  - url: "{Endpoint}/formrecognizer/v1.0-preview"
+    variables:
+      Endpoint:
+        description: "Supported Cognitive Services endpoints (protocol and hostname, for
+          example: https://westus2.api.cognitive.microsoft.com)."
+        x-ms-parameter-location: client
+        x-ms-skip-url-encoding: true
+        default: ""
+components:
+  examples:
+    Get_Model_from_id:
+      value:
+        errors:
+          - errorMessage: "Page1: Field not extracted"
+        pages:
+          - clusterId: 0
+            height: 800
+            keyValuePairs:
+              - key:
+                  - boundingBox:
+                      - 57.4
+                      - 683.1
+                      - 100.5
+                      - 683.1
+                      - 100.5
+                      - 673.7
+                      - 57.4
+                      - 673.7
+                    text: "Address:"
+                value:
+                  - boundingBox:
+                      - 57.4
+                      - 672.2
+                      - 126.6
+                      - 672.2
+                      - 126.6
+                      - 658.9
+                      - 57.4
+                      - 658.9
+                    confidence: 0.9
+                    text: 1 Microsoft Way
+            number: 1
+            tables:
+              - columns:
+                  - entries:
+                      - - boundingBox:
+                            - 305.6
+                            - 692.1
+                            - 403.5
+                            - 692.1
+                            - 403.5
+                            - 684.2
+                            - 305.6
+                            - 684.2
+                          confidence: 0.9
+                          text: "38772349"
+                    header:
+                      - boundingBox:
+                          - 38.5
+                          - 585.2
+                          - 113.4
+                          - 585.2
+                          - 113.4
+                          - 575.8
+                          - 38.5
+                          - 575.8
+                        text: InvoiceNumber
+                id: table_0
+            width: 600
+        status: success
+    Get_Keys_from_Model:
+      value:
+        clusters:
+          "0":
+            - Invoice
+            - "123112313"
+          "1":
+            - "Please remit payment to:"
+            - Microsoft
+    Train_new_model_example:
+      value:
+        errors: []
+        modelId: ad1901b6-ddaa-4249-8938-3f03f65cc893
+        trainingDocuments:
+          - documentName: 0.pdf
+            errors: []
+            pages: 1
+            status: success
+          - documentName: 1.pdf
+            errors: []
+            pages: 1
+            status: success
+          - documentName: 2.pdf
+            errors: []
+            pages: 1
+            status: success
+          - documentName: 3.pdf
+            errors: []
+            pages: 1
+            status: success
+          - documentName: 4.pdf
+            errors: []
+            pages: 1
+            status: success
+    Train_new_model_example_subfolder_filter_options:
+      value:
+        errors: []
+        modelId: ad1901b6-ddaa-4249-8938-3f03f65cc893
+        trainingDocuments:
+          - documentName: 0.pdf
+            errors: []
+            pages: 1
+            status: success
+          - documentName: 1.pdf
+            errors: []
+            pages: 1
+            status: success
+          - documentName: 2.pdf
+            errors: []
+            pages: 1
+            status: success
+          - documentName: 3.pdf
+            errors: []
+            pages: 1
+            status: success
+          - documentName: 4.pdf
+            errors: []
+            pages: 1
+            status: success
+  parameters:
+    Endpoint:
+      description: "Supported Cognitive Services endpoints (protocol and hostname, for
+        example: https://westus2.api.cognitive.microsoft.com)."
+      in: path
+      name: Endpoint
+      required: true
+      x-ms-parameter-location: client
+      x-ms-skip-url-encoding: true
+      schema:
+        type: string
+  securitySchemes:
+    apim_key:
+      in: header
+      name: Ocp-Apim-Subscription-Key
+      type: apiKey
+  schemas:
+    AnalyzeResult:
+      description: Analyze API call result.
+      properties:
+        errors:
+          description: "List of errors reported during the analyze\r
+
+            operation."
+          items:
+            $ref: "#/components/schemas/FormOperationError"
+          type: array
+          uniqueItems: false
+        pages:
+          description: "Page level information extracted in the analyzed\r
+
+            document."
+          items:
+            $ref: "#/components/schemas/ExtractedPage"
+          type: array
+          uniqueItems: false
+        status:
+          description: Status of the analyze operation.
+          enum:
+            - success
+            - partialSuccess
+            - failure
+          type: string
+      type: object
+    ErrorInformation:
+      properties:
+        code:
+          type: string
+        innerError:
+          $ref: "#/components/schemas/InnerError"
+        message:
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorInformation"
+      type: object
+    ExtractedKeyValuePair:
+      description: "Representation of a key-value pair as a list\r
+
+        of key and value tokens."
+      properties:
+        key:
+          description: List of tokens for the extracted key in a key-value pair.
+          items:
+            $ref: "#/components/schemas/ExtractedToken"
+          type: array
+          uniqueItems: false
+        value:
+          description: List of tokens for the extracted value in a key-value pair.
+          items:
+            $ref: "#/components/schemas/ExtractedToken"
+          type: array
+          uniqueItems: false
+      type: object
+    ExtractedPage:
+      description: "Extraction information of a single page in a\r
+
+        with a document."
+      properties:
+        clusterId:
+          description: Cluster identifier.
+          format: int32
+          type: integer
+        height:
+          description: Height of the page (in pixels).
+          format: int32
+          type: integer
+        keyValuePairs:
+          description: List of Key-Value pairs extracted from the page.
+          items:
+            $ref: "#/components/schemas/ExtractedKeyValuePair"
+          type: array
+          uniqueItems: false
+        number:
+          description: Page number.
+          format: int32
+          type: integer
+        tables:
+          description: List of Tables and their information extracted from the page.
+          items:
+            $ref: "#/components/schemas/ExtractedTable"
+          type: array
+          uniqueItems: false
+        width:
+          description: Width of the page (in pixels).
+          format: int32
+          type: integer
+      type: object
+    ExtractedTable:
+      description: "Extraction information about a table\r
+
+        contained in a page."
+      properties:
+        columns:
+          description: List of columns contained in the table.
+          items:
+            $ref: "#/components/schemas/ExtractedTableColumn"
+          type: array
+          uniqueItems: false
+        id:
+          description: Table identifier.
+          type: string
+      type: object
+    ExtractedTableColumn:
+      description: "Extraction information of a column in\r
+
+        a table."
+      properties:
+        entries:
+          description: "Extracted text for each cell of a column. Each cell\r
+
+            in the column can have a list of one or more tokens."
+          items:
+            items:
+              $ref: "#/components/schemas/ExtractedToken"
+            type: array
+            uniqueItems: false
+          type: array
+          uniqueItems: false
+        header:
+          description: List of extracted tokens for the column header.
+          items:
+            $ref: "#/components/schemas/ExtractedToken"
+          type: array
+          uniqueItems: false
+      type: object
+    ExtractedToken:
+      description: Canonical representation of single extracted text.
+      properties:
+        boundingBox:
+          description: "Bounding box of the extracted text. Represents the\r
+
+            location of the extracted text as a pair of\r
+
+            cartesian co-ordinates. The co-ordinate pairs are
+            arranged by\r
+
+            top-left, top-right, bottom-right and bottom-left
+            endpoints box\r
+
+            with origin reference from the bottom-left of the page."
+          items:
+            format: double
+            type: number
+          type: array
+          uniqueItems: false
+        confidence:
+          description: A measure of accuracy of the extracted text.
+          format: double
+          type: number
+        text:
+          description: String value of the extracted text.
+          type: string
+      type: object
+    FormDocumentReport:
+      properties:
+        documentName:
+          description: Reference to the data that the report is for.
+          type: string
+        errors:
+          description: List of errors per page.
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        pages:
+          description: Total number of pages trained on.
+          format: int32
+          type: integer
+        status:
+          description: Status of the training operation.
+          enum:
+            - success
+            - partialSuccess
+            - failure
+          type: string
+      type: object
+    FormOperationError:
+      description: Error reported during an operation.
+      properties:
+        errorMessage:
+          description: Message reported during the train operation.
+          type: string
+      type: object
+    InnerError:
+      properties:
+        requestId:
+          type: string
+      type: object
+    KeysResult:
+      description: "Result of an operation to get\r
+
+        the keys extracted by a model."
+      properties:
+        clusters:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+            uniqueItems: false
+          description: Object mapping ClusterIds to Key lists.
+          type: object
+      type: object
+    ModelResult:
+      description: Result of a model status query operation.
+      properties:
+        createdDateTime:
+          description: Get or set the created date time of the model.
+          format: date-time
+          type: string
+        lastUpdatedDateTime:
+          description: Get or set the model last updated datetime.
+          format: date-time
+          type: string
+        modelId:
+          description: Get or set model identifier.
+          format: uuid
+          type: string
+          nullable: false
+        status:
+          description: Get or set the status of model.
+          enum:
+            - created
+            - ready
+            - invalid
+          type: string
+      type: object
+    ModelsResult:
+      description: Result of query operation to fetch multiple models.
+      properties:
+        models:
+          description: Collection of models.
+          items:
+            $ref: "#/components/schemas/ModelResult"
+          type: array
+          uniqueItems: false
+      type: object
+    TrainRequest:
+      description: Contract to initiate a train request.
+      properties:
+        source:
+          description: Get or set source path.
+          maxLength: 2048
+          minLength: 0
+          type: string
+        sourceFilter:
+          $ref: "#/components/schemas/TrainSourceFilter"
+      required:
+        - source
+      type: object
+    TrainResult:
+      description: Response of the Train API call.
+      properties:
+        errors:
+          description: Errors returned during the training operation.
+          items:
+            $ref: "#/components/schemas/FormOperationError"
+          type: array
+          uniqueItems: false
+        modelId:
+          description: Identifier of the model.
+          format: uuid
+          type: string
+          nullable: false
+        trainingDocuments:
+          description: "List of documents used to train the model and the\r
+
+            train operation error reported by each."
+          items:
+            $ref: "#/components/schemas/FormDocumentReport"
+          type: array
+          uniqueItems: false
+      type: object
+    TrainSourceFilter:
+      description: Filters to be applied when traversing a data source.
+      properties:
+        includeSubFolders:
+          description: "A flag to indicate if sub folders within the set of\r
+
+            prefix folders will also need to be included when
+            searching\r
+
+            for content to be preprocessed."
+          type: boolean
+        prefix:
+          description: "A case-sensitive prefix string to filter content\r
+
+            under the source location. For e.g., when using a Azure
+            Blob\r
+
+            Uri use the prefix to restrict subfolders for content."
+          maxLength: 128
+          minLength: 0
+          type: string
+      type: object

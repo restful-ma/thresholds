@@ -1,0 +1,1455 @@
+openapi: 3.0.0
+info:
+  description: The Azure management API provides a RESTful set of web services that
+    interact with Azure Key Vault.
+  title: KeyVaultManagementClient
+  version: 2018-02-14-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2018-02-14-preview/keyvault.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: keyvault
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/checkNameAvailability":
+    post:
+      description: Checks that the vault name is valid and is not already in use.
+      operationId: Vaults_CheckNameAvailability
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VaultCheckNameAvailabilityParameters"
+        description: The name of the vault.
+        required: true
+      responses:
+        "200":
+          description: OK -- Operation to check the vault name availability was successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckNameAvailabilityResult"
+              examples:
+                Validate a vault name:
+                  $ref: "#/components/examples/Validate_a_vault_name"
+      tags:
+        - Vaults
+  "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedVaults":
+    get:
+      description: Gets information about the deleted vaults in a subscription.
+      operationId: Vaults_ListDeleted
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Retrieved information about all deleted key vaults in a subscription.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedVaultListResult"
+              examples:
+                List deleted vaults in the specified subscription:
+                  $ref: "#/components/examples/List_deleted_vaults_in_the_specified\
+                    _subscription"
+      tags:
+        - Vaults
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults/{vaultName}":
+    get:
+      description: Gets the deleted Azure key vault.
+      operationId: Vaults_GetDeleted
+      parameters:
+        - description: The name of the vault.
+          in: path
+          name: vaultName
+          required: true
+          schema:
+            type: string
+          examples:
+            Retrieve a deleted vault:
+              value: sample-vault
+        - description: The location of the deleted vault.
+          in: path
+          name: location
+          required: true
+          schema:
+            type: string
+          examples:
+            Retrieve a deleted vault:
+              value: westus
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Retrieved information about the deleted vault.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedVault"
+              examples:
+                Retrieve a deleted vault:
+                  $ref: "#/components/examples/Retrieve_a_deleted_vault"
+      tags:
+        - Vaults
+  "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults/{vaultName}/purge":
+    post:
+      description: Permanently deletes the specified vault. aka Purges the deleted Azure
+        key vault.
+      operationId: Vaults_PurgeDeleted
+      parameters:
+        - description: The name of the soft-deleted vault.
+          in: path
+          name: vaultName
+          required: true
+          schema:
+            type: string
+          examples:
+            Purge a deleted vault:
+              value: sample-vault
+        - description: The location of the soft-deleted vault.
+          in: path
+          name: location
+          required: true
+          schema:
+            type: string
+          examples:
+            Purge a deleted vault:
+              value: westus
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: The vault is purged.
+        "202":
+          description: Vault is being purged.
+      tags:
+        - Vaults
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/vaults":
+    get:
+      description: The List operation gets information about the vaults associated with the
+        subscription.
+      operationId: Vaults_ListBySubscription
+      parameters:
+        - description: Maximum number of results to return.
+          in: query
+          name: $top
+          schema:
+            type: integer
+            format: int32
+          examples:
+            List vaults in the specified subscription:
+              value: 1
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Get information about all key vaults in the specified subscription.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultListResult"
+              examples:
+                List vaults in the specified subscription:
+                  $ref: "#/components/examples/List_vaults_in_the_specified_subscri\
+                    ption"
+      tags:
+        - Vaults
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults":
+    get:
+      description: The List operation gets information about the vaults associated with the
+        subscription and within the specified resource group.
+      operationId: Vaults_ListByResourceGroup
+      parameters:
+        - description: The name of the Resource Group to which the vault belongs.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            List vaults in the specified resource group:
+              value: sample-group
+        - description: Maximum number of results to return.
+          in: query
+          name: $top
+          schema:
+            type: integer
+            format: int32
+          examples:
+            List vaults in the specified resource group:
+              value: 1
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Get information about all key vaults in the specified resource group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultListResult"
+              examples:
+                List vaults in the specified resource group:
+                  $ref: "#/components/examples/List_vaults_in_the_specified_resourc\
+                    e_group"
+      tags:
+        - Vaults
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}":
+    delete:
+      description: Deletes the specified Azure key vault.
+      operationId: Vaults_Delete
+      parameters:
+        - description: The name of the Resource Group to which the vault belongs.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a vault:
+              value: sample-resource-group
+        - description: The name of the vault to delete
+          in: path
+          name: vaultName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a vault:
+              value: sample-vault
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK Response.
+      tags:
+        - Vaults
+    get:
+      description: Gets the specified Azure key vault.
+      operationId: Vaults_Get
+      parameters:
+        - description: The name of the Resource Group to which the vault belongs.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Retrieve a vault:
+              value: sample-resource-group
+        - description: The name of the vault.
+          in: path
+          name: vaultName
+          required: true
+          schema:
+            type: string
+          examples:
+            Retrieve a vault:
+              value: sample-vault
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Retrieved vault
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vault"
+              examples:
+                Retrieve a vault:
+                  $ref: "#/components/examples/Retrieve_a_vault"
+      tags:
+        - Vaults
+    patch:
+      description: Update a key vault in the specified subscription.
+      operationId: Vaults_Update
+      parameters:
+        - description: The name of the Resource Group to which the server belongs.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Update an existing vault:
+              value: sample-resource-group
+        - description: Name of the vault
+          in: path
+          name: vaultName
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9-]{3,24}$
+          examples:
+            Update an existing vault:
+              value: sample-vault
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VaultPatchParameters"
+        description: Parameters to patch the vault
+        required: true
+      responses:
+        "200":
+          description: Patched vault
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vault"
+              examples:
+                Update an existing vault:
+                  $ref: "#/components/examples/Update_an_existing_vault"
+        "201":
+          description: Patched vault
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vault"
+              examples:
+                Update an existing vault:
+                  $ref: "#/components/examples/Update_an_existing_vault"
+      tags:
+        - Vaults
+    put:
+      description: Create or update a key vault in the specified subscription.
+      operationId: Vaults_CreateOrUpdate
+      parameters:
+        - description: The name of the Resource Group to which the server belongs.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create a new vault or update an existing vault:
+              value: sample-resource-group
+            Create or update a vault with network acls:
+              value: sample-resource-group
+        - description: Name of the vault
+          in: path
+          name: vaultName
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9-]{3,24}$
+          examples:
+            Create a new vault or update an existing vault:
+              value: sample-vault
+            Create or update a vault with network acls:
+              value: sample-vault
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VaultCreateOrUpdateParameters"
+        description: Parameters to create or update the vault
+        required: true
+      responses:
+        "200":
+          description: Created or updated vault
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vault"
+              examples:
+                Create a new vault or update an existing vault:
+                  $ref: "#/components/examples/Create_a_new_vault_or_update_an_exis\
+                    ting_vault"
+                Create or update a vault with network acls:
+                  $ref: "#/components/examples/Create_or_update_a_vault_with_networ\
+                    k_acls"
+        "201":
+          description: Created or updated vault
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vault"
+              examples:
+                Create a new vault or update an existing vault:
+                  $ref: "#/components/examples/Create_a_new_vault_or_update_an_exis\
+                    ting_vault"
+                Create or update a vault with network acls:
+                  $ref: "#/components/examples/Create_or_update_a_vault_with_networ\
+                    k_acls"
+      tags:
+        - Vaults
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/accessPolicies/{operationKind}":
+    put:
+      description: Update access policies in a key vault in the specified subscription.
+      operationId: Vaults_UpdateAccessPolicy
+      parameters:
+        - description: The name of the Resource Group to which the vault belongs.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            "Add an access policy, or update an access policy with new permissions":
+              value: sample-group
+        - description: Name of the vault
+          in: path
+          name: vaultName
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9-]{3,24}$
+          examples:
+            "Add an access policy, or update an access policy with new permissions":
+              value: sample-vault
+        - description: Name of the operation
+          in: path
+          name: operationKind
+          required: true
+          x-ms-enum:
+            modelAsString: false
+            name: AccessPolicyUpdateKind
+          schema:
+            type: string
+            enum:
+              - add
+              - replace
+              - remove
+          examples:
+            "Add an access policy, or update an access policy with new permissions":
+              value: add
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VaultAccessPolicyParameters"
+        description: Access policy to merge into the vault
+        required: true
+      responses:
+        "200":
+          description: The updated access policies
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultAccessPolicyParameters"
+              examples:
+                "Add an access policy, or update an access policy with new permissions":
+                  $ref: "#/components/examples/Add_an_access_policy_or_update_an_ac\
+                    cess_policy_with_new_permissions"
+        "201":
+          description: The updated access policies
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultAccessPolicyParameters"
+              examples:
+                "Add an access policy, or update an access policy with new permissions":
+                  $ref: "#/components/examples/Add_an_access_policy_or_update_an_ac\
+                    cess_policy_with_new_permissions"
+      tags:
+        - Vaults
+  "/subscriptions/{subscriptionId}/resources":
+    get:
+      description: The List operation gets information about the vaults associated with the
+        subscription.
+      operationId: Vaults_List
+      parameters:
+        - description: The filter to apply on the operation.
+          in: query
+          name: $filter
+          required: true
+          schema:
+            type: string
+            enum:
+              - resourceType eq 'Microsoft.KeyVault/vaults'
+          examples:
+            List vaults in the specified subscription:
+              value: resourceType eq 'Microsoft.KeyVault/vaults'
+        - description: Maximum number of results to return.
+          in: query
+          name: $top
+          schema:
+            type: integer
+            format: int32
+          examples:
+            List vaults in the specified subscription:
+              value: 1
+        - description: Azure Resource Manager Api Version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            enum:
+              - 2015-11-01
+          examples:
+            List vaults in the specified subscription:
+              value: 2015-11-01
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Get information about all key vaults in the subscription.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceListResult"
+              examples:
+                List vaults in the specified subscription:
+                  $ref: "#/components/examples/List_vaults_in_the_specified_subscri\
+                    ption"
+      tags:
+        - Vaults
+      x-ms-pageable:
+        nextLinkName: nextLink
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Validate_a_vault_name:
+      value:
+        nameAvailable: true
+    List_deleted_vaults_in_the_specified_subscription:
+      value:
+        nextLink: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/deletedVaults?api-version=2018-02-14-preview&%24skiptoken=HY3RaoMwAEX%2fRcbeYhJrnRXKYNWOuqpME0sfNcYui0Yxade19N8ne7hcDlzOvVuKX81eKKmt4G4dooLQwgqsL2NGHUDYV6o68Z4rY1e388RtNvRQn2vNJjEaMSgNvcbneMUcsKg8BFwft8DndQ0w9hu2QOiFLRs4TsNFNHzSMBFsGvTQGvuD%2f5bVuTOw4R03vPkH%2fVqNAlzm5SxfOwh7ACOA8POTlvPjILlaU1ke8jImOc23JCppQVfZnna0DXc4ISc3vSVuRo5zJE6%2bj25C3vwk2v2kEV2mMn7PyOc1DbtNGkonnzuLym1G400uI5QRZj0efw%3d%3d
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedVaults/sample-vault
+            name: vault-agile-drawer-6404
+            properties:
+              deletionDate: 2017-01-01T00:00:59Z
+              location: westus
+              scheduledPurgeDate: 2017-04-01T00:00:59Z
+              tags: {}
+              vaultId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault
+            type: Microsoft.KeyVault/deletedVaults
+    Retrieve_a_deleted_vault:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedVaults/sample-vault
+        name: sample-vault
+        properties:
+          deletionDate: 2017-01-01T00:00:59Z
+          location: westus
+          scheduledPurgeDate: 2017-04-01T00:00:59Z
+          tags: {}
+          vaultId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault
+        type: Microsoft.KeyVault/deletedVaults
+    List_vaults_in_the_specified_subscription:
+      value:
+        nextLink: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resources?%24filter=resourceType+eq+%27Microsoft.KeyVault%2fvaults%27&%24top=4&api-version=2015-11-01&%24skiptoken=eyJuZXh0UGFydGl0aW9uS2V5IjoiMSE4IVEwTTJNVGMtIiwibmV4dFJvd0tleSI6IjEhMTMyIU5rUTRSVEU1UXpJelFUWXdORGd4UmpoRlFrSXhNVGhFUXpNd01EZEROVVJmVkVkT1RDMU5TVU5TVDFOUFJsUTZNa1ZMUlZsV1FWVk1WRG95UmxaQlZVeFVVeTFUVTFKSExVcEpUVG95UkZSRlUxUTZNa1JXUVZWTVZDMVhSVk5VVlZNLSJ9
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault
+            location: westus
+            name: sample-vault
+            tags: {}
+            type: Microsoft.KeyVault/vaults
+    List_vaults_in_the_specified_resource_group:
+      value:
+        nextLink: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults?api-version=2018-02-14-preview&$skiptoken=dmF1bHQtcGVza3ktanVyeS03MzA3Ng==
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault
+            location: westus
+            name: sample-vault
+            properties:
+              accessPolicies:
+                - objectId: 00000000-0000-0000-0000-000000000000
+                  permissions:
+                    certificates:
+                      - get
+                      - list
+                      - delete
+                      - create
+                      - import
+                      - update
+                      - managecontacts
+                      - getissuers
+                      - listissuers
+                      - setissuers
+                      - deleteissuers
+                      - manageissuers
+                      - recover
+                      - purge
+                    keys:
+                      - encrypt
+                      - decrypt
+                      - wrapKey
+                      - unwrapKey
+                      - sign
+                      - verify
+                      - get
+                      - list
+                      - create
+                      - update
+                      - import
+                      - delete
+                      - backup
+                      - restore
+                      - recover
+                      - purge
+                    secrets:
+                      - get
+                      - list
+                      - set
+                      - delete
+                      - backup
+                      - restore
+                      - recover
+                      - purge
+                  tenantId: 00000000-0000-0000-0000-000000000000
+              enableSoftDelete: true
+              enabledForDeployment: true
+              enabledForDiskEncryption: true
+              enabledForTemplateDeployment: true
+              sku:
+                family: A
+                name: premium
+              tenantId: 00000000-0000-0000-0000-000000000000
+              vaultUri: https://sample-vault.vault.azure.net/
+            tags: {}
+            type: Microsoft.KeyVault/vaults
+    Retrieve_a_vault:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault
+        location: westus
+        name: sample-vault
+        properties:
+          accessPolicies:
+            - objectId: 00000000-0000-0000-0000-000000000000
+              permissions:
+                certificates:
+                  - get
+                  - list
+                  - delete
+                  - create
+                  - import
+                  - update
+                  - managecontacts
+                  - getissuers
+                  - listissuers
+                  - setissuers
+                  - deleteissuers
+                  - manageissuers
+                  - recover
+                  - purge
+                keys:
+                  - encrypt
+                  - decrypt
+                  - wrapKey
+                  - unwrapKey
+                  - sign
+                  - verify
+                  - get
+                  - list
+                  - create
+                  - update
+                  - import
+                  - delete
+                  - backup
+                  - restore
+                  - recover
+                  - purge
+                secrets:
+                  - get
+                  - list
+                  - set
+                  - delete
+                  - backup
+                  - restore
+                  - recover
+                  - purge
+              tenantId: 00000000-0000-0000-0000-000000000000
+          enabledForDeployment: true
+          enabledForDiskEncryption: true
+          enabledForTemplateDeployment: true
+          sku:
+            family: A
+            name: standard
+          tenantId: 00000000-0000-0000-0000-000000000000
+          vaultUri: https://sample-vault.vault.azure.net
+        tags: {}
+        type: Microsoft.KeyVault/vaults
+    Update_an_existing_vault:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault
+        location: westus
+        name: sample-vault
+        properties:
+          accessPolicies:
+            - objectId: 00000000-0000-0000-0000-000000000000
+              permissions:
+                certificates:
+                  - get
+                  - list
+                  - delete
+                  - create
+                  - import
+                  - update
+                  - managecontacts
+                  - getissuers
+                  - listissuers
+                  - setissuers
+                  - deleteissuers
+                  - manageissuers
+                  - recover
+                  - purge
+                keys:
+                  - encrypt
+                  - decrypt
+                  - wrapKey
+                  - unwrapKey
+                  - sign
+                  - verify
+                  - get
+                  - list
+                  - create
+                  - update
+                  - import
+                  - delete
+                  - backup
+                  - restore
+                  - recover
+                  - purge
+                secrets:
+                  - get
+                  - list
+                  - set
+                  - delete
+                  - backup
+                  - restore
+                  - recover
+                  - purge
+              tenantId: 00000000-0000-0000-0000-000000000000
+          enabledForDeployment: true
+          enabledForDiskEncryption: true
+          enabledForTemplateDeployment: true
+          sku:
+            family: A
+            name: standard
+          tenantId: 00000000-0000-0000-0000-000000000000
+          vaultUri: https://sample-vault.vault.azure.net
+        tags: {}
+        type: Microsoft.KeyVault/vaults
+    Create_a_new_vault_or_update_an_existing_vault:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault
+        location: westus
+        name: sample-vault
+        properties:
+          accessPolicies:
+            - objectId: 00000000-0000-0000-0000-000000000000
+              permissions:
+                certificates:
+                  - get
+                  - list
+                  - delete
+                  - create
+                  - import
+                  - update
+                  - managecontacts
+                  - getissuers
+                  - listissuers
+                  - setissuers
+                  - deleteissuers
+                  - manageissuers
+                  - recover
+                  - purge
+                keys:
+                  - encrypt
+                  - decrypt
+                  - wrapKey
+                  - unwrapKey
+                  - sign
+                  - verify
+                  - get
+                  - list
+                  - create
+                  - update
+                  - import
+                  - delete
+                  - backup
+                  - restore
+                  - recover
+                  - purge
+                secrets:
+                  - get
+                  - list
+                  - set
+                  - delete
+                  - backup
+                  - restore
+                  - recover
+                  - purge
+              tenantId: 00000000-0000-0000-0000-000000000000
+          enabledForDeployment: true
+          enabledForDiskEncryption: true
+          enabledForTemplateDeployment: true
+          sku:
+            family: A
+            name: standard
+          tenantId: 00000000-0000-0000-0000-000000000000
+          vaultUri: https://sample-vault.vault.azure.net
+        tags: {}
+        type: Microsoft.KeyVault/vaults
+    Create_or_update_a_vault_with_network_acls:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault
+        location: westus
+        name: sample-vault
+        properties:
+          enabledForDeployment: true
+          enabledForDiskEncryption: true
+          enabledForTemplateDeployment: true
+          networkAcls:
+            bypass: AzureServices
+            defaultAction: Deny
+            ipRules:
+              - value: 124.56.78.91/32
+              - value: "'10.91.4.0/24'"
+            virtualNetworkRules:
+              - id: /subscriptions/subid/resourcegroups/rg1/providers/microsoft.network/virtualnetworks/test-vnet/subnets/subnet1
+          sku:
+            family: A
+            name: standard
+          tenantId: 00000000-0000-0000-0000-000000000000
+          vaultUri: https://sample-vault.vault.azure.net
+        tags: {}
+        type: Microsoft.KeyVault/vaults
+    Add_an_access_policy_or_update_an_access_policy_with_new_permissions:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault/accessPolicies/
+        properties:
+          accessPolicies:
+            - objectId: 00000000-0000-0000-0000-000000000000
+              permissions:
+                certificates:
+                  - get
+                keys:
+                  - encrypt
+                secrets:
+                  - get
+              tenantId: 00000000-0000-0000-0000-000000000000
+        type: Microsoft.KeyVault/vaults/accessPolicies
+  parameters:
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Validate a vault name:
+          value: 2018-02-14-preview
+        List deleted vaults in the specified subscription:
+          value: 2018-02-14-preview
+        Retrieve a deleted vault:
+          value: 2018-02-14-preview
+        Purge a deleted vault:
+          value: 2018-02-14-preview
+        List vaults in the specified subscription:
+          value: 2018-02-14-preview
+        List vaults in the specified resource group:
+          value: 2018-02-14-preview
+        Delete a vault:
+          value: 2018-02-14-preview
+        Retrieve a vault:
+          value: 2018-02-14-preview
+        Update an existing vault:
+          value: 2018-02-14-preview
+        Create a new vault or update an existing vault:
+          value: 2018-02-14-preview
+        Create or update a vault with network acls:
+          value: 2018-02-14-preview
+        "Add an access policy, or update an access policy with new permissions":
+          value: 2018-02-14-preview
+    SubscriptionIdParameter:
+      description: Subscription credentials which uniquely identify Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Validate a vault name:
+          value: 00000000-0000-0000-0000-000000000000
+        List deleted vaults in the specified subscription:
+          value: 00000000-0000-0000-0000-000000000000
+        Retrieve a deleted vault:
+          value: 00000000-0000-0000-0000-000000000000
+        Purge a deleted vault:
+          value: 00000000-0000-0000-0000-000000000000
+        List vaults in the specified subscription:
+          value: 00000000-0000-0000-0000-000000000000
+        List vaults in the specified resource group:
+          value: 00000000-0000-0000-0000-000000000000
+        Delete a vault:
+          value: 00000000-0000-0000-0000-000000000000
+        Retrieve a vault:
+          value: 00000000-0000-0000-0000-000000000000
+        Update an existing vault:
+          value: 00000000-0000-0000-0000-000000000000
+        Create a new vault or update an existing vault:
+          value: 00000000-0000-0000-0000-000000000000
+        Create or update a vault with network acls:
+          value: 00000000-0000-0000-0000-000000000000
+        "Add an access policy, or update an access policy with new permissions":
+          value: 00000000-0000-0000-0000-000000000000
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AccessPolicyEntry:
+      description: An identity that have access to the key vault. All identities in the
+        array must use the same tenant ID as the key vault's tenant ID.
+      properties:
+        applicationId:
+          description: " Application ID of the client making request on behalf of a
+            principal"
+          format: uuid
+          type: string
+        objectId:
+          description: The object ID of a user, service principal or security group in the
+            Azure Active Directory tenant for the vault. The object ID must be
+            unique for the list of access policies.
+          type: string
+        permissions:
+          $ref: "#/components/schemas/Permissions"
+        tenantId:
+          description: The Azure Active Directory tenant ID that should be used for
+            authenticating requests to the key vault.
+          format: uuid
+          type: string
+      required:
+        - tenantId
+        - objectId
+        - permissions
+    CheckNameAvailabilityResult:
+      description: The CheckNameAvailability operation response.
+      properties:
+        message:
+          description: An error message explaining the Reason value in more detail.
+          readOnly: true
+          type: string
+        nameAvailable:
+          description: A boolean value that indicates whether the name is available for you
+            to use. If true, the name is available. If false, the name has
+            already been taken or is invalid and cannot be used.
+          readOnly: true
+          type: boolean
+        reason:
+          description: The reason that a vault name could not be used. The Reason element
+            is only returned if NameAvailable is false.
+          enum:
+            - AccountNameInvalid
+            - AlreadyExists
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Reason
+    DeletedVault:
+      description: Deleted vault information with extended details.
+      properties:
+        id:
+          description: The resource ID for the deleted key vault.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the key vault.
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/DeletedVaultProperties"
+        type:
+          description: The resource type of the key vault.
+          readOnly: true
+          type: string
+    DeletedVaultListResult:
+      description: List of vaults
+      properties:
+        nextLink:
+          description: The URL to get the next set of deleted vaults.
+          type: string
+        value:
+          description: The list of deleted vaults.
+          items:
+            $ref: "#/components/schemas/DeletedVault"
+          type: array
+    DeletedVaultProperties:
+      description: Properties of the deleted vault.
+      properties:
+        deletionDate:
+          description: The deleted date.
+          format: date-time
+          readOnly: true
+          type: string
+        location:
+          description: The location of the original vault.
+          readOnly: true
+          type: string
+        scheduledPurgeDate:
+          description: The scheduled purged date.
+          format: date-time
+          readOnly: true
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Tags of the original vault.
+          readOnly: true
+          type: object
+        vaultId:
+          description: The resource id of the original vault.
+          readOnly: true
+          type: string
+    IPRule:
+      description: A rule governing the accessibility of a vault from a specific ip address
+        or ip range.
+      properties:
+        value:
+          description: An IPv4 address range in CIDR notation, such as '124.56.78.91'
+            (simple IP address) or '124.56.78.0/24' (all addresses that start
+            with 124.56.78).
+          type: string
+      required:
+        - value
+    NetworkRuleSet:
+      description: A set of rules governing the network accessibility of a vault.
+      properties:
+        bypass:
+          description: Tells what traffic can bypass network rules. This can be
+            'AzureServices' or 'None'.  If not specified the default is
+            'AzureServices'.
+          enum:
+            - AzureServices
+            - None
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: NetworkRuleBypassOptions
+        defaultAction:
+          description: The default action when no rule from ipRules and from
+            virtualNetworkRules match. This is only used after the bypass
+            property has been evaluated.
+          enum:
+            - Allow
+            - Deny
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: NetworkRuleAction
+        ipRules:
+          description: The list of IP address rules.
+          items:
+            $ref: "#/components/schemas/IPRule"
+          type: array
+        virtualNetworkRules:
+          description: The list of virtual network rules.
+          items:
+            $ref: "#/components/schemas/VirtualNetworkRule"
+          type: array
+    Permissions:
+      description: Permissions the identity has for keys, secrets, certificates and storage.
+      properties:
+        certificates:
+          description: Permissions to certificates
+          items:
+            enum:
+              - get
+              - list
+              - delete
+              - create
+              - import
+              - update
+              - managecontacts
+              - getissuers
+              - listissuers
+              - setissuers
+              - deleteissuers
+              - manageissuers
+              - recover
+              - purge
+              - backup
+              - restore
+            type: string
+            x-ms-enum:
+              modelAsString: true
+              name: CertificatePermissions
+          type: array
+        keys:
+          description: Permissions to keys
+          items:
+            enum:
+              - encrypt
+              - decrypt
+              - wrapKey
+              - unwrapKey
+              - sign
+              - verify
+              - get
+              - list
+              - create
+              - update
+              - import
+              - delete
+              - backup
+              - restore
+              - recover
+              - purge
+            type: string
+            x-ms-enum:
+              modelAsString: true
+              name: KeyPermissions
+          type: array
+        secrets:
+          description: Permissions to secrets
+          items:
+            enum:
+              - get
+              - list
+              - set
+              - delete
+              - backup
+              - restore
+              - recover
+              - purge
+            type: string
+            x-ms-enum:
+              modelAsString: true
+              name: SecretPermissions
+          type: array
+        storage:
+          description: Permissions to storage accounts
+          items:
+            enum:
+              - get
+              - list
+              - delete
+              - set
+              - update
+              - regeneratekey
+              - recover
+              - purge
+              - backup
+              - restore
+              - setsas
+              - listsas
+              - getsas
+              - deletesas
+            type: string
+            x-ms-enum:
+              modelAsString: true
+              name: StoragePermissions
+          type: array
+    Resource:
+      description: Key Vault resource
+      properties:
+        id:
+          description: The Azure Resource Manager resource ID for the key vault.
+          readOnly: true
+          type: string
+        location:
+          description: The supported Azure location where the key vault should be created.
+          type: string
+        name:
+          description: The name of the key vault.
+          readOnly: true
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: "The tags that will be assigned to the key vault. "
+          type: object
+        type:
+          description: The resource type of the key vault.
+          readOnly: true
+          type: string
+      required:
+        - location
+      x-ms-azure-resource: true
+    ResourceListResult:
+      description: List of vault resources.
+      properties:
+        nextLink:
+          description: The URL to get the next set of vault resources.
+          type: string
+        value:
+          description: The list of vault resources.
+          items:
+            $ref: "#/components/schemas/Resource"
+          type: array
+    Sku:
+      description: SKU details
+      properties:
+        family:
+          description: SKU family name
+          enum:
+            - A
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SkuFamily
+        name:
+          description: SKU name to specify whether the key vault is a standard vault or a
+            premium vault.
+          enum:
+            - standard
+            - premium
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: SkuName
+      required:
+        - name
+        - family
+    Vault:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Resource information with extended details.
+      properties:
+        properties:
+          $ref: "#/components/schemas/VaultProperties"
+      required:
+        - properties
+    VaultAccessPolicyParameters:
+      description: Parameters for updating the access policy in a vault
+      properties:
+        id:
+          description: The resource id of the access policy.
+          readOnly: true
+          type: string
+        location:
+          description: The resource type of the access policy.
+          readOnly: true
+          type: string
+        name:
+          description: The resource name of the access policy.
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/VaultAccessPolicyProperties"
+        type:
+          description: The resource name of the access policy.
+          readOnly: true
+          type: string
+      required:
+        - properties
+      x-ms-azure-resource: true
+    VaultAccessPolicyProperties:
+      description: Properties of the vault access policy
+      properties:
+        accessPolicies:
+          description: An array of 0 to 16 identities that have access to the key vault.
+            All identities in the array must use the same tenant ID as the key
+            vault's tenant ID.
+          items:
+            $ref: "#/components/schemas/AccessPolicyEntry"
+          type: array
+      required:
+        - accessPolicies
+    VaultCheckNameAvailabilityParameters:
+      description: The parameters used to check the availability of the vault name.
+      properties:
+        name:
+          description: The vault name.
+          type: string
+        type:
+          description: The type of resource, Microsoft.KeyVault/vaults
+          enum:
+            - Microsoft.KeyVault/vaults
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Type
+      required:
+        - name
+        - type
+    VaultCreateOrUpdateParameters:
+      description: Parameters for creating or updating a vault
+      properties:
+        location:
+          description: The supported Azure location where the key vault should be created.
+          type: string
+        properties:
+          $ref: "#/components/schemas/VaultProperties"
+        tags:
+          additionalProperties:
+            type: string
+          description: The tags that will be assigned to the key vault.
+          type: object
+      required:
+        - location
+        - properties
+      x-ms-azure-resource: true
+    VaultListResult:
+      description: List of vaults
+      properties:
+        nextLink:
+          description: The URL to get the next set of vaults.
+          type: string
+        value:
+          description: The list of vaults.
+          items:
+            $ref: "#/components/schemas/Vault"
+          type: array
+    VaultPatchParameters:
+      description: Parameters for creating or updating a vault
+      properties:
+        properties:
+          $ref: "#/components/schemas/VaultPatchProperties"
+        tags:
+          additionalProperties:
+            type: string
+          description: "The tags that will be assigned to the key vault. "
+          type: object
+      x-ms-azure-resource: true
+    VaultPatchProperties:
+      description: Properties of the vault
+      properties:
+        accessPolicies:
+          description: An array of 0 to 16 identities that have access to the key vault.
+            All identities in the array must use the same tenant ID as the key
+            vault's tenant ID.
+          items:
+            $ref: "#/components/schemas/AccessPolicyEntry"
+          type: array
+        createMode:
+          description: The vault's create mode to indicate whether the vault need to be
+            recovered or not.
+          enum:
+            - recover
+            - default
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: CreateMode
+        enablePurgeProtection:
+          description: Property specifying whether protection against purge is enabled for
+            this vault. Setting this property to true activates protection
+            against purge for this vault and its content - only the Key Vault
+            service may initiate a hard, irrecoverable deletion. The setting is
+            effective only if soft delete is also enabled. Enabling this
+            functionality is irreversible - that is, the property does not
+            accept false as its value.
+          type: boolean
+        enableSoftDelete:
+          description: Property to specify whether the 'soft delete' functionality is
+            enabled for this key vault. It does not accept false value.
+          type: boolean
+        enabledForDeployment:
+          description: Property to specify whether Azure Virtual Machines are permitted to
+            retrieve certificates stored as secrets from the key vault.
+          type: boolean
+        enabledForDiskEncryption:
+          description: Property to specify whether Azure Disk Encryption is permitted to
+            retrieve secrets from the vault and unwrap keys.
+          type: boolean
+        enabledForTemplateDeployment:
+          description: Property to specify whether Azure Resource Manager is permitted to
+            retrieve secrets from the key vault.
+          type: boolean
+        networkAcls:
+          $ref: "#/components/schemas/NetworkRuleSet"
+        sku:
+          $ref: "#/components/schemas/Sku"
+        tenantId:
+          description: The Azure Active Directory tenant ID that should be used for
+            authenticating requests to the key vault.
+          format: uuid
+          type: string
+    VaultProperties:
+      description: Properties of the vault
+      properties:
+        accessPolicies:
+          description: An array of 0 to 16 identities that have access to the key vault.
+            All identities in the array must use the same tenant ID as the key
+            vault's tenant ID.
+          items:
+            $ref: "#/components/schemas/AccessPolicyEntry"
+          type: array
+        createMode:
+          description: The vault's create mode to indicate whether the vault need to be
+            recovered or not.
+          enum:
+            - recover
+            - default
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: CreateMode
+        enablePurgeProtection:
+          description: Property specifying whether protection against purge is enabled for
+            this vault. Setting this property to true activates protection
+            against purge for this vault and its content - only the Key Vault
+            service may initiate a hard, irrecoverable deletion. The setting is
+            effective only if soft delete is also enabled. Enabling this
+            functionality is irreversible - that is, the property does not
+            accept false as its value.
+          type: boolean
+        enableSoftDelete:
+          description: Property to specify whether the 'soft delete' functionality is
+            enabled for this key vault. It does not accept false value.
+          type: boolean
+        enabledForDeployment:
+          description: Property to specify whether Azure Virtual Machines are permitted to
+            retrieve certificates stored as secrets from the key vault.
+          type: boolean
+        enabledForDiskEncryption:
+          description: Property to specify whether Azure Disk Encryption is permitted to
+            retrieve secrets from the vault and unwrap keys.
+          type: boolean
+        enabledForTemplateDeployment:
+          description: Property to specify whether Azure Resource Manager is permitted to
+            retrieve secrets from the key vault.
+          type: boolean
+        networkAcls:
+          $ref: "#/components/schemas/NetworkRuleSet"
+        sku:
+          $ref: "#/components/schemas/Sku"
+        tenantId:
+          description: The Azure Active Directory tenant ID that should be used for
+            authenticating requests to the key vault.
+          format: uuid
+          type: string
+        vaultUri:
+          description: The URI of the vault for performing operations on keys and secrets.
+          type: string
+      required:
+        - tenantId
+        - sku
+    VirtualNetworkRule:
+      description: A rule governing the accessibility of a vault from a specific virtual
+        network.
+      properties:
+        id:
+          description: Full resource id of a vnet subnet, such as
+            '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
+          type: string
+      required:
+        - id

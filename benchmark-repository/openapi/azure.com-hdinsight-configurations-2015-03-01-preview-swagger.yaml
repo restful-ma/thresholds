@@ -1,0 +1,266 @@
+openapi: 3.0.0
+info:
+  description: The HDInsight Management Client.
+  title: HDInsightManagementClient
+  version: 2015-03-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2015-03-01-preview/configurations.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: hdinsight-configurations
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/configurations":
+    post:
+      description: Gets all configuration information for an HDI cluster.
+      operationId: Configurations_List
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClusterConfigurations"
+              examples:
+                Get all configuration information:
+                  $ref: "#/components/examples/Get_all_configuration_information"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Configurations
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/configurations/{configurationName}":
+    get:
+      description: The configuration object for the specified cluster. This API is not
+        recommended and might be removed in the future. Please consider using
+        List configurations API instead.
+      operationId: Configurations_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - $ref: "#/components/parameters/ConfigurationNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClusterConfiguration"
+              examples:
+                Get Core site settings:
+                  $ref: "#/components/examples/Get_Core_site_settings"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Configurations
+    post:
+      deprecated: true
+      description: Configures the HTTP settings on the specified cluster. This API is
+        deprecated, please use UpdateGatewaySettings in cluster endpoint
+        instead.
+      operationId: Configurations_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - $ref: "#/components/parameters/ConfigurationNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClusterConfiguration"
+        description: The cluster configurations.
+        required: true
+      responses:
+        "200":
+          description: Ok response definition
+        "202":
+          description: Accepted response definition
+        "204":
+          description: No content response definition
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Configurations
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_all_configuration_information:
+      value:
+        configurations:
+          core-site:
+            fs.azure.account.key.test.blob.core.windows.net: accountKey
+            fs.defaultFS: wasb://test.blob.core.windows.net
+          gateway:
+            restAuthCredential.isEnabled: "true"
+            restAuthCredential.password: "**********"
+            restAuthCredential.username: admin
+    Get_Core_site_settings:
+      value:
+        fs.azure.account.key.test.blob.core.windows.net: accountKey
+        fs.defaultFS: wasb://test.blob.core.windows.net
+  parameters:
+    ApiVersionParameter:
+      description: The HDInsight client API Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Get all configuration information:
+          value: 2015-03-01-preview
+        Get Core site settings:
+          value: 2015-03-01-preview
+        Disable HTTP connectivity:
+          value: 2015-03-01-preview
+        Enable HTTP connectivity:
+          value: 2015-03-01-preview
+    ClusterNameParameter:
+      description: The name of the cluster.
+      in: path
+      name: clusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get all configuration information:
+          value: cluster1
+        Get Core site settings:
+          value: cluster1
+        Disable HTTP connectivity:
+          value: cluster1
+        Enable HTTP connectivity:
+          value: cluster1
+    ConfigurationNameParameter:
+      description: The name of the cluster configuration.
+      in: path
+      name: configurationName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get Core site settings:
+          value: core-site
+        Disable HTTP connectivity:
+          value: gateway
+        Enable HTTP connectivity:
+          value: gateway
+    ResourceGroupNameParameter:
+      description: The name of the resource group.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get all configuration information:
+          value: rg1
+        Get Core site settings:
+          value: rg1
+        Disable HTTP connectivity:
+          value: rg1
+        Enable HTTP connectivity:
+          value: rg1
+    SubscriptionIdParameter:
+      description: The subscription credentials which uniquely identify Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Get all configuration information:
+          value: subid
+        Get Core site settings:
+          value: subid
+        Disable HTTP connectivity:
+          value: subid
+        Enable HTTP connectivity:
+          value: subid
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ClusterConfiguration:
+      additionalProperties:
+        type: string
+      description: The configuration object for the specified configuration for the
+        specified cluster.
+      type: object
+    ClusterConfigurations:
+      description: The configuration object for the specified cluster.
+      properties:
+        configurations:
+          additionalProperties:
+            $ref: "#/components/schemas/ClusterConfiguration"
+          description: The configuration object for the specified configuration for the
+            specified cluster.
+          type: object

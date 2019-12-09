@@ -1,0 +1,1349 @@
+openapi: 3.0.0
+info:
+  description: The Disk Resource Provider Client.
+  title: DiskResourceProviderClient
+  version: 2016-04-30-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/compute/resource-manager/Microsoft.Compute/preview/2016-04-30-preview/disk.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: compute-disk
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks":
+    get:
+      description: Lists all the disks under a subscription.
+      operationId: Disks_List
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiskList"
+              examples:
+                List all managed disks in a subscription.:
+                  $ref: "#/components/examples/List_all_managed_disks_in_a_subscrip\
+                    tion."
+      tags:
+        - Disks
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots":
+    get:
+      description: Lists snapshots under a subscription.
+      operationId: Snapshots_List
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SnapshotList"
+              examples:
+                List all snapshots in a subscription.:
+                  $ref: "#/components/examples/List_all_snapshots_in_a_subscription."
+      tags:
+        - Snapshots
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks":
+    get:
+      description: Lists all the disks under a resource group.
+      operationId: Disks_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            List all managed disks in a resource group.:
+              value: myResourceGroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiskList"
+              examples:
+                List all managed disks in a resource group.:
+                  $ref: "#/components/examples/List_all_managed_disks_in_a_resource\
+                    _group."
+      tags:
+        - Disks
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}":
+    delete:
+      description: Deletes a disk.
+      operationId: Disks_Delete
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/DiskNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationStatusResponse"
+        "202":
+          description: Accepted
+        "204":
+          description: If the disk is deleted, this is an expected error code.
+      tags:
+        - Disks
+      x-ms-long-running-operation: true
+    get:
+      description: Gets information about a disk.
+      operationId: Disks_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/DiskNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Disk"
+              examples:
+                Get information about a managed disk.:
+                  $ref: "#/components/examples/Get_information_about_a_managed_disk."
+      tags:
+        - Disks
+    patch:
+      description: Updates (patches) a disk.
+      operationId: Disks_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/DiskNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DiskUpdate"
+        description: Disk object supplied in the body of the Patch disk operation.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Disk"
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Disk"
+      tags:
+        - Disks
+      x-ms-long-running-operation: true
+    put:
+      description: Creates or updates a disk.
+      operationId: Disks_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/DiskNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Disk"
+        description: Disk object supplied in the body of the Put disk operation.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Disk"
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Disk"
+              examples:
+                Create a managed disk by copying a snapshot.:
+                  $ref: "#/components/examples/Create_a_managed_disk_by_copying_a_s\
+                    napshot."
+                Create a managed disk by importing an unmanaged blob from a different subscription.:
+                  $ref: "#/components/examples/Create_a_managed_disk_by_importing_a\
+                    n_unmanaged_blob_from_a_different_subscription."
+                Create a managed disk by importing an unmanaged blob from the same subscription.:
+                  $ref: "#/components/examples/Create_a_managed_disk_by_importing_a\
+                    n_unmanaged_blob_from_the_same_subscription."
+                Create a managed disk from a platform image.:
+                  $ref: "#/components/examples/Create_a_managed_disk_from_a_platfor\
+                    m_image."
+                Create a managed disk from an existing managed disk in the same or different subscription.:
+                  $ref: "#/components/examples/Create_a_managed_disk_from_an_existi\
+                    ng_managed_disk_in_the_same_or_different_subscription."
+                Create an empty managed disk.:
+                  $ref: "#/components/examples/Create_an_empty_managed_disk."
+      tags:
+        - Disks
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}/beginGetAccess":
+    post:
+      description: Grants access to a disk.
+      operationId: Disks_GrantAccess
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/DiskNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GrantAccessData"
+        description: Access data object supplied in the body of the get disk access
+          operation.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessUri"
+        "202":
+          description: Accepted
+      tags:
+        - Disks
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}/endGetAccess":
+    post:
+      description: Revokes access to a disk.
+      operationId: Disks_RevokeAccess
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/DiskNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationStatusResponse"
+        "202":
+          description: Accepted
+      tags:
+        - Disks
+      x-ms-long-running-operation: true
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots":
+    get:
+      description: Lists snapshots under a resource group.
+      operationId: Snapshots_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SnapshotList"
+              examples:
+                List all snapshots in a resource group.:
+                  $ref: "#/components/examples/List_all_snapshots_in_a_resource_gro\
+                    up."
+      tags:
+        - Snapshots
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}":
+    delete:
+      description: Deletes a snapshot.
+      operationId: Snapshots_Delete
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/SnapshotNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationStatusResponse"
+        "202":
+          description: Accepted
+        "204":
+          description: If the snapshot is deleted, this is an expected error code.
+      tags:
+        - Snapshots
+      x-ms-long-running-operation: true
+    get:
+      description: Gets information about a snapshot.
+      operationId: Snapshots_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/SnapshotNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Snapshot"
+              examples:
+                Get information about a snapshot.:
+                  $ref: "#/components/examples/Get_information_about_a_snapshot."
+      tags:
+        - Snapshots
+    patch:
+      description: Updates (patches) a snapshot.
+      operationId: Snapshots_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/SnapshotNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotUpdate"
+        description: Snapshot object supplied in the body of the Patch snapshot operation.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Snapshot"
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Snapshot"
+      tags:
+        - Snapshots
+      x-ms-long-running-operation: true
+    put:
+      description: Creates or updates a snapshot.
+      operationId: Snapshots_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/SnapshotNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Snapshot"
+        description: Snapshot object supplied in the body of the Put disk operation.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Snapshot"
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Snapshot"
+              examples:
+                Create a snapshot by importing an unmanaged blob from a different subscription.:
+                  $ref: "#/components/examples/Create_a_snapshot_by_importing_an_un\
+                    managed_blob_from_a_different_subscription."
+                Create a snapshot by importing an unmanaged blob from the same subscription.:
+                  $ref: "#/components/examples/Create_a_snapshot_by_importing_an_un\
+                    managed_blob_from_the_same_subscription."
+                Create a snapshot from an existing snapshot in the same or a different subscription.:
+                  $ref: "#/components/examples/Create_a_snapshot_from_an_existing_s\
+                    napshot_in_the_same_or_a_different_subscription."
+      tags:
+        - Snapshots
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/beginGetAccess":
+    post:
+      description: Grants access to a snapshot.
+      operationId: Snapshots_GrantAccess
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/SnapshotNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GrantAccessData"
+        description: Access data object supplied in the body of the get snapshot access
+          operation.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessUri"
+        "202":
+          description: Accepted
+      tags:
+        - Snapshots
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/endGetAccess":
+    post:
+      description: Revokes access to a snapshot.
+      operationId: Snapshots_RevokeAccess
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/SnapshotNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationStatusResponse"
+        "202":
+          description: Accepted
+      tags:
+        - Snapshots
+      x-ms-long-running-operation: true
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    List_all_managed_disks_in_a_subscription.:
+      value:
+        nextLink: http://disksvchost:99/subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks?$skiptoken={token}/Subscriptions/{subscriptionId}/ResourceGroups/myResourceGroup/Disks/myManagedDisk
+        value:
+          - id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk1
+            location: westus
+            name: myManagedDisk1
+            properties:
+              creationData:
+                createOption: Copy
+                sourceResourceId: subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk1
+              diskSizeGB: 200
+              encryptionSettings:
+                diskEncryptionKey:
+                  secretUrl: https://myvmvault.vault-int.azure-int.net/secrets/{secret}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+                enabled: true
+                keyEncryptionKey:
+                  keyUrl: https://myvmvault.vault-int.azure-int.net/keys/{key}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+              osType: Windows
+              provisioningState: Succeeded
+              timeCreated: 2016-12-28T04:41:35.9278721+00:00
+            tags:
+              department: Development
+              project: ManagedDisks
+            type: Microsoft.Compute/disks
+          - id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk2
+            location: westus
+            name: myManagedDisk2
+            properties:
+              creationData:
+                createOption: Empty
+              diskSizeGB: 10
+              osType: Windows
+              provisioningState: Succeeded
+              timeCreated: 2016-12-28T04:41:36.872242+00:00
+            type: Microsoft.Compute/disks
+          - id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk3
+            location: westus
+            name: myManagedDisk3
+            properties:
+              creationData:
+                createOption: FromImage
+                imageReference:
+                  id: /Subscriptions/{subscriptionId}/Providers/Microsoft.Compute/Locations/uswest/Publishers/Microsoft/ArtifactTypes/VMImage/Offers/{offer}
+              diskSizeGB: 200
+              encryptionSettings:
+                diskEncryptionKey:
+                  secretUrl: https://myvmvault.vault-int.azure-int.net/secrets/{secret}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+                enabled: true
+                keyEncryptionKey:
+                  keyUrl: https://myvmvault.vault-int.azure-int.net/keys/{key}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+              osType: Windows
+              provisioningState: Succeeded
+              timeCreated: 2016-12-28T04:41:36.3973934+00:00
+            tags:
+              department: Development
+              project: ManagedDisks
+            type: Microsoft.Compute/disks
+    List_all_snapshots_in_a_subscription.:
+      value:
+        value:
+          - id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1
+            location: westus
+            name: mySnapshot1
+            properties:
+              creationData:
+                createOption: Copy
+                sourceResourceId: subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot
+              diskSizeGB: 200
+              encryptionSettings:
+                diskEncryptionKey:
+                  secretUrl: https://myvmvault.vault-int.azure-int.net/secrets/{secret}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+                enabled: true
+                keyEncryptionKey:
+                  keyUrl: https://myvmvault.vault-int.azure-int.net/keys/{key}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+              osType: Windows
+              provisioningState: Succeeded
+              timeCreated: 2016-12-28T04:47:30.6630569+00:00
+            tags:
+              department: Development
+              project: Snapshots
+            type: Microsoft.Compute/snapshots
+          - id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2
+            location: westus
+            name: mySnapshot2
+            properties:
+              creationData:
+                createOption: Import
+                sourceUri: https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd
+                storageAccountId: subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount
+              diskSizeGB: 200
+              encryptionSettings:
+                diskEncryptionKey:
+                  secretUrl: https://myvmvault.vault-int.azure-int.net/secrets/{secret}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+                enabled: true
+                keyEncryptionKey:
+                  keyUrl: https://myvmvault.vault-int.azure-int.net/keys/{key}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+              osType: Windows
+              provisioningState: Succeeded
+              timeCreated: 2016-12-28T04:47:30.3247198+00:00
+            tags:
+              department: Development
+              project: Snapshots
+            type: Microsoft.Compute/snapshots
+    List_all_managed_disks_in_a_resource_group.:
+      value:
+        nextLink: http://disksvchost:99/subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks?$skiptoken={token}/Subscriptions/{subscriptionId}/ResourceGroups/myResourceGroup/Disks/myManagedDisk
+        value:
+          - id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk
+            location: westus
+            name: myManagedDisk
+            properties:
+              creationData:
+                createOption: Copy
+                sourceResourceId: subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk
+              diskSizeGB: 200
+              encryptionSettings:
+                diskEncryptionKey:
+                  secretUrl: https://myvmvault.vault-int.azure-int.net/secrets/{secret}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+                enabled: true
+                keyEncryptionKey:
+                  keyUrl: https://myvmvault.vault-int.azure-int.net/keys/{key}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+              osType: Windows
+              provisioningState: Succeeded
+              timeCreated: 2016-12-28T04:41:35.9278721+00:00
+            tags:
+              department: Development
+              project: ManagedDisks
+            type: Microsoft.Compute/disks
+          - id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk
+            location: westus
+            name: myManagedDisk
+            properties:
+              creationData:
+                createOption: Empty
+              diskSizeGB: 10
+              osType: Windows
+              provisioningState: Succeeded
+              timeCreated: 2016-12-28T04:41:36.872242+00:00
+            type: Microsoft.Compute/disks
+          - id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk
+            location: westus
+            name: myManagedDisk
+            properties:
+              creationData:
+                createOption: FromImage
+                imageReference:
+                  id: /Subscriptions/{subscriptionId}/Providers/Microsoft.Compute/Locations/uswest/Publishers/Microsoft/ArtifactTypes/VMImage/Offers/{offer}
+              diskSizeGB: 200
+              encryptionSettings:
+                diskEncryptionKey:
+                  secretUrl: https://myvmvault.vault-int.azure-int.net/secrets/{secret}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+                enabled: true
+                keyEncryptionKey:
+                  keyUrl: https://myvmvault.vault-int.azure-int.net/keys/{key}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+              osType: Windows
+              provisioningState: Succeeded
+              timeCreated: 2016-12-28T04:41:36.3973934+00:00
+            tags:
+              department: Development
+              project: ManagedDisks
+            type: Microsoft.Compute/disks
+    Get_information_about_a_managed_disk.:
+      value:
+        id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk
+        location: westus
+        name: myManagedDisk
+        properties:
+          creationData:
+            createOption: Empty
+          diskSizeGB: 10
+          encryptionSettings:
+            diskEncryptionKey:
+              secretUrl: https://myvmvault.vault-int.azure-int.net/secrets/{secret}
+              sourceVault:
+                id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+            enabled: true
+            keyEncryptionKey:
+              keyUrl: https://myvmvault.vault-int.azure-int.net/keys/{key}
+              sourceVault:
+                id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+          osType: Windows
+          provisioningState: Succeeded
+          timeCreated: 2016-12-28T04:41:35.079872+00:00
+        tags:
+          department: Development
+          project: ManagedDisks
+        type: Microsoft.Compute/disks
+    Create_a_managed_disk_by_copying_a_snapshot.:
+      value:
+        location: West US
+        name: myDisk
+        properties:
+          creationData:
+            createOption: Copy
+            sourceResourceId: subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot
+          provisioningState: Updating
+    Create_a_managed_disk_by_importing_an_unmanaged_blob_from_a_different_subscription.:
+      value:
+        location: West US
+        name: myDisk
+        properties:
+          creationData:
+            createOption: Import
+            sourceUri: https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd
+            storageAccountId: subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount
+          provisioningState: Updating
+    Create_a_managed_disk_by_importing_an_unmanaged_blob_from_the_same_subscription.:
+      value:
+        location: West US
+        name: myDisk
+        properties:
+          creationData:
+            createOption: Import
+            sourceUri: https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd
+          provisioningState: Updating
+    Create_a_managed_disk_from_a_platform_image.:
+      value:
+        location: West US
+        name: myDisk
+        properties:
+          creationData:
+            createOption: FromImage
+            imageReference:
+              id: /Subscriptions/{subscriptionId}/Providers/Microsoft.Compute/Locations/uswest/Publishers/Microsoft/ArtifactTypes/VMImage/Offers/{offer}
+          osType: Windows
+          provisioningState: Updating
+    Create_a_managed_disk_from_an_existing_managed_disk_in_the_same_or_different_subscription.:
+      value:
+        location: West US
+        name: myDisk2
+        properties:
+          creationData:
+            createOption: Copy
+            sourceResourceId: subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk1
+          provisioningState: Updating
+    Create_an_empty_managed_disk.:
+      value:
+        location: West US
+        name: myDisk
+        properties:
+          creationData:
+            createOption: Empty
+          diskSizeGB: 200
+          provisioningState: Updating
+    List_all_snapshots_in_a_resource_group.:
+      value:
+        value:
+          - id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot
+            location: westus
+            name: mySnapshot
+            properties:
+              creationData:
+                createOption: Copy
+                sourceResourceId: subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot
+              diskSizeGB: 200
+              encryptionSettings:
+                diskEncryptionKey:
+                  secretUrl: https://myvmvault.vault-int.azure-int.net/secrets/{secret}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+                enabled: true
+                keyEncryptionKey:
+                  keyUrl: https://myvmvault.vault-int.azure-int.net/keys/{key}
+                  sourceVault:
+                    id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+              osType: Windows
+              provisioningState: Succeeded
+              timeCreated: 2016-12-28T04:41:35.9278721+00:00
+            tags:
+              department: Development
+              project: Snapshots
+            type: Microsoft.Compute/snapshots
+    Get_information_about_a_snapshot.:
+      value:
+        id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot
+        location: westus
+        name: mySnapshot
+        properties:
+          creationData:
+            createOption: Empty
+          diskSizeGB: 100
+          encryptionSettings:
+            diskEncryptionKey:
+              secretUrl: https://myvmvault.vault-int.azure-int.net/secrets/{secret}
+              sourceVault:
+                id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+            enabled: true
+            keyEncryptionKey:
+              keyUrl: https://myvmvault.vault-int.azure-int.net/keys/{key}
+              sourceVault:
+                id: /subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myVMVault
+          osType: Windows
+          provisioningState: Succeeded
+          timeCreated: 2016-12-28T04:41:35.079872+00:00
+        tags:
+          department: Development
+          project: Snapshots
+        type: Microsoft.Compute/snapshots
+    Create_a_snapshot_by_importing_an_unmanaged_blob_from_a_different_subscription.:
+      value:
+        location: West US
+        name: mySnapshot1
+        properties:
+          creationData:
+            createOption: Import
+            sourceUri: https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd
+            storageAccountId: subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount
+          provisioningState: Updating
+    Create_a_snapshot_by_importing_an_unmanaged_blob_from_the_same_subscription.:
+      value:
+        location: West US
+        name: mySnapshot1
+        properties:
+          creationData:
+            createOption: Import
+            sourceUri: https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd
+          provisioningState: Updating
+    Create_a_snapshot_from_an_existing_snapshot_in_the_same_or_a_different_subscription.:
+      value:
+        location: West US
+        name: mySnapshot2
+        properties:
+          creationData:
+            createOption: Copy
+            sourceResourceId: subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1
+          provisioningState: Updating
+  parameters:
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        List all managed disks in a subscription.:
+          value: 2016-04-30-preview
+        List all snapshots in a subscription.:
+          value: 2016-04-30-preview
+        List all managed disks in a resource group.:
+          value: 2016-04-30-preview
+        Get information about a managed disk.:
+          value: 2017-03-30
+        Create a managed disk by copying a snapshot.:
+          value: 2016-04-30-preview
+        Create a managed disk by importing an unmanaged blob from a different subscription.:
+          value: 2016-04-30-preview
+        Create a managed disk by importing an unmanaged blob from the same subscription.:
+          value: 2016-04-30-preview
+        Create a managed disk from a platform image.:
+          value: 2016-04-30-preview
+        Create a managed disk from an existing managed disk in the same or different subscription.:
+          value: 2016-04-30-preview
+        Create an empty managed disk.:
+          value: 2016-04-30-preview
+        List all snapshots in a resource group.:
+          value: 2016-04-30-preview
+        Get information about a snapshot.:
+          value: 2016-04-30-preview
+        Create a snapshot by importing an unmanaged blob from a different subscription.:
+          value: 2017-03-30
+        Create a snapshot by importing an unmanaged blob from the same subscription.:
+          value: 2017-03-30
+        Create a snapshot from an existing snapshot in the same or a different subscription.:
+          value: 2017-03-30
+    DiskNameParameter:
+      description: The name of the managed disk that is being created. The name can't be
+        changed after the disk is created. Supported characters for the name are
+        a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+      in: path
+      name: diskName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get information about a managed disk.:
+          value: myManagedDisk
+        Create a managed disk by copying a snapshot.:
+          value: myDisk
+        Create a managed disk by importing an unmanaged blob from a different subscription.:
+          value: myDisk
+        Create a managed disk by importing an unmanaged blob from the same subscription.:
+          value: myDisk
+        Create a managed disk from a platform image.:
+          value: myDisk
+        Create a managed disk from an existing managed disk in the same or different subscription.:
+          value: myDisk2
+        Create an empty managed disk.:
+          value: myDisk
+    ResourceGroupNameParameter:
+      description: The name of the resource group.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get information about a managed disk.:
+          value: myResourceGroup
+        Create a managed disk by copying a snapshot.:
+          value: myResourceGroup
+        Create a managed disk by importing an unmanaged blob from a different subscription.:
+          value: myResourceGroup
+        Create a managed disk by importing an unmanaged blob from the same subscription.:
+          value: myResourceGroup
+        Create a managed disk from a platform image.:
+          value: myResourceGroup
+        Create a managed disk from an existing managed disk in the same or different subscription.:
+          value: myResourceGroup
+        Create an empty managed disk.:
+          value: myResourceGroup
+        List all snapshots in a resource group.:
+          value: myResourceGroup
+        Get information about a snapshot.:
+          value: myResourceGroup
+        Create a snapshot by importing an unmanaged blob from a different subscription.:
+          value: myResourceGroup
+        Create a snapshot by importing an unmanaged blob from the same subscription.:
+          value: myResourceGroup
+        Create a snapshot from an existing snapshot in the same or a different subscription.:
+          value: myResourceGroup
+    SnapshotNameParameter:
+      description: The name of the snapshot within the given subscription and resource
+        group.
+      in: path
+      name: snapshotName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get information about a snapshot.:
+          value: mySnapshot
+        Create a snapshot by importing an unmanaged blob from a different subscription.:
+          value: mySnapshot1
+        Create a snapshot by importing an unmanaged blob from the same subscription.:
+          value: mySnapshot1
+        Create a snapshot from an existing snapshot in the same or a different subscription.:
+          value: mySnapshot2
+    SubscriptionIdParameter:
+      description: Subscription credentials which uniquely identify Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        List all managed disks in a subscription.:
+          value: "{subscription-id}"
+        List all snapshots in a subscription.:
+          value: "{subscription-id}"
+        List all managed disks in a resource group.:
+          value: "{subscription-id}"
+        Get information about a managed disk.:
+          value: "{subscription-id}"
+        Create a managed disk by copying a snapshot.:
+          value: "{subscription-id}"
+        Create a managed disk by importing an unmanaged blob from a different subscription.:
+          value: "{subscription-id}"
+        Create a managed disk by importing an unmanaged blob from the same subscription.:
+          value: "{subscription-id}"
+        Create a managed disk from a platform image.:
+          value: "{subscription-id}"
+        Create a managed disk from an existing managed disk in the same or different subscription.:
+          value: "{subscription-id}"
+        Create an empty managed disk.:
+          value: "{subscription-id}"
+        List all snapshots in a resource group.:
+          value: "{subscription-id}"
+        Get information about a snapshot.:
+          value: "{subscription-id}"
+        Create a snapshot by importing an unmanaged blob from a different subscription.:
+          value: "{subscription-id}"
+        Create a snapshot by importing an unmanaged blob from the same subscription.:
+          value: "{subscription-id}"
+        Create a snapshot from an existing snapshot in the same or a different subscription.:
+          value: "{subscription-id}"
+  schemas:
+    AccessUri:
+      description: A disk access SAS uri.
+      properties:
+        properties:
+          $ref: "#/components/schemas/AccessUriOutput"
+    AccessUriOutput:
+      description: Azure properties, including output.
+      properties:
+        output:
+          $ref: "#/components/schemas/AccessUriRaw"
+    AccessUriRaw:
+      description: This object gets 'bubbled up' through flattening.
+      properties:
+        accessSAS:
+          description: A SAS uri for accessing a disk.
+          readOnly: true
+          type: string
+    ApiError:
+      description: Api error.
+      properties:
+        code:
+          description: The error code.
+          type: string
+        details:
+          description: The Api error details
+          items:
+            $ref: "#/components/schemas/ApiErrorBase"
+          type: array
+        innererror:
+          $ref: "#/components/schemas/InnerError"
+        message:
+          description: The error message.
+          type: string
+        target:
+          description: The target of the particular error.
+          type: string
+    ApiErrorBase:
+      description: Api error base.
+      properties:
+        code:
+          description: The error code.
+          type: string
+        message:
+          description: The error message.
+          type: string
+        target:
+          description: The target of the particular error.
+          type: string
+    CreationData:
+      description: Data used when creating a disk.
+      properties:
+        createOption:
+          description: This enumerates the possible sources of a disk's creation.
+          enum:
+            - Empty
+            - Attach
+            - FromImage
+            - Import
+            - Copy
+            - Restore
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: DiskCreateOption
+        imageReference:
+          $ref: "#/components/schemas/ImageDiskReference"
+        sourceResourceId:
+          description: If createOption is Copy, this is the ARM id of the source snapshot
+            or disk. If createOption is Restore, this is the ARM-like id of the
+            source disk restore point.
+          type: string
+        sourceUri:
+          description: If createOption is Import, this is a SAS URI to a blob to be
+            imported into a managed disk. If createOption is Copy, this is a
+            relative Uri containing the id of the source snapshot to be copied
+            into a managed disk.
+          type: string
+        storageAccountId:
+          description: If createOption is Import, the Azure Resource Manager identifier of
+            the storage account containing the blob to import as a disk.
+            Required only if the blob is in a different subscription
+          type: string
+      required:
+        - createOption
+    Disk:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Disk resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/DiskProperties"
+    DiskList:
+      description: The List Disks operation response.
+      properties:
+        nextLink:
+          description: the uri to fetch the next page of disks. Call ListNext() with this
+            to fetch the next page of disks.
+          type: string
+        value:
+          description: A list of disks.
+          items:
+            $ref: "#/components/schemas/Disk"
+          type: array
+      required:
+        - value
+    DiskProperties:
+      description: Disk resource properties.
+      properties:
+        accountType:
+          description: the storage account type of the disk.
+          enum:
+            - Standard_LRS
+            - Premium_LRS
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: StorageAccountTypes
+        creationData:
+          $ref: "#/components/schemas/CreationData"
+        diskSizeGB:
+          description: If creationData.createOption is Empty, this field is mandatory and
+            it indicates the size of the VHD to create. If this field is present
+            for updates or creation with other options, it indicates a resize.
+            Resizes are only allowed if the disk is not attached to a running
+            VM, and can only increase the disk's size.
+          format: int32
+          type: integer
+        encryptionSettings:
+          $ref: "#/components/schemas/EncryptionSettings"
+        osType:
+          description: The Operating System type.
+          enum:
+            - Windows
+            - Linux
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: OperatingSystemTypes
+        ownerId:
+          description: A relative URI containing the VM id that has the disk attached.
+          readOnly: true
+          type: string
+        provisioningState:
+          description: The disk provisioning state.
+          readOnly: true
+          type: string
+        timeCreated:
+          description: The time when the disk was created.
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+        - creationData
+    DiskUpdate:
+      allOf:
+        - $ref: "#/components/schemas/ResourceUpdate"
+      description: Disk update resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/DiskUpdateProperties"
+    DiskUpdateProperties:
+      description: Disk resource update properties.
+      properties:
+        accountType:
+          description: the storage account type of the disk.
+          enum:
+            - Standard_LRS
+            - Premium_LRS
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: StorageAccountTypes
+        creationData:
+          $ref: "#/components/schemas/CreationData"
+        diskSizeGB:
+          description: If creationData.createOption is Empty, this field is mandatory and
+            it indicates the size of the VHD to create. If this field is present
+            for updates or creation with other options, it indicates a resize.
+            Resizes are only allowed if the disk is not attached to a running
+            VM, and can only increase the disk's size.
+          format: int32
+          type: integer
+        encryptionSettings:
+          $ref: "#/components/schemas/EncryptionSettings"
+        osType:
+          description: the Operating System type.
+          enum:
+            - Windows
+            - Linux
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: OperatingSystemTypes
+    EncryptionSettings:
+      description: Encryption settings for disk or snapshot
+      properties:
+        diskEncryptionKey:
+          $ref: "#/components/schemas/KeyVaultAndSecretReference"
+        enabled:
+          description: Set this flag to true and provide DiskEncryptionKey and optional
+            KeyEncryptionKey to enable encryption. Set this flag to false and
+            remove DiskEncryptionKey and KeyEncryptionKey to disable encryption.
+            If EncryptionSettings is null in the request object, the existing
+            settings remain unchanged.
+          type: boolean
+        keyEncryptionKey:
+          $ref: "#/components/schemas/KeyVaultAndKeyReference"
+    GrantAccessData:
+      description: Data used for requesting a SAS.
+      properties:
+        access:
+          enum:
+            - None
+            - Read
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: AccessLevel
+        durationInSeconds:
+          description: Time duration in seconds until the SAS access expires.
+          format: int32
+          type: integer
+      required:
+        - access
+        - durationInSeconds
+    ImageDiskReference:
+      description: The source image used for creating the disk.
+      properties:
+        id:
+          description: A relative uri containing either a Platform Image Repository or user
+            image reference.
+          type: string
+        lun:
+          description: If the disk is created from an image's data disk, this is an index
+            that indicates which of the data disks in the image to use. For OS
+            disks, this field is null.
+          format: int32
+          type: integer
+      required:
+        - id
+    InnerError:
+      description: Inner error details.
+      properties:
+        errordetail:
+          description: The internal error message or exception dump.
+          type: string
+        exceptiontype:
+          description: The exception type.
+          type: string
+    KeyVaultAndKeyReference:
+      description: Key Vault Key Url and vault id of KeK, KeK is optional and when provided
+        is used to unwrap the encryptionKey
+      properties:
+        keyUrl:
+          description: Url pointing to a key or secret in KeyVault
+          type: string
+        sourceVault:
+          $ref: "#/components/schemas/SourceVault"
+      required:
+        - keyUrl
+        - sourceVault
+    KeyVaultAndSecretReference:
+      description: "Key Vault Secret Url and vault id of the encryption key "
+      properties:
+        secretUrl:
+          description: Url pointing to a key or secret in KeyVault
+          type: string
+        sourceVault:
+          $ref: "#/components/schemas/SourceVault"
+      required:
+        - secretUrl
+        - sourceVault
+    OperationStatusResponse:
+      description: Operation status response
+      properties:
+        endTime:
+          description: End time of the operation
+          format: date-time
+          readOnly: true
+          type: string
+        error:
+          $ref: "#/components/schemas/ApiError"
+        name:
+          description: Operation ID
+          readOnly: true
+          type: string
+        startTime:
+          description: Start time of the operation
+          format: date-time
+          readOnly: true
+          type: string
+        status:
+          description: Operation status
+          readOnly: true
+          type: string
+    Resource:
+      description: The Resource model definition.
+      properties:
+        id:
+          description: Resource Id
+          readOnly: true
+          type: string
+        location:
+          description: Resource location
+          type: string
+        name:
+          description: Resource name
+          readOnly: true
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags
+          type: object
+        type:
+          description: Resource type
+          readOnly: true
+          type: string
+      required:
+        - location
+      x-ms-azure-resource: true
+    ResourceUpdate:
+      description: The Resource model definition.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags
+          type: object
+    Snapshot:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Snapshot resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/DiskProperties"
+    SnapshotList:
+      description: The List Snapshots operation response.
+      properties:
+        nextLink:
+          description: The uri to fetch the next page of snapshots. Call ListNext() with
+            this to fetch the next page of snapshots.
+          type: string
+        value:
+          description: A list of snapshots.
+          items:
+            $ref: "#/components/schemas/Snapshot"
+          type: array
+      required:
+        - value
+    SnapshotUpdate:
+      allOf:
+        - $ref: "#/components/schemas/ResourceUpdate"
+      description: Snapshot update resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/DiskUpdateProperties"
+    SourceVault:
+      description: The vault id is an Azure Resource Manager Resource id in the form
+        /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}
+      properties:
+        id:
+          description: Resource Id
+          type: string

@@ -1,0 +1,553 @@
+get:
+  queryParameters:
+    pageIndex:
+      description: Index of the page in a paginated project query
+      type: number
+      default: 0
+    pageSize:
+      description: Size of each page in a paginated project query
+      type: number
+      default: 10
+    searchTerm:
+      description: Search term to search projects by
+      type: string
+      default: null
+  responses:
+    200:
+      body:
+        application/json:
+    401:
+      body:
+        application/json:
+post:
+  body:
+    application/json:
+      example: |
+        {
+          "name": "project name",
+          "type": "project type",
+          "environmentId": "aaaa"
+        }
+  responses:
+    201:
+      body:
+        application/json:
+    401:
+      body:
+        application/json:
+/import:
+  post:
+    description: Publish a new artifact
+    body:
+      "*/*":
+        type: projectImportType
+    responses:
+      201:
+        body:
+          application/json:
+      400:
+        body:
+          application/json:
+/{projectId}:
+  get:
+    queryParameters:
+      lightweight:
+        type: boolean
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+      401:
+        body:
+          application/json:
+  put:
+    body:
+      application/json:
+    queryParameters:
+      debounce:
+        type: boolean
+        required: false
+      updateConnectionProviders:
+        type: boolean
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+      404:
+      403:
+  /files:
+    description: VCS files of the project
+    get:
+      description: Retrieves the project files
+      queryParameters:
+        fromWorkingDir:
+          description: Flag that indicates if the files are taken from the workingDir or the main branch
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: The project files as a tar.gz file
+          body:
+            application/octet-stream:
+  /migrate:
+    post:
+      body:
+        application/json:
+          example: |
+            {
+              "persistOnFinish": true
+            }
+      responses:
+        200:
+          body:
+            application/json:
+  /reset:
+    post:
+      responses:
+        200:
+          description: status retrieved
+          body:
+            application/json:
+  /status:
+    description: VCS status information related to the project
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+  delete:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              { "id": "projectId" }
+      404:
+  /dataweave/{dwSessionId}:
+    description: DataWeave API
+    uriParameters:
+      dwSessionId:
+        description: session associated with a deployed artifact
+        type: string
+
+    delete:
+      description: evict dwSessionId from cache and dispose associated artifactId
+      responses:
+        200:
+          description: deletion complete
+    /executor:
+      post:
+        description: execute a dataweave script with provided input data.
+        body:
+          application/json:
+        responses:
+          200:
+            description: wrapper of the execution result with error details if applies.
+            body:
+              application/json:
+  /clone:
+    description: Clones the project, with the new name and environment
+    post:
+      body:
+        application/json:
+          example : |
+            {
+              "name": "projectName",
+              "type": "type",
+              "environmentId": "environmentId"
+            }
+      responses:
+        200:
+          description: The pproject was cloned correctly
+          body:
+            application/json:
+  /open:
+    description: Opens the project, locks it and updates the user working directory
+    post:
+      responses:
+        200:
+          description: Project could be opened
+          body:
+            application/json:
+        423:
+          description: Project was already opened and locked
+  /lock:
+    description: Locks the project to restrict another user access
+    post:
+      responses:
+        200:
+          description: Lock acquired
+        423:
+          description: Already locked by someone else
+    put:
+      description: Updates the lock on the project
+      responses:
+        200:
+          description: Lock acquired
+        423:
+          description: Already locked by someone else
+  /unlock:
+    description: Manages the project locks
+    post:
+      description: Unlocks the project
+      responses:
+        200:
+          description: Lock released
+    /async:
+      description: Unlocks the project but doesn't wait for the backend response
+      post:
+        responses:
+          200:
+            description: Lock released
+  /assets:
+    description: Creates or updates the assets for a given project component
+    /{path}:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+          400:
+            body:
+              application/json:
+      post:
+        body:
+          application/json:
+            example: |
+              {
+                "sampleData" : {}
+              }
+        responses:
+          200:
+            body:
+              application/json:
+          400:
+            body:
+              application/json:
+  /datasense:
+    /resolve:
+      description: Resolve datasense propagation request for a given component describe by its coordinates
+      post:
+        body:
+          application/json:
+            example: |
+              {
+                "nodeId" : "nodeId",
+                "flowName": "flowName",
+                "fullPath": "fullPath"
+              }
+        responses:
+          200:
+            description: component has been reached and propagation is resolved.
+            body:
+              application/json:
+                example: |
+                  {
+                    "operation": {},
+                    "incoming": {},
+                    "input": {},
+                    "output": {},
+                    "expected": {}
+                  }
+          409:
+            description: component cannot be reached
+    /element:
+      description: Resolves datasense for a given node, returning it's corresponding operation
+      post:
+        body:
+          application/json: 
+            example: |
+              {
+                "nodeId" : "nodeId",
+                "flowName": "flowName",
+                "fullPath": "fullPath"
+              }
+        responses:
+          200:
+            description: component has been reached and operation is resolved.
+            body:
+              application/json:
+          409:
+            description: component cannot be reached
+          400:
+            description: Invalid parameters
+  /worker:
+    put:
+      body:
+        application/json:
+          example: |
+            {
+              "runtimeVersion": "string"
+            }
+      responses:
+        200:
+          body:
+            application/json:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+    post:
+      description: recreates a worker for the given project
+      body:
+        application/json:
+          example: |
+            {
+              "environmentId": "environmentId",
+              "runtime": "4.0.0",
+              "projectId": "id",
+              "projectName": "name"
+            }
+      responses:
+        200:
+          body:
+            application/json:
+    /start:
+      post:
+        body:
+          application/json:
+        responses:
+          200:
+            body:
+              application/json:
+    /refresh:
+      post:
+        responses:
+          200:
+            body:
+              application/json:
+          404:
+            description: Worker not found
+            body:
+              application/json:
+          400:
+            description: Invalid parameters
+            body:
+              application/json:
+    /restart:
+      post:
+        responses:
+          200:
+            body:
+              application/json:
+          404:
+            description: Worker not found
+            body:
+              application/json:
+          400:
+            description: Invalid parameters
+            body:
+              application/json:
+    /test-connectivity:
+      post:
+        body:
+          application/json:
+        responses:
+          200:
+            body:
+              application/json:
+    /stop:
+      post:
+        responses:
+          200:
+            body:
+              application/json:
+    /logs:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+    /environment:
+      /{environmentId}:
+        get:
+          queryParameters:
+            access_token:
+              displayName: Access Token
+              type: string
+              description: Token giving you permission to make call
+              required: true
+            workerName:
+              displayName: Worker name
+              type: string
+              description: Name of the worker
+              required: true
+          responses:
+            302:
+              headers:
+                Location: 
+                  example: /cloudhub/#/console/applications/cloudhub/{workerName}/logging
+            401:
+              body:
+                application/json:
+    /try-it:
+      /enable:
+        post:
+          description: Tests the connectivity for a given extension
+          body:
+            application/json:
+          responses:
+            200:
+              description: App deployed
+              body:
+                application/json:
+            404:
+              description: Worker not found
+      /disable:
+        post:
+          description: Tests the connectivity for a given extension
+          body:
+            application/json:
+          responses:
+            200:
+              description: App deployed
+              body:
+                application/json:
+            404:
+              description: Worker not found
+      /consume:
+        post:
+          description: Tests the connectivity for a given extension
+          body:
+            application/json:
+          responses:
+            200:
+              description: App deployed
+              body:
+                application/json:
+            404:
+              description: Worker not found
+    /info:
+      get:
+        description: Get extended worker by id
+        responses:
+          404:
+            description: Worker extended not found
+          200:
+            description: Worker extended found
+            body:
+              application/json:
+      /logging:
+        /server:
+          get:
+            description: Server logs from worker by id
+            responses:
+              404:
+                description: Worker not found
+              200:
+                description: Server logs found
+                body:
+                  application/octet-stream:
+        /agent:
+          get:
+            description: Agent logs from worker by id
+            responses:
+              404:
+                description: Worker not found
+              200:
+                description: Agent logs found
+                body:
+                  application/octet-stream:
+        /application:
+          get:
+            description: Application logs from worker by id
+            responses:
+              404:
+                description: Worker not found
+              200:
+                description: Application logs found
+                body:
+                  application/octet-stream:
+      /monitoring:
+        /metrics:
+          get:
+            description: JVM Metrics from worker by id
+            responses:
+              404:
+                description: Worker not found
+              200:
+                description: JVM Metrics found
+                body:
+                  application/json:
+          delete:
+            description: Clear JVM Metrics from worker by id
+            responses:
+              404:
+                description: Worker not found
+              200:
+                description: JVM Metrics cleared
+          /last:
+            get:
+              description: Last JVM Metrics from worker by id
+              responses:
+                404:
+                  description: Worker not found
+                200:
+                  description: Last JVM Metrics found
+                  body:
+                    application/json:
+  /generate:
+    post:
+      body:
+        application/json:
+      responses:
+        400:
+            body:
+              application/json:
+        200:
+          body:
+            application/json:
+    /source:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+    /package:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+  /recommendations:
+      post:
+        description: Gets all the recommendations for a given set of input and output fields
+        body:
+          application/json:
+            example: |
+              {
+                "from": [{
+                  "path": "/payload/a",
+                  "type": "Number",
+                  "optional": true
+                }],
+                "to": [{
+                  "path": "/a",
+                  "type": "Number",
+                  "optional": true
+                }],
+                "outputType": "application/json",
+                "transformId": "uuid"
+              }
+        responses:
+          200:
+            body:
+              application/json:
+      /feedback:
+        post:
+          description: Saves the user feedback
+          body:
+            application/json:
+              example: |
+                [{
+                  "mappingScript": "dw 2.0 \noutput application/json\n---\n{\n  flightCode: payload.reservationCode,\n  flightNumber: payload.airlineNumber\n  departureDate: payload.date\n}",
+                  "targetEvent": "APPLIED",
+                  "transformId": "0dc816ff-b69a-4e8b-a5da-7572e43f2957"
+                }]
+          responses:
+            201:
+              body:
+                application/json:

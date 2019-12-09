@@ -1,0 +1,198 @@
+openapi: 3.0.0
+info:
+  title: AutomationManagement
+  version: 2018-01-15
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/automation/resource-manager/Microsoft.Automation/stable/2018-01-15/dscNodeCounts.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: automation-dscNodeCounts
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodecounts/{countType}":
+    get:
+      description: Retrieve counts for Dsc Nodes.
+      externalDocs:
+        url: http://aka.ms/azureautomationsdk/nodecounts
+      operationId: NodeCountInformation_Get
+      parameters:
+        - description: Name of an Azure Resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._]+$
+          examples:
+            Get node's node configuration counts:
+              value: rg
+            Get node's status counts:
+              value: rg
+        - description: The name of the automation account.
+          in: path
+          name: automationAccountName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Get node's node configuration counts:
+              value: myAutomationAccount33
+            Get node's status counts:
+              value: myAutomationAccount33
+        - $ref: "#/components/parameters/CountTypeParameter"
+        - description: Gets subscription credentials which uniquely identify Microsoft
+            Azure subscription. The subscription ID forms part of the URI for
+            every service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Get node's node configuration counts:
+              value: subid
+            Get node's status counts:
+              value: subid
+        - description: Client Api Version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Get node's node configuration counts:
+              value: 2018-01-15
+            Get node's status counts:
+              value: 2018-01-15
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NodeCounts"
+              examples:
+                Get node's node configuration counts:
+                  $ref: "#/components/examples/Get_node_s_node_configuration_counts"
+                Get node's status counts:
+                  $ref: "#/components/examples/Get_node_s_status_counts"
+        default:
+          description: Automation error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error response of an operation failure
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - NodeCountInformation
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_node_s_node_configuration_counts:
+      value:
+        totalCount: 16
+        value:
+          - name: client.localhost
+            properties:
+              count: 24
+          - name: server.localhost
+            properties:
+              count: 3
+    Get_node_s_status_counts:
+      value:
+        totalCount: 6
+        value:
+          - name: Compliant
+            properties:
+              count: 10
+          - name: Failed
+            properties:
+              count: 1
+          - name: InProgress
+            properties:
+              count: 1
+          - name: NotCompliant
+            properties:
+              count: 3
+          - name: Pending
+            properties:
+              count: 0
+          - name: Unresponsive
+            properties:
+              count: 4
+  parameters:
+    CountTypeParameter:
+      description: The type of counts to retrieve
+      in: path
+      name: countType
+      required: true
+      x-ms-enum:
+        modelAsString: true
+        name: CountType
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - status
+          - nodeconfiguration
+      examples:
+        Get node's node configuration counts:
+          value: nodeconfiguration
+        Get node's status counts:
+          value: status
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    NodeCount:
+      description: Number of nodes based on the Filter
+      properties:
+        name:
+          description: Gets the name of a count type
+          type: string
+        properties:
+          $ref: "#/components/schemas/NodeCountProperties"
+    NodeCountProperties:
+      properties:
+        count:
+          description: Gets the count for the name
+          type: integer
+    NodeCounts:
+      description: Gets the count of nodes by count type
+      properties:
+        totalCount:
+          description: Gets the total number of records matching countType criteria.
+          type: integer
+        value:
+          description: Gets an array of counts
+          items:
+            $ref: "#/components/schemas/NodeCount"
+          type: array

@@ -1,0 +1,2372 @@
+openapi: 3.0.0
+info:
+  description: Time Series Insights client
+  title: TimeSeriesInsightsClient
+  version: 2018-08-15-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/preview/2018-08-15-preview/timeseriesinsights.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: timeseriesinsights
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.TimeSeriesInsights/operations:
+    get:
+      description: Lists all of the available Time Series Insights related operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully listed the available operations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+              examples:
+                List available operations for the Time Series Insights resource provider:
+                  $ref: "#/components/examples/List_available_operations_for_the_Ti\
+                    me_Series_Insights_resource_provider"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.TimeSeriesInsights/environments":
+    get:
+      description: Lists all the available environments within a subscription, irrespective
+        of the resource groups.
+      operationId: Environments_ListBySubscription
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Environments returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnvironmentListResponse"
+              examples:
+                EnvironmentsBySubscription:
+                  $ref: "#/components/examples/EnvironmentsBySubscription"
+        default:
+          description: "HTTP 404 (Not Found): The subscription could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Environments
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments":
+    get:
+      description: Lists all the available environments associated with the subscription
+        and within the specified resource group.
+      operationId: Environments_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Environments returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnvironmentListResponse"
+              examples:
+                EnvironmentsByResourceGroup:
+                  $ref: "#/components/examples/EnvironmentsByResourceGroup"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, or resource group could not
+            be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Environments
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}":
+    delete:
+      description: Deletes the environment with the specified name in the specified
+        subscription and resource group.
+      operationId: Environments_Delete
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The environment was successfully deleted.
+        "204":
+          description: The environment was successfully deleted.
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group, or
+            environment could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Environments
+    get:
+      description: Gets the environment with the specified name in the specified
+        subscription and resource group.
+      operationId: Environments_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/ExpandParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The environment definition was successfully retrieved and is in the
+            response. If you are polling for the completion of a provisioning or
+            scale operation, you can check its status via the provisioningState
+            property.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnvironmentResource"
+              examples:
+                EnvironmentsGet:
+                  $ref: "#/components/examples/EnvironmentsGet"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group, or
+            environment could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Environments
+    patch:
+      description: Updates the environment with the specified name in the specified
+        subscription and resource group.
+      operationId: Environments_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnvironmentUpdateParameters"
+        description: Request object that contains the updated information for the
+          environment.
+        required: true
+      responses:
+        "200":
+          description: The environment definition was successfully updated and is in the
+            response. If the environment was updated synchronously, the response
+            will include a provisioningState value of "Succeeded". If the
+            environment was updated asynchronous, the response will include a
+            provisioningState value of "Updating".  You can periodically get
+            your environment definition and monitor progress of the update via
+            the provisioningState property.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnvironmentResource"
+              examples:
+                EnvironmentsUpdate:
+                  $ref: "#/components/examples/EnvironmentsUpdate"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group, or
+            environment could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Environments
+      x-ms-long-running-operation: true
+    put:
+      description: Create or update an environment in the specified subscription and
+        resource group.
+      operationId: Environments_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: Name of the environment
+          in: path
+          name: environmentName
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            EnvironmentsCreate:
+              value: env1
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnvironmentCreateOrUpdateParameters"
+        description: Parameters for creating an environment resource.
+        required: true
+      responses:
+        "200":
+          description: The existing environment definition was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnvironmentResource"
+              examples:
+                EnvironmentsCreate:
+                  $ref: "#/components/examples/EnvironmentsCreate"
+        "201":
+          description: The environment create request was accepted. Environment
+            provisioning is an asynchronous operation. You can periodically get
+            your environment definition and monitor progress via the
+            provisioningState property.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnvironmentResource"
+              examples:
+                EnvironmentsCreate:
+                  $ref: "#/components/examples/EnvironmentsCreate"
+        "404":
+          description: The subscription or resource group could not be found.
+        default:
+          description: "HTTP 400 (Bad Request): The given environment request body is
+            invalid; See the error code and message in the response for
+            details."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Environments
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/accessPolicies":
+    get:
+      description: Lists all the available access policies associated with the environment.
+      operationId: AccessPolicies_ListByEnvironment
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: access policies returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessPolicyListResponse"
+              examples:
+                AccessPoliciesByEnvironment:
+                  $ref: "#/components/examples/AccessPoliciesByEnvironment"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group, or
+            environment could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - AccessPolicies
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/accessPolicies/{accessPolicyName}":
+    delete:
+      description: Deletes the access policy with the specified name in the specified
+        subscription, resource group, and environment
+      operationId: AccessPolicies_Delete
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/AccessPolicyNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The access policy was successfully deleted.
+        "204":
+          description: The access policy was successfully deleted.
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group,
+            environment, or access policy could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - AccessPolicies
+    get:
+      description: Gets the access policy with the specified name in the specified
+        environment.
+      operationId: AccessPolicies_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/AccessPolicyNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The access policy definition was successfully retrieved and is in
+            the response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessPolicyResource"
+              examples:
+                AccessPoliciesGet:
+                  $ref: "#/components/examples/AccessPoliciesGet"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group,
+            environment, or access policy could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - AccessPolicies
+    patch:
+      description: Updates the access policy with the specified name in the specified
+        subscription, resource group, and environment.
+      operationId: AccessPolicies_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/AccessPolicyNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AccessPolicyUpdateParameters"
+        description: Request object that contains the updated information for the access
+          policy.
+        required: true
+      responses:
+        "200":
+          description: The access policy definition was successfully updated and is in the
+            response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessPolicyResource"
+              examples:
+                AccessPoliciesUpdate:
+                  $ref: "#/components/examples/AccessPoliciesUpdate"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group,
+            environment, or access policy could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - AccessPolicies
+    put:
+      description: Create or update an access policy in the specified environment.
+      operationId: AccessPolicies_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - description: Name of the access policy.
+          in: path
+          name: accessPolicyName
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            AccessPoliciesCreate:
+              value: ap1
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AccessPolicyCreateOrUpdateParameters"
+        description: Parameters for creating an access policy.
+        required: true
+      responses:
+        "200":
+          description: The existing access policy definition was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessPolicyResource"
+              examples:
+                AccessPoliciesCreate:
+                  $ref: "#/components/examples/AccessPoliciesCreate"
+        "201":
+          description: The access policy was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessPolicyResource"
+              examples:
+                AccessPoliciesCreate:
+                  $ref: "#/components/examples/AccessPoliciesCreate"
+        default:
+          description: "HTTP 400 (Bad Request): The given access policy request body is
+            invalid; See the error code and message in the response for
+            details."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - AccessPolicies
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/eventSources":
+    get:
+      description: Lists all the available event sources associated with the subscription
+        and within the specified resource group and environment.
+      operationId: EventSources_ListByEnvironment
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Environments returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSourceListResponse"
+              examples:
+                ListEventSourcesByEnvironment:
+                  $ref: "#/components/examples/ListEventSourcesByEnvironment"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group, or
+            environment could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - EventSources
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/eventSources/{eventSourceName}":
+    delete:
+      description: Deletes the event source with the specified name in the specified
+        subscription, resource group, and environment
+      operationId: EventSources_Delete
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/EventSourceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The event source was successfully deleted.
+        "204":
+          description: The event source was successfully deleted.
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group,
+            environment, or event source could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - EventSources
+    get:
+      description: Gets the event source with the specified name in the specified
+        environment.
+      operationId: EventSources_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/EventSourceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The event source definition was successfully retrieved and is in the
+            response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSourceResource"
+              examples:
+                GetEventHubEventSource:
+                  $ref: "#/components/examples/GetEventHubEventSource"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group,
+            environment, or event source could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - EventSources
+    patch:
+      description: Updates the event source with the specified name in the specified
+        subscription, resource group, and environment.
+      operationId: EventSources_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/EventSourceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventSourceUpdateParameters"
+        description: Request object that contains the updated information for the event
+          source.
+        required: true
+      responses:
+        "200":
+          description: The event source definition was successfully updated and is in the
+            response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSourceResource"
+              examples:
+                UpdateEventSource:
+                  $ref: "#/components/examples/UpdateEventSource"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group,
+            environment, or event source could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - EventSources
+    put:
+      description: Create or update an event source under the specified environment.
+      operationId: EventSources_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - description: Name of the event source.
+          in: path
+          name: eventSourceName
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            CreateEventHubEventSource:
+              value: es1
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventSourceCreateOrUpdateParameters"
+        description: Parameters for creating an event source resource.
+        required: true
+      responses:
+        "200":
+          description: The existing event source definition was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSourceResource"
+              examples:
+                CreateEventHubEventSource:
+                  $ref: "#/components/examples/CreateEventHubEventSource"
+        "201":
+          description: The event source was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSourceResource"
+              examples:
+                CreateEventHubEventSource:
+                  $ref: "#/components/examples/CreateEventHubEventSource"
+        default:
+          description: "HTTP 400 (Bad Request): The given event source request body is
+            invalid; See the error code and message in the response for
+            details."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - EventSources
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/referenceDataSets":
+    get:
+      description: Lists all the available reference data sets associated with the
+        subscription and within the specified resource group and environment.
+      operationId: ReferenceDataSets_ListByEnvironment
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Reference data sets returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferenceDataSetListResponse"
+              examples:
+                ReferenceDataSetsListByEnvironment:
+                  $ref: "#/components/examples/ReferenceDataSetsListByEnvironment"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group, or
+            environment could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - ReferenceDataSets
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/referenceDataSets/{referenceDataSetName}":
+    delete:
+      description: Deletes the reference data set with the specified name in the specified
+        subscription, resource group, and environment
+      operationId: ReferenceDataSets_Delete
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/ReferenceDataSetNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The reference data set was successfully deleted.
+        "204":
+          description: The reference data set was successfully deleted.
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group,
+            environment, or reference data set could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - ReferenceDataSets
+    get:
+      description: Gets the reference data set with the specified name in the specified
+        environment.
+      operationId: ReferenceDataSets_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/ReferenceDataSetNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The reference data set definition was successfully retrieved and is
+            in the response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferenceDataSetResource"
+              examples:
+                ReferenceDataSetsGet:
+                  $ref: "#/components/examples/ReferenceDataSetsGet"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group,
+            environment, or reference data set could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - ReferenceDataSets
+    patch:
+      description: Updates the reference data set with the specified name in the specified
+        subscription, resource group, and environment.
+      operationId: ReferenceDataSets_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - $ref: "#/components/parameters/ReferenceDataSetNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReferenceDataSetUpdateParameters"
+        description: Request object that contains the updated information for the reference
+          data set.
+        required: true
+      responses:
+        "200":
+          description: The reference data set definition was successfully updated and is in
+            the response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferenceDataSetResource"
+              examples:
+                ReferenceDataSetsUpdate:
+                  $ref: "#/components/examples/ReferenceDataSetsUpdate"
+        default:
+          description: "HTTP 404 (Not Found): The subscription, resource group,
+            environment, or reference data set could not be found."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - ReferenceDataSets
+    put:
+      description: Create or update a reference data set in the specified environment.
+      operationId: ReferenceDataSets_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/EnvironmentNameParameter"
+        - description: Name of the reference data set.
+          in: path
+          name: referenceDataSetName
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 63
+            pattern: ^[A-Za-z0-9]
+          examples:
+            ReferenceDataSetsCreate:
+              value: rds1
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReferenceDataSetCreateOrUpdateParameters"
+        description: Parameters for creating a reference data set.
+        required: true
+      responses:
+        "200":
+          description: The existing reference data set definition was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferenceDataSetResource"
+              examples:
+                ReferenceDataSetsCreate:
+                  $ref: "#/components/examples/ReferenceDataSetsCreate"
+        "201":
+          description: The reference data set was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferenceDataSetResource"
+              examples:
+                ReferenceDataSetsCreate:
+                  $ref: "#/components/examples/ReferenceDataSetsCreate"
+        default:
+          description: "HTTP 400 (Bad Request): The given reference data set request body
+            is invalid; See the error code and message in the response for
+            details."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - ReferenceDataSets
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    List_available_operations_for_the_Time_Series_Insights_resource_provider:
+      value:
+        value:
+          - display:
+              description: Registers the subscription for the Time Series Insights resource
+                provider and enables the creation of Time Series Insights
+                environments.
+              operation: Registers the Time Series Insights Resource Provider
+              provider: Microsoft Time Series Insights
+              resource: Time Series Insights Resource Provider
+            name: Microsoft.TimeSeriesInsights/register/action
+          - display:
+              description: Get the properties of an environment.
+              operation: Read Environment
+              provider: Microsoft Time Series Insights
+              resource: Environment
+            name: Microsoft.TimeSeriesInsights/environments/read
+          - display:
+              description: Creates a new environment, or updates an existing environment.
+              operation: Create or Update Environment
+              provider: Microsoft Time Series Insights
+              resource: Environment
+            name: Microsoft.TimeSeriesInsights/environments/write
+          - display:
+              description: Deletes the environment.
+              operation: Delete Environment
+              provider: Microsoft Time Series Insights
+              resource: Environment
+            name: Microsoft.TimeSeriesInsights/environments/delete
+          - display:
+              description: Get the properties of an event source.
+              operation: Read Event Source
+              provider: Microsoft Time Series Insights
+              resource: Event Source
+            name: Microsoft.TimeSeriesInsights/environments/eventsources/read
+          - display:
+              description: Creates a new event source for an environment, or updates an
+                existing event source.
+              operation: Create or Update Event Source
+              provider: Microsoft Time Series Insights
+              resource: Event Source
+            name: Microsoft.TimeSeriesInsights/environments/eventsources/write
+          - display:
+              description: Deletes the event source.
+              operation: Delete Event Source
+              provider: Microsoft Time Series Insights
+              resource: Event Source
+            name: Microsoft.TimeSeriesInsights/environments/eventsources/delete
+          - display:
+              description: Get the properties of a reference data set.
+              operation: Read Reference Data Set
+              provider: Microsoft Time Series Insights
+              resource: Reference Data Set
+            name: Microsoft.TimeSeriesInsights/environments/referencedatasets/read
+          - display:
+              description: Creates a new reference data set for an environment, or updates
+                an existing reference data set.
+              operation: Create or Update Reference Data Set
+              provider: Microsoft Time Series Insights
+              resource: Reference Data Set
+            name: Microsoft.TimeSeriesInsights/environments/referencedatasets/write
+          - display:
+              description: Deletes the reference data set.
+              operation: Delete Reference Data Set
+              provider: Microsoft Time Series Insights
+              resource: Reference Data Set
+            name: Microsoft.TimeSeriesInsights/environments/referencedatasets/delete
+          - display:
+              description: Get the properties of an access policy.
+              operation: Read Access Policy
+              provider: Microsoft Time Series Insights
+              resource: Access Policy
+            name: Microsoft.TimeSeriesInsights/environments/accesspolicies/read
+          - display:
+              description: Creates a new access policy for an environment, or updates an
+                existing access policy.
+              operation: Create or Update Access Policy
+              provider: Microsoft Time Series Insights
+              resource: Access Policy
+            name: Microsoft.TimeSeriesInsights/environments/accesspolicies/write
+          - display:
+              description: Deletes the access policy.
+              operation: Delete Access Policy
+              provider: Microsoft Time Series Insights
+              resource: Access Policy
+            name: Microsoft.TimeSeriesInsights/environments/accesspolicies/delete
+    EnvironmentsBySubscription:
+      value:
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1
+            kind: Standard
+            location: West US
+            name: env1
+            properties:
+              creationTime: 2017-04-18T19:20:33.2288820Z
+              dataRetentionTime: P31D
+              provisioningState: Succeeded
+            sku:
+              capacity: 1
+              name: S1
+            tags: {}
+            type: Microsoft.TimeSeriesInsights/Environments
+    EnvironmentsByResourceGroup:
+      value:
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1
+            kind: Standard
+            location: West US
+            name: env1
+            properties:
+              creationTime: 2017-04-18T19:20:33.2288820Z
+              dataRetentionTime: P31D
+              provisioningState: Succeeded
+            sku:
+              capacity: 1
+              name: S1
+            tags: {}
+            type: Microsoft.TimeSeriesInsights/Environments
+    EnvironmentsGet:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1
+        kind: Standard
+        location: West US
+        name: env1
+        properties:
+          creationTime: 2017-04-18T19:20:33.2288820Z
+          dataRetentionTime: P31D
+          partitionKeyProperties:
+            - name: DeviceId1
+              type: String
+          provisioningState: Succeeded
+        sku:
+          capacity: 1
+          name: S1
+        tags: {}
+        type: Microsoft.TimeSeriesInsights/Environments
+    EnvironmentsUpdate:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1
+        kind: Standard
+        location: West US
+        name: env1
+        properties:
+          creationTime: 2017-04-18T19:20:33.2288820Z
+          dataRetentionTime: P31D
+          provisioningState: Succeeded
+        sku:
+          capacity: 10
+          name: S1
+        tags: {}
+        type: Microsoft.TimeSeriesInsights/Environments
+    EnvironmentsCreate:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1
+        kind: Standard
+        location: West US
+        name: env1
+        properties:
+          creationTime: 2017-04-18T19:20:33.2288820Z
+          dataRetentionTime: P31D
+          provisioningState: Creating
+        sku:
+          capacity: 1
+          name: S1
+        tags: {}
+        type: Microsoft.TimeSeriesInsights/Environments
+    AccessPoliciesByEnvironment:
+      value:
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/accessPolicies/ap1
+            name: ap1
+            properties:
+              description: some description
+              principalObjectId: aGuid
+              roles:
+                - Reader
+            type: Microsoft.TimeSeriesInsights/Environments/AccessPolicies
+    AccessPoliciesGet:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/accessPolicies/ap1
+        name: ap1
+        properties:
+          description: some description
+          principalObjectId: aGuid
+          roles:
+            - Reader
+        type: Microsoft.TimeSeriesInsights/Environments/AccessPolicies
+    AccessPoliciesUpdate:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/accessPolicies/ap1
+        name: ap1
+        properties:
+          description: some description
+          principalObjectId: aGuid
+          roles:
+            - Reader
+        type: Microsoft.TimeSeriesInsights/Environments/AccessPolicies
+    AccessPoliciesCreate:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/accessPolicies/ap1
+        name: ap1
+        properties:
+          description: some description
+          principalObjectId: aGuid
+          roles:
+            - Reader
+        type: Microsoft.TimeSeriesInsights/Environments/AccessPolicies
+    ListEventSourcesByEnvironment:
+      value:
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/eventSources/es1
+            kind: Microsoft.EventHub
+            location: West US
+            name: es1
+            properties:
+              consumerGroupName: cgn
+              creationTime: 2017-04-18T19:20:33.2288820Z
+              eventHubName: ehn
+              eventSourceResourceId: somePathInArm
+              keyName: managementKey
+              provisioningState: Succeeded
+              serviceBusNamespace: sbn
+            tags: {}
+            type: Microsoft.TimeSeriesInsights/Environments/EventSources
+    GetEventHubEventSource:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/eventSources/es1
+        kind: Microsoft.EventHub
+        location: West US
+        name: es1
+        properties:
+          consumerGroupName: cgn
+          creationTime: 2017-04-18T19:20:33.2288820Z
+          eventHubName: ehn
+          eventSourceResourceId: somePathInArm
+          keyName: managementKey
+          provisioningState: Succeeded
+          serviceBusNamespace: sbn
+        tags: {}
+        type: Microsoft.TimeSeriesInsights/Environments/EventSources
+    UpdateEventSource:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/eventSources/es1
+        kind: Microsoft.EventHub
+        location: West US
+        name: es1
+        properties:
+          consumerGroupName: cgn
+          creationTime: 2017-04-18T19:20:33.2288820Z
+          eventHubName: ehn
+          eventSourceResourceId: somePathInArm
+          keyName: managementKey
+          provisioningState: Succeeded
+          serviceBusNamespace: sbn
+          timestampPropertyName: someOtherTimestampProperty
+        tags:
+          someKey: someValue
+        type: Microsoft.TimeSeriesInsights/Environments/EventSources
+    CreateEventHubEventSource:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/eventSources/es1
+        kind: Microsoft.EventHub
+        location: West US
+        name: es1
+        properties:
+          consumerGroupName: cgn
+          creationTime: 2017-04-18T19:20:33.2288820Z
+          eventHubName: ehn
+          eventSourceResourceId: somePathInArm
+          keyName: managementKey
+          provisioningState: Succeeded
+          serviceBusNamespace: sbn
+        tags: {}
+        type: Microsoft.TimeSeriesInsights/Environments/EventSources
+    ReferenceDataSetsListByEnvironment:
+      value:
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/referenceDataSets/rds1
+            location: West US
+            name: rds1
+            properties:
+              creationTime: 2017-04-18T19:20:33.2288820Z
+              keyProperties:
+                - name: DeviceId1
+                  type: String
+                - name: DeviceFloor
+                  type: Double
+              provisioningState: Succeeded
+            tags: {}
+            type: Microsoft.TimeSeriesInsights/Environments/ReferenceDataSets
+    ReferenceDataSetsGet:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/referenceDataSets/rds1
+        location: West US
+        name: rds1
+        properties:
+          creationTime: 2017-04-18T19:20:33.2288820Z
+          keyProperties:
+            - name: DeviceId1
+              type: String
+            - name: DeviceFloor
+              type: Double
+          provisioningState: Succeeded
+        tags: {}
+        type: Microsoft.TimeSeriesInsights/Environments/ReferenceDataSets
+    ReferenceDataSetsUpdate:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/referenceDataSets/rds1
+        location: West US
+        name: rds1
+        properties:
+          creationTime: 2017-04-18T19:20:33.2288820Z
+          keyProperties:
+            - name: DeviceId1
+              type: String
+            - name: DeviceFloor
+              type: Double
+          provisioningState: Succeeded
+        tags:
+          someKey: someValue
+        type: Microsoft.TimeSeriesInsights/Environments/ReferenceDataSets
+    ReferenceDataSetsCreate:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.TimeSeriesInsights/Environments/env1/referenceDataSets/rds1
+        location: West US
+        name: rds1
+        properties:
+          creationTime: 2017-04-18T19:20:33.2288820Z
+          keyProperties:
+            - name: DeviceId1
+              type: String
+            - name: DeviceFloor
+              type: Double
+          provisioningState: Succeeded
+        tags: {}
+        type: Microsoft.TimeSeriesInsights/Environments/ReferenceDataSets
+  parameters:
+    AccessPolicyNameParameter:
+      description: The name of the Time Series Insights access policy associated with the
+        specified environment.
+      in: path
+      name: accessPolicyName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        AccessPoliciesDelete:
+          value: ap1
+        AccessPoliciesGet:
+          value: ap1
+        AccessPoliciesUpdate:
+          value: ap1
+    ApiVersionParameter:
+      description: Version of the API to be used with the client request.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        List available operations for the Time Series Insights resource provider:
+          value: 2016-03-01
+        EnvironmentsBySubscription:
+          value: 2018-08-15-preview
+        EnvironmentsByResourceGroup:
+          value: 2018-08-15-preview
+        EnvironmentsDelete:
+          value: 2018-08-15-preview
+        EnvironmentsGet:
+          value: 2018-08-15-preview
+        EnvironmentsUpdate:
+          value: 2018-08-15-preview
+        EnvironmentsCreate:
+          value: 2018-08-15-preview
+        AccessPoliciesByEnvironment:
+          value: 2018-08-15-preview
+        AccessPoliciesDelete:
+          value: 2018-08-15-preview
+        AccessPoliciesGet:
+          value: 2018-08-15-preview
+        AccessPoliciesUpdate:
+          value: 2018-08-15-preview
+        AccessPoliciesCreate:
+          value: 2018-08-15-preview
+        ListEventSourcesByEnvironment:
+          value: 2018-08-15-preview
+        DeleteEventSource:
+          value: 2018-08-15-preview
+        GetEventHubEventSource:
+          value: 2018-08-15-preview
+        UpdateEventSource:
+          value: 2018-08-15-preview
+        CreateEventHubEventSource:
+          value: 2018-08-15-preview
+        ReferenceDataSetsListByEnvironment:
+          value: 2018-08-15-preview
+        ReferenceDataSetsDelete:
+          value: 2018-08-15-preview
+        ReferenceDataSetsGet:
+          value: 2018-08-15-preview
+        ReferenceDataSetsUpdate:
+          value: 2018-08-15-preview
+        ReferenceDataSetsCreate:
+          value: 2018-08-15-preview
+    EnvironmentNameParameter:
+      description: The name of the Time Series Insights environment associated with the
+        specified resource group.
+      in: path
+      name: environmentName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        EnvironmentsDelete:
+          value: env1
+        EnvironmentsGet:
+          value: env1
+        EnvironmentsUpdate:
+          value: env1
+        AccessPoliciesByEnvironment:
+          value: env1
+        AccessPoliciesDelete:
+          value: env1
+        AccessPoliciesGet:
+          value: env1
+        AccessPoliciesUpdate:
+          value: env1
+        AccessPoliciesCreate:
+          value: env1
+        ListEventSourcesByEnvironment:
+          value: env1
+        DeleteEventSource:
+          value: env1
+        GetEventHubEventSource:
+          value: env1
+        UpdateEventSource:
+          value: env1
+        CreateEventHubEventSource:
+          value: env1
+        ReferenceDataSetsListByEnvironment:
+          value: env1
+        ReferenceDataSetsDelete:
+          value: env1
+        ReferenceDataSetsGet:
+          value: env1
+        ReferenceDataSetsUpdate:
+          value: env1
+        ReferenceDataSetsCreate:
+          value: env1
+    EventSourceNameParameter:
+      description: The name of the Time Series Insights event source associated with the
+        specified environment.
+      in: path
+      name: eventSourceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        DeleteEventSource:
+          value: es1
+        GetEventHubEventSource:
+          value: es1
+        UpdateEventSource:
+          value: es1
+    ExpandParameter:
+      description: Setting $expand=status will include the status of the internal services
+        of the environment in the Time Series Insights service.
+      in: query
+      name: $expand
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ReferenceDataSetNameParameter:
+      description: The name of the Time Series Insights reference data set associated with
+        the specified environment.
+      in: path
+      name: referenceDataSetName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        ReferenceDataSetsDelete:
+          value: rds1
+        ReferenceDataSetsGet:
+          value: rds1
+        ReferenceDataSetsUpdate:
+          value: rds1
+    ResourceGroupNameParameter:
+      description: Name of an Azure Resource group.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        EnvironmentsByResourceGroup:
+          value: rg1
+        EnvironmentsDelete:
+          value: rg1
+        EnvironmentsGet:
+          value: rg1
+        EnvironmentsUpdate:
+          value: rg1
+        EnvironmentsCreate:
+          value: rg1
+        AccessPoliciesByEnvironment:
+          value: rg1
+        AccessPoliciesDelete:
+          value: rg1
+        AccessPoliciesGet:
+          value: rg1
+        AccessPoliciesUpdate:
+          value: rg1
+        AccessPoliciesCreate:
+          value: rg1
+        ListEventSourcesByEnvironment:
+          value: rg1
+        DeleteEventSource:
+          value: rg1
+        GetEventHubEventSource:
+          value: rg1
+        UpdateEventSource:
+          value: rg1
+        CreateEventHubEventSource:
+          value: rg1
+        ReferenceDataSetsListByEnvironment:
+          value: rg1
+        ReferenceDataSetsDelete:
+          value: rg1
+        ReferenceDataSetsGet:
+          value: rg1
+        ReferenceDataSetsUpdate:
+          value: rg1
+        ReferenceDataSetsCreate:
+          value: rg1
+    SubscriptionIdParameter:
+      description: Azure Subscription ID.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        EnvironmentsBySubscription:
+          value: subid
+        EnvironmentsByResourceGroup:
+          value: subid
+        EnvironmentsDelete:
+          value: subid
+        EnvironmentsGet:
+          value: subid
+        EnvironmentsUpdate:
+          value: subid
+        EnvironmentsCreate:
+          value: subid
+        AccessPoliciesByEnvironment:
+          value: subid
+        AccessPoliciesDelete:
+          value: subid
+        AccessPoliciesGet:
+          value: subid
+        AccessPoliciesUpdate:
+          value: subid
+        AccessPoliciesCreate:
+          value: subid
+        ListEventSourcesByEnvironment:
+          value: subid
+        DeleteEventSource:
+          value: subid
+        GetEventHubEventSource:
+          value: subid
+        UpdateEventSource:
+          value: subid
+        CreateEventHubEventSource:
+          value: subid
+        ReferenceDataSetsListByEnvironment:
+          value: subid
+        ReferenceDataSetsDelete:
+          value: subid
+        ReferenceDataSetsGet:
+          value: subid
+        ReferenceDataSetsUpdate:
+          value: subid
+        ReferenceDataSetsCreate:
+          value: subid
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AccessPolicyCreateOrUpdateParameters:
+      properties:
+        properties:
+          $ref: "#/components/schemas/AccessPolicyResourceProperties"
+      required:
+        - properties
+    AccessPolicyListResponse:
+      description: The response of the List access policies operation.
+      properties:
+        value:
+          description: Result of the List access policies operation.
+          items:
+            $ref: "#/components/schemas/AccessPolicyResource"
+          type: array
+    AccessPolicyMutableProperties:
+      description: An object that represents a set of mutable access policy resource
+        properties.
+      properties:
+        description:
+          description: An description of the access policy.
+          type: string
+        roles:
+          description: The list of roles the principal is assigned on the environment.
+          items:
+            description: A role defining the data plane operations that a principal can
+              perform on a Time Series Insights client.
+            enum:
+              - Reader
+              - Contributor
+            type: string
+            x-ms-enum:
+              modelAsString: true
+              name: AccessPolicyRole
+          type: array
+      type: object
+    AccessPolicyResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: An access policy is used to grant users and applications access to the
+        environment. Roles are assigned to service principals in Azure Active
+        Directory. These roles define the actions the principal can perform
+        through the Time Series Insights data plane APIs.
+      properties:
+        properties:
+          $ref: "#/components/schemas/AccessPolicyResourceProperties"
+    AccessPolicyResourceProperties:
+      properties:
+        description:
+          description: An description of the access policy.
+          type: string
+        principalObjectId:
+          description: The objectId of the principal in Azure Active Directory.
+          type: string
+        roles:
+          description: The list of roles the principal is assigned on the environment.
+          items:
+            description: A role defining the data plane operations that a principal can
+              perform on a Time Series Insights client.
+            enum:
+              - Reader
+              - Contributor
+            type: string
+            x-ms-enum:
+              modelAsString: true
+              name: AccessPolicyRole
+          type: array
+    AccessPolicyUpdateParameters:
+      properties:
+        properties:
+          $ref: "#/components/schemas/AccessPolicyMutableProperties"
+    AzureEventSourceProperties:
+      allOf:
+        - $ref: "#/components/schemas/EventSourceCommonProperties"
+      description: Properties of an event source that reads events from an event broker in
+        Azure.
+      properties:
+        eventSourceResourceId:
+          description: The resource id of the event source in Azure Resource Manager.
+          type: string
+      required:
+        - eventSourceResourceId
+    CloudError:
+      description: Contains information about an API error.
+      properties:
+        error:
+          $ref: "#/components/schemas/CloudErrorBody"
+      type: object
+      x-ms-external: true
+    CloudErrorBody:
+      description: Describes a particular API error with an error code and a message.
+      properties:
+        code:
+          description: An error code that describes the error condition more precisely than
+            an HTTP status code. Can be used to programmatically handle specific
+            error cases.
+          type: string
+        details:
+          description: Contains nested errors that are related to this error.
+          items:
+            $ref: "#/components/schemas/CloudErrorBody"
+          type: array
+        message:
+          description: A message that describes the error in detail and provides debugging
+            information.
+          type: string
+        target:
+          description: The target of the particular error (for example, the name of the
+            property in error).
+          type: string
+      type: object
+      x-ms-external: true
+    CreateOrUpdateTrackedResourceProperties:
+      description: Properties required to create any resource tracked by Azure Resource
+        Manager.
+      properties:
+        location:
+          description: The location of the resource.
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        tags:
+          additionalProperties:
+            type: string
+          description: Key-value pairs of additional properties for the resource.
+          type: object
+      required:
+        - location
+    EnvironmentCreateOrUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/CreateOrUpdateTrackedResourceProperties"
+      description: Parameters supplied to the CreateOrUpdate Environment operation.
+      discriminator:
+        propertyName: kind
+      properties:
+        kind:
+          description: The kind of the environment.
+          enum:
+            - Standard
+            - LongTerm
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: Kind
+        sku:
+          $ref: "#/components/schemas/Sku"
+      required:
+        - kind
+        - sku
+    EnvironmentListResponse:
+      description: The response of the List Environments operation.
+      properties:
+        value:
+          description: Result of the List Environments operation.
+          items:
+            $ref: "#/components/schemas/EnvironmentResource"
+          type: array
+    EnvironmentResource:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      description: An environment is a set of time-series data available for query, and is
+        the top level Azure Time Series Insights resource.
+      discriminator:
+        propertyName: kind
+      properties:
+        kind:
+          description: The kind of the environment.
+          enum:
+            - Standard
+            - LongTerm
+          type: string
+        sku:
+          $ref: "#/components/schemas/Sku"
+      required:
+        - kind
+        - sku
+      type: object
+    EnvironmentResourceProperties:
+      allOf:
+        - $ref: "#/components/schemas/ResourceProperties"
+      description: Properties of the environment.
+      properties:
+        dataAccessFqdn:
+          description: The fully qualified domain name used to access the environment data,
+            e.g. to query the environment's events or upload reference data for
+            the environment.
+          readOnly: true
+          type: string
+        dataAccessId:
+          description: An id used to access the environment data, e.g. to query the
+            environment's events or upload reference data for the environment.
+          format: uuid
+          readOnly: true
+          type: string
+        status:
+          $ref: "#/components/schemas/EnvironmentStatus"
+    EnvironmentStateDetails:
+      description: An object that contains the details about an environment's state.
+      properties:
+        code:
+          description: Contains the code that represents the reason of an environment being
+            in a particular state. Can be used to programmatically handle
+            specific cases.
+          type: string
+        message:
+          description: A message that describes the state in detail.
+          type: string
+      readOnly: true
+      type: object
+    EnvironmentStatus:
+      description: An object that represents the status of the environment, and its
+        internal state in the Time Series Insights service.
+      properties:
+        ingress:
+          $ref: "#/components/schemas/IngressEnvironmentStatus"
+      readOnly: true
+      type: object
+    EnvironmentUpdateParameters:
+      description: Parameters supplied to the Update Environment operation.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Key-value pairs of additional properties for the environment.
+          type: object
+      type: object
+    EventHubEventSourceCommonProperties:
+      allOf:
+        - $ref: "#/components/schemas/AzureEventSourceProperties"
+      description: Properties of the EventHub event source.
+      properties:
+        consumerGroupName:
+          description: The name of the event hub's consumer group that holds the partitions
+            from which events will be read.
+          type: string
+        eventHubName:
+          description: The name of the event hub.
+          type: string
+        keyName:
+          description: The name of the SAS key that grants the Time Series Insights service
+            access to the event hub. The shared access policies for this key
+            must grant 'Listen' permissions to the event hub.
+          type: string
+        serviceBusNamespace:
+          description: The name of the service bus that contains the event hub.
+          type: string
+      required:
+        - serviceBusNamespace
+        - eventHubName
+        - consumerGroupName
+        - keyName
+    EventHubEventSourceCreateOrUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/EventSourceCreateOrUpdateParameters"
+      description: Parameters supplied to the Create or Update Event Source operation for
+        an EventHub event source.
+      properties:
+        properties:
+          $ref: "#/components/schemas/EventHubEventSourceCreationProperties"
+      required:
+        - properties
+      x-ms-discriminator-value: Microsoft.EventHub
+    EventHubEventSourceCreationProperties:
+      allOf:
+        - $ref: "#/components/schemas/EventHubEventSourceCommonProperties"
+      description: Properties of the EventHub event source that are required on create or
+        update requests.
+      properties:
+        sharedAccessKey:
+          description: The value of the shared access key that grants the Time Series
+            Insights service read access to the event hub. This property is not
+            shown in event source responses.
+          type: string
+      required:
+        - sharedAccessKey
+    EventHubEventSourceMutableProperties:
+      allOf:
+        - $ref: "#/components/schemas/EventSourceMutableProperties"
+      description: An object that represents a set of mutable EventHub event source
+        resource properties.
+      properties:
+        sharedAccessKey:
+          description: The value of the shared access key that grants the Time Series
+            Insights service read access to the event hub. This property is not
+            shown in event source responses.
+          type: string
+      type: object
+    EventHubEventSourceResource:
+      allOf:
+        - $ref: "#/components/schemas/EventSourceResource"
+      description: An event source that receives its data from an Azure EventHub.
+      properties:
+        properties:
+          $ref: "#/components/schemas/EventHubEventSourceResourceProperties"
+      required:
+        - properties
+      x-ms-discriminator-value: Microsoft.EventHub
+    EventHubEventSourceResourceProperties:
+      allOf:
+        - $ref: "#/components/schemas/EventHubEventSourceCommonProperties"
+      description: Properties of the EventHub event source resource.
+    EventHubEventSourceUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/EventSourceUpdateParameters"
+      description: Parameters supplied to the Update Event Source operation to update an
+        EventHub event source.
+      properties:
+        properties:
+          $ref: "#/components/schemas/EventHubEventSourceMutableProperties"
+      type: object
+    EventSourceCommonProperties:
+      allOf:
+        - $ref: "#/components/schemas/ResourceProperties"
+      description: Properties of the event source.
+      properties:
+        timestampPropertyName:
+          description: The event property that will be used as the event source's
+            timestamp. If a value isn't specified for timestampPropertyName, or
+            if null or empty-string is specified, the event creation time will
+            be used.
+          type: string
+    EventSourceCreateOrUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/CreateOrUpdateTrackedResourceProperties"
+      description: Parameters supplied to the Create or Update Event Source operation.
+      discriminator:
+        propertyName: kind
+      properties:
+        kind:
+          description: The kind of the event source.
+          enum:
+            - Microsoft.EventHub
+            - Microsoft.IoTHub
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: Kind
+      required:
+        - kind
+    EventSourceListResponse:
+      description: The response of the List EventSources operation.
+      properties:
+        value:
+          description: Result of the List EventSources operation.
+          items:
+            $ref: "#/components/schemas/EventSourceResource"
+          type: array
+    EventSourceMutableProperties:
+      description: An object that represents a set of mutable event source resource
+        properties.
+      properties:
+        localTimestamp:
+          $ref: "#/components/schemas/LocalTimestamp"
+        timestampPropertyName:
+          description: The event property that will be used as the event source's
+            timestamp. If a value isn't specified for timestampPropertyName, or
+            if null or empty-string is specified, the event creation time will
+            be used.
+          type: string
+      type: object
+    EventSourceResource:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      description: An environment receives data from one or more event sources. Each event
+        source has associated connection info that allows the Time Series
+        Insights ingress pipeline to connect to and pull data from the event
+        source
+      discriminator:
+        propertyName: kind
+      properties:
+        kind:
+          description: The kind of the event source.
+          enum:
+            - Microsoft.EventHub
+            - Microsoft.IoTHub
+          type: string
+      required:
+        - kind
+      type: object
+    EventSourceUpdateParameters:
+      description: Parameters supplied to the Update Event Source operation.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Key-value pairs of additional properties for the event source.
+          type: object
+      type: object
+    IngressEnvironmentStatus:
+      description: An object that represents the status of ingress on an environment.
+      properties:
+        state:
+          description: This string represents the state of ingress operations on an
+            environment. It can be "Disabled", "Ready", "Running", "Paused" or
+            "Unknown"
+          enum:
+            - Disabled
+            - Ready
+            - Running
+            - Paused
+            - Unknown
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: IngressState
+        stateDetails:
+          $ref: "#/components/schemas/EnvironmentStateDetails"
+      readOnly: true
+      type: object
+    IoTHubEventSourceCommonProperties:
+      allOf:
+        - $ref: "#/components/schemas/AzureEventSourceProperties"
+      description: Properties of the IoTHub event source.
+      properties:
+        consumerGroupName:
+          description: The name of the iot hub's consumer group that holds the partitions
+            from which events will be read.
+          type: string
+        iotHubName:
+          description: The name of the iot hub.
+          type: string
+        keyName:
+          description: The name of the Shared Access Policy key that grants the Time Series
+            Insights service access to the iot hub. This shared access policy
+            key must grant 'service connect' permissions to the iot hub.
+          type: string
+      required:
+        - iotHubName
+        - consumerGroupName
+        - keyName
+    IoTHubEventSourceCreateOrUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/EventSourceCreateOrUpdateParameters"
+      description: Parameters supplied to the Create or Update Event Source operation for
+        an IoTHub event source.
+      properties:
+        properties:
+          $ref: "#/components/schemas/IoTHubEventSourceCreationProperties"
+      required:
+        - properties
+      x-ms-discriminator-value: Microsoft.IoTHub
+    IoTHubEventSourceCreationProperties:
+      allOf:
+        - $ref: "#/components/schemas/IoTHubEventSourceCommonProperties"
+      description: Properties of the IoTHub event source that are required on create or
+        update requests.
+      properties:
+        sharedAccessKey:
+          description: The value of the Shared Access Policy key that grants the Time
+            Series Insights service read access to the iot hub. This property is
+            not shown in event source responses.
+          type: string
+      required:
+        - sharedAccessKey
+    IoTHubEventSourceMutableProperties:
+      allOf:
+        - $ref: "#/components/schemas/EventSourceMutableProperties"
+      description: An object that represents a set of mutable IoTHub event source resource
+        properties.
+      properties:
+        sharedAccessKey:
+          description: The value of the shared access key that grants the Time Series
+            Insights service read access to the iot hub. This property is not
+            shown in event source responses.
+          type: string
+      type: object
+    IoTHubEventSourceResource:
+      allOf:
+        - $ref: "#/components/schemas/EventSourceResource"
+      description: An event source that receives its data from an Azure IoTHub.
+      properties:
+        properties:
+          $ref: "#/components/schemas/IoTHubEventSourceResourceProperties"
+      required:
+        - properties
+      x-ms-discriminator-value: Microsoft.IotHub
+    IoTHubEventSourceResourceProperties:
+      allOf:
+        - $ref: "#/components/schemas/IoTHubEventSourceCommonProperties"
+      description: Properties of the IoTHub event source resource.
+    IoTHubEventSourceUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/EventSourceUpdateParameters"
+      description: Parameters supplied to the Update Event Source operation to update an
+        IoTHub event source.
+      properties:
+        properties:
+          $ref: "#/components/schemas/IoTHubEventSourceMutableProperties"
+      type: object
+    LocalTimestamp:
+      description: An object that represents the local timestamp property. It contains the
+        format of local timestamp that needs to be used and the corresponding
+        timezone offset information. If a value isn't specified for
+        localTimestamp, or if null, then the local timestamp will not be
+        ingressed with the events.
+      properties:
+        format:
+          description: An enum that represents the format of the local timestamp property
+            that needs to be set.
+          enum:
+            - Embedded
+            - Iana
+            - TimeSpan
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: LocalTimestampFormat
+        timeZoneOffset:
+          description: An object that represents the offset information for the local
+            timestamp format specified. Should not be specified for
+            LocalTimestampFormat - Embedded.
+          properties:
+            propertyName:
+              description: "The event property that will be contain the offset information
+                to calculate the local timestamp. When the LocalTimestampFormat
+                is Iana, the property name will contain the name of the column
+                which contains IANA Timezone Name (eg: Americas/Los Angeles).
+                When LocalTimestampFormat is Timespan, it contains the name of
+                property which contains values representing the offset (eg: P1D
+                or 1.00:00:00)"
+              type: string
+          type: object
+      type: object
+    LongTermEnvironmentCreateOrUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/EnvironmentCreateOrUpdateParameters"
+      description: Parameters supplied to the Create or Update Environment operation for a
+        long-term environment.
+      properties:
+        properties:
+          $ref: "#/components/schemas/LongTermEnvironmentCreationProperties"
+      required:
+        - properties
+      x-ms-discriminator-value: LongTerm
+    LongTermEnvironmentCreationProperties:
+      description: Properties used to create a long-term environment.
+      properties:
+        storageConfiguration:
+          $ref: "#/components/schemas/LongTermStorageConfigurationInput"
+        timeSeriesIdProperties:
+          description: The list of event properties which will be used to define the
+            environment's time series id.
+          items:
+            $ref: "#/components/schemas/TimeSeriesIdProperty"
+          type: array
+      required:
+        - timeSeriesIdProperties
+        - storageConfiguration
+    LongTermEnvironmentMutableProperties:
+      description: An object that represents a set of mutable long-term environment
+        resource properties.
+      properties:
+        storageConfiguration:
+          $ref: "#/components/schemas/LongTermStorageConfigurationMutableProperties"
+        timeSeriesIdProperties:
+          description: The list of event properties which will be used to partition data in
+            the environment.
+          items:
+            $ref: "#/components/schemas/TimeSeriesIdProperty"
+          type: array
+      type: object
+    LongTermEnvironmentResource:
+      allOf:
+        - $ref: "#/components/schemas/EnvironmentResource"
+      description: An environment is a set of time-series data available for query, and is
+        the top level Azure Time Series Insights resource. LongTerm environments
+        do not have set data retention limits.
+      properties:
+        properties:
+          $ref: "#/components/schemas/LongTermEnvironmentResourceProperties"
+      required:
+        - properties
+      x-ms-discriminator-value: LongTerm
+    LongTermEnvironmentResourceProperties:
+      allOf:
+        - $ref: "#/components/schemas/EnvironmentResourceProperties"
+        - $ref: "#/components/schemas/ResourceProperties"
+      description: Properties of the long-term environment.
+      properties:
+        storageConfiguration:
+          $ref: "#/components/schemas/LongTermStorageConfigurationOutput"
+        timeSeriesIdProperties:
+          description: The list of event properties which will be used to define the
+            environment's time series id.
+          items:
+            $ref: "#/components/schemas/TimeSeriesIdProperty"
+          type: array
+      required:
+        - timeSeriesIdProperties
+        - storageConfiguration
+    LongTermEnvironmentUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/EnvironmentUpdateParameters"
+      description: Parameters supplied to the Update Environment operation to update a
+        long-term environment.
+      properties:
+        properties:
+          $ref: "#/components/schemas/LongTermEnvironmentMutableProperties"
+      type: object
+    LongTermStorageConfigurationInput:
+      description: The storage configuration provides the connection details that allows
+        the Time Series Insights service to connect to the customer storage
+        account that is used to store the environment's data.
+      properties:
+        accountName:
+          description: The name of the storage account that will hold the environment's
+            long term data.
+          type: string
+        managementKey:
+          description: The value of the management key that grants the Time Series Insights
+            service write access to the storage account. This property is not
+            shown in environment responses.
+          type: string
+      required:
+        - accountName
+        - managementKey
+      type: object
+    LongTermStorageConfigurationMutableProperties:
+      description: The storage configuration provides the connection details that allows
+        the Time Series Insights service to connect to the customer storage
+        account that is used to store the environment's data.
+      properties:
+        managementKey:
+          description: The value of the management key that grants the Time Series Insights
+            service write access to the storage account. This property is not
+            shown in environment responses.
+          type: string
+      required:
+        - managementKey
+      type: object
+    LongTermStorageConfigurationOutput:
+      description: The storage configuration provides the non-secret connection details
+        about the customer storage account that is used to store the
+        environment's data.
+      properties:
+        accountName:
+          description: The name of the storage account that will hold the environment's
+            long term data.
+          type: string
+      required:
+        - accountName
+      type: object
+    Operation:
+      description: A Time Series Insights REST API operation
+      properties:
+        display:
+          description: Contains the localized display information for this particular
+            operation / action.
+          properties:
+            description:
+              description: The localized friendly description for the operation.
+              readOnly: true
+              type: string
+            operation:
+              description: The localized friendly name for the operation.
+              readOnly: true
+              type: string
+            provider:
+              description: The localized friendly form of the resource provider name.
+              readOnly: true
+              type: string
+            resource:
+              description: The localized friendly form of the resource type related to this
+                action/operation.
+              readOnly: true
+              type: string
+          readOnly: true
+        name:
+          description: The name of the operation being performed on this particular object.
+          readOnly: true
+          type: string
+      type: object
+    OperationListResult:
+      description: Result of the request to list Time Series Insights operations. It
+        contains a list of operations and a URL link to get the next set of
+        results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          readOnly: true
+          type: string
+        value:
+          description: List of Time Series Insights operations supported by the
+            Microsoft.TimeSeriesInsights resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          readOnly: true
+          type: array
+    ProvisioningState:
+      description: Provisioning state of the resource.
+      enum:
+        - Accepted
+        - Creating
+        - Updating
+        - Succeeded
+        - Failed
+        - Deleting
+      readOnly: true
+      type: string
+      x-ms-enum:
+        modelAsString: true
+        name: ProvisioningState
+    ReferenceDataSetCreateOrUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/CreateOrUpdateTrackedResourceProperties"
+      properties:
+        properties:
+          $ref: "#/components/schemas/ReferenceDataSetCreationProperties"
+      required:
+        - properties
+    ReferenceDataSetCreationProperties:
+      description: Properties used to create a reference data set.
+      properties:
+        dataStringComparisonBehavior:
+          description: The reference data set key comparison behavior can be set using this
+            property. By default, the value is 'Ordinal' - which means case
+            sensitive key comparison will be performed while joining reference
+            data with events or while adding new reference data. When
+            'OrdinalIgnoreCase' is set, case insensitive comparison will be
+            used.
+          enum:
+            - Ordinal
+            - OrdinalIgnoreCase
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: DataStringComparisonBehavior
+        keyProperties:
+          description: The list of key properties for the reference data set.
+          items:
+            $ref: "#/components/schemas/ReferenceDataSetKeyProperty"
+          type: array
+      required:
+        - keyProperties
+    ReferenceDataSetKeyProperty:
+      description: A key property for the reference data set. A reference data set can have
+        multiple key properties.
+      properties:
+        name:
+          description: The name of the key property.
+          type: string
+        type:
+          description: The type of the key property.
+          enum:
+            - String
+            - Double
+            - Bool
+            - DateTime
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ReferenceDataKeyPropertyType
+    ReferenceDataSetListResponse:
+      description: The response of the List Reference Data Sets operation.
+      properties:
+        value:
+          description: Result of the List Reference Data Sets operation.
+          items:
+            $ref: "#/components/schemas/ReferenceDataSetResource"
+          type: array
+    ReferenceDataSetResource:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      description: A reference data set provides metadata about the events in an
+        environment. Metadata in the reference data set will be joined with
+        events as they are read from event sources. The metadata that makes up
+        the reference data set is uploaded or modified through the Time Series
+        Insights data plane APIs.
+      properties:
+        properties:
+          $ref: "#/components/schemas/ReferenceDataSetResourceProperties"
+    ReferenceDataSetResourceProperties:
+      allOf:
+        - $ref: "#/components/schemas/ReferenceDataSetCreationProperties"
+        - $ref: "#/components/schemas/ResourceProperties"
+      description: Properties of the reference data set.
+      required:
+        - keyProperties
+    ReferenceDataSetUpdateParameters:
+      description: Parameters supplied to the Update Reference Data Set operation.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Key-value pairs of additional properties for the reference data set.
+          type: object
+      type: object
+    Resource:
+      description: Time Series Insights resource
+      properties:
+        id:
+          description: Resource Id
+          readOnly: true
+          type: string
+        name:
+          description: Resource name
+          readOnly: true
+          type: string
+        type:
+          description: Resource type
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    ResourceProperties:
+      description: Properties that are common to all tracked resources.
+      properties:
+        creationTime:
+          description: The time the resource was created.
+          format: date-time
+          readOnly: true
+          type: string
+        provisioningState:
+          $ref: "#/components/schemas/ProvisioningState"
+    Sku:
+      description: The sku determines the type of environment, either standard (S1 or S2)
+        or long-term (L1). For standard environments the sku determines the
+        capacity of the environment, the ingress rate, and the billing rate.
+      properties:
+        capacity:
+          description: The capacity of the sku. For standard environments, this value can
+            be changed to support scale out of environments after they have been
+            created.
+          format: int32
+          maximum: 10
+          minimum: 1
+          type: integer
+        name:
+          description: The name of this SKU.
+          enum:
+            - S1
+            - S2
+            - L1
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SkuName
+      required:
+        - name
+        - capacity
+      type: object
+    StandardEnvironmentCreateOrUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/EnvironmentCreateOrUpdateParameters"
+      description: Parameters supplied to the Create or Update Environment operation for a
+        standard environment.
+      properties:
+        properties:
+          $ref: "#/components/schemas/StandardEnvironmentCreationProperties"
+      required:
+        - properties
+      x-ms-discriminator-value: Standard
+    StandardEnvironmentCreationProperties:
+      description: Properties used to create a standard environment.
+      properties:
+        dataRetentionTime:
+          description: ISO8601 timespan specifying the minimum number of days the
+            environment's events will be available for query.
+          format: duration
+          type: string
+        partitionKeyProperties:
+          description: The list of event properties which will be used to partition data in
+            the environment.
+          items:
+            $ref: "#/components/schemas/TimeSeriesIdProperty"
+          type: array
+        storageLimitExceededBehavior:
+          description: The behavior the Time Series Insights service should take when the
+            environment's capacity has been exceeded. If "PauseIngress" is
+            specified, new events will not be read from the event source. If
+            "PurgeOldData" is specified, new events will continue to be read and
+            old events will be deleted from the environment. The default
+            behavior is PurgeOldData.
+          enum:
+            - PurgeOldData
+            - PauseIngress
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: StorageLimitExceededBehavior
+      required:
+        - dataRetentionTime
+    StandardEnvironmentMutableProperties:
+      description: An object that represents a set of mutable standard environment resource
+        properties.
+      properties:
+        dataRetentionTime:
+          description: ISO8601 timespan specifying the minimum number of days the
+            environment's events will be available for query.
+          format: duration
+          type: string
+        partitionKeyProperties:
+          description: The list of event properties which will be used to partition data in
+            the environment.
+          items:
+            $ref: "#/components/schemas/TimeSeriesIdProperty"
+          type: array
+        storageLimitExceededBehavior:
+          description: The behavior the Time Series Insights service should take when the
+            environment's capacity has been exceeded. If "PauseIngress" is
+            specified, new events will not be read from the event source. If
+            "PurgeOldData" is specified, new events will continue to be read and
+            old events will be deleted from the environment. The default
+            behavior is PurgeOldData.
+          enum:
+            - PurgeOldData
+            - PauseIngress
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: StorageLimitExceededBehavior
+      type: object
+    StandardEnvironmentResource:
+      allOf:
+        - $ref: "#/components/schemas/EnvironmentResource"
+      description: An environment is a set of time-series data available for query, and is
+        the top level Azure Time Series Insights resource. Standard environments
+        have data retention limits.
+      properties:
+        properties:
+          $ref: "#/components/schemas/StandardEnvironmentResourceProperties"
+      required:
+        - properties
+      x-ms-discriminator-value: Standard
+    StandardEnvironmentResourceProperties:
+      allOf:
+        - $ref: "#/components/schemas/StandardEnvironmentCreationProperties"
+        - $ref: "#/components/schemas/EnvironmentResourceProperties"
+        - $ref: "#/components/schemas/ResourceProperties"
+      description: Properties of the standard environment.
+      required:
+        - dataRetentionTime
+    StandardEnvironmentUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/EnvironmentUpdateParameters"
+      description: Parameters supplied to the Update Environment operation to update a
+        standard environment.
+      properties:
+        properties:
+          $ref: "#/components/schemas/StandardEnvironmentMutableProperties"
+        sku:
+          $ref: "#/components/schemas/Sku"
+      type: object
+    TimeSeriesIdProperty:
+      description: The structure of the property that a time series id can have. An
+        environment can have multiple such properties.
+      properties:
+        name:
+          description: The name of the property.
+          type: string
+        type:
+          description: The type of the property.
+          enum:
+            - String
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: PropertyType
+    TrackedResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Time Series Insights resource that is tracked by Azure Resource Manager.
+      properties:
+        location:
+          description: Resource location
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags
+          type: object
+      required:
+        - location

@@ -1,0 +1,2226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<application xmlns="http://wadl.dev.java.net/2009/02"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:apigee="http://api.apigee.com/wadl/2010/07/"
+             xsi:schemaLocation="http://wadl.dev.java.net/2009/02 http://apigee.com/schemas/wadl-schema.xsd http://api.apigee.com/wadl/2010/07/ http://apigee.com/schemas/apigee-wadl-extensions.xsd">
+
+	<resources base="http://api.stackoverflow.com/1.1">
+		
+		<!-- Answers -->
+		<resource path="answers">
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getAnswers" name="GET" apigee:displayName="Get Answers">
+				<apigee:tags>
+					<apigee:tag primary="true">Answers</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="answers" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/answers">
+					<![CDATA[Get all answers on the site.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="answers/{ids}">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getAnswersByIds" name="GET" apigee:displayName="Get Answers By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Answers</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="answers/{ids}" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/answers-by-ids">
+					<![CDATA[Get answers identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+	
+		<resource path="answers/{ids}/comments">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getAnswersCommentsByIds" name="GET" apigee:displayName="Get Answers Comments By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Answers</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="answers/{ids}/comments" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/answer-comments-by-ids">
+					<![CDATA[Get comments on the answers identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+	
+		<!-- Badges -->
+		<resource path="badges">
+			<method id="getBadges" name="GET" apigee:displayName="Get Badges">
+				<apigee:tags>
+					<apigee:tag primary="true">Badges</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="badges" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/badges">
+					<![CDATA[Get all badges on the site, in alphabetical order.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="badges/{ids}">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getBadgeRecipients" name="GET" apigee:displayName="Get Badge Recipients">
+				<apigee:tags>
+					<apigee:tag primary="true">Badges</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="badges/{ids}" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/badge-recipients">
+					<![CDATA[Get all users who have been awarded the badges identified by ids.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="badges/name">
+			<method id="getNonTaggedBadges" name="GET" apigee:displayName="Get Non Tagged Badges">
+				<apigee:tags>
+					<apigee:tag primary="true">Badges</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="badges/name" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/badges-by-name">
+					<![CDATA[Get all non-tagged-based badges in alphabetical order.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="badges/tags">
+			<method id="getTaggedBadges" name="GET" apigee:displayName="Get Tagged Badges">
+				<apigee:tags>
+					<apigee:tag primary="true">Badges</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="badges/tags" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/tag-badges">
+					<![CDATA[Get all tagged-based badges in alphabetical order.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<!-- Comments -->
+		<resource path="comments">
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getComments" name="GET" apigee:displayName="Get Comments">
+				<apigee:tags>
+					<apigee:tag primary="true">Comments</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="comments" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/comments">
+					<![CDATA[Get all comments on the site.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="comments/{ids}">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getCommentsByIds" name="GET" apigee:displayName="Get Comments By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Comments</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="comments/{ids}" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/comments-by-ids">
+					<![CDATA[Get comments identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+	
+		<resource path="posts/{ids}/comments">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getPostsCommentsByIds" name="GET" apigee:displayName="Get Posts' Comments By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Comments</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="posts/{ids}/comments" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/comments-on-posts">
+					<![CDATA[Get comments on the posts (question or answer) identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+	
+		<!-- Errors -->
+		<resource path="errors/{id}">
+			<param name="id" type="xsd:int" style="template" required="true">
+				<doc><![CDATA[id of the error to simulate. 32-bit signed integer]]></doc>
+			</param>
+
+			<method id="simulateApiError" name="GET" apigee:displayName="Simulate API Error">
+				<apigee:tags>
+					<apigee:tag primary="true">Errors</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="errors/{id}" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/errors">
+					<![CDATA[Simulate an API error for testing purposes.]]>
+				</doc>
+			</method>
+		</resource>
+	
+		<!-- Privileges -->
+		<resource path="privileges">
+			<method id="getPrivileges" name="GET" apigee:displayName="Get Privileges">
+				<apigee:tags>
+					<apigee:tag primary="true">Privileges</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="privileges" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/privileges">
+					<![CDATA[Get all the privileges available on the site.]]>
+				</doc>
+			</method>
+		</resource>
+	
+		<!-- Questions -->
+		<resource path="questions">
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="tagged" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Semicolon delimited list of tags questions must have. string]]></doc>
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getQuestions" name="GET" apigee:displayName="Get Questions">
+				<apigee:tags>
+					<apigee:tag primary="true">Questions</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="questions" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/questions">
+					<![CDATA[Get all questions on the site.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="questions/{ids}">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getQuestionsByIds" name="GET" apigee:displayName="Get Questions By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Questions</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="questions/{ids}" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/questions-by-ids">
+					<![CDATA[Get the questions identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="questions/{ids}/answers">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getQuestionsAnswersByIds" name="GET" apigee:displayName="Get Questions' Answers By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Questions</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="questions/{ids}/answers" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/question-answers">
+					<![CDATA[Get the answers to the questions identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="questions/{ids}/comments">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getQuestionsCommentsByIds" name="GET" apigee:displayName="Get Questions' Comments By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Questions</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="questions/{ids}/comments" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/question-comments">
+					<![CDATA[Get the comments on the questions identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="questions/{ids}/linked">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getLinkedQuestionsByIds" name="GET" apigee:displayName="Get Linked Questions By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Questions</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="questions/{ids}/linked" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/linked-questions">
+					<![CDATA[Get the questions that link to the questions identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="questions/{ids}/related">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getRelatedQuestionsByIds" name="GET" apigee:displayName="Get Related Questions By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Questions</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="questions/{ids}/related" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/related-questions">
+					<![CDATA[Get the questions that are related to the questions identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="questions/{ids}/timeline">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getQuestionsTimelinesByIds" name="GET" apigee:displayName="Get Questions' Timelines By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Questions</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="questions/{ids}/timeline" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/question-timelines">
+					<![CDATA[Get the timelines of the questions identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="questions/unanswered">
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="tagged" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Semicolon delimited list of tags questions must have. string]]></doc>
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUnansweredQuestions" name="GET" apigee:displayName="Get Unanswered Questions">
+				<apigee:tags>
+					<apigee:tag primary="true">Questions</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="questions/unanswered" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/unanswered-questions">
+					<![CDATA[Get all questions the site considers unanswered.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="questions/no-answers">
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="tagged" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Semicolon delimited list of tags questions must have. string]]></doc>
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getNoAnswersQuestions" name="GET" apigee:displayName="Get Questions With No Answers">
+				<apigee:tags>
+					<apigee:tag primary="true">Questions</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="questions/no-answers" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/questions-with-no-answers">
+					<![CDATA[Get all questions on the site with no answers.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<!-- Revisions -->
+		<resource path="revisions/{ids}">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getPostsRevisionsByIds" name="GET" apigee:displayName="Get Posts' Revisions By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Revisions</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="revisions/{ids}" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/revisions">
+					<![CDATA[Get all revisions for posts identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="revisions/{id}/{revisionguid}">
+			<param name="id" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. string]]></doc>
+			</param>
+			<param name="revisionguid" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[ specific revision id. guid, 8-4-4-4-12 format]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getPostSpecificRevision" name="GET" apigee:displayName="Get Post's Specific Revision">
+				<apigee:tags>
+					<apigee:tag primary="true">Revisions</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="revisions/{ids}/{revisionguid}" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/specific-revision">
+					<![CDATA[Get a specific revision identified by a post id and a revision guid.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<!-- Search -->
+		<resource path="search">
+            <apigee:choice countMin="1" countMax="2" required="true">
+                <param name="tagged" type="xsd:string" style="query">
+                    <doc><![CDATA[List of tags delimited by semi-colons of which at least one must be on a question. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+                </param>
+                <param name="inline" type="xsd:string" style="query">
+                    <doc><![CDATA[A string that must appear verbatim in the title of a question. string]]></doc>
+                </param>
+            </apigee:choice>
+			<param name="nottagged" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[List of tags delimited by semi-colons of which at least one must be on a question. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+
+			<method id="SearchQuestionsByCriteria" name="GET" apigee:displayName="Search Questions By Criteria">
+				<apigee:tags>
+					<apigee:tag primary="true">Search</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="search?tagged={tags}" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/search">
+					<![CDATA[Search the site for questions meeting certain criteria.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="similar">
+			<param name="nottagged" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[List of tags delimited by semi-colons of which at least one must be on a question. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="tagged" type="xsd:string" style="query">
+				<doc><![CDATA[List of tags delimited by semi-colons of which at least one must be on a question. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="title" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[A title. string]]></doc>
+			</param>
+
+			<method id="SearchSimilarQuestionsByTitle" name="GET" apigee:displayName="Search Similar Questions By Title">
+				<apigee:tags>
+					<apigee:tag primary="true">Search</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="similar" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/similar">
+					<![CDATA[Search the site based on similarity to a title.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<!-- Stats -->
+		<resource path="stats">
+			<method id="getStats" name="GET" apigee:displayName="Get Stats">
+				<apigee:tags>
+					<apigee:tag primary="true">Stats</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="stats" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/stats">
+					<![CDATA[Get a set of statistics for the entire site.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<!-- Tags -->
+		<resource path="tags">
+			<param name="filter" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Required text in returned tags. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getTags" name="GET" apigee:displayName="Get Tags">
+				<apigee:tags>
+					<apigee:tag primary="true">Tags</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="tags" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/tags">
+					<![CDATA[Get the tags on the site.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="tags/synonyms">
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getTagsSynonyms" name="GET" apigee:displayName="Get Tags' Synonyms">
+				<apigee:tags>
+					<apigee:tag primary="true">Tags</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="tags/synonyms" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/tag-synonyms">
+					<![CDATA[Get all the tag synonyms on the site.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="tags/{tags}/synonyms">
+			<param name="tags" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[The tags for which to return synonyms. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getSpecificTagsSynonyms" name="GET" apigee:displayName="Get Specific Tags Synonyms">
+				<apigee:tags>
+					<apigee:tag primary="true">Tags</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="tags/{tags}/synonyms" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/synonyms-for-tags">
+					<![CDATA[Get the synonyms for a specific set of tags.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="tags/{tags}/wikis">
+			<param name="tags" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[The tags for which to return wikis. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+
+			<method id="getTagsWikis" name="GET" apigee:displayName="Get Tags' Wikis">
+				<apigee:tags>
+					<apigee:tag primary="true">Tags</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="tags/{tags}/wikis" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/wikis-for-tags">
+					<![CDATA[Get the wiki entries for a set of tags.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="tags/{tag}/top-answerers/{period}">
+			<param name="tag" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[The tags in question. string]]></doc>
+			</param>
+			<param name="period" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[One of all-time or month. string]]></doc>
+				<option value="all-time" />
+				<option value="month" />
+			</param>
+
+			<method id="getTagTopAnswerersByPeriod" name="GET" apigee:displayName="Get Tag Top Answerers By Period">
+				<apigee:tags>
+					<apigee:tag primary="true">Tags</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="tags/{tag}/top-answerers/{period}" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/top-answerers-in-tag">
+					<![CDATA[Get the top answer posters in a specific tag, either in the last month or for all time. Returns the top 30 answerers.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="tags/{tag}/top-askers/{period}">
+			<param name="tag" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[The tags in question. string]]></doc>
+			</param>
+			<param name="period" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[One of all-time or month. string]]></doc>
+				<option value="all-time" />
+				<option value="month" />
+			</param>
+
+			<method id="getTagTopAskersByPeriod" name="GET" apigee:displayName="Get Tag Top Askers By Period">
+				<apigee:tags>
+					<apigee:tag primary="true">Tags</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="tags/{tag}/top-askers/{period}" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/top-askers-in-tag">
+					<![CDATA[Get the top question askers in a specific tag, either in the last month or for all time. Returns the top 30 question askers.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<!-- Users -->
+		<resource path="users">
+			<param name="filter" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[String that must appear in returned users' names]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUsers" name="GET" apigee:displayName="Get Users">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/users">
+					<![CDATA[Get all users on the site.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUsersByIds" name="GET" apigee:displayName="Get Users By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/users-by-ids">
+					<![CDATA[Get the users identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+	
+		<resource path="users/{ids}/answers">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUsersAnswersByIds" name="GET" apigee:displayName="Get Users' Answers By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/answers" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-answers">
+					<![CDATA[Get the answers posted by the users identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/badges">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+
+			<method id="getUsersBadgesByIds" name="GET" apigee:displayName="Get Users' Badges By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/badges" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-badges">
+					<![CDATA[Get the badges earned by the users identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/comments">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUsersCommentsByIds" name="GET" apigee:displayName="Get Users' Comments By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/comments" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-comments">
+					<![CDATA[Get the comments posted by the users identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/comments/{toid}">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="toid" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[id of the user referred to. 32-bit signed integer]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getReplyUsersCommentsByIds" name="GET" apigee:displayName="Get Reply Users' Comments By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/comments" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-comments-to-user">
+					<![CDATA[Get the comments posted by a set of users in reply to another user.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/favorites">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUsersFavoritedQuestionsByIds" name="GET" apigee:displayName="Get Users' Favorited Questions By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/favorites" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-favorites">
+					<![CDATA[Get the questions favorited by users identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/favorites">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getCommentsMentioningUsersByIds" name="GET" apigee:displayName="Get Comments Mentioning Users By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/mentioned" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-mentioned">
+					<![CDATA[Get the comments that mention one of the users identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/questions">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUsersAskedQuestionsByIds" name="GET" apigee:displayName="Get Users' Asked Questions By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/questions" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-questions">
+					<![CDATA[Get the questions asked by the users identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/questions/no-answers">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUsersAskedQuestionsWithNoAnswersByIds" name="GET" apigee:displayName="Get Users' Asked Questions With No Answers By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/questions/no-answers" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-questions-no-answers">
+					<![CDATA[Get the questions asked by a set of users, which have no answers.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/questions/unaccepted">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUnacceptedUsersAskedQuestionsByIds" name="GET" apigee:displayName="Get Unaccepted Users' Asked Questions By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/questions/unaccepted" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-questions-unaccepted">
+					<![CDATA[Get the questions asked by a set of users, which have at least one answer but no accepted answer.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/questions/unanswered">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUnansweredUsersAskedQuestionsByIds" name="GET" apigee:displayName="Get Unanswered Users' Asked Questions By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/questions/unanswered" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-questions-unanswered">
+					<![CDATA[Get the questions asked by a set of users, which are not considered to be adequately answered.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/reputation">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUsersReputationChangesSubsetByIds" name="GET" apigee:displayName="Get Users' Reputation Changes Subset By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/reputation" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-reputation-changes">
+					<![CDATA[Get a subset of the reputation changes experienced by the users identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/tags">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="filter" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Required text in returned tags. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getTagsUsersBeingActiveByIds" name="GET" apigee:displayName="Get Tags Users Being Active By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/tags" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-tags">
+					<![CDATA[Get the tags that the users (identified by a set of ids) have been active in.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{id}/tags/{tags}/top-answers">
+			<param name="id" type="xsd:int" style="template" required="true">
+				<doc><![CDATA[the id of a user. 32-bit signed integer]]></doc>
+			</param>
+			<param name="tags" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[a semi-colon delimitted list of tags the questions the answers are on must have. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+
+			<method id="getUserPostedTopAnswersWithTags" name="GET" apigee:displayName="Get User Posted Top Answers With Tags">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{id}/tags/{tags}/top-answers" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-top-tagged-answers">
+					<![CDATA[Get the top answers a user has posted on questions with a set of tags.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{id}/tags/{tags}/top-questions">
+			<param name="id" type="xsd:int" style="template" required="true">
+				<doc><![CDATA[the id of a user. 32-bit signed integer]]></doc>
+			</param>
+			<param name="tags" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[a semi-colon delimitted list of tags the questions the answers are on must have. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="answers" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", the answers to a question will be returned. boolean]]></doc>
+			</param>
+			<param name="body" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", a post's body will be included in the response. boolean]]></doc>
+			</param>
+			<param name="comments" type="xsd:boolean" style="query" required="false">
+				<doc><![CDATA[When "true", any comments on a post will be included in the response. boolean]]></doc>
+			</param>
+
+			<method id="getUserPostedTopQuestionsWithTags" name="GET" apigee:displayName="Get User Posted Top Questions With Tags">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{id}/tags/{tags}/top-questions" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-top-tagged-questions">
+					<![CDATA[Get the top questions a user has posted on questions with a set of tags.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{ids}/timeline">
+			<param name="ids" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[A single primary key identifier or a vectorized, semicolon-delimited list of identifiers. This is a vectorized parameter, multiple ids can be sent a single request if delimited with a semi-colon. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getUsersActionsSubsetByIds" name="GET" apigee:displayName="Get Users' Actions Subset By Ids">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/timeline" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-timelines">
+					<![CDATA[Get a subset of the actions of that have been taken by the users identified by a set of ids.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{id}/top-answer-tags">
+			<param name="id" type="xsd:int" style="template" required="true">
+				<doc><![CDATA[The single user id to query with. 32-bit signed integer]]></doc>
+			</param>
+
+			<method id="getUserAnswersTopTags" name="GET" apigee:displayName="Get User's Answers Top Tags">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{id}/top-answer-tags" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-top-answer-tags">
+					<![CDATA[Get the top 30 tags (by score) a single user has posted answers in.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/{id}/top-question-tags">
+			<param name="id" type="xsd:int" style="template" required="true">
+				<doc><![CDATA[The single user id to query with. 32-bit signed integer]]></doc>
+			</param>
+
+			<method id="getUserQuestionsTopTags" name="GET" apigee:displayName="Get User's Questions Top Tags">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{id}/top-question-tags" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/user-top-question-tags">
+					<![CDATA[Get the top 30 tags (by score) a single user has asked questions in.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<resource path="users/moderators">
+			<param name="filter" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[String that must appear in returned users' names. string]]></doc>
+			</param>
+			<param name="fromdate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the minimum creation date on a returned item. unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+			<param name="max" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Maximum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="min" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Minimum of the range to include in the response according to the current sort. integer or unix epoch date]]></doc>
+			</param>
+			<param name="order" type="xsd:string" style="query" default="desc" required="false">
+				<doc><![CDATA[How the current sort should be ordered. one of desc (default), or asc]]></doc>
+				<option value="desc" />
+				<option value="asc" />
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="sort" type="xsd:string" style="query" default="activity" required="false">
+				<doc><![CDATA[How a collection should be sorted. one of activity (default), creation, or votes]]></doc>
+				<option value="activity" />
+				<option value="creation" />
+				<option value="votes" />
+			</param>
+			<param name="todate" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Unix timestamp of the maximum creation date on a returned item. Unix epoch date, range [0, 253,402,300,799]]]></doc>
+			</param>
+
+			<method id="getModeratorsUsers" name="GET" apigee:displayName="Get Moderators Users">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/moderators" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/methods/moderators">
+					<![CDATA[Get the users who have moderation powers on the site.]]>
+				</doc>
+			</method>
+		</resource>
+		
+		<!--resource path="users/{ids}/associated">
+			<param name="ids" type="xsd:int" style="template" required="true">
+				<doc><![CDATA[a set of up to 10 users' association ids, obtained from some other API method. This is a vectorized parameter, multiple ids can be sent in a single request if delimitted with a semi-colon. string]]></doc>
+			</param>
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+
+			<method id="getUsersAssociatedAccounts" name="GET" apigee:displayName="Get Users' Associated Accounts">
+				<apigee:tags>
+					<apigee:tag primary="true">Users</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="users/{ids}/associated" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/stackauth-methods/user-associations">
+					<![CDATA[Get a user's associated accounts.]]>
+				</doc>
+			</method>
+		</resource-->
+		
+		<!-- Sites -->
+		<!--resource path="sites">
+			<param name="page" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The pagination offset for the current collection. Affected by the specified pagesize. 32-bit signed integer]]></doc>
+			</param>
+			<param name="pagesize" type="xsd:int" style="query" required="false">
+				<doc><![CDATA[The number of collection results to display during pagination. Should be between 0 and 100 inclusive. 32-bit signed integer]]></doc>
+			</param>
+			<param name="minimal" type="xsd:boolean" style="query" required="true">
+				<doc><![CDATA[Set to true to return many fewer fields on a site. boolean]]></doc>
+			</param>
+
+			<method id="getSites" name="GET" apigee:displayName="Get Sites">
+				<apigee:tags>
+					<apigee:tag primary="true">Sites</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="sites" />
+
+				<doc apigee:url="http://api.stackoverflow.com/1.1/usage/stackauth-methods/sites">
+					<![CDATA[Get all the sites in the Stack Exchange network.]]>
+				</doc>
+			</method>
+		</resource-->
+		
+	</resources>
+</application>

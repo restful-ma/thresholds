@@ -1,0 +1,169 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2018-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/FailoverDatabases.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: sql-FailoverDatabases
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/failover":
+    post:
+      description: Failovers a database.
+      operationId: Databases_Failover
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database to failover.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Failover an database:
+              value: testDatabase
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully completed database failover.
+        "202":
+          description: Database failover is in progress.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 ManagementServiceFeatureDisabled - User attempted to use a feature which is disabled.
+
+             * 400 DatabaseFailoverThrottled - There was a recent failover on the database or pool if database belongs in an elastic pool.
+
+             * 400 DatabaseFailoverNotSupported - This database type does not support customer initiated failovers.
+
+             * 409 ManagementServiceDatabaseBusy - Database '{0}' is busy with another operation. Please try your operation later.
+
+             * 409 DatabaseNotInStateToFailover - The database is currently in a state such that failover cannot be issued.
+      tags:
+        - FailoverDatabases
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Failover an database:
+          value: 2018-06-01-preview
+    BlobAuditingPolicyNameParameter:
+      description: The name of the blob auditing policy.
+      in: path
+      name: blobAuditingPolicyName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - default
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ManagedInstanceNameParameter:
+      description: The name of the managed instance.
+      in: path
+      name: managedInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Failover an database:
+          value: group1
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Failover an database:
+          value: testServer
+    SqlVirtualMachineContainerNameParameter:
+      description: The name of the SqlVirtualMachineContainer.
+      in: path
+      name: sqlVirtualMachineContainerName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineInstanceNameParameter:
+      description: The name of the SqlVirtualMachineInstance.
+      in: path
+      name: sqlVirtualMachineInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Failover an database:
+          value: 00000000-1111-2222-3333-444444444444
+    VirtualClusterNameParameter:
+      description: The name of the virtual cluster.
+      in: path
+      name: virtualClusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account

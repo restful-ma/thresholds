@@ -1,0 +1,511 @@
+openapi: 3.0.0
+info:
+  description: Various APIs for managing resources in attestation service. This primarily
+    encompasses per-tenant instance management.
+  title: AttestationManagementClient
+  version: 2018-09-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/attestation/resource-manager/Microsoft.Attestation/preview/2018-09-01-preview/attestation.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: attestation
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  /providers/Microsoft.Attestation/operations:
+    get:
+      description: Lists all of the available Azure attestation operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: List all the operations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationList"
+              examples:
+                Operations_List:
+                  $ref: "#/components/examples/Operations_List"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Operations
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Attestation/attestationProviders":
+    get:
+      description: Returns a list of attestation providers in a subscription.
+      operationId: AttestationProviders_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            AttestationProviders_List:
+              value: 00000000-0000-0000-0000-000000000000
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttestationProviderListResult"
+              examples:
+                AttestationProviders_List:
+                  $ref: "#/components/examples/AttestationProviders_List"
+        default:
+          description: Attestation service error result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - AttestationProviders
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders":
+    get:
+      description: Returns attestation providers list in a resource group.
+      operationId: AttestationProviders_ListByResourceGroup
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            AttestationProviders_ListByResourceGroup:
+              value: testrg1
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            AttestationProviders_ListByResourceGroup:
+              value: 6c96b33e-f5b8-40a6-9011-5cb1c58b0915
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttestationProviderListResult"
+              examples:
+                AttestationProviders_ListByResourceGroup:
+                  $ref: "#/components/examples/AttestationProviders_ListByResourceG\
+                    roup"
+        default:
+          description: Attestation service error result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - AttestationProviders
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Attestation/attestationProviders/{providerName}":
+    delete:
+      description: Delete Attestation Service.
+      operationId: AttestationProviders_Delete
+      parameters:
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            AttestationProviders_Delete:
+              value: 00000000-0000-0000-0000-000000000000
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            AttestationProviders_Delete:
+              value: sample-resource-group
+        - description: Name of the attestation service
+          in: path
+          name: providerName
+          required: true
+          schema:
+            type: string
+          examples:
+            AttestationProviders_Delete:
+              value: providername1
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Resource exists and was deleted successfully
+        "202":
+          description: Request accepted for deletion of attestation service
+        "204":
+          description: Resource does not exist
+        default:
+          description: Error result from Attestation service
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - AttestationProvider
+    get:
+      description: Get the status of Attestation Provider.
+      operationId: AttestationProviders_Get
+      parameters:
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            AttestationProviders_Get:
+              value: 00000000-0000-0000-0000-000000000000
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            AttestationProviders_Get:
+              value: sample-resource-group
+        - description: Name of the attestation service instance
+          in: path
+          name: providerName
+          required: true
+          schema:
+            type: string
+          examples:
+            AttestationProviders_Get:
+              value: providername1
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The status of the specified attestation service instance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttestationProvider"
+              examples:
+                AttestationProviders_Get:
+                  $ref: "#/components/examples/AttestationProviders_Get"
+        default:
+          description: Error result from Attestation service
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - AttestationProvider
+    put:
+      description: Creates or updates the Attestation Provider.
+      operationId: AttestationProviders_Create
+      parameters:
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            AttestationProviders_Create:
+              value: 00000000-0000-0000-0000-000000000000
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            AttestationProviders_Create:
+              value: sample-resource-group
+        - description: Name of the attestation service
+          in: path
+          name: providerName
+          required: true
+          schema:
+            type: string
+          examples:
+            AttestationProviders_Create:
+              value: providername1
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttestationServiceCreationParams"
+        description: Client supplied parameters.
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          description: Created or updated attestation service
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttestationProvider"
+              examples:
+                AttestationProviders_Create:
+                  $ref: "#/components/examples/AttestationProviders_Create"
+        "201":
+          description: Created or updated attestation service
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttestationProvider"
+              examples:
+                AttestationProviders_Create:
+                  $ref: "#/components/examples/AttestationProviders_Create"
+        default:
+          description: Error result from Attestation service
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - AttestationProvider
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Operations_List:
+      value:
+        - display:
+            description: Get status of attestation service.
+            operation: Get status of attestation service
+            provider: Microsoft Azure Attestation
+            resource: Attestation
+          name: Microsoft.Attestation/attestationProviders/attestation/read
+        - display:
+            description: Adds attestation service.
+            operation: Adds attestation service.
+            provider: Microsoft Azure Attestation
+            resource: Attestation
+          name: Microsoft.Attestation/attestationProviders/attestation/write
+        - display:
+            description: Removes attestation service
+            operation: Removes attestation service
+            provider: Microsoft Azure Attestation
+            resource: Attestation
+          name: Microsoft.Attestation/attestationProviders/attestation/delete
+    AttestationProviders_List:
+      value:
+        value:
+          - id: subscriptions/6c96b33e-f5b8-40a6-9011-5cb1c58b0915/resourceGroups/testrg1/providers/Microsoft.Attestation/attestationProviders/codes1
+            name: codes1
+            properties:
+              status: Ready
+            type: Microsoft.Attestation/attestationProviders
+          - id: subscriptions/6c96b33e-f5b8-40a6-9011-5cb1c58b0915/resourceGroups/testrg2/providers/Microsoft.Attestation/attestationProviders/codes2
+            name: codes2
+            properties:
+              status: Ready
+            type: Microsoft.Attestation/attestationProviders
+    AttestationProviders_ListByResourceGroup:
+      value:
+        value:
+          - id: subscriptions/6c96b33e-f5b8-40a6-9011-5cb1c58b0915/resourceGroups/testrg1/providers/Microsoft.Attestation/attestationProviders/codes1
+            name: codes1
+            properties:
+              status: Ready
+            type: Microsoft.Attestation/attestationProviders
+          - id: subscriptions/6c96b33e-f5b8-40a6-9011-5cb1c58b0915/resourceGroups/testrg1/providers/Microsoft.Attestation/attestationProviders/codes2
+            name: codes2
+            properties:
+              status: Ready
+            type: Microsoft.Attestation/attestationProviders
+    AttestationProviders_Get:
+      value:
+        id: subscriptions/subscriptionID/resourceGroups/resourceGroupID/providers/Microsoft.Attestation/attestationProviders/codes1
+        name: codes1
+        properties:
+          status: Ready
+        type: Microsoft.Attestation/attestationProviders
+    AttestationProviders_Create:
+      value:
+        id: subscriptions/subscriptionID/resourceGroups/resourceGroupID/providers/Microsoft.Attestation/attestationProviders/codes1
+        name: codes1
+        properties:
+          attestUri: https://sample-attestation.attestation.azure.net
+          status: Ready
+        type: Microsoft.Attestation/attestationProviders
+  parameters:
+    ApiVersionParameter:
+      description: Client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+        enum:
+          - 2018-09-01-preview
+      examples:
+        Operations_List:
+          value: 2018-09-01-preview
+        AttestationProviders_List:
+          value: 2018-09-01-preview
+        AttestationProviders_ListByResourceGroup:
+          value: 2018-09-01-preview
+        AttestationProviders_Delete:
+          value: 2018-09-01-preview
+        AttestationProviders_Get:
+          value: 2018-09-01-preview
+        AttestationProviders_Create:
+          value: 2018-09-01-preview
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AttestationProvider:
+      allOf:
+        - properties:
+            id:
+              description: Fully qualified resource Id for the resource. Ex -
+                /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+              readOnly: true
+              type: string
+            name:
+              description: The name of the resource
+              readOnly: true
+              type: string
+            type:
+              description: The type of the resource. Ex- Microsoft.Compute/virtualMachines
+                or Microsoft.Storage/storageAccounts.
+              readOnly: true
+              type: string
+          x-ms-azure-resource: true
+      description: Attestation service response message.
+      properties:
+        properties:
+          $ref: "#/components/schemas/StatusResult"
+      required:
+        - properties
+    AttestationProviderListResult:
+      description: Attestation Providers List.
+      properties:
+        value:
+          description: Attestation Provider array.
+          items:
+            $ref: "#/components/schemas/AttestationProvider"
+          type: array
+    AttestationServiceCreationParams:
+      description: Client supplied parameters passed to attestation service.
+      properties:
+        attestationPolicy:
+          description: Name of attestation policy.
+          type: string
+    CloudError:
+      description: An error response from Attestation.
+      properties:
+        error:
+          $ref: "#/components/schemas/CloudErrorBody"
+      x-ms-external: true
+    CloudErrorBody:
+      description: An error response from Attestation.
+      properties:
+        code:
+          description: An identifier for the error. Codes are invariant and are intended to
+            be consumed programmatically.
+          type: string
+        message:
+          description: A message describing the error, intended to be suitable for
+            displaying in a user interface.
+          type: string
+      x-ms-external: true
+    OperationList:
+      description: List of supported operations.
+      properties:
+        value:
+          description: List of supported operations.
+          items:
+            $ref: "#/components/schemas/OperationsDefinition"
+          type: array
+    OperationsDefinition:
+      description: Definition object with the name and properties of an operation.
+      properties:
+        display:
+          $ref: "#/components/schemas/OperationsDisplayDefinition"
+        name:
+          description: Name of the operation.
+          type: string
+      type: object
+    OperationsDisplayDefinition:
+      description: Display object with properties of the operation.
+      properties:
+        description:
+          description: Description of the operation.
+          type: string
+        operation:
+          description: Short description of the operation.
+          type: string
+        provider:
+          description: Resource provider of the operation.
+          type: string
+        resource:
+          description: Resource for the operation.
+          type: string
+      type: object
+    StatusResult:
+      description: Status of attestation service.
+      properties:
+        attestUri:
+          description: Gets the uri of attestation service
+          type: string
+        status:
+          description: Status of attestation service.
+          enum:
+            - Ready
+            - NotReady
+            - Error
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: AttestationServiceStatus
+      required:
+        - status
+      type: object

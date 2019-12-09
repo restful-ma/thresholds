@@ -1,0 +1,242 @@
+openapi: 3.0.0
+info:
+  description: Update location operation endpoints and objects.
+  title: UpdateAdminClient
+  version: 2016-05-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/azsadmin/resource-manager/update/Microsoft.Update.Admin/preview/2016-05-01/UpdateLocations.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: azsadmin-UpdateLocations
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Update.Admin/updateLocations/":
+    get:
+      description: Get the list of update locations.
+      operationId: UpdateLocations_List
+      parameters:
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription.  The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Get the list of update locations.:
+              value: 20ff7fc3-e762-44dd-bd96-b71116dcdc23
+        - description: Resource group name.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Get the list of update locations.:
+              value: System.Redmond
+        - description: Client API Version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            default: 2016-05-01
+          examples:
+            Get the list of update locations.:
+              value: 2016-05-01
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateLocationList"
+              examples:
+                Get the list of update locations.:
+                  $ref: "#/components/examples/Get_the_list_of_update_locations."
+      tags:
+        - UpdateLocations
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Update.Admin/updateLocations/{updateLocation}":
+    get:
+      description: Get an update location based on name.
+      operationId: UpdateLocations_Get
+      parameters:
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription.  The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Get an update location based on name.:
+              value: 20ff7fc3-e762-44dd-bd96-b71116dcdc23
+        - description: Resource group name.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Get an update location based on name.:
+              value: System.Redmond
+        - $ref: "#/components/parameters/UpdateLocationParameter"
+        - description: Client API Version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            default: 2016-05-01
+          examples:
+            Get an update location based on name.:
+              value: 2016-05-01
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateLocation"
+              examples:
+                Get an update location based on name.:
+                  $ref: "#/components/examples/Get_an_update_location_based_on_name."
+      tags:
+        - UpdateLocations
+servers:
+  - url: https://adminmanagement.local.azurestack.external
+components:
+  examples:
+    Get_the_list_of_update_locations.:
+      value:
+        value:
+          - id: /subscriptions/23d66fd1-4743-42ff-b391-e29dc51d799e/resourceGroups/System.Redmond/providers/Microsoft.Update.Admin/updateLocations/redmond
+            location: redmond
+            name: redmond
+            properties:
+              currentOemVersion: 1.0.1709.3
+              currentVersion: 1.0.180302.1
+              lastUpdated: 2018-03-03T08:09:12.8824552Z
+              state: AppliedSuccessfully
+            tags: {}
+            type: Microsoft.Update.Admin/updateLocations
+    Get_an_update_location_based_on_name.:
+      value:
+        id: /subscriptions/23d66fd1-4743-42ff-b391-e29dc51d799e/resourcegroups/System.Redmond/providers/Microsoft.Update.Admin/updateLocations/redmond
+        location: redmond
+        name: redmond
+        properties:
+          currentOemVersion: 1.0.1709.3
+          currentVersion: 1.0.180302.1
+          lastUpdated: 2018-03-03T08:09:12.8824552Z
+          state: AppliedSuccessfully
+        tags: {}
+        type: Microsoft.Update.Admin/updateLocations
+  parameters:
+    UpdateLocationParameter:
+      description: The name of the update location.
+      in: path
+      name: updateLocation
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get an update location based on name.:
+          value: redmond
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    RegionUpdateState:
+      description: State of the region in regard to update.
+      enum:
+        - Unknown
+        - AppliedSuccessfully
+        - AppliedUpdateAvailableSuccessfully
+        - UpdateInProgress
+        - UpdateFailed
+      type: string
+      x-ms-enum:
+        modelAsString: true
+        name: RegionUpdateState
+    UpdateLocation:
+      allOf:
+        - description: Base Resource Object
+          properties:
+            id:
+              description: URI of the resource.
+              readOnly: true
+              type: string
+            location:
+              description: Region location of resource.
+              type: string
+            name:
+              description: Name of the resource.
+              readOnly: true
+              type: string
+            tags:
+              additionalProperties:
+                type: string
+              description: List of key-value pairs.
+              type: object
+            type:
+              description: Type of resource.
+              readOnly: true
+              type: string
+          type: object
+          x-ms-azure-resource: true
+      description: Information related to a location's update status.
+      properties:
+        properties:
+          $ref: "#/components/schemas/UpdateLocationModel"
+      type: object
+    UpdateLocationList:
+      description: The list of update locations.
+      properties:
+        nextLink:
+          description: The link to get the next page of update locations.
+          type: string
+        value:
+          description: The list of update locations.
+          items:
+            $ref: "#/components/schemas/UpdateLocation"
+          type: array
+      type: object
+    UpdateLocationModel:
+      description: Model which holds information related to update location.
+      properties:
+        currentOemVersion:
+          description: Current OEM version of your AzureStack deployment.
+          type: string
+        currentVersion:
+          description: Current version of your AzureStack deployment.
+          type: string
+        lastUpdated:
+          description: Date of last update.
+          format: date-time
+          type: string
+        state:
+          $ref: "#/components/schemas/RegionUpdateState"
+      type: object

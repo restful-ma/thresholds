@@ -1,0 +1,186 @@
+openapi: 3.0.0
+info:
+  title: MonitorManagementClient
+  version: 2017-05-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-ms-code-generation-settings:
+    name: MonitorManagementClient
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/diagnosticsSettingsCategories_API.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: monitor-diagnosticsSettingsCategories_API
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/{resourceUri}/providers/microsoft.insights/diagnosticSettingsCategories":
+    get:
+      description: Lists the diagnostic settings categories for the specified resource.
+      operationId: DiagnosticSettingsCategory_List
+      parameters:
+        - $ref: "#/components/parameters/ResourceUriParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successful request to get more information about diagnostic setting
+            category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiagnosticSettingsCategoryResourceColle\
+                  ction"
+              examples:
+                Gets the diagnostic setting:
+                  $ref: "#/components/examples/Gets_the_diagnostic_setting"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - DiagnosticSettingsCategories
+  "/{resourceUri}/providers/microsoft.insights/diagnosticSettingsCategories/{name}":
+    get:
+      description: Gets the diagnostic settings category for the specified resource.
+      operationId: DiagnosticSettingsCategory_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceUriParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/NameParameter"
+      responses:
+        "200":
+          description: Successful request to get more information about diagnostic setting
+            category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiagnosticSettingsCategoryResource"
+              examples:
+                Gets the diagnostic setting:
+                  $ref: "#/components/examples/Gets_the_diagnostic_setting"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - DiagnosticSettingsCategories
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Gets_the_diagnostic_setting:
+      value:
+        id: /subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6/providers/microsoft.insights/diagnosticSettingsCategories/WorkflowRuntime
+        name: WorkflowRuntime
+        properties:
+          categoryType: Logs
+        type: microsoft.insights/diagnosticSettingsCategories
+  parameters:
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Gets the diagnostic setting:
+          value: 2017-05-01-preview
+    NameParameter:
+      description: The name of the diagnostic setting.
+      in: path
+      name: name
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Gets the diagnostic setting:
+          value: WorkflowRuntime
+    ResourceUriParameter:
+      description: The identifier of the resource.
+      in: path
+      name: resourceUri
+      required: true
+      x-ms-parameter-location: method
+      x-ms-skip-url-encoding: true
+      schema:
+        type: string
+      examples:
+        Gets the diagnostic setting:
+          value: subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    DiagnosticSettingsCategory:
+      description: The diagnostic settings Category.
+      properties:
+        categoryType:
+          description: The type of the diagnostic settings category.
+          enum:
+            - Metrics
+            - Logs
+          type: string
+          x-ms-enum:
+            name: categoryType
+          nullable: false
+    DiagnosticSettingsCategoryResource:
+      allOf:
+        - $ref: "#/components/schemas/ProxyOnlyResource"
+      description: The diagnostic settings category resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/DiagnosticSettingsCategory"
+      type: object
+    DiagnosticSettingsCategoryResourceCollection:
+      description: Represents a collection of diagnostic setting category resources.
+      properties:
+        value:
+          description: The collection of diagnostic settings category resources.
+          items:
+            $ref: "#/components/schemas/DiagnosticSettingsCategoryResource"
+          type: array
+    ErrorResponse:
+      description: Describes the format of Error response.
+      properties:
+        code:
+          description: Error code
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          type: string
+      type: object
+    ProxyOnlyResource:
+      description: A proxy only azure resource object
+      properties:
+        id:
+          description: Azure resource Id
+          readOnly: true
+          type: string
+        name:
+          description: Azure resource name
+          readOnly: true
+          type: string
+        type:
+          description: Azure resource type
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true

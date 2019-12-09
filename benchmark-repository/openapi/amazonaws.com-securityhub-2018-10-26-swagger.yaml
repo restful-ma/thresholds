@@ -1,0 +1,4680 @@
+openapi: 3.0.0
+info:
+  version: 2018-10-26
+  x-release: v4
+  title: AWS SecurityHub
+  description: <p>Security Hub provides you with a comprehensive view of the security state
+    of your AWS environment and resources. It also provides you with the
+    compliance status of your environment based on CIS AWS Foundations
+    compliance checks. Security Hub collects security data from AWS accounts,
+    services, and integrated third-party products and helps you analyze security
+    trends in your environment to identify the highest priority security issues.
+    For more information about Security Hub, see the <i> <a
+    href="https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html">AWS
+    Security Hub User Guide</a> </i>.</p> <p>When you use operations in the
+    Security Hub API, the requests are executed only in the AWS Region that is
+    currently active or in the specific AWS Region that you specify in your
+    request. Any configuration or settings change that results from the
+    operation is applied only to that Region. To make the same change in other
+    Regions, execute the same command for each Region to apply the change to.
+    For example, if your Region is set to <code>us-west-2</code>, when you use
+    <code>CreateMembers</code> to add a member account to Security Hub, the
+    association of the member account with the master account is created only in
+    the us-west-2 Region. Security Hub must be enabled for the member account in
+    the same Region that the invite was sent from.</p>
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: securityhub
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/securityhub-2018-10-26.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/securityhub/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  /master:
+    post:
+      operationId: AcceptInvitation
+      description: Accepts the invitation to be a member account and be monitored by the
+        Security Hub master account that the invitation was sent from. When the
+        member account accepts the invitation, permission is granted to the
+        master account to view findings generated in the member account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceptInvitationResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "484":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - MasterId
+                - InvitationId
+              properties:
+                MasterId:
+                  description: The account ID of the Security Hub master account that sent
+                    the invitation.
+                  type: string
+                  pattern: .*\S.*
+                InvitationId:
+                  description: The ID of the invitation sent from the Security Hub master
+                    account.
+                  type: string
+                  pattern: .*\S.*
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetMasterAccount
+      description: "Provides the details for the Security Hub master account to the current
+        member account. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMasterAccountResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+  /standards/deregister:
+    post:
+      operationId: BatchDisableStandards
+      description: Disables the standards specified by the provided
+        <code>StandardsSubscriptionArns</code>. For more information, see <a
+        href="https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards.html">Standards
+        Supported in AWS Security Hub</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BatchDisableStandardsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - StandardsSubscriptionArns
+              properties:
+                StandardsSubscriptionArns:
+                  description: The ARNs of the standards subscriptions to disable.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/NonEmptyString"
+                  minItems: 1
+                  maxItems: 25
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /standards/register:
+    post:
+      operationId: BatchEnableStandards
+      description: Enables the standards specified by the provided
+        <code>standardsArn</code>. In this release, only CIS AWS Foundations
+        standards are supported. For more information, see <a
+        href="https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards.html">Standards
+        Supported in AWS Security Hub</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BatchEnableStandardsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - StandardsSubscriptionRequests
+              properties:
+                StandardsSubscriptionRequests:
+                  description: <p>The list of standards compliance checks to enable.</p>
+                    <important> <p>In this release, Security Hub supports only
+                    the CIS AWS Foundations standard.</p> <p>The ARN for the
+                    standard is
+                    <code>arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0</code>.</p>
+                    </important>
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/StandardsSubscriptionRequest"
+                  minItems: 1
+                  maxItems: 25
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /findings/import:
+    post:
+      operationId: BatchImportFindings
+      description: Imports security findings generated from an integrated third-party
+        product into Security Hub. This action is requested by the integrated
+        product to import its findings into Security Hub. The maximum allowed
+        size for a finding is 240 Kb. An error is returned for any finding
+        larger than 240 Kb.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BatchImportFindingsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "483":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Findings
+              properties:
+                Findings:
+                  description: A list of findings to import. To successfully import a
+                    finding, it must follow the <a
+                    href="https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings-format.html">AWS
+                    Security Finding Format</a>.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AwsSecurityFinding"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /actionTargets:
+    post:
+      operationId: CreateActionTarget
+      description: Creates a custom action target in Security Hub. You can use custom
+        actions on findings and insights in Security Hub to trigger target
+        actions in Amazon CloudWatch Events.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateActionTargetResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceConflictException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Name
+                - Description
+                - Id
+              properties:
+                Name:
+                  description: The name of the custom action target.
+                  type: string
+                  pattern: .*\S.*
+                Description:
+                  description: The description for the custom action target.
+                  type: string
+                  pattern: .*\S.*
+                Id:
+                  description: The ID for the custom action target.
+                  type: string
+                  pattern: .*\S.*
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /insights:
+    post:
+      operationId: CreateInsight
+      description: Creates a custom insight in Security Hub. An insight is a consolidation
+        of findings that relate to a security issue that requires attention or
+        remediation. Use the <code>GroupByAttribute</code> to group the related
+        findings in the insight.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateInsightResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "483":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "484":
+          description: ResourceConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceConflictException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Name
+                - Filters
+                - GroupByAttribute
+              properties:
+                Name:
+                  description: The name of the custom insight to create.
+                  type: string
+                  pattern: .*\S.*
+                Filters:
+                  description: "A collection of attributes that are applied to all active
+                    Security Hub-aggregated findings and that result in a subset
+                    of findings that are included in this insight. "
+                  type: object
+                  properties:
+                    ProductArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    AwsAccountId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Id:
+                      $ref: "#/components/schemas/StringFilterList"
+                    GeneratorId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Type:
+                      $ref: "#/components/schemas/StringFilterList"
+                    FirstObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    LastObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    CreatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    UpdatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    SeverityProduct:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    SeverityNormalized:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    SeverityLabel:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Confidence:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    Criticality:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    Title:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Description:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RecommendationText:
+                      $ref: "#/components/schemas/StringFilterList"
+                    SourceUrl:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProductFields:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ProductName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    CompanyName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    UserDefinedFields:
+                      $ref: "#/components/schemas/MapFilterList"
+                    MalwareName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwareType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwarePath:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwareState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkDirection:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkProtocol:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkSourceIpV4:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkSourceIpV6:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkSourcePort:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    NetworkSourceDomain:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkSourceMac:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkDestinationIpV4:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkDestinationIpV6:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkDestinationPort:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    NetworkDestinationDomain:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessPath:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessPid:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    ProcessParentPid:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    ProcessLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ProcessTerminatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ThreatIntelIndicatorType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorValue:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorCategory:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorLastObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ThreatIntelIndicatorSource:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorSourceUrl:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourcePartition:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceRegion:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceTags:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ResourceAwsEc2InstanceType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceImageId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceIpV4Addresses:
+                      $ref: "#/components/schemas/IpFilterList"
+                    ResourceAwsEc2InstanceIpV6Addresses:
+                      $ref: "#/components/schemas/IpFilterList"
+                    ResourceAwsEc2InstanceKeyName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceIamInstanceProfileArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceVpcId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceSubnetId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceAwsS3BucketOwnerId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsS3BucketOwnerName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyUserName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyStatus:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyCreatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceContainerName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerImageId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerImageName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceDetailsOther:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ComplianceStatus:
+                      $ref: "#/components/schemas/StringFilterList"
+                    VerificationState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    WorkflowState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RecordState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RelatedFindingsProductArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RelatedFindingsId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NoteText:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NoteUpdatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    NoteUpdatedBy:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Keyword:
+                      $ref: "#/components/schemas/KeywordFilterList"
+                GroupByAttribute:
+                  description: The attribute used as the aggregator to group related
+                    findings for the insight.
+                  type: string
+                  pattern: .*\S.*
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /members:
+    post:
+      operationId: CreateMembers
+      description: <p>Creates a member association in Security Hub between the specified
+        accounts and the account used to make the request, which is the master
+        account. To successfully create a member, you must use this action from
+        an account that already has Security Hub enabled. You can use the
+        <a>EnableSecurityHub</a> to enable Security Hub.</p> <p>After you use
+        <code>CreateMembers</code> to create member account associations in
+        Security Hub, you need to use the <a>InviteMembers</a> action, which
+        invites the accounts to enable Security Hub and become member accounts
+        in Security Hub. If the invitation is accepted by the account owner, the
+        account becomes a member account in Security Hub, and a permission
+        policy is added that permits the master account to view the findings
+        generated in the member account. When Security Hub is enabled in the
+        invited account, findings start being sent to both the member and master
+        accounts.</p> <p>You can remove the association between the master and
+        member accounts by using the <a>DisassociateFromMasterAccount</a> or
+        <a>DisassociateMembers</a> operation.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateMembersResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "483":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "484":
+          description: ResourceConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceConflictException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                AccountDetails:
+                  description: A list of account ID and email address pairs of the accounts
+                    to associate with the Security Hub master account.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AccountDetails"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListMembers
+      description: Lists details about all member accounts for the current Security Hub
+        master account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListMembersResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: OnlyAssociated
+          in: query
+          required: false
+          description: "Specifies which member accounts the response includes based on
+            their relationship status with the master account. The default value
+            is <code>TRUE</code>. If <code>onlyAssociated</code> is set to
+            <code>TRUE</code>, the response includes member accounts whose
+            relationship status with the master is set to <code>ENABLED</code>
+            or <code>DISABLED</code>. If <code>onlyAssociated</code> is set to
+            <code>FALSE</code>, the response includes all existing member
+            accounts. "
+          schema:
+            type: boolean
+        - name: MaxResults
+          in: query
+          required: false
+          description: "The maximum number of items that you want in the response. "
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: NextToken
+          in: query
+          required: false
+          description: "Paginates results. Set the value of this parameter to
+            <code>NULL</code> on your first call to the <code>ListMembers</code>
+            operation. For subsequent calls to the operation, fill
+            <code>nextToken</code> in the request with the value of
+            <code>nextToken</code> from the previous response to continue
+            listing data. "
+          schema:
+            type: string
+  /invitations/decline:
+    post:
+      operationId: DeclineInvitations
+      description: Declines invitations to become a member account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeclineInvitationsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - AccountIds
+              properties:
+                AccountIds:
+                  description: A list of account IDs that specify the accounts that
+                    invitations to Security Hub are declined from.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/NonEmptyString"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/actionTargets/{ActionTargetArn}":
+    delete:
+      operationId: DeleteActionTarget
+      description: Deletes a custom action target from Security Hub. Deleting a custom
+        action target doesn't affect any findings or insights that were already
+        sent to Amazon CloudWatch Events using the custom action.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteActionTargetResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: ActionTargetArn
+          in: path
+          required: true
+          description: The ARN of the custom action target to delete.
+          schema:
+            type: string
+            pattern: .*\S.*
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    patch:
+      operationId: UpdateActionTarget
+      description: Updates the name and description of a custom action target in Security
+        Hub.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateActionTargetResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: ActionTargetArn
+          in: path
+          required: true
+          description: The ARN of the custom action target to update.
+          schema:
+            type: string
+            pattern: .*\S.*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Name:
+                  description: The updated name of the custom action target.
+                  type: string
+                  pattern: .*\S.*
+                Description:
+                  description: The updated description for the custom action target.
+                  type: string
+                  pattern: .*\S.*
+        required: true
+  "/insights/{InsightArn}":
+    delete:
+      operationId: DeleteInsight
+      description: Deletes the insight specified by the <code>InsightArn</code>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteInsightResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: InsightArn
+          in: path
+          required: true
+          description: The ARN of the insight to delete.
+          schema:
+            type: string
+            pattern: .*\S.*
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    patch:
+      operationId: UpdateInsight
+      description: Updates the Security Hub insight that the insight ARN specifies.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateInsightResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: InsightArn
+          in: path
+          required: true
+          description: The ARN of the insight that you want to update.
+          schema:
+            type: string
+            pattern: .*\S.*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Name:
+                  description: The updated name for the insight.
+                  type: string
+                  pattern: .*\S.*
+                Filters:
+                  description: "A collection of attributes that are applied to all active
+                    Security Hub-aggregated findings and that result in a subset
+                    of findings that are included in this insight. "
+                  type: object
+                  properties:
+                    ProductArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    AwsAccountId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Id:
+                      $ref: "#/components/schemas/StringFilterList"
+                    GeneratorId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Type:
+                      $ref: "#/components/schemas/StringFilterList"
+                    FirstObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    LastObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    CreatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    UpdatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    SeverityProduct:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    SeverityNormalized:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    SeverityLabel:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Confidence:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    Criticality:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    Title:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Description:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RecommendationText:
+                      $ref: "#/components/schemas/StringFilterList"
+                    SourceUrl:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProductFields:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ProductName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    CompanyName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    UserDefinedFields:
+                      $ref: "#/components/schemas/MapFilterList"
+                    MalwareName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwareType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwarePath:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwareState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkDirection:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkProtocol:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkSourceIpV4:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkSourceIpV6:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkSourcePort:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    NetworkSourceDomain:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkSourceMac:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkDestinationIpV4:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkDestinationIpV6:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkDestinationPort:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    NetworkDestinationDomain:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessPath:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessPid:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    ProcessParentPid:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    ProcessLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ProcessTerminatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ThreatIntelIndicatorType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorValue:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorCategory:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorLastObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ThreatIntelIndicatorSource:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorSourceUrl:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourcePartition:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceRegion:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceTags:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ResourceAwsEc2InstanceType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceImageId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceIpV4Addresses:
+                      $ref: "#/components/schemas/IpFilterList"
+                    ResourceAwsEc2InstanceIpV6Addresses:
+                      $ref: "#/components/schemas/IpFilterList"
+                    ResourceAwsEc2InstanceKeyName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceIamInstanceProfileArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceVpcId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceSubnetId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceAwsS3BucketOwnerId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsS3BucketOwnerName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyUserName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyStatus:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyCreatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceContainerName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerImageId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerImageName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceDetailsOther:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ComplianceStatus:
+                      $ref: "#/components/schemas/StringFilterList"
+                    VerificationState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    WorkflowState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RecordState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RelatedFindingsProductArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RelatedFindingsId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NoteText:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NoteUpdatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    NoteUpdatedBy:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Keyword:
+                      $ref: "#/components/schemas/KeywordFilterList"
+                GroupByAttribute:
+                  description: The updated <code>GroupBy</code> attribute that defines this
+                    insight.
+                  type: string
+                  pattern: .*\S.*
+        required: true
+  /invitations/delete:
+    post:
+      operationId: DeleteInvitations
+      description: Deletes invitations received by the AWS account to become a member
+        account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteInvitationsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "484":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - AccountIds
+              properties:
+                AccountIds:
+                  description: A list of the account IDs that sent the invitations to
+                    delete.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/NonEmptyString"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /members/delete:
+    post:
+      operationId: DeleteMembers
+      description: Deletes the specified member accounts from Security Hub.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteMembersResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                AccountIds:
+                  description: A list of account IDs of the member accounts to delete.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/NonEmptyString"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /actionTargets/get:
+    post:
+      operationId: DescribeActionTargets
+      description: Returns a list of the custom action targets in Security Hub in your
+        account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeActionTargetsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ActionTargetArns:
+                  description: A list of custom action target ARNs for the custom action
+                    targets to retrieve.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/NonEmptyString"
+                NextToken:
+                  description: The token that is required for pagination.
+                  type: string
+                MaxResults:
+                  description: The maximum number of results to return.
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /accounts:
+    get:
+      operationId: DescribeHub
+      description: Returns details about the Hub resource in your account, including the
+        <code>HubArn</code> and the time when you enabled Security Hub.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeHubResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: HubArn
+          in: query
+          required: false
+          description: The ARN of the Hub resource to retrieve.
+          schema:
+            type: string
+            pattern: .*\S.*
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    delete:
+      operationId: DisableSecurityHub
+      description: <p>Disables Security Hub in your account only in the current Region. To
+        disable Security Hub in all Regions, you must submit one request per
+        Region where you have enabled Security Hub. When you disable Security
+        Hub for a master account, it doesn't disable Security Hub for any
+        associated member accounts.</p> <p>When you disable Security Hub, your
+        existing findings and insights and any Security Hub configuration
+        settings are deleted after 90 days and can't be recovered. Any standards
+        that were enabled are disabled, and your master and member account
+        associations are removed. If you want to save your existing findings,
+        you must export them before you disable Security Hub.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisableSecurityHubResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+    post:
+      operationId: EnableSecurityHub
+      description: Enables Security Hub for your account in the current Region or the
+        Region you specify in the request. When you enable Security Hub, you
+        grant to Security Hub the permissions necessary to gather findings from
+        AWS Config, Amazon GuardDuty, Amazon Inspector, and Amazon Macie. To
+        learn more, see <a
+        href="https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-settingup.html">Setting
+        Up AWS Security Hub</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnableSecurityHubResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: ResourceConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceConflictException"
+        "484":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Tags:
+                  description: The tags to add to the Hub resource when you enable Security
+                    Hub.
+                  type: object
+                  minProperties: 1
+                  maxProperties: 50
+                  additionalProperties:
+                    $ref: "#/components/schemas/TagValue"
+        required: true
+  /products:
+    get:
+      operationId: DescribeProducts
+      description: Returns information about the products available that you can subscribe
+        to and integrate with Security Hub to consolidate findings.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeProductsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+      parameters:
+        - name: NextToken
+          in: query
+          required: false
+          description: The token that is required for pagination.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to return.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/productSubscriptions/{ProductSubscriptionArn}":
+    delete:
+      operationId: DisableImportFindingsForProduct
+      description: Disables the integration of the specified product with Security Hub.
+        Findings from that product are no longer sent to Security Hub after the
+        integration is disabled.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisableImportFindingsForProductResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: ProductSubscriptionArn
+          in: path
+          required: true
+          description: The ARN of the integrated product to disable the integration for.
+          schema:
+            type: string
+            pattern: .*\S.*
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /master/disassociate:
+    post:
+      operationId: DisassociateFromMasterAccount
+      description: Disassociates the current Security Hub member account from the
+        associated master account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisassociateFromMasterAccountResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /members/disassociate:
+    post:
+      operationId: DisassociateMembers
+      description: Disassociates the specified member accounts from the associated master
+        account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisassociateMembersResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                AccountIds:
+                  description: The account IDs of the member accounts to disassociate from
+                    the master account.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/NonEmptyString"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /productSubscriptions:
+    post:
+      operationId: EnableImportFindingsForProduct
+      description: Enables the integration of a partner product with Security Hub.
+        Integrated products send findings to Security Hub. When you enable a
+        product integration, a permission policy that grants permission for the
+        product to send findings to Security Hub is applied.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnableImportFindingsForProductResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: ResourceConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceConflictException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ProductArn
+              properties:
+                ProductArn:
+                  description: The ARN of the product to enable the integration for.
+                  type: string
+                  pattern: .*\S.*
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListEnabledProductsForImport
+      description: Lists all findings-generating solutions (products) whose findings you
+        have subscribed to receive in Security Hub.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListEnabledProductsForImportResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+      parameters:
+        - name: NextToken
+          in: query
+          required: false
+          description: Paginates results. On your first call to the
+            <code>ListEnabledProductsForImport</code> operation, set the value
+            of this parameter to <code>NULL</code>. For subsequent calls to the
+            operation, fill <code>nextToken</code> in the request with the value
+            of <code>NextToken</code> from the previous response to continue
+            listing data.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of items that you want in the response.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+  /standards/get:
+    post:
+      operationId: GetEnabledStandards
+      description: Returns a list of the standards that are currently enabled.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetEnabledStandardsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                StandardsSubscriptionArns:
+                  description: A list of the standards subscription ARNs for the standards
+                    to retrieve.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/NonEmptyString"
+                  minItems: 1
+                  maxItems: 25
+                NextToken:
+                  description: Paginates results. On your first call to the
+                    <code>GetEnabledStandards</code> operation, set the value of
+                    this parameter to <code>NULL</code>. For subsequent calls to
+                    the operation, fill <code>nextToken</code> in the request
+                    with the value of <code>nextToken</code> from the previous
+                    response to continue listing data.
+                  type: string
+                MaxResults:
+                  description: The maximum number of results to return in the response.
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /findings:
+    post:
+      operationId: GetFindings
+      description: Returns a list of findings that match the specified criteria.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetFindingsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Filters:
+                  description: "A collection of attributes that are applied to all active
+                    Security Hub-aggregated findings and that result in a subset
+                    of findings that are included in this insight. "
+                  type: object
+                  properties:
+                    ProductArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    AwsAccountId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Id:
+                      $ref: "#/components/schemas/StringFilterList"
+                    GeneratorId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Type:
+                      $ref: "#/components/schemas/StringFilterList"
+                    FirstObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    LastObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    CreatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    UpdatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    SeverityProduct:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    SeverityNormalized:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    SeverityLabel:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Confidence:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    Criticality:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    Title:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Description:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RecommendationText:
+                      $ref: "#/components/schemas/StringFilterList"
+                    SourceUrl:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProductFields:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ProductName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    CompanyName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    UserDefinedFields:
+                      $ref: "#/components/schemas/MapFilterList"
+                    MalwareName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwareType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwarePath:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwareState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkDirection:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkProtocol:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkSourceIpV4:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkSourceIpV6:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkSourcePort:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    NetworkSourceDomain:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkSourceMac:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkDestinationIpV4:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkDestinationIpV6:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkDestinationPort:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    NetworkDestinationDomain:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessPath:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessPid:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    ProcessParentPid:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    ProcessLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ProcessTerminatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ThreatIntelIndicatorType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorValue:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorCategory:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorLastObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ThreatIntelIndicatorSource:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorSourceUrl:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourcePartition:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceRegion:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceTags:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ResourceAwsEc2InstanceType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceImageId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceIpV4Addresses:
+                      $ref: "#/components/schemas/IpFilterList"
+                    ResourceAwsEc2InstanceIpV6Addresses:
+                      $ref: "#/components/schemas/IpFilterList"
+                    ResourceAwsEc2InstanceKeyName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceIamInstanceProfileArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceVpcId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceSubnetId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceAwsS3BucketOwnerId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsS3BucketOwnerName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyUserName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyStatus:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyCreatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceContainerName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerImageId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerImageName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceDetailsOther:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ComplianceStatus:
+                      $ref: "#/components/schemas/StringFilterList"
+                    VerificationState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    WorkflowState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RecordState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RelatedFindingsProductArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RelatedFindingsId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NoteText:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NoteUpdatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    NoteUpdatedBy:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Keyword:
+                      $ref: "#/components/schemas/KeywordFilterList"
+                SortCriteria:
+                  description: Findings attributes used to sort the list of findings
+                    returned.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SortCriterion"
+                NextToken:
+                  description: Paginates results. On your first call to the
+                    <code>GetFindings</code> operation, set the value of this
+                    parameter to <code>NULL</code>. For subsequent calls to the
+                    operation, fill <code>nextToken</code> in the request with
+                    the value of <code>nextToken</code> from the previous
+                    response to continue listing data.
+                  type: string
+                MaxResults:
+                  description: The maximum number of findings to return.
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    patch:
+      operationId: UpdateFindings
+      description: Updates the <code>Note</code> and <code>RecordState</code> of the
+        Security Hub-aggregated findings that the filter attributes specify. Any
+        member account that can view the finding also sees the update to the
+        finding.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateFindingsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "483":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Filters
+                - Note
+              properties:
+                Filters:
+                  description: "A collection of attributes that are applied to all active
+                    Security Hub-aggregated findings and that result in a subset
+                    of findings that are included in this insight. "
+                  type: object
+                  properties:
+                    ProductArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    AwsAccountId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Id:
+                      $ref: "#/components/schemas/StringFilterList"
+                    GeneratorId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Type:
+                      $ref: "#/components/schemas/StringFilterList"
+                    FirstObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    LastObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    CreatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    UpdatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    SeverityProduct:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    SeverityNormalized:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    SeverityLabel:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Confidence:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    Criticality:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    Title:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Description:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RecommendationText:
+                      $ref: "#/components/schemas/StringFilterList"
+                    SourceUrl:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProductFields:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ProductName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    CompanyName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    UserDefinedFields:
+                      $ref: "#/components/schemas/MapFilterList"
+                    MalwareName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwareType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwarePath:
+                      $ref: "#/components/schemas/StringFilterList"
+                    MalwareState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkDirection:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkProtocol:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkSourceIpV4:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkSourceIpV6:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkSourcePort:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    NetworkSourceDomain:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkSourceMac:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NetworkDestinationIpV4:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkDestinationIpV6:
+                      $ref: "#/components/schemas/IpFilterList"
+                    NetworkDestinationPort:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    NetworkDestinationDomain:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessPath:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ProcessPid:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    ProcessParentPid:
+                      $ref: "#/components/schemas/NumberFilterList"
+                    ProcessLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ProcessTerminatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ThreatIntelIndicatorType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorValue:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorCategory:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorLastObservedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ThreatIntelIndicatorSource:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ThreatIntelIndicatorSourceUrl:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourcePartition:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceRegion:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceTags:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ResourceAwsEc2InstanceType:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceImageId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceIpV4Addresses:
+                      $ref: "#/components/schemas/IpFilterList"
+                    ResourceAwsEc2InstanceIpV6Addresses:
+                      $ref: "#/components/schemas/IpFilterList"
+                    ResourceAwsEc2InstanceKeyName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceIamInstanceProfileArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceVpcId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceSubnetId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsEc2InstanceLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceAwsS3BucketOwnerId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsS3BucketOwnerName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyUserName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyStatus:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceAwsIamAccessKeyCreatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceContainerName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerImageId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerImageName:
+                      $ref: "#/components/schemas/StringFilterList"
+                    ResourceContainerLaunchedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    ResourceDetailsOther:
+                      $ref: "#/components/schemas/MapFilterList"
+                    ComplianceStatus:
+                      $ref: "#/components/schemas/StringFilterList"
+                    VerificationState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    WorkflowState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RecordState:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RelatedFindingsProductArn:
+                      $ref: "#/components/schemas/StringFilterList"
+                    RelatedFindingsId:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NoteText:
+                      $ref: "#/components/schemas/StringFilterList"
+                    NoteUpdatedAt:
+                      $ref: "#/components/schemas/DateFilterList"
+                    NoteUpdatedBy:
+                      $ref: "#/components/schemas/StringFilterList"
+                    Keyword:
+                      $ref: "#/components/schemas/KeywordFilterList"
+                Note:
+                  description: The updated note.
+                  type: object
+                  properties:
+                    Text:
+                      $ref: "#/components/schemas/NonEmptyString"
+                    UpdatedBy:
+                      $ref: "#/components/schemas/NonEmptyString"
+                RecordState:
+                  description: The updated record state for the finding.
+                  type: string
+                  enum:
+                    - ACTIVE
+                    - ARCHIVED
+        required: true
+  "/insights/results/{InsightArn}":
+    get:
+      operationId: GetInsightResults
+      description: Lists the results of the Security Hub insight that the insight ARN
+        specifies.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetInsightResultsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: InsightArn
+          in: path
+          required: true
+          description: The ARN of the insight whose results you want to see.
+          schema:
+            type: string
+            pattern: .*\S.*
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /insights/get:
+    post:
+      operationId: GetInsights
+      description: Lists and describes insights that insight ARNs specify.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetInsightsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                InsightArns:
+                  description: The ARNs of the insights that you want to describe.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/NonEmptyString"
+                NextToken:
+                  description: Paginates results. On your first call to the
+                    <code>GetInsights</code> operation, set the value of this
+                    parameter to <code>NULL</code>. For subsequent calls to the
+                    operation, fill <code>nextToken</code> in the request with
+                    the value of <code>nextToken</code> from the previous
+                    response to continue listing data.
+                  type: string
+                MaxResults:
+                  description: The maximum number of items that you want in the response.
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /invitations/count:
+    get:
+      operationId: GetInvitationsCount
+      description: "Returns the count of all Security Hub membership invitations that were
+        sent to the current member account, not including the currently accepted
+        invitation. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetInvitationsCountResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /members/get:
+    post:
+      operationId: GetMembers
+      description: Returns the details on the Security Hub member accounts that the account
+        IDs specify.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMembersResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - AccountIds
+              properties:
+                AccountIds:
+                  description: "A list of account IDs for the Security Hub member accounts
+                    that you want to return the details for. "
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/NonEmptyString"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /members/invite:
+    post:
+      operationId: InviteMembers
+      description: Invites other AWS accounts to become member accounts for the Security
+        Hub master account that the invitation is sent from. Before you can use
+        this action to invite a member, you must first create the member account
+        in Security Hub by using the <a>CreateMembers</a> action. When the
+        account owner accepts the invitation to become a member account and
+        enables Security Hub, the master account can view the findings generated
+        from member account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InviteMembersResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                AccountIds:
+                  description: "A list of IDs of the AWS accounts that you want to invite
+                    to Security Hub as members. "
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/NonEmptyString"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /invitations:
+    get:
+      operationId: ListInvitations
+      description: "Lists all Security Hub membership invitations that were sent to the
+        current AWS account. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListInvitationsResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: InvalidAccessException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidAccessException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: "The maximum number of items that you want in the response. "
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: NextToken
+          in: query
+          required: false
+          description: "Paginates results. On your first call to the
+            <code>ListInvitations</code> operation, set the value of this
+            parameter to <code>NULL</code>. For subsequent calls to the
+            operation, fill <code>nextToken</code> in the request with the value
+            of <code>NextToken</code> from the previous response to continue
+            listing data. "
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/tags/{ResourceArn}":
+    get:
+      operationId: ListTagsForResource
+      description: Returns a list of tags associated with a resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTagsForResourceResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: ResourceArn
+          in: path
+          required: true
+          description: The ARN of the resource to retrieve tags for.
+          schema:
+            type: string
+            pattern: ^arn:aws:securityhub:.*
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    post:
+      operationId: TagResource
+      description: Adds one or more tags to a resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagResourceResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: ResourceArn
+          in: path
+          required: true
+          description: The ARN of the resource to apply the tags to.
+          schema:
+            type: string
+            pattern: ^arn:aws:securityhub:.*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Tags
+              properties:
+                Tags:
+                  description: The tags to add to the resource.
+                  type: object
+                  minProperties: 1
+                  maxProperties: 50
+                  additionalProperties:
+                    $ref: "#/components/schemas/TagValue"
+        required: true
+  "/tags/{ResourceArn}#tagKeys":
+    delete:
+      operationId: UntagResource
+      description: Removes one or more tags from a resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UntagResourceResponse"
+        "480":
+          description: InternalException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalException"
+        "481":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: ResourceArn
+          in: path
+          required: true
+          description: The ARN of the resource to remove the tags from.
+          schema:
+            type: string
+            pattern: ^arn:aws:securityhub:.*
+        - name: tagKeys
+          in: query
+          required: true
+          description: The tag keys associated with the tags to remove from the resource.
+          schema:
+            type: array
+            items:
+              type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://securityhub.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS SecurityHub multi-region endpoint
+  - url: https://securityhub.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS SecurityHub multi-region endpoint
+  - url: http://securityhub.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS SecurityHub endpoint for China (Beijing) and China (Ningxia)
+  - url: https://securityhub.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS SecurityHub endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    AcceptInvitationResponse:
+      type: object
+      properties: {}
+    InternalException: {}
+    InvalidInputException: {}
+    LimitExceededException: {}
+    ResourceNotFoundException: {}
+    InvalidAccessException: {}
+    BatchDisableStandardsResponse:
+      type: object
+      properties:
+        StandardsSubscriptions:
+          $ref: "#/components/schemas/StandardsSubscriptions"
+    NonEmptyString:
+      type: string
+      pattern: .*\S.*
+    BatchEnableStandardsResponse:
+      type: object
+      properties:
+        StandardsSubscriptions:
+          $ref: "#/components/schemas/StandardsSubscriptions"
+    StandardsSubscriptionRequest:
+      type: object
+      required:
+        - StandardsArn
+      properties:
+        StandardsArn:
+          $ref: "#/components/schemas/NonEmptyString"
+        StandardsInput:
+          $ref: "#/components/schemas/StandardsInputParameterMap"
+      description: The standard that you want to enable.
+    BatchImportFindingsResponse:
+      type: object
+      required:
+        - FailedCount
+        - SuccessCount
+      properties:
+        FailedCount:
+          $ref: "#/components/schemas/Integer"
+        SuccessCount:
+          $ref: "#/components/schemas/Integer"
+        FailedFindings:
+          $ref: "#/components/schemas/ImportFindingsErrorList"
+    AwsSecurityFinding:
+      type: object
+      required:
+        - SchemaVersion
+        - Id
+        - ProductArn
+        - GeneratorId
+        - AwsAccountId
+        - Types
+        - CreatedAt
+        - UpdatedAt
+        - Severity
+        - Title
+        - Description
+        - Resources
+      properties:
+        SchemaVersion:
+          $ref: "#/components/schemas/NonEmptyString"
+        Id:
+          $ref: "#/components/schemas/NonEmptyString"
+        ProductArn:
+          $ref: "#/components/schemas/NonEmptyString"
+        GeneratorId:
+          $ref: "#/components/schemas/NonEmptyString"
+        AwsAccountId:
+          $ref: "#/components/schemas/NonEmptyString"
+        Types:
+          $ref: "#/components/schemas/TypeList"
+        FirstObservedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+        LastObservedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+        CreatedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+        UpdatedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+        Severity:
+          $ref: "#/components/schemas/Severity"
+        Confidence:
+          $ref: "#/components/schemas/Integer"
+        Criticality:
+          $ref: "#/components/schemas/Integer"
+        Title:
+          $ref: "#/components/schemas/NonEmptyString"
+        Description:
+          $ref: "#/components/schemas/NonEmptyString"
+        Remediation:
+          $ref: "#/components/schemas/Remediation"
+        SourceUrl:
+          $ref: "#/components/schemas/NonEmptyString"
+        ProductFields:
+          $ref: "#/components/schemas/FieldMap"
+        UserDefinedFields:
+          $ref: "#/components/schemas/FieldMap"
+        Malware:
+          $ref: "#/components/schemas/MalwareList"
+        Network:
+          $ref: "#/components/schemas/Network"
+        Process:
+          $ref: "#/components/schemas/ProcessDetails"
+        ThreatIntelIndicators:
+          $ref: "#/components/schemas/ThreatIntelIndicatorList"
+        Resources:
+          $ref: "#/components/schemas/ResourceList"
+        Compliance:
+          $ref: "#/components/schemas/Compliance"
+        VerificationState:
+          $ref: "#/components/schemas/VerificationState"
+        WorkflowState:
+          $ref: "#/components/schemas/WorkflowState"
+        RecordState:
+          $ref: "#/components/schemas/RecordState"
+        RelatedFindings:
+          $ref: "#/components/schemas/RelatedFindingList"
+        Note:
+          $ref: "#/components/schemas/Note"
+      description: <p>Provides consistent format for the contents of the Security
+        Hub-aggregated findings. <code>AwsSecurityFinding</code> format enables
+        you to share findings between AWS security services and third-party
+        solutions, and compliance checks.</p> <note> <p>A finding is a potential
+        security issue generated either by AWS services (Amazon GuardDuty,
+        Amazon Inspector, and Amazon Macie) or by the integrated third-party
+        solutions and compliance checks.</p> </note>
+    CreateActionTargetResponse:
+      type: object
+      required:
+        - ActionTargetArn
+      properties:
+        ActionTargetArn:
+          $ref: "#/components/schemas/NonEmptyString"
+    ResourceConflictException: {}
+    CreateInsightResponse:
+      type: object
+      required:
+        - InsightArn
+      properties:
+        InsightArn:
+          $ref: "#/components/schemas/NonEmptyString"
+    StringFilterList:
+      type: array
+      items:
+        $ref: "#/components/schemas/StringFilter"
+    DateFilterList:
+      type: array
+      items:
+        $ref: "#/components/schemas/DateFilter"
+    NumberFilterList:
+      type: array
+      items:
+        $ref: "#/components/schemas/NumberFilter"
+    MapFilterList:
+      type: array
+      items:
+        $ref: "#/components/schemas/MapFilter"
+    IpFilterList:
+      type: array
+      items:
+        $ref: "#/components/schemas/IpFilter"
+    KeywordFilterList:
+      type: array
+      items:
+        $ref: "#/components/schemas/KeywordFilter"
+    CreateMembersResponse:
+      type: object
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/ResultList"
+    AccountDetails:
+      type: object
+      properties:
+        AccountId:
+          $ref: "#/components/schemas/AccountId"
+        Email:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: The details of an AWS account.
+    DeclineInvitationsResponse:
+      type: object
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/ResultList"
+    DeleteActionTargetResponse:
+      type: object
+      required:
+        - ActionTargetArn
+      properties:
+        ActionTargetArn:
+          $ref: "#/components/schemas/NonEmptyString"
+    DeleteInsightResponse:
+      type: object
+      required:
+        - InsightArn
+      properties:
+        InsightArn:
+          $ref: "#/components/schemas/NonEmptyString"
+    DeleteInvitationsResponse:
+      type: object
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/ResultList"
+    DeleteMembersResponse:
+      type: object
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/ResultList"
+    DescribeActionTargetsResponse:
+      type: object
+      required:
+        - ActionTargets
+      properties:
+        ActionTargets:
+          $ref: "#/components/schemas/ActionTargetList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    DescribeHubResponse:
+      type: object
+      properties:
+        HubArn:
+          $ref: "#/components/schemas/NonEmptyString"
+        SubscribedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+    DescribeProductsResponse:
+      type: object
+      required:
+        - Products
+      properties:
+        Products:
+          $ref: "#/components/schemas/ProductsList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    DisableImportFindingsForProductResponse:
+      type: object
+      properties: {}
+    DisableSecurityHubResponse:
+      type: object
+      properties: {}
+    DisassociateFromMasterAccountResponse:
+      type: object
+      properties: {}
+    DisassociateMembersResponse:
+      type: object
+      properties: {}
+    EnableImportFindingsForProductResponse:
+      type: object
+      properties:
+        ProductSubscriptionArn:
+          $ref: "#/components/schemas/NonEmptyString"
+    EnableSecurityHubResponse:
+      type: object
+      properties: {}
+    TagValue:
+      type: string
+      maxLength: 256
+    AccessDeniedException: {}
+    GetEnabledStandardsResponse:
+      type: object
+      properties:
+        StandardsSubscriptions:
+          $ref: "#/components/schemas/StandardsSubscriptions"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    GetFindingsResponse:
+      type: object
+      required:
+        - Findings
+      properties:
+        Findings:
+          $ref: "#/components/schemas/AwsSecurityFindingList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    SortCriterion:
+      type: object
+      properties:
+        Field:
+          $ref: "#/components/schemas/NonEmptyString"
+        SortOrder:
+          $ref: "#/components/schemas/SortOrder"
+      description: A collection of finding attributes used to sort findings.
+    GetInsightResultsResponse:
+      type: object
+      required:
+        - InsightResults
+      properties:
+        InsightResults:
+          $ref: "#/components/schemas/InsightResults"
+    GetInsightsResponse:
+      type: object
+      required:
+        - Insights
+      properties:
+        Insights:
+          $ref: "#/components/schemas/InsightList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    GetInvitationsCountResponse:
+      type: object
+      properties:
+        InvitationsCount:
+          $ref: "#/components/schemas/Integer"
+    GetMasterAccountResponse:
+      type: object
+      properties:
+        Master:
+          $ref: "#/components/schemas/Invitation"
+    GetMembersResponse:
+      type: object
+      properties:
+        Members:
+          $ref: "#/components/schemas/MemberList"
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/ResultList"
+    InviteMembersResponse:
+      type: object
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/ResultList"
+    ListEnabledProductsForImportResponse:
+      type: object
+      properties:
+        ProductSubscriptions:
+          $ref: "#/components/schemas/ProductSubscriptionArnList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListInvitationsResponse:
+      type: object
+      properties:
+        Invitations:
+          $ref: "#/components/schemas/InvitationList"
+        NextToken:
+          $ref: "#/components/schemas/NonEmptyString"
+    ListMembersResponse:
+      type: object
+      properties:
+        Members:
+          $ref: "#/components/schemas/MemberList"
+        NextToken:
+          $ref: "#/components/schemas/NonEmptyString"
+    ListTagsForResourceResponse:
+      type: object
+      properties:
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    TagResourceResponse:
+      type: object
+      properties: {}
+    UntagResourceResponse:
+      type: object
+      properties: {}
+    TagKey:
+      type: string
+      pattern: ^(?!aws:)[a-zA-Z+-=._:/]+$
+      minLength: 1
+      maxLength: 128
+    UpdateActionTargetResponse:
+      type: object
+      properties: {}
+    UpdateFindingsResponse:
+      type: object
+      properties: {}
+    UpdateInsightResponse:
+      type: object
+      properties: {}
+    AcceptInvitationRequest:
+      type: object
+      required:
+        - MasterId
+        - InvitationId
+      properties:
+        MasterId:
+          $ref: "#/components/schemas/NonEmptyString"
+        InvitationId:
+          $ref: "#/components/schemas/NonEmptyString"
+    AccountId:
+      type: string
+    AccountDetailsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/AccountDetails"
+    AccountIdList:
+      type: array
+      items:
+        $ref: "#/components/schemas/NonEmptyString"
+    ActionTarget:
+      type: object
+      required:
+        - ActionTargetArn
+        - Name
+        - Description
+      properties:
+        ActionTargetArn:
+          $ref: "#/components/schemas/NonEmptyString"
+        Name:
+          $ref: "#/components/schemas/NonEmptyString"
+        Description:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: An <code>ActionTarget</code> object.
+    ActionTargetList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ActionTarget"
+    ArnList:
+      type: array
+      items:
+        $ref: "#/components/schemas/NonEmptyString"
+    StringList:
+      type: array
+      items:
+        $ref: "#/components/schemas/NonEmptyString"
+    AwsEc2InstanceDetails:
+      type: object
+      properties:
+        Type:
+          $ref: "#/components/schemas/NonEmptyString"
+        ImageId:
+          $ref: "#/components/schemas/NonEmptyString"
+        IpV4Addresses:
+          $ref: "#/components/schemas/StringList"
+        IpV6Addresses:
+          $ref: "#/components/schemas/StringList"
+        KeyName:
+          $ref: "#/components/schemas/NonEmptyString"
+        IamInstanceProfileArn:
+          $ref: "#/components/schemas/NonEmptyString"
+        VpcId:
+          $ref: "#/components/schemas/NonEmptyString"
+        SubnetId:
+          $ref: "#/components/schemas/NonEmptyString"
+        LaunchedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: The details of an Amazon EC2 instance.
+    AwsIamAccessKeyStatus:
+      type: string
+      enum:
+        - Active
+        - Inactive
+    AwsIamAccessKeyDetails:
+      type: object
+      properties:
+        UserName:
+          $ref: "#/components/schemas/NonEmptyString"
+        Status:
+          $ref: "#/components/schemas/AwsIamAccessKeyStatus"
+        CreatedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: IAM access key details related to a finding.
+    AwsS3BucketDetails:
+      type: object
+      properties:
+        OwnerId:
+          $ref: "#/components/schemas/NonEmptyString"
+        OwnerName:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: The details of an Amazon S3 bucket.
+    TypeList:
+      type: array
+      items:
+        $ref: "#/components/schemas/NonEmptyString"
+    Severity:
+      type: object
+      required:
+        - Normalized
+      properties:
+        Product:
+          $ref: "#/components/schemas/Double"
+        Normalized:
+          $ref: "#/components/schemas/Integer"
+      description: The severity of the finding.
+    Integer:
+      type: integer
+    Remediation:
+      type: object
+      properties:
+        Recommendation:
+          $ref: "#/components/schemas/Recommendation"
+      description: Details about the remediation steps for a finding.
+    FieldMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/NonEmptyString"
+    MalwareList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Malware"
+    Network:
+      type: object
+      properties:
+        Direction:
+          $ref: "#/components/schemas/NetworkDirection"
+        Protocol:
+          $ref: "#/components/schemas/NonEmptyString"
+        SourceIpV4:
+          $ref: "#/components/schemas/NonEmptyString"
+        SourceIpV6:
+          $ref: "#/components/schemas/NonEmptyString"
+        SourcePort:
+          $ref: "#/components/schemas/Integer"
+        SourceDomain:
+          $ref: "#/components/schemas/NonEmptyString"
+        SourceMac:
+          $ref: "#/components/schemas/NonEmptyString"
+        DestinationIpV4:
+          $ref: "#/components/schemas/NonEmptyString"
+        DestinationIpV6:
+          $ref: "#/components/schemas/NonEmptyString"
+        DestinationPort:
+          $ref: "#/components/schemas/Integer"
+        DestinationDomain:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: The details of network-related information about a finding.
+    ProcessDetails:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/NonEmptyString"
+        Path:
+          $ref: "#/components/schemas/NonEmptyString"
+        Pid:
+          $ref: "#/components/schemas/Integer"
+        ParentPid:
+          $ref: "#/components/schemas/Integer"
+        LaunchedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+        TerminatedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: The details of process-related information about a finding.
+    ThreatIntelIndicatorList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ThreatIntelIndicator"
+    ResourceList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Resource"
+    Compliance:
+      type: object
+      properties:
+        Status:
+          $ref: "#/components/schemas/ComplianceStatus"
+      description: Exclusive to findings that are generated as the result of a check run
+        against a specific rule in a supported standard (for example, CIS AWS
+        Foundations). Contains compliance-related finding details.
+    VerificationState:
+      type: string
+      enum:
+        - UNKNOWN
+        - TRUE_POSITIVE
+        - FALSE_POSITIVE
+        - BENIGN_POSITIVE
+    WorkflowState:
+      type: string
+      enum:
+        - NEW
+        - ASSIGNED
+        - IN_PROGRESS
+        - DEFERRED
+        - RESOLVED
+    RecordState:
+      type: string
+      enum:
+        - ACTIVE
+        - ARCHIVED
+    RelatedFindingList:
+      type: array
+      items:
+        $ref: "#/components/schemas/RelatedFinding"
+    Note:
+      type: object
+      required:
+        - Text
+        - UpdatedBy
+        - UpdatedAt
+      properties:
+        Text:
+          $ref: "#/components/schemas/NonEmptyString"
+        UpdatedBy:
+          $ref: "#/components/schemas/NonEmptyString"
+        UpdatedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: A user-defined note added to a finding.
+    AwsSecurityFindingFilters:
+      type: object
+      properties:
+        ProductArn:
+          $ref: "#/components/schemas/StringFilterList"
+        AwsAccountId:
+          $ref: "#/components/schemas/StringFilterList"
+        Id:
+          $ref: "#/components/schemas/StringFilterList"
+        GeneratorId:
+          $ref: "#/components/schemas/StringFilterList"
+        Type:
+          $ref: "#/components/schemas/StringFilterList"
+        FirstObservedAt:
+          $ref: "#/components/schemas/DateFilterList"
+        LastObservedAt:
+          $ref: "#/components/schemas/DateFilterList"
+        CreatedAt:
+          $ref: "#/components/schemas/DateFilterList"
+        UpdatedAt:
+          $ref: "#/components/schemas/DateFilterList"
+        SeverityProduct:
+          $ref: "#/components/schemas/NumberFilterList"
+        SeverityNormalized:
+          $ref: "#/components/schemas/NumberFilterList"
+        SeverityLabel:
+          $ref: "#/components/schemas/StringFilterList"
+        Confidence:
+          $ref: "#/components/schemas/NumberFilterList"
+        Criticality:
+          $ref: "#/components/schemas/NumberFilterList"
+        Title:
+          $ref: "#/components/schemas/StringFilterList"
+        Description:
+          $ref: "#/components/schemas/StringFilterList"
+        RecommendationText:
+          $ref: "#/components/schemas/StringFilterList"
+        SourceUrl:
+          $ref: "#/components/schemas/StringFilterList"
+        ProductFields:
+          $ref: "#/components/schemas/MapFilterList"
+        ProductName:
+          $ref: "#/components/schemas/StringFilterList"
+        CompanyName:
+          $ref: "#/components/schemas/StringFilterList"
+        UserDefinedFields:
+          $ref: "#/components/schemas/MapFilterList"
+        MalwareName:
+          $ref: "#/components/schemas/StringFilterList"
+        MalwareType:
+          $ref: "#/components/schemas/StringFilterList"
+        MalwarePath:
+          $ref: "#/components/schemas/StringFilterList"
+        MalwareState:
+          $ref: "#/components/schemas/StringFilterList"
+        NetworkDirection:
+          $ref: "#/components/schemas/StringFilterList"
+        NetworkProtocol:
+          $ref: "#/components/schemas/StringFilterList"
+        NetworkSourceIpV4:
+          $ref: "#/components/schemas/IpFilterList"
+        NetworkSourceIpV6:
+          $ref: "#/components/schemas/IpFilterList"
+        NetworkSourcePort:
+          $ref: "#/components/schemas/NumberFilterList"
+        NetworkSourceDomain:
+          $ref: "#/components/schemas/StringFilterList"
+        NetworkSourceMac:
+          $ref: "#/components/schemas/StringFilterList"
+        NetworkDestinationIpV4:
+          $ref: "#/components/schemas/IpFilterList"
+        NetworkDestinationIpV6:
+          $ref: "#/components/schemas/IpFilterList"
+        NetworkDestinationPort:
+          $ref: "#/components/schemas/NumberFilterList"
+        NetworkDestinationDomain:
+          $ref: "#/components/schemas/StringFilterList"
+        ProcessName:
+          $ref: "#/components/schemas/StringFilterList"
+        ProcessPath:
+          $ref: "#/components/schemas/StringFilterList"
+        ProcessPid:
+          $ref: "#/components/schemas/NumberFilterList"
+        ProcessParentPid:
+          $ref: "#/components/schemas/NumberFilterList"
+        ProcessLaunchedAt:
+          $ref: "#/components/schemas/DateFilterList"
+        ProcessTerminatedAt:
+          $ref: "#/components/schemas/DateFilterList"
+        ThreatIntelIndicatorType:
+          $ref: "#/components/schemas/StringFilterList"
+        ThreatIntelIndicatorValue:
+          $ref: "#/components/schemas/StringFilterList"
+        ThreatIntelIndicatorCategory:
+          $ref: "#/components/schemas/StringFilterList"
+        ThreatIntelIndicatorLastObservedAt:
+          $ref: "#/components/schemas/DateFilterList"
+        ThreatIntelIndicatorSource:
+          $ref: "#/components/schemas/StringFilterList"
+        ThreatIntelIndicatorSourceUrl:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceType:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceId:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourcePartition:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceRegion:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceTags:
+          $ref: "#/components/schemas/MapFilterList"
+        ResourceAwsEc2InstanceType:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceAwsEc2InstanceImageId:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceAwsEc2InstanceIpV4Addresses:
+          $ref: "#/components/schemas/IpFilterList"
+        ResourceAwsEc2InstanceIpV6Addresses:
+          $ref: "#/components/schemas/IpFilterList"
+        ResourceAwsEc2InstanceKeyName:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceAwsEc2InstanceIamInstanceProfileArn:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceAwsEc2InstanceVpcId:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceAwsEc2InstanceSubnetId:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceAwsEc2InstanceLaunchedAt:
+          $ref: "#/components/schemas/DateFilterList"
+        ResourceAwsS3BucketOwnerId:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceAwsS3BucketOwnerName:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceAwsIamAccessKeyUserName:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceAwsIamAccessKeyStatus:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceAwsIamAccessKeyCreatedAt:
+          $ref: "#/components/schemas/DateFilterList"
+        ResourceContainerName:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceContainerImageId:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceContainerImageName:
+          $ref: "#/components/schemas/StringFilterList"
+        ResourceContainerLaunchedAt:
+          $ref: "#/components/schemas/DateFilterList"
+        ResourceDetailsOther:
+          $ref: "#/components/schemas/MapFilterList"
+        ComplianceStatus:
+          $ref: "#/components/schemas/StringFilterList"
+        VerificationState:
+          $ref: "#/components/schemas/StringFilterList"
+        WorkflowState:
+          $ref: "#/components/schemas/StringFilterList"
+        RecordState:
+          $ref: "#/components/schemas/StringFilterList"
+        RelatedFindingsProductArn:
+          $ref: "#/components/schemas/StringFilterList"
+        RelatedFindingsId:
+          $ref: "#/components/schemas/StringFilterList"
+        NoteText:
+          $ref: "#/components/schemas/StringFilterList"
+        NoteUpdatedAt:
+          $ref: "#/components/schemas/DateFilterList"
+        NoteUpdatedBy:
+          $ref: "#/components/schemas/StringFilterList"
+        Keyword:
+          $ref: "#/components/schemas/KeywordFilterList"
+      description: "A collection of attributes that are applied to all active Security
+        Hub-aggregated findings and that result in a subset of findings that are
+        included in this insight. "
+    AwsSecurityFindingList:
+      type: array
+      items:
+        $ref: "#/components/schemas/AwsSecurityFinding"
+    StandardsSubscriptionArns:
+      type: array
+      items:
+        $ref: "#/components/schemas/NonEmptyString"
+      minItems: 1
+      maxItems: 25
+    BatchDisableStandardsRequest:
+      type: object
+      required:
+        - StandardsSubscriptionArns
+      properties:
+        StandardsSubscriptionArns:
+          $ref: "#/components/schemas/StandardsSubscriptionArns"
+    StandardsSubscriptions:
+      type: array
+      items:
+        $ref: "#/components/schemas/StandardsSubscription"
+    StandardsSubscriptionRequests:
+      type: array
+      items:
+        $ref: "#/components/schemas/StandardsSubscriptionRequest"
+      minItems: 1
+      maxItems: 25
+    BatchEnableStandardsRequest:
+      type: object
+      required:
+        - StandardsSubscriptionRequests
+      properties:
+        StandardsSubscriptionRequests:
+          $ref: "#/components/schemas/StandardsSubscriptionRequests"
+    BatchImportFindingsRequest:
+      type: object
+      required:
+        - Findings
+      properties:
+        Findings:
+          $ref: "#/components/schemas/AwsSecurityFindingList"
+    ImportFindingsErrorList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ImportFindingsError"
+    Boolean:
+      type: boolean
+    CategoryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/NonEmptyString"
+    ComplianceStatus:
+      type: string
+      enum:
+        - PASSED
+        - WARNING
+        - FAILED
+        - NOT_AVAILABLE
+    ContainerDetails:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/NonEmptyString"
+        ImageId:
+          $ref: "#/components/schemas/NonEmptyString"
+        ImageName:
+          $ref: "#/components/schemas/NonEmptyString"
+        LaunchedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: Container details related to a finding.
+    CreateActionTargetRequest:
+      type: object
+      required:
+        - Name
+        - Description
+        - Id
+      properties:
+        Name:
+          $ref: "#/components/schemas/NonEmptyString"
+        Description:
+          $ref: "#/components/schemas/NonEmptyString"
+        Id:
+          $ref: "#/components/schemas/NonEmptyString"
+    CreateInsightRequest:
+      type: object
+      required:
+        - Name
+        - Filters
+        - GroupByAttribute
+      properties:
+        Name:
+          $ref: "#/components/schemas/NonEmptyString"
+        Filters:
+          $ref: "#/components/schemas/AwsSecurityFindingFilters"
+        GroupByAttribute:
+          $ref: "#/components/schemas/NonEmptyString"
+    CreateMembersRequest:
+      type: object
+      properties:
+        AccountDetails:
+          $ref: "#/components/schemas/AccountDetailsList"
+    ResultList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Result"
+    DateRange:
+      type: object
+      properties:
+        Value:
+          $ref: "#/components/schemas/Integer"
+        Unit:
+          $ref: "#/components/schemas/DateRangeUnit"
+      description: A date range for the date filter.
+    DateFilter:
+      type: object
+      properties:
+        Start:
+          $ref: "#/components/schemas/NonEmptyString"
+        End:
+          $ref: "#/components/schemas/NonEmptyString"
+        DateRange:
+          $ref: "#/components/schemas/DateRange"
+      description: A date filter for querying findings.
+    DateRangeUnit:
+      type: string
+      enum:
+        - DAYS
+    DeclineInvitationsRequest:
+      type: object
+      required:
+        - AccountIds
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIdList"
+    DeleteActionTargetRequest:
+      type: object
+      properties: {}
+    DeleteInsightRequest:
+      type: object
+      properties: {}
+    DeleteInvitationsRequest:
+      type: object
+      required:
+        - AccountIds
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIdList"
+    DeleteMembersRequest:
+      type: object
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIdList"
+    NextToken:
+      type: string
+    MaxResults:
+      type: integer
+      minimum: 1
+      maximum: 100
+    DescribeActionTargetsRequest:
+      type: object
+      properties:
+        ActionTargetArns:
+          $ref: "#/components/schemas/ArnList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+    DescribeHubRequest:
+      type: object
+      properties: {}
+    DescribeProductsRequest:
+      type: object
+      properties: {}
+    ProductsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Product"
+    DisableImportFindingsForProductRequest:
+      type: object
+      properties: {}
+    DisableSecurityHubRequest:
+      type: object
+      properties: {}
+    DisassociateFromMasterAccountRequest:
+      type: object
+      properties: {}
+    DisassociateMembersRequest:
+      type: object
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIdList"
+    Double:
+      type: number
+      format: double
+    EnableImportFindingsForProductRequest:
+      type: object
+      required:
+        - ProductArn
+      properties:
+        ProductArn:
+          $ref: "#/components/schemas/NonEmptyString"
+    TagMap:
+      type: object
+      minProperties: 1
+      maxProperties: 50
+      additionalProperties:
+        $ref: "#/components/schemas/TagValue"
+    EnableSecurityHubRequest:
+      type: object
+      properties:
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    GetEnabledStandardsRequest:
+      type: object
+      properties:
+        StandardsSubscriptionArns:
+          $ref: "#/components/schemas/StandardsSubscriptionArns"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+    SortCriteria:
+      type: array
+      items:
+        $ref: "#/components/schemas/SortCriterion"
+    GetFindingsRequest:
+      type: object
+      properties:
+        Filters:
+          $ref: "#/components/schemas/AwsSecurityFindingFilters"
+        SortCriteria:
+          $ref: "#/components/schemas/SortCriteria"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+    GetInsightResultsRequest:
+      type: object
+      properties: {}
+    InsightResults:
+      type: object
+      required:
+        - InsightArn
+        - GroupByAttribute
+        - ResultValues
+      properties:
+        InsightArn:
+          $ref: "#/components/schemas/NonEmptyString"
+        GroupByAttribute:
+          $ref: "#/components/schemas/NonEmptyString"
+        ResultValues:
+          $ref: "#/components/schemas/InsightResultValueList"
+      description: The insight results returned by the <code>GetInsightResults</code>
+        operation.
+    GetInsightsRequest:
+      type: object
+      properties:
+        InsightArns:
+          $ref: "#/components/schemas/ArnList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+    InsightList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Insight"
+    GetInvitationsCountRequest:
+      type: object
+      properties: {}
+    GetMasterAccountRequest:
+      type: object
+      properties: {}
+    Invitation:
+      type: object
+      properties:
+        AccountId:
+          $ref: "#/components/schemas/AccountId"
+        InvitationId:
+          $ref: "#/components/schemas/NonEmptyString"
+        InvitedAt:
+          $ref: "#/components/schemas/Timestamp"
+        MemberStatus:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: Details about an invitation.
+    GetMembersRequest:
+      type: object
+      required:
+        - AccountIds
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIdList"
+    MemberList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Member"
+    ImportFindingsError:
+      type: object
+      required:
+        - Id
+        - ErrorCode
+        - ErrorMessage
+      properties:
+        Id:
+          $ref: "#/components/schemas/NonEmptyString"
+        ErrorCode:
+          $ref: "#/components/schemas/NonEmptyString"
+        ErrorMessage:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: Includes details of the list of the findings that can't be imported.
+    Insight:
+      type: object
+      required:
+        - InsightArn
+        - Name
+        - Filters
+        - GroupByAttribute
+      properties:
+        InsightArn:
+          $ref: "#/components/schemas/NonEmptyString"
+        Name:
+          $ref: "#/components/schemas/NonEmptyString"
+        Filters:
+          $ref: "#/components/schemas/AwsSecurityFindingFilters"
+        GroupByAttribute:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: Contains information about a Security Hub insight.
+    InsightResultValue:
+      type: object
+      required:
+        - GroupByAttributeValue
+        - Count
+      properties:
+        GroupByAttributeValue:
+          $ref: "#/components/schemas/NonEmptyString"
+        Count:
+          $ref: "#/components/schemas/Integer"
+      description: The insight result values returned by the <code>GetInsightResults</code>
+        operation.
+    InsightResultValueList:
+      type: array
+      items:
+        $ref: "#/components/schemas/InsightResultValue"
+    Timestamp:
+      type: string
+      format: date-time
+    InvitationList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Invitation"
+    InviteMembersRequest:
+      type: object
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIdList"
+    IpFilter:
+      type: object
+      properties:
+        Cidr:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: The IP filter for querying findings.
+    KeywordFilter:
+      type: object
+      properties:
+        Value:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: A keyword filter for querying findings.
+    ListEnabledProductsForImportRequest:
+      type: object
+      properties: {}
+    ProductSubscriptionArnList:
+      type: array
+      items:
+        $ref: "#/components/schemas/NonEmptyString"
+    ListInvitationsRequest:
+      type: object
+      properties: {}
+    ListMembersRequest:
+      type: object
+      properties: {}
+    ResourceArn:
+      type: string
+      pattern: ^arn:aws:securityhub:.*
+    ListTagsForResourceRequest:
+      type: object
+      properties: {}
+    MalwareType:
+      type: string
+      enum:
+        - ADWARE
+        - BLENDED_THREAT
+        - BOTNET_AGENT
+        - COIN_MINER
+        - EXPLOIT_KIT
+        - KEYLOGGER
+        - MACRO
+        - POTENTIALLY_UNWANTED
+        - SPYWARE
+        - RANSOMWARE
+        - REMOTE_ACCESS
+        - ROOTKIT
+        - TROJAN
+        - VIRUS
+        - WORM
+    MalwareState:
+      type: string
+      enum:
+        - OBSERVED
+        - REMOVAL_FAILED
+        - REMOVED
+    Malware:
+      type: object
+      required:
+        - Name
+      properties:
+        Name:
+          $ref: "#/components/schemas/NonEmptyString"
+        Type:
+          $ref: "#/components/schemas/MalwareType"
+        Path:
+          $ref: "#/components/schemas/NonEmptyString"
+        State:
+          $ref: "#/components/schemas/MalwareState"
+      description: A list of malware related to a finding.
+    MapFilterComparison:
+      type: string
+      enum:
+        - EQUALS
+    MapFilter:
+      type: object
+      properties:
+        Key:
+          $ref: "#/components/schemas/NonEmptyString"
+        Value:
+          $ref: "#/components/schemas/NonEmptyString"
+        Comparison:
+          $ref: "#/components/schemas/MapFilterComparison"
+      description: The map filter for querying findings.
+    Member:
+      type: object
+      properties:
+        AccountId:
+          $ref: "#/components/schemas/AccountId"
+        Email:
+          $ref: "#/components/schemas/NonEmptyString"
+        MasterId:
+          $ref: "#/components/schemas/NonEmptyString"
+        MemberStatus:
+          $ref: "#/components/schemas/NonEmptyString"
+        InvitedAt:
+          $ref: "#/components/schemas/Timestamp"
+        UpdatedAt:
+          $ref: "#/components/schemas/Timestamp"
+      description: The details about a member account.
+    NetworkDirection:
+      type: string
+      enum:
+        - IN
+        - OUT
+    NoteUpdate:
+      type: object
+      required:
+        - Text
+        - UpdatedBy
+      properties:
+        Text:
+          $ref: "#/components/schemas/NonEmptyString"
+        UpdatedBy:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: The updated note.
+    NumberFilter:
+      type: object
+      properties:
+        Gte:
+          $ref: "#/components/schemas/Double"
+        Lte:
+          $ref: "#/components/schemas/Double"
+        Eq:
+          $ref: "#/components/schemas/Double"
+      description: A number filter for querying findings.
+    Partition:
+      type: string
+      enum:
+        - aws
+        - aws-cn
+        - aws-us-gov
+    Product:
+      type: object
+      required:
+        - ProductArn
+      properties:
+        ProductArn:
+          $ref: "#/components/schemas/NonEmptyString"
+        ProductName:
+          $ref: "#/components/schemas/NonEmptyString"
+        CompanyName:
+          $ref: "#/components/schemas/NonEmptyString"
+        Description:
+          $ref: "#/components/schemas/NonEmptyString"
+        Categories:
+          $ref: "#/components/schemas/CategoryList"
+        MarketplaceUrl:
+          $ref: "#/components/schemas/NonEmptyString"
+        ActivationUrl:
+          $ref: "#/components/schemas/NonEmptyString"
+        ProductSubscriptionResourcePolicy:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: Contains details about a product.
+    Recommendation:
+      type: object
+      properties:
+        Text:
+          $ref: "#/components/schemas/NonEmptyString"
+        Url:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: A recommendation on how to remediate the issue identified in a finding.
+    RelatedFinding:
+      type: object
+      required:
+        - ProductArn
+        - Id
+      properties:
+        ProductArn:
+          $ref: "#/components/schemas/NonEmptyString"
+        Id:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: Details about a related finding.
+    ResourceDetails:
+      type: object
+      properties:
+        AwsEc2Instance:
+          $ref: "#/components/schemas/AwsEc2InstanceDetails"
+        AwsS3Bucket:
+          $ref: "#/components/schemas/AwsS3BucketDetails"
+        AwsIamAccessKey:
+          $ref: "#/components/schemas/AwsIamAccessKeyDetails"
+        Container:
+          $ref: "#/components/schemas/ContainerDetails"
+        Other:
+          $ref: "#/components/schemas/FieldMap"
+      description: Additional details about a resource related to a finding.
+    Resource:
+      type: object
+      required:
+        - Type
+        - Id
+      properties:
+        Type:
+          $ref: "#/components/schemas/NonEmptyString"
+        Id:
+          $ref: "#/components/schemas/NonEmptyString"
+        Partition:
+          $ref: "#/components/schemas/Partition"
+        Region:
+          $ref: "#/components/schemas/NonEmptyString"
+        Tags:
+          $ref: "#/components/schemas/FieldMap"
+        Details:
+          $ref: "#/components/schemas/ResourceDetails"
+      description: A resource related to a finding.
+    Result:
+      type: object
+      properties:
+        AccountId:
+          $ref: "#/components/schemas/AccountId"
+        ProcessingResult:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: Details about the account that wasn't processed.
+    SortOrder:
+      type: string
+      enum:
+        - asc
+        - desc
+    StandardsInputParameterMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/NonEmptyString"
+    StandardsStatus:
+      type: string
+      enum:
+        - PENDING
+        - READY
+        - FAILED
+        - DELETING
+        - INCOMPLETE
+    StandardsSubscription:
+      type: object
+      required:
+        - StandardsSubscriptionArn
+        - StandardsArn
+        - StandardsInput
+        - StandardsStatus
+      properties:
+        StandardsSubscriptionArn:
+          $ref: "#/components/schemas/NonEmptyString"
+        StandardsArn:
+          $ref: "#/components/schemas/NonEmptyString"
+        StandardsInput:
+          $ref: "#/components/schemas/StandardsInputParameterMap"
+        StandardsStatus:
+          $ref: "#/components/schemas/StandardsStatus"
+      description: A resource that represents your subscription to a supported standard.
+    StringFilterComparison:
+      type: string
+      enum:
+        - EQUALS
+        - PREFIX
+    StringFilter:
+      type: object
+      properties:
+        Value:
+          $ref: "#/components/schemas/NonEmptyString"
+        Comparison:
+          $ref: "#/components/schemas/StringFilterComparison"
+      description: A string filter for querying findings.
+    TagKeyList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TagKey"
+      minItems: 1
+      maxItems: 50
+    TagResourceRequest:
+      type: object
+      required:
+        - Tags
+      properties:
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    ThreatIntelIndicatorType:
+      type: string
+      enum:
+        - DOMAIN
+        - EMAIL_ADDRESS
+        - HASH_MD5
+        - HASH_SHA1
+        - HASH_SHA256
+        - HASH_SHA512
+        - IPV4_ADDRESS
+        - IPV6_ADDRESS
+        - MUTEX
+        - PROCESS
+        - URL
+    ThreatIntelIndicatorCategory:
+      type: string
+      enum:
+        - BACKDOOR
+        - CARD_STEALER
+        - COMMAND_AND_CONTROL
+        - DROP_SITE
+        - EXPLOIT_SITE
+        - KEYLOGGER
+    ThreatIntelIndicator:
+      type: object
+      properties:
+        Type:
+          $ref: "#/components/schemas/ThreatIntelIndicatorType"
+        Value:
+          $ref: "#/components/schemas/NonEmptyString"
+        Category:
+          $ref: "#/components/schemas/ThreatIntelIndicatorCategory"
+        LastObservedAt:
+          $ref: "#/components/schemas/NonEmptyString"
+        Source:
+          $ref: "#/components/schemas/NonEmptyString"
+        SourceUrl:
+          $ref: "#/components/schemas/NonEmptyString"
+      description: Details about the threat intel related to a finding.
+    UntagResourceRequest:
+      type: object
+      properties: {}
+    UpdateActionTargetRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/NonEmptyString"
+        Description:
+          $ref: "#/components/schemas/NonEmptyString"
+    UpdateFindingsRequest:
+      type: object
+      required:
+        - Filters
+      properties:
+        Filters:
+          $ref: "#/components/schemas/AwsSecurityFindingFilters"
+        Note:
+          $ref: "#/components/schemas/NoteUpdate"
+        RecordState:
+          $ref: "#/components/schemas/RecordState"
+    UpdateInsightRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/NonEmptyString"
+        Filters:
+          $ref: "#/components/schemas/AwsSecurityFindingFilters"
+        GroupByAttribute:
+          $ref: "#/components/schemas/NonEmptyString"

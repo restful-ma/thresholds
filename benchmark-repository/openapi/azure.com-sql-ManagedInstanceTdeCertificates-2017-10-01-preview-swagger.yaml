@@ -1,0 +1,213 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2017-10-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/ManagedInstanceTdeCertificates.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: sql-ManagedInstanceTdeCertificates
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/tdeCertificates":
+    post:
+      description: Creates a TDE certificate for a given server.
+      operationId: ManagedInstanceTdeCertificates_Create
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ManagedInstanceNameParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TdeCertificate"
+        description: The requested TDE certificate to be created or updated.
+        required: true
+      responses:
+        "200":
+          description: Successfully created the TDE certificate.
+        "202":
+          description: Accepted
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 MissingPrivateBlob - The private blob is missing.
+
+             * 400 InvalidPrivateBlobOrPassword - Invalid private blob or password specified.
+
+             * 400 InvalidResourceRequestBody - The resource or resource properties in the request body is empty or invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - ManagedInstanceTdeCertificates
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Upload a TDE certificate:
+          value: 2017-10-01-preview
+    BlobAuditingPolicyNameParameter:
+      description: The name of the blob auditing policy.
+      in: path
+      name: blobAuditingPolicyName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - default
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ManagedInstanceNameParameter:
+      description: The name of the managed instance.
+      in: path
+      name: managedInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Upload a TDE certificate:
+          value: testtdecert
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Upload a TDE certificate:
+          value: testtdecert
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineContainerNameParameter:
+      description: The name of the SqlVirtualMachineContainer.
+      in: path
+      name: sqlVirtualMachineContainerName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineInstanceNameParameter:
+      description: The name of the SqlVirtualMachineInstance.
+      in: path
+      name: sqlVirtualMachineInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Upload a TDE certificate:
+          value: 00000000-0000-0000-0000-000000000001
+    VirtualClusterNameParameter:
+      description: The name of the virtual cluster.
+      in: path
+      name: virtualClusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    TdeCertificate:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: A TDE certificate that can be uploaded into a server.
+      properties:
+        properties:
+          $ref: "#/components/schemas/TdeCertificateProperties"
+      type: object
+    TdeCertificateProperties:
+      description: Properties of a TDE certificate.
+      properties:
+        certPassword:
+          description: The certificate password.
+          type: string
+          x-ms-mutability:
+            - create
+            - update
+        privateBlob:
+          description: The base64 encoded certificate private blob.
+          type: string
+          x-ms-mutability:
+            - create
+            - update
+      required:
+        - privateBlob
+      type: object

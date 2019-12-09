@@ -1,0 +1,1533 @@
+openapi: 3.0.0
+info:
+  description: Metadata API definition for the Azure Container Registry runtime
+  title: Azure Container Registry
+  version: 2019-07-15-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/containerregistry/data-plane/Microsoft.ContainerRegistry/preview/2019-07-15/containerregistry.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: containerregistry
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - registry_auth: []
+    registry_oauth2: []
+tags:
+  - description: Root API
+    name: v2
+  - description: Everything about manifests
+    name: Manifest
+  - description: Everything about tags
+    name: Tag
+  - description: Everything about layers
+    name: Layer
+  - description: Everything about repository
+    name: Repository
+  - description: ACR APIs related to repositories
+    name: AcrRepository
+  - description: ACR APIs related to manifests
+    name: AcrManifest
+  - description: ACR APIs related to tags
+    name: AcrTag
+paths:
+  /acr/v1/_catalog:
+    get:
+      description: List repositories
+      operationId: GetAcrRepositories
+      parameters:
+        - $ref: "#/components/parameters/QueryLast"
+        - $ref: "#/components/parameters/QueryNum"
+      responses:
+        "200":
+          description: Returns a list of repositories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Repositories"
+              examples:
+                Get repositories in a registry:
+                  $ref: "#/components/examples/Get_repositories_in_a_registry"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - AcrRepository
+  "/acr/v1/{name}":
+    delete:
+      description: Delete the repository identified by `name`
+      operationId: DeleteAcrRepository
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+      responses:
+        "202":
+          description: The repository is deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedRepository"
+              examples:
+                Delete a repository:
+                  $ref: "#/components/examples/Delete_a_repository"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - AcrRepository
+    get:
+      description: Get repository attributes
+      operationId: GetAcrRepositoryAttributes
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+      responses:
+        "200":
+          description: Returns a list of attributes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RepositoryAttributes"
+              examples:
+                Get details of repository:
+                  $ref: "#/components/examples/Get_details_of_repository"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - AcrRepository
+        - AcrMetadata
+    patch:
+      description: Update the attribute identified by `name` where `reference` is the name
+        of the repository.
+      operationId: UpdateAcrRepositoryAttributes
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeableAttributes"
+        description: Repository attribute value
+      responses:
+        "200":
+          description: The attributes is updated
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - AcrRepository
+        - AcrMetadata
+  "/acr/v1/{name}/_manifests":
+    get:
+      description: List manifests of a repository
+      operationId: GetAcrManifests
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+        - $ref: "#/components/parameters/QueryLast"
+        - $ref: "#/components/parameters/QueryNum"
+        - $ref: "#/components/parameters/QueryOrderBy"
+      responses:
+        "200":
+          description: Returns a list of manifests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrManifests"
+              examples:
+                Get details of repository:
+                  $ref: "#/components/examples/Get_details_of_repository"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - AcrManifest
+        - AcrMetadata
+  "/acr/v1/{name}/_manifests/{reference}":
+    get:
+      description: Get manifest attributes
+      operationId: GetAcrManifestAttributes
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+        - $ref: "#/components/parameters/ImageReference"
+      responses:
+        "200":
+          description: List of attributes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrManifestAttributes"
+              examples:
+                Get manifest attributes:
+                  $ref: "#/components/examples/Get_manifest_attributes"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - AcrManifest
+        - AcrMetadata
+    patch:
+      description: Update attributes of a manifest
+      operationId: UpdateAcrManifestAttributes
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+        - $ref: "#/components/parameters/ImageReference"
+      requestBody:
+        $ref: "#/components/requestBodies/ChangeableAttributes"
+      responses:
+        "200":
+          description: The attributes are updated
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - AcrManifest
+        - AcrMetadata
+  "/acr/v1/{name}/_tags":
+    get:
+      description: List tags of a repository
+      operationId: GetAcrTags
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+        - $ref: "#/components/parameters/QueryLast"
+        - $ref: "#/components/parameters/QueryNum"
+        - $ref: "#/components/parameters/QueryOrderBy"
+        - $ref: "#/components/parameters/QueryDigest"
+      responses:
+        "200":
+          description: Tag details of a repository
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrRepositoryTags"
+              examples:
+                Get tags of a repository:
+                  $ref: "#/components/examples/Get_tags_of_a_repository"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - AcrTag
+        - AcrMetadata
+  "/acr/v1/{name}/_tags/{reference}":
+    delete:
+      description: Delete tag
+      operationId: DeleteAcrTag
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+        - $ref: "#/components/parameters/ManifestReference"
+      responses:
+        "202":
+          description: The tag is deleted
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - AcrTag
+        - AcrMetadata
+    get:
+      description: Get tag attributes by tag
+      operationId: GetAcrTagAttributes
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+        - $ref: "#/components/parameters/ManifestReference"
+      responses:
+        "200":
+          description: Tag attributes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrTagAttributes"
+              examples:
+                Get tag attributes:
+                  $ref: "#/components/examples/Get_tag_attributes"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - AcrTag
+        - AcrMetadata
+    patch:
+      description: Update tag attributes
+      operationId: UpdateAcrTagAttributes
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+        - $ref: "#/components/parameters/ManifestReference"
+      requestBody:
+        $ref: "#/components/requestBodies/ChangeableAttributes"
+      responses:
+        "200":
+          description: The attributes are updated
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - AcrTag
+        - AcrMetadata
+  /oauth2/exchange:
+    post:
+      description: Exchange AAD tokens for an ACR refresh Token
+      operationId: GetAcrRefreshTokenFromExchange
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  description: Can take a value of access_token_refresh_token, or
+                    access_token, or refresh_token
+                  type: string
+                  enum:
+                    - access_token_refresh_token
+                    - access_token
+                    - refresh_token
+                  x-ms-parameter-location: method
+                service:
+                  description: Indicates the name of your Azure container registry.
+                  type: string
+                  x-ms-parameter-location: method
+                tenant:
+                  description: AAD tenant associated to the AAD credentials.
+                  type: string
+                  x-ms-parameter-location: method
+                refresh_token:
+                  description: AAD refresh token, mandatory when grant_type is
+                    access_token_refresh_token or refresh_token
+                  type: string
+                  x-ms-parameter-location: method
+                access_token:
+                  description: AAD access token, mandatory when grant_type is
+                    access_token_refresh_token or access_token.
+                  type: string
+                  x-ms-parameter-location: method
+              required:
+                - grant_type
+                - service
+      responses:
+        "200":
+          description: Refresh token acquired
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RefreshToken"
+              examples:
+                Exchange AAD Token for ACR Refresh:
+                  $ref: "#/components/examples/Exchange_AAD_Token_for_ACR_Refresh"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      security: []
+      tags:
+        - AcrToken
+        - RefreshToken
+  /oauth2/token:
+    get:
+      description: Exchange Username, Password and Scope an ACR Access Token
+      operationId: GetAcrAccessTokenFromLogin
+      parameters:
+        - description: Indicates the name of your Azure container registry.
+          in: query
+          name: service
+          required: true
+          schema:
+            type: string
+          examples:
+            Get Access Token with username and password:
+              value: someregistry.azurecr.io
+        - description: Expected to be a valid scope, and can be specified more than once
+            for multiple scope requests. You can obtain this from the
+            Www-Authenticate response header from the challenge.
+          in: query
+          name: scope
+          required: true
+          schema:
+            type: string
+          examples:
+            Get Access Token with username and password:
+              value: registry:catalog:*
+      responses:
+        "200":
+          description: Access token acquired
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessToken"
+              examples:
+                Get Access Token with username and password:
+                  $ref: "#/components/examples/Get_Access_Token_with_username_and_p\
+                    assword"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      security:
+        - registry_auth: []
+      tags:
+        - AcrToken
+        - AccessToken
+        - userLogin
+    post:
+      description: Exchange ACR Refresh token for an ACR Access Token
+      operationId: GetAcrAccessToken
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  description: Grant type is expected to be refresh_token
+                  type: string
+                  enum:
+                    - refresh_token
+                service:
+                  description: Indicates the name of your Azure container registry.
+                  type: string
+                  x-ms-parameter-location: method
+                scope:
+                  description: Which is expected to be a valid scope, and can be specified
+                    more than once for multiple scope requests. You obtained
+                    this from the Www-Authenticate response header from the
+                    challenge.
+                  type: string
+                refresh_token:
+                  description: Must be a valid ACR refresh token
+                  type: string
+              required:
+                - grant_type
+                - service
+                - scope
+                - refresh_token
+      responses:
+        "200":
+          description: Access token acquired
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessToken"
+              examples:
+                Get Access Token with Refresh Token:
+                  $ref: "#/components/examples/Get_Access_Token_with_Refresh_Token"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      security: []
+      tags:
+        - AcrToken
+        - AccessToken
+  /v2/:
+    get:
+      description: Tells whether this Docker Registry instance supports Docker Registry
+        HTTP API v2
+      operationId: GetDockerRegistryV2Support
+      responses:
+        "200":
+          description: Successful response. API v2 supported
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - v2
+  /v2/_catalog:
+    get:
+      description: List repositories
+      operationId: GetRepositories
+      parameters:
+        - $ref: "#/components/parameters/QueryLast"
+        - $ref: "#/components/parameters/QueryNum"
+      responses:
+        "200":
+          description: Returns a list of repositories
+          headers:
+            Link:
+              description: next paginated result
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Repositories"
+              examples:
+                Get repositories in a registry:
+                  $ref: "#/components/examples/Get_repositories_in_a_registry"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - Repository
+  "/v2/{name}/manifests/{reference}":
+    delete:
+      description: Delete the manifest identified by `name` and `reference`. Note that a
+        manifest can _only_ be deleted by `digest`.
+      operationId: DeleteManifest
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+        - $ref: "#/components/parameters/ImageReference"
+      responses:
+        "202":
+          description: The manifest has been deleted
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - Manifest
+    get:
+      description: Pulls the image manifest file associated with the specified name and
+        reference. Reference may be a tag or a digest
+      operationId: GetManifest
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+        - $ref: "#/components/parameters/ImageReference"
+        - description: Accept header string delimited by comma. For example,
+            application/vnd.docker.distribution.manifest.v2+json
+          in: header
+          name: accept
+          required: false
+          schema:
+            type: string
+          examples:
+            Get manifest:
+              value: application/vnd.docker.distribution.manifest.v2+json
+      responses:
+        "200":
+          description: Returns the requested manifest file
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Manifest"
+              examples:
+                Get manifest:
+                  $ref: "#/components/examples/Get_manifest"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - Manifest
+    put:
+      description: Put the manifest identified by `name` and `reference` where `reference`
+        can be a tag or digest.
+      operationId: CreateManifest
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+        - $ref: "#/components/parameters/ImageReference"
+      requestBody:
+        content:
+          application/vnd.docker.distribution.manifest.v2+json:
+            schema:
+              $ref: "#/components/schemas/Manifest"
+        description: Manifest body, can take v1 or v2 values depending on accept header
+        required: true
+        x-ms-parameter-location: method
+      responses:
+        "201":
+          description: The manifest is updated
+          headers:
+            Content-Length:
+              description: The canonical location url of the uploaded manifest.
+              schema:
+                type: integer
+              example: 0
+            Docker-Content-Digest:
+              description: Identifies the docker upload uuid for the current request.
+              schema:
+                type: string
+              example: sha256:15685c48490175b7dde62e6bfcfb54d9420c6495ea6404776e2facca3da93cd8
+            Location:
+              description: The canonical location url of the uploaded manifest.
+              schema:
+                type: string
+              example: /v2/hello-world/manifests/sha256:15685c48490175b7dde62e6bfcfb54d9420c6495ea6404776e2facca3da93cd8
+          content:
+            application/json:
+              schema: {}
+              examples:
+                Put manifest:
+                  $ref: "#/components/examples/Put_manifest"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - Manifest
+      x-ms-long-running-operation: false
+  "/v2/{name}/tags/list":
+    get:
+      description: Fetch the tags under the repository identified by name
+      operationId: GetTagList
+      parameters:
+        - $ref: "#/components/parameters/ImageName"
+      responses:
+        "200":
+          description: Gives a list of tags for the names repository.
+          headers:
+            Link:
+              description: next paginated result
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RepositoryTags"
+              examples:
+                List tags:
+                  $ref: "#/components/examples/List_tags"
+        default:
+          description: ACR error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcrErrors"
+      tags:
+        - Tag
+servers:
+  - url: https://azure.local
+  - url: "{url}"
+    variables:
+      url:
+        description: Registry login URL
+        x-ms-client-name: loginUri
+        x-ms-parameter-location: client
+        x-ms-skip-url-encoding: true
+        default: ""
+components:
+  examples:
+    Get_repositories_in_a_registry:
+      value:
+        repositories:
+          - production/alpine
+          - testing/alpine
+    Delete_a_repository:
+      value:
+        manifestsDeleted:
+          - sha256:e31831d63f77a0a6d74ef5b16df619a50808dac842190d07ae24e8b520d159fa
+        tagsDeleted:
+          - 4.7.2-20180814-windowsservercore-1709
+    Get_details_of_repository:
+      value:
+        imageName: nanoserver
+        manifests:
+          - architecture: amd64
+            changeableAttributes:
+              deleteEnabled: true
+              listEnabled: true
+              readEnabled: true
+              writeEnabled: true
+            configMediaType: application/vnd.docker.container.image.v1+json
+            createdTime: 2018-09-06T06:17:20.9983915Z
+            digest: sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086
+            imageSize: 2401606
+            lastUpdateTime: 2018-09-06T06:17:20.9983915Z
+            mediaType: application/vnd.docker.distribution.manifest.v2+json
+            os: windows
+            tags:
+              - 4.7.2-20180905-nanoserver-1803
+          - architecture: amd64
+            changeableAttributes:
+              deleteEnabled: true
+              listEnabled: true
+              readEnabled: true
+              writeEnabled: true
+            configMediaType: application/vnd.docker.container.image.v1+json
+            createdTime: 2018-09-07T16:30:46.5651701Z
+            digest: sha256:7af5cd1dde3e8f5c2c9103860afa4ca871a6075373b6564b0e7b1b47866dab52
+            imageSize: 4135121
+            lastUpdateTime: 2018-09-07T16:30:46.5651701Z
+            mediaType: application/vnd.docker.distribution.manifest.v2+json
+            os: windows
+            tags:
+              - 4.7.2-20180906-nanoserver-1803
+        registry: acrapi.azurecr-test.io
+    Get_manifest_attributes:
+      value:
+        imageName: nanoserver
+        manifest:
+          architecture: amd64
+          changeableAttributes:
+            deleteEnabled: true
+            listEnabled: true
+            readEnabled: true
+            writeEnabled: true
+          configMediaType: application/vnd.docker.container.image.v1+json
+          createdTime: 2018-09-06T06:17:20.9983915Z
+          digest: sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086
+          imageSize: 2401606
+          lastUpdateTime: 2018-09-06T06:17:20.9983915Z
+          mediaType: application/vnd.docker.distribution.manifest.v2+json
+          os: windows
+          tags:
+            - 4.7.2-20180905-nanoserver-1803
+        registry: acrapi.azurecr-test.io
+    Get_tags_of_a_repository:
+      value:
+        imageName: nanoserver
+        registry: acrapi.azurecr-test.io
+        tags:
+          - changeableAttributes:
+              deleteEnabled: true
+              listEnabled: true
+              readEnabled: true
+              writeEnabled: true
+            createdTime: 2018-09-06T06:17:21.0856539Z
+            digest: sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086
+            lastUpdateTime: 2018-09-06T06:17:21.0856539Z
+            name: 4.7.2-20180905-nanoserver-1803
+            signed: false
+          - changeableAttributes:
+              deleteEnabled: true
+              listEnabled: true
+              readEnabled: true
+              writeEnabled: true
+            createdTime: 2018-09-06T16:30:43.3860166Z
+            digest: sha256:7af5cd1dde3e8f5c2c9103860afa4ca871a6075373b6564b0e7b1b47866dab52
+            lastUpdateTime: 2018-09-07T16:30:46.7022734Z
+            name: 4.7.2-20180906-nanoserver-1803
+            signed: false
+    Get_tag_attributes:
+      value:
+        imageName: test/bash
+        registry: acrapi.azurecr-test.io
+        tag:
+          changeableAttributes:
+            deleteEnabled: true
+            listEnabled: true
+            readEnabled: true
+            writeEnabled: false
+          createdTime: 2018-10-05T20:54:24.1286047Z
+          digest: sha256:eabe547f78d4c18c708dd97ec3166cf7464cc651f1cbb67e70d407405b7ad7b6
+          lastUpdateTime: 2018-10-05T20:54:24.1286047Z
+          name: tagName
+          signed: false
+    Exchange_AAD_Token_for_ACR_Refresh:
+      value:
+        refresh_token: eyJ0eXAiOiJKJhbGcigdCI6IkN0ZlFaOExlLTMejlnIiwidGlkIjoiNzbmOTgWItMmQ3Y2QwMTFkYjQ3Ii...
+    Get_Access_Token_with_username_and_password:
+      value:
+        access_token: eyJ0eXAiOiJKJhbGcigdCI6IkN0ZlFaOExlLTMejlnIiwidGlkIjoiNzbmOTgWItMmQ3Y2QwMTFkYjQ3Ii...
+    Get_Access_Token_with_Refresh_Token:
+      value:
+        access_token: eyJ0eXAiOiJKJhbGcigdCI6IkN0ZlFaOExlLTMejlnIiwidGlkIjoiNzbmOTgWItMmQ3Y2QwMTFkYjQ3Ii...
+    Get_manifest:
+      value:
+        config:
+          digest: sha256:691fbc2d44fff48357bba69ab0505b9bf12b2b250a925a84a0b8e8e7eed390b2
+          mediaType: application/vnd.docker.container.image.v1+json
+          size: 5824
+        layers:
+          - digest: sha256:a073c86ecf9e0f29180e80e9638d4c741970695851ea48247276c32c57e40282
+            mediaType: application/vnd.docker.image.rootfs.diff.tar.gzip
+            size: 2014658
+          - digest: sha256:0e28711eb56d78f1e3dfde1807eba529d1346222bcd07d1cb1e436a18a0388bd
+            mediaType: application/vnd.docker.image.rootfs.diff.tar.gzip
+            size: 19778035
+          - digest: sha256:e460dd483fddb555911f7ed188c319fd97542c60e36843dcb1c5d753f733e1fa
+            mediaType: application/vnd.docker.image.rootfs.diff.tar.gzip
+            size: 1074044
+          - digest: sha256:6aa301222093bfb8cf424ccb387f59e2c9510c3a30cca7fbcf8c954f88e6600c
+            mediaType: application/vnd.docker.image.rootfs.diff.tar.gzip
+            size: 5827
+          - digest: sha256:9c5d80083a57d565f684e0155707204d497a5ad965279f92927452f15dae17e6
+            mediaType: application/vnd.docker.image.rootfs.diff.tar.gzip
+            size: 568
+        mediaType: application/vnd.docker.distribution.manifest.v2+json
+        schemaVersion: 2
+    Put_manifest:
+      value: {}
+    List_tags:
+      value:
+        name: nanoserver
+        tags:
+          - 4.7.2-20180905-nanoserver-1803
+          - 4.7.2-20180906-nanoserver-1803
+  parameters:
+    Digest:
+      description: Digest of a desired BLOB
+      in: path
+      name: digest
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ImageName:
+      description: Name of the image (including the namespace)
+      in: path
+      name: name
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Delete a repository:
+          value: nanoserver
+        Get details of repository:
+          value: nanoserver
+        Update repository attributes:
+          value: nanoserver
+        Get manifest attributes:
+          value: nanoserver
+        Update attributes of a manifest:
+          value: nanoserver
+        Get tags of a repository:
+          value: nanoserver
+        Get tag attributes:
+          value: test/bash
+        Delete manifest:
+          value: alpine
+        Get manifest:
+          value: hello-world-dangling
+        Put manifest:
+          value: hello-world
+        List tags:
+          value: nanoserver
+    ImageReference:
+      description: A tag or a digest, pointing to a specific image
+      in: path
+      name: reference
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get manifest attributes:
+          value: sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086
+        Update attributes of a manifest:
+          value: sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086
+        Delete manifest:
+          value: "3.7"
+        Get manifest:
+          value: 20190628-033033z
+        Put manifest:
+          value: a20190628-081044z
+    ManifestReference:
+      description: Tag or digest of the target manifest
+      in: path
+      name: reference
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Update attributes of a manifest:
+          value: 4.7.2-20180905-nanoserver-1803
+        Get tag attributes:
+          value: sha256:eabe547f78d4c18c708dd97ec3166cf7464cc651f1cbb67e7afas407405b7ad7b6
+    QueryDigest:
+      description: filter by digest
+      in: query
+      name: digest
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    QueryLast:
+      description: Query parameter for the last item in previous query. Result set will
+        include values lexically after last.
+      in: query
+      name: last
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    QueryNum:
+      description: query parameter for max number of items
+      in: query
+      name: n
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: integer
+    QueryOrderBy:
+      description: orderby query parameter
+      in: query
+      name: orderby
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    Url:
+      description: Registry login URL
+      in: path
+      name: url
+      required: true
+      x-ms-client-name: loginUri
+      x-ms-parameter-location: client
+      x-ms-skip-url-encoding: true
+      schema:
+        type: string
+    metadata:
+      description: Name of the metadata
+      in: path
+      name: metadata
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    property:
+      description: Name of the property
+      in: path
+      name: property
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  requestBodies:
+    ChangeableAttributes:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ChangeableAttributes"
+      description: Repository attribute value
+      x-ms-parameter-location: method
+  securitySchemes:
+    registry_auth:
+      type: http
+      scheme: basic
+    registry_oauth2:
+      in: header
+      name: Authorization
+      type: apiKey
+  schemas:
+    AccessToken:
+      properties:
+        access_token:
+          description: The access token for performing authenticated requests
+          type: string
+      type: object
+    AcrErrorInfo:
+      description: Error information
+      properties:
+        code:
+          description: Error code
+          type: string
+        detail:
+          description: Error details
+          type: object
+        message:
+          description: Error message
+          type: string
+    AcrErrors:
+      description: Acr error response describing why the operation failed
+      properties:
+        errors:
+          description: Array of detailed error
+          items:
+            $ref: "#/components/schemas/AcrErrorInfo"
+          type: array
+    AcrManifestAttributes:
+      description: Manifest attributes details
+      example:
+        imageName: nanoserver
+        manifest:
+          architecture: amd64
+          changeableAttributes:
+            deleteEnabled: true
+            listEnabled: true
+            readEnabled: true
+            writeEnabled: true
+          configMediaType: application/vnd.docker.container.image.v1+json
+          createdTime: 2018-09-06T06:17:20.9983915Z
+          digest: sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086
+          imageSize: 2401606
+          lastUpdateTime: 2018-09-06T06:17:20.9983915Z
+          mediaType: application/vnd.docker.distribution.manifest.v2+json
+          os: windows
+          tags:
+            - 4.7.2-20180905-nanoserver-1803
+        registry: acrapi.azurecr-test.io
+      properties:
+        imageName:
+          description: Image name
+          type: string
+        manifest:
+          $ref: "#/components/schemas/AcrManifestAttributesBase"
+        registry:
+          description: Registry name
+          type: string
+    AcrManifestAttributesBase:
+      description: Manifest details
+      example:
+        architecture: architecture
+        changeableAttributes:
+          deleteEnabled: true
+          listEnabled: true
+          readEnabled: true
+          writeEnabled: true
+        configMediaType: configMediaType
+        createdTime: createdTime
+        digest: digest
+        imageSize: 2401606
+        lastUpdateTime: lastUpdateTime
+        mediaType: mediaType
+        os: os
+        tags:
+          - tags
+          - tags
+      properties:
+        architecture:
+          description: CPU architecture
+          type: string
+        changeableAttributes:
+          $ref: "#/components/schemas/ChangeableAttributes"
+        configMediaType:
+          description: Config blob media type
+          type: string
+        createdTime:
+          description: Created time
+          type: string
+        digest:
+          description: Manifest
+          type: string
+        imageSize:
+          description: Image size
+          type: integer
+        lastUpdateTime:
+          description: Last update time
+          type: string
+        mediaType:
+          description: Media type
+          type: string
+        os:
+          description: Operating system
+          type: string
+        tags:
+          description: List of tags
+          items:
+            description: Tag name
+            type: string
+          type: array
+      type: object
+    AcrManifests:
+      description: Manifest attributes
+      example:
+        imageName: imageName
+        manifests:
+          - architecture: architecture
+            changeableAttributes:
+              deleteEnabled: true
+              listEnabled: true
+              quarantineDetails: quarantineDetails
+              quarantineState: quarantineState
+              readEnabled: true
+              writeEnabled: true
+            configMediaType: configMediaType
+            createdTime: createdTime
+            digest: digest
+            imageSize: 2401606
+            lastUpdateTime: lastUpdateTime
+            mediaType: mediaType
+            os: os
+            tags:
+              - tags
+              - tags
+          - architecture: architecture
+            changeableAttributes:
+              deleteEnabled: true
+              listEnabled: true
+              quarantineDetails: quarantineDetails
+              quarantineState: quarantineState
+              readEnabled: true
+              writeEnabled: true
+            configMediaType: configMediaType
+            createdTime: createdTime
+            digest: digest
+            imageSize: 2401606
+            lastUpdateTime: lastUpdateTime
+            mediaType: mediaType
+            os: os
+            tags:
+              - tags
+              - tags
+        registry: registry
+      properties:
+        imageName:
+          description: Image name
+          type: string
+        manifests:
+          description: List of manifests
+          items:
+            $ref: "#/components/schemas/AcrManifestAttributesBase"
+          type: array
+          x-ms-client-name: ManifestsAttributes
+        registry:
+          description: Registry name
+          type: string
+    AcrRepositoryTags:
+      description: List of tag details
+      example:
+        imageName: imageName
+        registry: registry
+        tags:
+          - changeableAttributes:
+              deleteEnabled: true
+              listEnabled: true
+              readEnabled: true
+              writeEnabled: true
+            createdTime: createdTime
+            digest: digest
+            lastUpdateTime: lastUpdateTime
+            name: name
+            signed: true
+          - changeableAttributes:
+              deleteEnabled: true
+              listEnabled: true
+              readEnabled: true
+              writeEnabled: true
+            createdTime: createdTime
+            digest: digest
+            lastUpdateTime: lastUpdateTime
+            name: name
+            signed: true
+      properties:
+        imageName:
+          description: Image name
+          type: string
+        registry:
+          description: Registry name
+          type: string
+        tags:
+          description: List of tag attribute details
+          items:
+            $ref: "#/components/schemas/AcrTagAttributesBase"
+          type: array
+          x-ms-client-name: TagsAttributes
+    AcrTagAttributes:
+      description: Tag attributes
+      example:
+        imageName: imageName
+        registry: registry
+        tag:
+          changeableAttributes:
+            deleteEnabled: true
+            listEnabled: true
+            readEnabled: true
+            writeEnabled: true
+          createdTime: createdTime
+          digest: digest
+          lastUpdateTime: lastUpdateTime
+          name: name
+          signed: true
+      properties:
+        imageName:
+          description: Image name
+          type: string
+        registry:
+          description: Registry name
+          type: string
+        tag:
+          $ref: "#/components/schemas/AcrTagAttributesBase"
+    AcrTagAttributesBase:
+      description: Tag attribute details
+      example:
+        changeableAttributes:
+          deleteEnabled: true
+          listEnabled: true
+          readEnabled: true
+          writeEnabled: true
+        createdTime: 2018-08-10T17:28:44.1082945Z
+        digest: sha256:0873c923e00e0fd2ba78041bfb64a105e1ecb7678916d1f7776311e45bf5634b
+        lastUpdateTime: 2018-08-10T17:28:44.1082945Z
+        name: tagname
+        signed: true
+      properties:
+        changeableAttributes:
+          $ref: "#/components/schemas/ChangeableAttributes"
+        createdTime:
+          description: Tag created time
+          type: string
+        digest:
+          description: Tag digest
+          type: string
+        lastUpdateTime:
+          description: Tag last update time
+          type: string
+        name:
+          description: Tag name
+          type: string
+        signed:
+          description: Is signed
+          type: boolean
+    ChangeableAttributes:
+      example:
+        deleteEnabled: true
+        listEnabled: true
+        readEnabled: true
+        writeEnabled: true
+      properties:
+        deleteEnabled:
+          description: Delete enabled
+          type: boolean
+        listEnabled:
+          description: List enabled
+          type: boolean
+        readEnabled:
+          description: Read enabled
+          type: boolean
+        writeEnabled:
+          description: Write enabled
+          type: boolean
+    DeletedRepository:
+      description: Deleted repository
+      properties:
+        manifestsDeleted:
+          description: SHA of the deleted image
+          items:
+            type: string
+          type: array
+        tagsDeleted:
+          description: Tag of the deleted image
+          items:
+            type: string
+          type: array
+    FsLayer:
+      description: Image layer information
+      example:
+        blobSum: sha256:1f7d468f830cb0ed4beb8edc9438f18096e8c682e56a35242f60e6c61b718b30
+      properties:
+        blobSum:
+          description: SHA of an image layer
+          type: string
+    History:
+      description: A list of unstructured historical data for v1 compatibility
+      example:
+        v1Compatibility: v1 compatibility info
+      properties:
+        v1Compatibility:
+          description: The raw v1 compatibility information
+          type: string
+    ImageSignature:
+      description: Signature of a signed manifest
+      example:
+        header:
+          alg: ES256
+          jwk:
+            crv: P-256
+            kid: WGXM:EYWQ:DA53:LQUP:BCWG:5RDG:S3ZM:ETH7:VMQS:WWKZ:EWDG:V74Q
+            kty: EC
+            x: OxZ9k5BVjPZ7jb3BmBD4X0d8MVPJqfF4NeSe8reoqnY
+            y: EaCqTe4-vYwhk7qU6Bs2-AeLGOVtCe_-IY2MdE0Vfyc
+        protected: eyJmb3JtYXRMZW5ndGgiOjI5ODYsImZvcm1hdFRhaWwiOiJDbjAiLCJ0aW1lIjoiMjAxOC0wOS0yMFQyMzo0MTo1MloifQ
+        signature: p73LfotMGD8nNXz2g9YX2XtSllb4GI5-b3vjqP5N0nkv8QXg-r5z_omGiVbOZE2BYG1X_4TIN23l1KSEqsXxOg
+      properties:
+        header:
+          $ref: "#/components/schemas/JWK"
+        protected:
+          description: The signed protected header
+          type: string
+        signature:
+          description: A signature for the image manifest, signed by a libtrust private key
+          type: string
+    JWK:
+      description: A JSON web signature
+      properties:
+        alg:
+          description: The algorithm used to sign or encrypt the JWT
+          type: string
+        jwk:
+          $ref: "#/components/schemas/JWKHeader"
+    JWKHeader:
+      description: JSON web key parameter
+      properties:
+        crv:
+          description: crv value
+          type: string
+        kid:
+          description: kid value
+          type: string
+        kty:
+          description: kty value
+          type: string
+        x:
+          description: x value
+          type: string
+        y:
+          description: y value
+          type: string
+    Manifest:
+      description: Returns the requested manifest file
+      example:
+        config:
+          digest: sha256:6d1ef012b5674ad8a127ecfa9b5e6f5178d171b90ee462846974177fd9bdd39f
+          mediaType: application/vnd.docker.container.image.v1+json
+          size: 1512
+        layers:
+          - digest: sha256:5d20c808ce198565ff70b3ed23a991dd49afac45dece63474b27ce6ed036adc6
+            mediaType: application/vnd.docker.image.rootfs.diff.tar.gzip
+            size: 2107098
+        mediaType: application/vnd.docker.distribution.manifest.v2+json
+        schemaVersion: 2
+      properties:
+        architecture:
+          description: CPU architecture
+          type: string
+        config:
+          $ref: "#/components/schemas/V2Descriptor"
+        fsLayers:
+          description: List of layer information
+          items:
+            $ref: "#/components/schemas/FsLayer"
+          type: array
+        history:
+          description: Image history
+          items:
+            $ref: "#/components/schemas/History"
+          type: array
+        layers:
+          description: List of V2 image layer information
+          items:
+            $ref: "#/components/schemas/V2Descriptor"
+          type: array
+        mediaType:
+          description: Media type usually
+            application/vnd.docker.distribution.manifest.v2+json if this is in
+            the accept header
+          type: string
+        name:
+          description: Image name
+          type: string
+        schemaVersion:
+          description: Schema version
+          type: integer
+        signatures:
+          description: Image signature
+          items:
+            $ref: "#/components/schemas/ImageSignature"
+          type: array
+        tag:
+          description: Image tag
+          type: string
+    ManifestAttributes_manifest:
+      description: List of manifest attributes
+      example:
+        quarantineTag: quarantineTag
+        references:
+          - architecture: architecture
+            digest: digest
+            os: os
+          - architecture: architecture
+            digest: digest
+            os: os
+      properties:
+        quarantineTag:
+          description: Quarantine tag name
+          type: string
+        references:
+          description: List of manifest attributes details
+          items:
+            $ref: "#/components/schemas/ManifestAttributes_manifest_references"
+          type: array
+    ManifestAttributes_manifest_references:
+      description: Manifest attributes details
+      example:
+        architecture: architecture
+        digest: digest
+        os: os
+      properties:
+        architecture:
+          description: CPU architecture
+          type: string
+        digest:
+          description: Manifest digest
+          type: string
+        os:
+          description: Operating system
+          type: string
+    ManifestChangeableAttributes:
+      description: Changeable attributes
+      example:
+        deleteEnabled: true
+        listEnabled: true
+        quarantineDetails: quarantineDetails
+        quarantineState: quarantineState
+        readEnabled: true
+        writeEnabled: true
+      properties:
+        deleteEnabled:
+          description: Delete enabled
+          type: boolean
+        listEnabled:
+          description: List enabled
+          type: boolean
+        quarantineDetails:
+          description: Quarantine details
+          type: string
+        quarantineState:
+          description: Quarantine state
+          type: string
+        readEnabled:
+          description: Read enabled
+          type: boolean
+        writeEnabled:
+          description: Write enabled
+          type: boolean
+    RefreshToken:
+      properties:
+        refresh_token:
+          description: The refresh token to be used for generating access tokens
+          type: string
+      type: object
+    Repositories:
+      description: List of repositories
+      example:
+        repositories:
+          - production/alpine
+          - testing/alpine
+      properties:
+        repositories:
+          description: Repository names
+          items:
+            type: string
+          type: array
+          x-ms-client-name: Names
+    RepositoryAttributes:
+      description: Repository attributes
+      example:
+        changeableAttributes:
+          deleteEnabled: true
+          listEnabled: true
+          readEnabled: true
+          writeEnabled: true
+        createdTime: 2018-09-07T16:30:46.6583219Z
+        imageName: imageName
+        lastUpdateTime: 2018-09-07T16:30:46.6583219Z
+        manifestCount: 2
+        registry: registryname.azurecr.io
+        tagCount: 6
+      properties:
+        changeableAttributes:
+          $ref: "#/components/schemas/ChangeableAttributes"
+        createdTime:
+          description: Image created time
+          type: string
+        imageName:
+          description: Image name
+          type: string
+        lastUpdateTime:
+          description: Image last update time
+          type: string
+        manifestCount:
+          description: Number of the manifests
+          type: integer
+        registry:
+          description: Registry name
+          type: string
+        tagCount:
+          description: Number of the tags
+          type: integer
+      type: object
+    RepositoryTags:
+      description: Result of the request to list tags of the image
+      example:
+        name: name
+        tags:
+          - tags
+          - tags
+      properties:
+        name:
+          description: Name of the image
+          type: string
+        tags:
+          description: List of tags
+          items:
+            description: Tag name
+            type: string
+          type: array
+    TagAttributes:
+      description: Tag attributes
+      example:
+        imageName: imageName
+        registry: registry
+        tag:
+          signatureRecord: signatureRecord
+      properties:
+        imageName:
+          description: Image name
+          type: string
+        registry:
+          description: Registry name
+          type: string
+        tag:
+          $ref: "#/components/schemas/TagAttributes_tag"
+    TagAttributes_tag:
+      description: Tag
+      example:
+        signatureRecord: signatureRecord
+      properties:
+        signatureRecord:
+          description: SignatureRecord value
+          type: string
+    V2Descriptor:
+      description: Docker V2 image layer descriptor including config and layers
+      example:
+        digest: sha256:5d20c808ce198565ff70b3ed23a991dd49afac45dece63474b27ce6ed036adc6
+        mediaType: application/vnd.docker.image.rootfs.diff.tar.gzip
+        size: 2107098
+      properties:
+        digest:
+          description: Layer digest
+          type: string
+        mediaType:
+          description: Layer media type
+          type: string
+        size:
+          description: Layer size
+          type: integer

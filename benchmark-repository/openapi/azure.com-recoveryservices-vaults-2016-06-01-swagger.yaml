@@ -1,0 +1,1217 @@
+openapi: 3.0.0
+info:
+  title: RecoveryServicesClient
+  version: 2016-06-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2016-06-01/vaults.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: recoveryservices-vaults
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.RecoveryServices/operations:
+    get:
+      deprecated: false
+      description: Returns the list of available operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientDiscoveryResponse"
+              examples:
+                ListOperations:
+                  $ref: "#/components/examples/ListOperations"
+      tags:
+        - Operations
+      x-ms-pageable:
+        itemName: value
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/vaults":
+    get:
+      deprecated: false
+      description: Fetches all the resources of the specified type in the subscription.
+      operationId: Vaults_ListBySubscriptionId
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/ApiVersion"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultList"
+              examples:
+                List of Recovery Services Resources in SubscriptionId:
+                  $ref: "#/components/examples/List_of_Recovery_Services_Resources_\
+                    in_SubscriptionId"
+      tags:
+        - Vaults
+      x-ms-pageable:
+        itemName: value
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/locations/{location}/checkNameAvailability":
+    post:
+      operationId: RecoveryServices_CheckNameAvailability
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/ApiVersion"
+        - description: Location of the resource
+          in: path
+          name: location
+          required: true
+          schema:
+            type: string
+          examples:
+            "Availability status of Resource Name when no resource with same name, type and subscription exists, nor has been deleted within last 24 hours":
+              value: westus
+            "Availability status of Resource Name when resource with same name, type and subscription exists":
+              value: westus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckNameAvailabilityParameters"
+        description: Contains information about Resource type and Resource name
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckNameAvailabilityResultResource"
+              examples:
+                "Availability status of Resource Name when no resource with same name, type and subscription exists, nor has been deleted within last 24 hours":
+                  $ref: "#/components/examples/Availability_status_of_Resource_Name\
+                    _when_no_resource_with_same_name_type_and_subscription_exis\
+                    ts_nor_has_been_deleted_within_last_24_hours"
+                "Availability status of Resource Name when resource with same name, type and subscription exists":
+                  $ref: "#/components/examples/Availability_status_of_Resource_Name\
+                    _when_resource_with_same_name_type_and_subscription_exists"
+      summary: "API to check for resource name availability.\r
+
+        A name is available if no other resource exists that has the
+        same SubscriptionId, Resource Name and Type\r
+
+        or if one or more such resources exist, each of these must be
+        GC'd and their time of deletion be more than 24 Hours Ago"
+      tags:
+        - RecoveryServices
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults":
+    get:
+      deprecated: false
+      description: Retrieve a list of Vaults.
+      operationId: Vaults_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ResourceGroupName"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultList"
+              examples:
+                List of Recovery Services Resources in ResourceGroup:
+                  $ref: "#/components/examples/List_of_Recovery_Services_Resources_\
+                    in_ResourceGroup"
+      tags:
+        - Vaults
+      x-ms-pageable:
+        itemName: value
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}":
+    delete:
+      deprecated: false
+      description: Deletes a vault.
+      operationId: Vaults_Delete
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/VaultName"
+      responses:
+        "200":
+          description: OK
+      tags:
+        - Vaults
+    get:
+      deprecated: false
+      description: Get the Vault details.
+      operationId: Vaults_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/VaultName"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vault"
+              examples:
+                Get Recovery Services Resource:
+                  $ref: "#/components/examples/Get_Recovery_Services_Resource"
+      tags:
+        - Vaults
+    patch:
+      deprecated: false
+      description: Updates the vault.
+      operationId: Vaults_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/VaultName"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchVault"
+        description: Recovery Services Vault to be created.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vault"
+              examples:
+                Update Resource:
+                  $ref: "#/components/examples/Update_Resource"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vault"
+              examples:
+                Update Resource:
+                  $ref: "#/components/examples/Update_Resource"
+      tags:
+        - Vaults
+    put:
+      deprecated: false
+      description: Creates or updates a Recovery Services vault.
+      operationId: Vaults_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/VaultName"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Vault"
+        description: Recovery Services Vault to be created.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vault"
+              examples:
+                Create of Update Recovery Services vault:
+                  $ref: "#/components/examples/Create_of_Update_Recovery_Services_v\
+                    ault"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vault"
+              examples:
+                Create of Update Recovery Services vault:
+                  $ref: "#/components/examples/Create_of_Update_Recovery_Services_v\
+                    ault"
+      tags:
+        - Vaults
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/extendedInformation/vaultExtendedInfo":
+    get:
+      deprecated: false
+      description: Get the vault extended info.
+      operationId: VaultExtendedInfo_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/VaultName"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultExtendedInfoResource"
+              examples:
+                Get ExtendedInfo of Resource:
+                  $ref: "#/components/examples/Get_ExtendedInfo_of_Resource"
+      tags:
+        - VaultExtendedInfo
+    patch:
+      deprecated: false
+      description: Update vault extended info.
+      operationId: VaultExtendedInfo_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/VaultName"
+        - $ref: "#/components/parameters/ApiVersion"
+      requestBody:
+        $ref: "#/components/requestBodies/VaultExtendedInfoResource"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultExtendedInfoResource"
+              examples:
+                PATCH ExtendedInfo of Resource:
+                  $ref: "#/components/examples/PATCH_ExtendedInfo_of_Resource"
+      tags:
+        - VaultExtendedInfo
+    put:
+      deprecated: false
+      description: Create vault extended info.
+      operationId: VaultExtendedInfo_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/VaultName"
+        - $ref: "#/components/parameters/ApiVersion"
+      requestBody:
+        $ref: "#/components/requestBodies/VaultExtendedInfoResource"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultExtendedInfoResource"
+              examples:
+                Put ExtendedInfo of Resource:
+                  $ref: "#/components/examples/Put_ExtendedInfo_of_Resource"
+      tags:
+        - VaultExtendedInfo
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ListOperations:
+      value:
+        value:
+          - display:
+              description: Returns usage details for a Recovery Services Vault.
+              operation: Recovery Services Vault usage details.
+              provider: microsoft.recoveryservices
+              resource: Vault Usage
+            name: microsoft.recoveryservices/vaults/usages/read
+            origin: user
+          - display:
+              description: Returns summaries for Protected Items and Protected Servers for
+                a Recovery Services .
+              operation: Recovery Services Protected Items and Protected Servers usage
+                summaries details.
+              provider: microsoft.recoveryservices
+              resource: Backup Usages Summaries
+            name: microsoft.recoveryservices/vaults/backupUsageSummaries/read
+            origin: user
+          - display:
+              description: Returns Storage Configuration for Recovery Services Vault.
+              operation: Get Resource Storage Config
+              provider: microsoft.recoveryservices
+              resource: Vault Storage Config
+            name: microsoft.recoveryservices/vaults/storageConfig/read
+            origin: user
+          - display:
+              description: Updates Storage Configuration for Recovery Services Vault.
+              operation: Write Resource Storage Config
+              provider: microsoft.recoveryservices
+              resource: Vault Storage Config
+            name: microsoft.recoveryservices/vaults/storageConfig/write
+            origin: user
+          - display:
+              description: Returns Configuration for Recovery Services Vault.
+              operation: Get Resource Config
+              provider: microsoft.recoveryservices
+              resource: Vault Config
+            name: microsoft.recoveryservices/vaults/backupconfig/vaultconfig/read
+            origin: user
+          - display:
+              description: Updates Configuration for Recovery Services Vault.
+              operation: Update Resource Config
+              provider: microsoft.recoveryservices
+              resource: Vault Config
+            name: microsoft.recoveryservices/vaults/backupconfig/vaultconfig/write
+            origin: user
+          - display:
+              description: Returns token information for Recovery Services Vault.
+              operation: Get Vault Token Info
+              provider: microsoft.recoveryservices
+              resource: Token Info
+            name: microsoft.recoveryservices/vaults/tokenInfo/read
+            origin: user
+          - display:
+              description: Returns Security PIN Information for Recovery Services Vault.
+              operation: Get Security PIN Info
+              provider: microsoft.recoveryservices
+              resource: SecurityPINInfo
+            name: microsoft.recoveryservices/vaults/backupSecurityPIN/read
+            origin: user
+          - display:
+              description: Returns Backup Management Metadata for Recovery Services Vault.
+              operation: Get Backup Management Metadata
+              provider: microsoft.recoveryservices
+              resource: Backup Management Metadata
+            name: microsoft.recoveryservices/vaults/backupManagementMetaData/read
+            origin: user
+          - display:
+              description: Returns Backup Operation Result for Recovery Services Vault.
+              operation: Get Backup Operation Result
+              provider: microsoft.recoveryservices
+              resource: Backup Operation Results
+            name: microsoft.recoveryservices/vaults/backupOperationResults/read
+            origin: user
+          - display:
+              description: Returns Backup Operation Status for Recovery Services Vault.
+              operation: Get Backup Operation Status
+              provider: microsoft.recoveryservices
+              resource: Backup Operation Status
+            name: microsoft.recoveryservices/vaults/backupOperations/read
+            origin: user
+          - display:
+              description: Returns all Job Objects
+              operation: Get Jobs
+              provider: microsoft.recoveryservices
+              resource: Backup Jobs
+            name: microsoft.recoveryservices/vaults/backupJobs/read
+            origin: user
+          - display:
+              description: Cancel the Job
+              operation: Cancel Jobs
+              provider: microsoft.recoveryservices
+              resource: Backup Jobs
+            name: microsoft.recoveryservices/vaults/backupJobs/cancel/action
+            origin: user
+          - display:
+              description: Export Jobs
+              operation: Export Jobs
+              provider: microsoft.recoveryservices
+              resource: Export Backup Jobs
+            name: microsoft.recoveryservices/vaults/backupJobsExport/action
+            origin: user
+          - display:
+              description: Returns the Result of Job Operation.
+              operation: Get Job Operation Result
+              provider: microsoft.recoveryservices
+              resource: Backup Jobs Operation Results
+            name: microsoft.recoveryservices/vaults/backupJobs/operationResults/read
+            origin: user
+          - display:
+              description: Returns the Result of Export Job Operation.
+              operation: Get Export Job Operation Result
+              provider: microsoft.recoveryservices
+              resource: Export Backup Jobs Operation Results
+            name: microsoft.recoveryservices/vaults/backupJobsExport/operationResults/read
+            origin: user
+          - display:
+              description: Get Recovery Points for Protected Items.
+              operation: Get Recovery Points
+              provider: microsoft.recoveryservices
+              resource: Recovery Points
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/read
+            origin: user
+          - display:
+              description: Restore Recovery Points for Protected Items.
+              operation: Restore Recovery Points
+              provider: microsoft.recoveryservices
+              resource: Recovery Points
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/restore/action
+            origin: user
+          - display:
+              description: Provision Instant Item Recovery for Protected Item
+              operation: Provision Instant Item Recovery for Protected Item
+              provider: microsoft.recoveryservices
+              resource: Recovery Points
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/provisionInstantItemRecovery/action
+            origin: user
+          - display:
+              description: Revoke Instant Item Recovery for Protected Item
+              operation: Revoke Instant Item Recovery for Protected Item
+              provider: microsoft.recoveryservices
+              resource: Recovery Points
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/revokeInstantItemRecovery/action
+            origin: user
+          - display:
+              description: Returns all Protection Policies
+              operation: Get Protection Policy
+              provider: microsoft.recoveryservices
+              resource: Backup Policies
+            name: microsoft.recoveryservices/vaults/backupPolicies/read
+            origin: user
+          - display:
+              description: Creates Protection Policy
+              operation: Create Protection Policy
+              provider: microsoft.recoveryservices
+              resource: Backup Policies
+            name: microsoft.recoveryservices/vaults/backupPolicies/write
+            origin: user
+          - display:
+              description: Delete a Protection Policy
+              operation: Delete Protection Policy
+              provider: microsoft.recoveryservices
+              resource: Backup Policies
+            name: microsoft.recoveryservices/vaults/backupPolicies/delete
+            origin: user
+          - display:
+              description: Get Results of Policy Operation.
+              operation: Get Policy Operation Results
+              provider: microsoft.recoveryservices
+              resource: Backup Policy Operation Results
+            name: microsoft.recoveryservices/vaults/backupPolicies/operationResults/read
+            origin: user
+          - display:
+              description: Get Status of Policy Operation.
+              operation: Get Policy Operation Status
+              provider: microsoft.recoveryservices
+              resource: Backup Policy Operation Status
+            name: microsoft.recoveryservices/vaults/backupPolicies/operationsStatus/read
+            origin: user
+          - display:
+              description: Returns object details of the Protected Item
+              operation: Get Protected Item Details
+              provider: microsoft.recoveryservices
+              resource: Protected Items
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/protectedItems/read
+            origin: user
+          - display:
+              description: Returns the list of all Protected Items.
+              operation: Get All Protected Items
+              provider: microsoft.recoveryservices
+              resource: Protected Items
+            name: microsoft.recoveryservices/vaults/backupProtectedItems/read
+            origin: user
+          - display:
+              description: Create a backup Protected Item
+              operation: Create Backup Protected Item
+              provider: microsoft.recoveryservices
+              resource: Protected Items
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/protectedItems/write
+            origin: user
+          - display:
+              description: Deletes Protected Item
+              operation: Delete Protected Items
+              provider: microsoft.recoveryservices
+              resource: Protected Items
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/protectedItems/delete
+            origin: user
+          - display:
+              description: Gets Result of Operation Performed on Protected Items.
+              operation: Get Protected Items Operation Results
+              provider: microsoft.recoveryservices
+              resource: Protected Item Operation Results
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/protectedItems/operationResults/read
+            origin: user
+          - display:
+              description: Returns the status of Operation performed on Protected Items.
+              operation: Get Protected Items operation status
+              provider: microsoft.recoveryservices
+              resource: Protected Item Operation Status
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/protectedItems/operationsStatus/read
+            origin: user
+          - display:
+              description: Performs Backup for Protected Item.
+              operation: Backup Protected Item
+              provider: microsoft.recoveryservices
+              resource: Protected Items
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/protectedItems/backup/action
+            origin: user
+          - display:
+              description: Returns list of all Protectable Items.
+              operation: Get Protectable Items
+              provider: microsoft.recoveryservices
+              resource: Backup Protectable Items
+            name: microsoft.recoveryservices/vaults/backupProtectableItems/read
+            origin: user
+          - display:
+              description: Refreshes the container list
+              operation: Refresh container
+              provider: microsoft.recoveryservices
+              resource: Refresh Containers
+            name: microsoft.recoveryservices/vaults/refreshContainers/read
+            origin: user
+          - display:
+              description: Returns status of the operation
+              operation: Get Operation Results
+              provider: microsoft.recoveryservices
+              resource: Refresh Containers Operation Results
+            name: microsoft.recoveryservices/vaults/backupFabrics/operationResults/read
+            origin: user
+          - display:
+              description: Returns all containers belonging to the subscription
+              operation: Get Containers In Subscription
+              provider: microsoft.recoveryservices
+              resource: Backup Protection Containers
+            name: microsoft.recoveryservices/vaults/backupProtectionContainers/read
+            origin: user
+          - display:
+              description: Returns all registered containers
+              operation: Get Registered Container
+              provider: microsoft.recoveryservices
+              resource: Protection Containers
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/read
+            origin: user
+          - display:
+              description: Gets result of Operation performed on Protection Container.
+              operation: Get Container Operation Results
+              provider: microsoft.recoveryservices
+              resource: Protection Containers Operation Results
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/operationResults/read
+            origin: user
+          - display:
+              description: Returns all the backup management servers registered with vault.
+              operation: List of backup management servers.
+              provider: microsoft.recoveryservices
+              resource: Backup Engines
+            name: microsoft.recoveryservices/vaults/backupEngines
+            origin: user
+          - display:
+              description: Check Backup Status for Recovery Services Vaults
+              operation: Check Backup Status for Vault
+              provider: microsoft.recoveryservices
+              resource: Backup Status
+            name: microsoft.recoveryservices/vaults/backupStatus
+            origin: user
+          - display:
+              description: ""
+              operation: Pre Validate Enable Protection
+              provider: microsoft.recoveryservices
+              resource: PreValidate Protection
+            name: microsoft.recoveryservices/vaults/backupPreValidateProtection
+            origin: user
+          - display:
+              description: Validate Features
+              operation: Validate Features
+              provider: microsoft.recoveryservices
+              resource: Validate Features
+            name: microsoft.recoveryservices/vaults/backupValidateFeatures
+            origin: user
+          - display:
+              description: Create a backup Protection Intent
+              operation: Create backup Protection Intent
+              provider: microsoft.recoveryservices
+              resource: Protection Intent
+            name: microsoft.recoveryservices/vaults/backupFabrics/backupProtectionIntent/write
+            origin: user
+          - display:
+              description: Get all items in a container
+              operation: Get all items in a container
+              provider: microsoft.recoveryservices
+              resource: Workload Items
+            name: microsoft.recoveryservices/vaults/backupFabrics/{fabricName}/protectionContainers/{containerName}/items/read
+            origin: user
+          - display:
+              description: Get all items in a container
+              operation: Get all items in a container
+              provider: microsoft.recoveryservices
+              resource: Protection Containers Inquire
+            name: microsoft.recoveryservices/vaults/backupFabrics/protectionContainers/inquire/action
+            origin: user
+    List_of_Recovery_Services_Resources_in_SubscriptionId:
+      value:
+        value:
+          - eTag: W/"datetime'2017-11-22T11%3A05%3A19.907Z'"
+            id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/patchtest
+            location: westus
+            name: patchtest
+            properties:
+              provisioningState: Succeeded
+            sku:
+              name: Standard
+            tags:
+              Love: India
+            type: Microsoft.RecoveryServices/vaults
+          - eTag: W/"datetime'2017-12-15T12%3A36%3A51.68Z'"
+            id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample
+            location: westus
+            name: swaggerExample
+            properties:
+              provisioningState: Succeeded
+            sku:
+              name: Standard
+            tags:
+              TestUpdatedKey: TestUpdatedValue
+            type: Microsoft.RecoveryServices/vaults
+          - eTag: W/"datetime'2017-11-21T10%3A52%3A19.633Z'"
+            id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/today1
+            location: westus
+            name: today1
+            properties:
+              provisioningState: Succeeded
+            sku:
+              name: Standard
+            tags:
+              TestUpdatedKey: TestUpdatedValue
+            type: Microsoft.RecoveryServices/vaults
+    Availability_status_of_Resource_Name_when_no_resource_with_same_name_type_and_subscription_exists_nor_has_been_deleted_within_last_24_hours:
+      value:
+        nameAvailable: true
+    Availability_status_of_Resource_Name_when_resource_with_same_name_type_and_subscription_exists:
+      value:
+        message: Resource already exists with the same name.
+        nameAvailable: false
+        reason: AlreadyExists
+    List_of_Recovery_Services_Resources_in_ResourceGroup:
+      value:
+        value:
+          - eTag: W/"datetime'2017-11-22T11%3A05%3A19.907Z'"
+            id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/patchtest
+            location: westus
+            name: patchtest
+            properties:
+              provisioningState: Succeeded
+            sku:
+              name: Standard
+            tags:
+              Love: India
+            type: Microsoft.RecoveryServices/vaults
+          - eTag: W/"datetime'2017-12-15T12%3A36%3A51.68Z'"
+            id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/swaggerExample
+            location: westus
+            name: swaggerExample
+            properties:
+              provisioningState: Succeeded
+            sku:
+              name: Standard
+            tags:
+              TestUpdatedKey: TestUpdatedValue
+            type: Microsoft.RecoveryServices/vaults
+          - eTag: W/"datetime'2017-11-21T10%3A52%3A19.633Z'"
+            id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/today1
+            location: westus
+            name: today1
+            properties:
+              provisioningState: Succeeded
+            sku:
+              name: Standard
+            tags:
+              TestUpdatedKey: TestUpdatedValue
+            type: Microsoft.RecoveryServices/vaults
+    Get_Recovery_Services_Resource:
+      value:
+        eTag: W/"datetime'2017-12-15T12%3A36%3A51.68Z'"
+        id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/swaggerExample
+        location: westus
+        name: swaggerExample
+        properties:
+          provisioningState: Succeeded
+        sku:
+          name: Standard
+        tags:
+          TestUpdatedKey: TestUpdatedValue
+        type: Microsoft.RecoveryServices/vaults
+    Update_Resource:
+      value:
+        eTag: W/"datetime'2017-12-15T12%3A36%3A51.68Z'"
+        id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample
+        location: westus
+        name: swaggerExample
+        properties:
+          provisioningState: Succeeded
+        sku:
+          name: Standard
+        tags:
+          PatchKey: PatchKeyUpdated
+        type: Microsoft.RecoveryServices/vaults
+    Create_of_Update_Recovery_Services_vault:
+      value:
+        eTag: W/"datetime'2017-12-15T12%3A36%3A51.68Z'"
+        id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/swaggerExample
+        location: westus
+        name: swaggerExample
+        properties:
+          provisioningState: Succeeded
+        sku:
+          name: Standard
+        tags:
+          TestUpdatedKey: TestUpdatedValue
+        type: Microsoft.RecoveryServices/vaults
+    Get_ExtendedInfo_of_Resource:
+      value:
+        eTag: f0d0260b-b92d-4458-ba0a-32c6cdabacb7
+        id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/swaggerExample/extendedInformation/vaultExtendedInfo
+        name: vaultExtendedInfo
+        properties:
+          algorithm: None
+          integrityKey: J09wzS27fnJ+Wjot7xO5wA==
+        type: Microsoft.RecoveryServices/vaults/extendedInformation
+    PATCH_ExtendedInfo_of_Resource:
+      value:
+        eTag: f0d0260b-b92d-4458-ba0a-32c6cdabacb7
+        id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/swaggerExample/extendedInformation/vaultExtendedInfo
+        name: vaultExtendedInfo
+        properties:
+          algorithm: None
+          integrityKey: J99wzS27fmJ+Wjot7xO5wA==
+        type: Microsoft.RecoveryServices/vaults/extendedInformation
+    Put_ExtendedInfo_of_Resource:
+      value:
+        eTag: f0d0260b-b92d-4458-ba0a-32c6cdabacb7
+        id: /subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/swaggerExample/extendedInformation/vaultExtendedInfo
+        name: vaultExtendedInfo
+        properties:
+          algorithm: None
+          integrityKey: J99wzS27fmJ+Wjot7xO5wA==
+        type: Microsoft.RecoveryServices/vaults/extendedInformation
+  parameters:
+    ApiVersion:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        ListOperations:
+          value: 2016-06-01
+        List of Recovery Services Resources in SubscriptionId:
+          value: 2016-06-01
+        "Availability status of Resource Name when no resource with same name, type and subscription exists, nor has been deleted within last 24 hours":
+          value: 2016-06-01
+        "Availability status of Resource Name when resource with same name, type and subscription exists":
+          value: 2016-06-01
+        List of Recovery Services Resources in ResourceGroup:
+          value: 2016-06-01
+        Delete Recovery Services Vault:
+          value: 2016-06-01
+        Get Recovery Services Resource:
+          value: 2016-06-01
+        Update Resource:
+          value: 2016-06-01
+        Create of Update Recovery Services vault:
+          value: 2016-06-01
+        Get ExtendedInfo of Resource:
+          value: 2016-06-01
+        PATCH ExtendedInfo of Resource:
+          value: 2016-06-01
+        Put ExtendedInfo of Resource:
+          value: 2016-06-01
+    ResourceGroupName:
+      description: The name of the resource group where the recovery services vault is
+        present.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        "Availability status of Resource Name when no resource with same name, type and subscription exists, nor has been deleted within last 24 hours":
+          value: resGroupFoo
+        "Availability status of Resource Name when resource with same name, type and subscription exists":
+          value: resGroupBar
+        List of Recovery Services Resources in ResourceGroup:
+          value: Default-RecoveryServices-ResourceGroup
+        Delete Recovery Services Vault:
+          value: Default-RecoveryServices-ResourceGroup
+        Get Recovery Services Resource:
+          value: Default-RecoveryServices-ResourceGroup
+        Update Resource:
+          value: HelloWorld
+        Create of Update Recovery Services vault:
+          value: Default-RecoveryServices-ResourceGroup
+        Get ExtendedInfo of Resource:
+          value: Default-RecoveryServices-ResourceGroup
+        PATCH ExtendedInfo of Resource:
+          value: Default-RecoveryServices-ResourceGroup
+        Put ExtendedInfo of Resource:
+          value: Default-RecoveryServices-ResourceGroup
+    SubscriptionId:
+      description: The subscription Id.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        List of Recovery Services Resources in SubscriptionId:
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+        "Availability status of Resource Name when no resource with same name, type and subscription exists, nor has been deleted within last 24 hours":
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+        "Availability status of Resource Name when resource with same name, type and subscription exists":
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+        List of Recovery Services Resources in ResourceGroup:
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+        Delete Recovery Services Vault:
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+        Get Recovery Services Resource:
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+        Update Resource:
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+        Create of Update Recovery Services vault:
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+        Get ExtendedInfo of Resource:
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+        PATCH ExtendedInfo of Resource:
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+        Put ExtendedInfo of Resource:
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+    VaultName:
+      description: The name of the recovery services vault.
+      in: path
+      name: vaultName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Delete Recovery Services Vault:
+          value: swaggerExample
+        Get Recovery Services Resource:
+          value: swaggerExample
+        Update Resource:
+          value: swaggerExample
+        Create of Update Recovery Services vault:
+          value: swaggerExample
+        Get ExtendedInfo of Resource:
+          value: swaggerExample
+        PATCH ExtendedInfo of Resource:
+          value: swaggerExample
+        Put ExtendedInfo of Resource:
+          value: swaggerExample
+  requestBodies:
+    VaultExtendedInfoResource:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VaultExtendedInfoResource"
+      description: Details of ResourceExtendedInfo
+      required: true
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account.
+  schemas:
+    CheckNameAvailabilityParameters:
+      description: Resource Name availability input parameters - Resource type and resource
+        name
+      properties:
+        name:
+          description: Resource name for which availability needs to be checked
+          type: string
+        type:
+          description: "Describes the Resource type: Microsoft.RecoveryServices/Vaults"
+          type: string
+      type: object
+    CheckNameAvailabilityResult:
+      description: Response for check name availability API. Resource provider will set
+        availability as true | false.
+      properties:
+        message:
+          type: string
+        nameAvailable:
+          type: boolean
+        reason:
+          type: string
+      type: object
+    CheckNameAvailabilityResultResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Response for check name availability API. Resource provider will set
+        availability as true | false.
+      properties:
+        properties:
+          $ref: "#/components/schemas/CheckNameAvailabilityResult"
+    ClientDiscoveryDisplay:
+      description: Localized display information of an operation.
+      properties:
+        description:
+          description: Description of the operation having details of what operation is
+            about.
+          type: string
+        operation:
+          description: Operations Name itself.
+          type: string
+        provider:
+          description: Name of the provider for display purposes
+          type: string
+        resource:
+          description: ResourceType for which this Operation can be performed.
+          type: string
+      type: object
+    ClientDiscoveryForLogSpecification:
+      description: Class to represent shoebox log specification in json client discovery.
+      properties:
+        blobDuration:
+          description: Blobs created in customer storage account per hour
+          type: string
+        displayName:
+          description: Localized display name
+          type: string
+        name:
+          description: Name of the log.
+          type: string
+      type: object
+    ClientDiscoveryForProperties:
+      description: Class to represent shoebox properties in json client discovery.
+      properties:
+        serviceSpecification:
+          $ref: "#/components/schemas/ClientDiscoveryForServiceSpecification"
+      type: object
+    ClientDiscoveryForServiceSpecification:
+      description: Class to represent shoebox service specification in json client
+        discovery.
+      properties:
+        logSpecifications:
+          description: List of log specifications of this operation.
+          items:
+            $ref: "#/components/schemas/ClientDiscoveryForLogSpecification"
+          type: array
+      type: object
+    ClientDiscoveryResponse:
+      description: Operations List response which contains list of available APIs.
+      properties:
+        nextLink:
+          description: Link to the next chunk of the response
+          type: string
+        value:
+          description: List of available operations.
+          items:
+            $ref: "#/components/schemas/ClientDiscoveryValueForSingleApi"
+          type: array
+      type: object
+    ClientDiscoveryValueForSingleApi:
+      description: Available operation details.
+      properties:
+        display:
+          $ref: "#/components/schemas/ClientDiscoveryDisplay"
+        name:
+          description: Name of the Operation.
+          type: string
+        origin:
+          description: The intended executor of the operation;governs the display of the
+            operation in the RBAC UX and the audit logs UX
+          type: string
+        properties:
+          $ref: "#/components/schemas/ClientDiscoveryForProperties"
+      type: object
+    PatchTrackedResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Tracked resource with location.
+      properties:
+        location:
+          description: Resource location.
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+      type: object
+    PatchVault:
+      allOf:
+        - $ref: "#/components/schemas/PatchTrackedResource"
+      description: Patch Resource information, as returned by the resource provider.
+      properties:
+        properties:
+          $ref: "#/components/schemas/VaultProperties"
+        sku:
+          $ref: "#/components/schemas/Sku"
+      type: object
+    Resource:
+      description: ARM Resource.
+      properties:
+        eTag:
+          description: Optional ETag.
+          type: string
+        id:
+          description: Resource Id represents the complete path to the resource.
+          readOnly: true
+          type: string
+        name:
+          description: Resource name associated with the resource.
+          readOnly: true
+          type: string
+        type:
+          description: Resource type represents the complete path of the form
+            Namespace/ResourceType/ResourceType/...
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    Sku:
+      description: Identifies the unique system identifier for each Azure resource.
+      properties:
+        name:
+          description: The Sku name.
+          enum:
+            - Standard
+            - RS0
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SkuName
+      required:
+        - name
+      type: object
+    TrackedResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Tracked resource with location.
+      properties:
+        location:
+          description: Resource location.
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+      required:
+        - location
+      type: object
+    UpgradeDetails:
+      description: Details for upgrading vault.
+      properties:
+        endTimeUtc:
+          description: UTC time at which the upgrade operation has ended.
+          format: date-time
+          readOnly: true
+          type: string
+        lastUpdatedTimeUtc:
+          description: UTC time at which the upgrade operation status was last updated.
+          format: date-time
+          readOnly: true
+          type: string
+        message:
+          description: Message to the user containing information about the upgrade
+            operation.
+          readOnly: true
+          type: string
+        operationId:
+          description: ID of the vault upgrade operation.
+          readOnly: true
+          type: string
+        previousResourceId:
+          description: Resource ID of the vault before the upgrade.
+          readOnly: true
+          type: string
+        startTimeUtc:
+          description: UTC time at which the upgrade operation has started.
+          format: date-time
+          readOnly: true
+          type: string
+        status:
+          description: Status of the vault upgrade operation.
+          enum:
+            - Unknown
+            - InProgress
+            - Upgraded
+            - Failed
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: VaultUpgradeState
+        triggerType:
+          description: The way the vault upgrade was triggered.
+          enum:
+            - UserTriggered
+            - ForcedUpgrade
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: TriggerType
+        upgradedResourceId:
+          description: Resource ID of the upgraded vault.
+          readOnly: true
+          type: string
+      type: object
+    Vault:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      description: Resource information, as returned by the resource provider.
+      properties:
+        properties:
+          $ref: "#/components/schemas/VaultProperties"
+        sku:
+          $ref: "#/components/schemas/Sku"
+      type: object
+    VaultExtendedInfo:
+      description: Vault extended information.
+      properties:
+        algorithm:
+          description: Algorithm for Vault ExtendedInfo
+          type: string
+        encryptionKey:
+          description: Encryption key.
+          type: string
+        encryptionKeyThumbprint:
+          description: Encryption key thumbprint.
+          type: string
+        integrityKey:
+          description: Integrity key.
+          type: string
+      type: object
+    VaultExtendedInfoResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Vault extended information.
+      properties:
+        properties:
+          $ref: "#/components/schemas/VaultExtendedInfo"
+      type: object
+    VaultList:
+      description: The response model for a list of Vaults.
+      properties:
+        nextLink:
+          readOnly: true
+          type: string
+        value:
+          items:
+            $ref: "#/components/schemas/Vault"
+          type: array
+      type: object
+    VaultProperties:
+      description: Properties of the vault.
+      properties:
+        provisioningState:
+          description: Provisioning State.
+          readOnly: true
+          type: string
+        upgradeDetails:
+          $ref: "#/components/schemas/UpgradeDetails"
+      type: object

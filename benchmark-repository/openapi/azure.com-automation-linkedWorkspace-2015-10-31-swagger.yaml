@@ -1,0 +1,122 @@
+openapi: 3.0.0
+info:
+  title: AutomationManagement
+  version: 2015-10-31
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/automation/resource-manager/Microsoft.Automation/stable/2015-10-31/linkedWorkspace.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: automation-linkedWorkspace
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/linkedWorkspace":
+    get:
+      description: Retrieve the linked workspace for the account id.
+      externalDocs:
+        url: http://aka.ms/azureautomationsdk/linkedworkspaceoperations
+      operationId: LinkedWorkspace_Get
+      parameters:
+        - description: Name of an Azure Resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._]+$
+          examples:
+            Get the linked workspace of an automation account:
+              value: rg
+        - description: The name of the automation account.
+          in: path
+          name: automationAccountName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Get the linked workspace of an automation account:
+              value: ContosoAutomationAccount
+        - description: Gets subscription credentials which uniquely identify Microsoft
+            Azure subscription. The subscription ID forms part of the URI for
+            every service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Get the linked workspace of an automation account:
+              value: subid
+        - description: Client Api Version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Get the linked workspace of an automation account:
+              value: 2015-10-31
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LinkedWorkspace"
+              examples:
+                Get the linked workspace of an automation account:
+                  $ref: "#/components/examples/Get_the_linked_workspace_of_an_autom\
+                    ation_account"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error response of an operation failure
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - LinkedWorkspace
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_the_linked_workspace_of_an_automation_account:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/ContosoWorkspace
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    LinkedWorkspace:
+      description: Definition of the linked workspace.
+      properties:
+        id:
+          description: Gets the id of the linked workspace.
+          readOnly: true
+          type: string

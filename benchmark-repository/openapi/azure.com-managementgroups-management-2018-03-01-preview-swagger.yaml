@@ -1,0 +1,1542 @@
+openapi: 3.0.0
+info:
+  description: The Azure Management Groups API enables consolidation of multiple
+    subscriptions/resources into an organizational hierarchy and centrally
+    manage access control, policies, alerting and reporting for those resources.
+  title: Management Groups
+  version: 2018-03-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/managementgroups/resource-manager/Microsoft.Management/preview/2018-03-01-preview/management.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: managementgroups-management
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+tags:
+  - description: A Management Group is a customer defined scope (grouping mechanism) that
+      provides access control (authorization), policy management and reporting.
+      Management Groups are organized in a strictly tree-based hierarchy.
+    name: ManagementGroups
+  - description: Management operations supported by the Microsoft.Management resource
+      provider.
+    name: Operations
+  - description: A list of entities that belong to the Management Groups.
+    name: Entities
+paths:
+  /providers/Microsoft.Management/checkNameAvailability:
+    post:
+      description: Checks if the specified management group name is valid and unique
+      operationId: CheckNameAvailability
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckNameAvailabilityRequest"
+        description: Management group name availability check parameters.
+        required: true
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckNameAvailabilityResult"
+              examples:
+                CheckManagementGroupNameAvailability:
+                  $ref: "#/components/examples/CheckManagementGroupNameAvailability"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CheckNameAvailability
+  /providers/Microsoft.Management/getEntities:
+    post:
+      description: List all entities (Management Groups, Subscriptions, etc.) for the
+        authenticated user.
+      operationId: Entities_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SkipTokenParameter"
+        - $ref: "#/components/parameters/SkipParameter"
+        - $ref: "#/components/parameters/TopParameter"
+        - $ref: "#/components/parameters/SelectParameter"
+        - $ref: "#/components/parameters/SearchParameter"
+        - $ref: "#/components/parameters/EntityFilterParameter"
+        - $ref: "#/components/parameters/EntityViewParameter"
+        - $ref: "#/components/parameters/GroupNameParameter"
+        - $ref: "#/components/parameters/CacheControlHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EntityListResult"
+              examples:
+                GetEntities:
+                  $ref: "#/components/examples/GetEntities"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Entities
+      x-ms-pageable:
+        nextLinkName: nextLink
+  /providers/Microsoft.Management/managementGroups:
+    get:
+      description: List management groups for the authenticated user.
+      operationId: ManagementGroups_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/CacheControlHeader"
+        - $ref: "#/components/parameters/SkipTokenParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ManagementGroupListResult"
+              examples:
+                ListManagementGroups:
+                  $ref: "#/components/examples/ListManagementGroups"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ManagementGroups
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/providers/Microsoft.Management/managementGroups/{groupId}":
+    delete:
+      description: Delete management group. If a management group contains child resources,
+        the request will fail.
+      operationId: ManagementGroups_Delete
+      parameters:
+        - $ref: "#/components/parameters/GroupIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/CacheControlHeader"
+      responses:
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationResults"
+              examples:
+                DeleteManagementGroup:
+                  $ref: "#/components/examples/DeleteManagementGroup"
+        "204":
+          description: NoContent
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ManagementGroups
+      x-ms-long-running-operation: true
+    get:
+      description: Get the details of the management group.
+      operationId: ManagementGroups_Get
+      parameters:
+        - $ref: "#/components/parameters/GroupIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ExpandParameter"
+        - $ref: "#/components/parameters/RecurseParameter"
+        - $ref: "#/components/parameters/FilterParameter"
+        - $ref: "#/components/parameters/CacheControlHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ManagementGroup"
+              examples:
+                GetManagementGroup:
+                  $ref: "#/components/examples/GetManagementGroup"
+                GetManagementGroupWithExpand:
+                  $ref: "#/components/examples/GetManagementGroupWithExpand"
+                GetManagementGroupsWithExpandAndRecurse:
+                  $ref: "#/components/examples/GetManagementGroupsWithExpandAndRecu\
+                    rse"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ManagementGroups
+    patch:
+      description: Update a management group.
+      operationId: ManagementGroups_Update
+      parameters:
+        - $ref: "#/components/parameters/GroupIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/CacheControlHeader"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchManagementGroupRequest"
+        description: Management group patch parameters.
+        required: true
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ManagementGroup"
+              examples:
+                PatchManagementGroup:
+                  $ref: "#/components/examples/PatchManagementGroup"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ManagementGroups
+    put:
+      description: Create or update a management group. If a management group is already
+        created and a subsequent create request is issued with different
+        properties, the management group properties will be updated.
+      operationId: ManagementGroups_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/GroupIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/CacheControlHeader"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateManagementGroupRequest"
+        description: Management group creation parameters.
+        required: true
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ManagementGroup"
+              examples:
+                PutManagementGroup:
+                  $ref: "#/components/examples/PutManagementGroup"
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationResults"
+              examples:
+                PutManagementGroup:
+                  $ref: "#/components/examples/PutManagementGroup"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ManagementGroups
+      x-ms-long-running-operation: true
+  "/providers/Microsoft.Management/managementGroups/{groupId}/descendants":
+    post:
+      description: |
+        List all entities that descend from a management group.
+      operationId: ManagementGroups_GetDescendants
+      parameters:
+        - $ref: "#/components/parameters/GroupIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SkipTokenParameter"
+        - $ref: "#/components/parameters/TopParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescendantListResult"
+              examples:
+                GetDescendants:
+                  $ref: "#/components/examples/GetDescendants"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ManagementGroups_Descendants
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/providers/Microsoft.Management/managementGroups/{groupId}/subscriptions/{subscriptionId}":
+    delete:
+      description: De-associates subscription from the management group.
+      operationId: ManagementGroupSubscriptions_Delete
+      parameters:
+        - $ref: "#/components/parameters/GroupIdParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/CacheControlHeader"
+      responses:
+        "204":
+          description: NoContent
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ManagementGroups
+    put:
+      description: Associates existing subscription with the management group.
+      operationId: ManagementGroupSubscriptions_Create
+      parameters:
+        - $ref: "#/components/parameters/GroupIdParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/CacheControlHeader"
+      responses:
+        "204":
+          description: NoContent
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ManagementGroups
+  /providers/Microsoft.Management/operations:
+    get:
+      description: Lists all of the available Management REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  /providers/Microsoft.Management/startTenantBackfill:
+    post:
+      description: Starts backfilling subscriptions for the Tenant.
+      operationId: StartTenantBackfill
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantBackfillStatusResult"
+              examples:
+                StartTenantBackfill:
+                  $ref: "#/components/examples/StartTenantBackfill"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - TenantBackfill
+  /providers/Microsoft.Management/tenantBackfillStatus:
+    post:
+      description: Gets tenant backfill status
+      operationId: TenantBackfillStatus
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantBackfillStatusResult"
+              examples:
+                TenantBackfillStatus:
+                  $ref: "#/components/examples/TenantBackfillStatus"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - TenantBackfill
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    CheckManagementGroupNameAvailability:
+      value:
+        message: <error message>
+        nameAvailable: false
+        reason: AlreadyExists
+    GetEntities:
+      value:
+        value:
+          - id: /providers/Microsoft.Management/managementGroups/20000000-0001-0000-0000-000000000000
+            name: 20000000-0001-0000-0000-000000000000
+            properties:
+              displayName: Group 1 Tenant 2
+              inheritedPermissions: view
+              numberOfChildGroups: 1
+              numberOfChildren: 2
+              numberOfDescendants: 3
+              parent:
+                id: /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
+              parentDisplayNameChain:
+                - Tenant Root Group
+                - Group 1 Tenant 2 Parent
+              parentNameChain:
+                - TenantRootGroup
+                - Group1Tenant2Parent
+              permissions: view
+              tenantId: 20000000-0000-0000-0000-000000000000
+            type: /providers/Microsoft.Management/managementGroups
+          - id: /providers/Microsoft.Management/managementGroups/20000000-0004-0000-0000-000000000000
+            name: 20000000-0004-0000-0000-000000000000
+            properties:
+              displayName: Group 4 Tenant 2
+              inheritedPermissions: delete
+              numberOfChildGroups: 0
+              numberOfChildren: 0
+              numberOfDescendants: 0
+              parent:
+                id: /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
+              parentDisplayNameChain:
+                - Tenant Root Group
+                - Group 4 Tenant 2 Parent
+              parentNameChain:
+                - TenantRootGroup
+                - Group4 Tenant2Parent
+              permissions: delete
+              tenantId: 20000000-0000-0000-0000-000000000000
+            type: /providers/Microsoft.Management/managementGroups
+    ListManagementGroups:
+      value:
+        value:
+          - id: /providers/Microsoft.Management/managementGroups/20000000-0001-0000-0000-000000000000
+            name: 20000000-0001-0000-0000-000000000000
+            properties:
+              displayName: Group 1 Tenant 2
+              tenantId: 20000000-0000-0000-0000-000000000000
+            type: /providers/Microsoft.Management/managementGroups
+          - id: /providers/Microsoft.Management/managementGroups/20000000-0004-0000-0000-000000000000
+            name: 20000000-0004-0000-0000-000000000000
+            properties:
+              displayName: Group 4 Tenant 2
+              tenantId: 20000000-0000-0000-0000-000000000000
+            type: /providers/Microsoft.Management/managementGroups
+    DeleteManagementGroup:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/GroupToDelete
+        name: GroupToDelete
+        properties:
+          provisioningState: Updating
+        type: /providers/Microsoft.Management/managementGroups
+    GetManagementGroup:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/20000000-0001-0000-0000-000000000000
+        name: 20000000-0001-0000-0000-000000000000
+        properties:
+          details:
+            parent:
+              displayName: RootGroup
+              id: /providers/Microsoft.Management/managementGroups/RootGroup
+              name: RootGroup
+            updatedBy: 16b8ef21-5c9f-420c-bcc9-e4f8c9f30b4b
+            updatedTime: 2018-01-01T00:00:00.00Z
+            version: 1
+          displayName: Group 1 Tenant 2
+          tenantId: 20000000-0000-0000-0000-000000000000
+        type: /providers/Microsoft.Management/managementGroups
+    GetManagementGroupWithExpand:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/20000000-0001-0000-0000-000000000000
+        name: 20000000-0001-0000-0000-000000000000
+        properties:
+          children:
+            - displayName: Group 2 Tenant 2
+              id: /providers/Microsoft.Management/managementGroups/20000000-0002-0000-0000-000000000000
+              name: 20000000-0002-0000-0000-000000000000
+              type: /providers/Microsoft.Management/managementGroups
+            - displayName: Group 3 Tenant 2
+              id: /providers/Microsoft.Management/managementGroups/20000000-0003-0000-0000-000000000000
+              name: 20000000-0003-0000-0000-000000000000
+              type: /providers/Microsoft.Management/managementGroups
+            - displayName: Subscription 4 Tenant 1
+              id: /subscriptions/10000000-F004-0000-0000-000000000000
+              name: 10000000-F004-0000-0000-000000000000
+              type: /subscriptions
+            - displayName: Subscription 5 Tenant 2
+              id: /subscriptions/20000000-F005-0000-0000-000000000000
+              name: 20000000-F005-0000-0000-000000000000
+              type: /subscriptions
+            - displayName: Subscription 3 Tenant 3
+              id: /subscriptions/30000000-F003-0000-0000-000000000000
+              name: 30000000-F003-0000-0000-000000000000
+              type: /subscriptions
+          details:
+            parent:
+              displayName: 20000000-0000-0000-0000-000000000000
+              id: /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
+              name: 20000000-0000-0000-0000-000000000000
+            updatedBy: Test
+            updatedTime: 2018-01-01T00:00:00.00Z
+            version: 1
+          displayName: Group 1 Tenant 2
+          tenantId: 20000000-0000-0000-0000-000000000000
+        type: /providers/Microsoft.Management/managementGroups
+    GetManagementGroupsWithExpandAndRecurse:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/RootGroup
+        name: RootGroup
+        properties:
+          children:
+            - children:
+                - children:
+                    - displayName: Pay-As-You-Go
+                      id: /subscriptions/728bcbe4-8d56-4510-86c2-4921b8beefbc
+                      name: 728bcbe4-8d56-4510-86c2-4921b8beefbc
+                      roles:
+                        - /providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635
+                      type: /subscriptions
+                  displayName: Leaf
+                  id: /providers/Microsoft.Management/managementGroups/Leaf
+                  name: Leaf
+                  roles:
+                    - /providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635
+                  type: /providers/Microsoft.Management/managementGroups
+              displayName: Child
+              id: /providers/Microsoft.Management/managementGroups/Child
+              name: Child
+              roles:
+                - /providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635
+              type: /providers/Microsoft.Management/managementGroups
+            - displayName: Leaf
+              id: /providers/Microsoft.Management/managementGroups/AnotherChild
+              name: AnotherChild
+              roles:
+                - /providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635
+              type: /providers/Microsoft.Management/managementGroups
+          details:
+            parent:
+              displayName: 20000000-0000-0000-0000-000000000000
+              id: /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
+              name: 20000000-0000-0000-0000-000000000000
+            updatedBy: bd490e30-04cb-433e-b8c8-6066959a8bab
+            updatedTime: 2018-01-25T02:26:49.0022093Z
+            version: 2
+          displayName: RootGroup
+          tenantId: 20000000-0000-0000-0000-000000000000
+        type: /providers/Microsoft.Management/managementGroups
+    PatchManagementGroup:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/ChildGroup
+        name: ChildGroup
+        properties:
+          details:
+            parent:
+              displayName: AlternateRootGroup
+              id: /providers/Microsoft.Management/managementGroups/AlternateRootGroup
+              name: AlternateRootGroup
+            updatedBy: bd490e30-04cb-433e-b8c8-6066959a8bab
+            updatedTime: 2018-01-25T02:46:59.0545645Z
+            version: 2
+          displayName: AlternateDisplayName
+          tenantId: 20000000-0000-0000-0000-000000000000
+        type: /providers/Microsoft.Management/managementGroups
+    PutManagementGroup:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/ChildGroup
+        name: ChildGroup
+        properties:
+          provisioningState: Updating
+        type: /providers/Microsoft.Management/managementGroups
+    GetDescendants:
+      value:
+        value:
+          - id: /providers/Microsoft.Management/managementGroups/20000000-0001-0000-0000-000000000000
+            name: 20000000-0001-0000-0000-000000000000
+            properties:
+              displayName: Group 1
+              parent:
+                id: /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
+            type: /providers/Microsoft.Management/managementGroups
+          - id: /subscriptions/20000000-0004-0000-0000-000000000000
+            name: 20000000-0004-0000-0000-000000000000
+            properties:
+              displayName: Subscription 4
+              parent:
+                id: /providers/Microsoft.Management/managementGroups/20000000-0000-0000-0000-000000000000
+            type: /subscriptions
+    StartTenantBackfill:
+      value:
+        status: Started
+        tenantId: 20000000-0000-0000-0000-000000000000
+    TenantBackfillStatus:
+      value:
+        status: Started
+        tenantId: 20000000-0000-0000-0000-000000000000
+  parameters:
+    ApiVersionParameter:
+      description: Version of the API to be used with the client request. The current
+        version is 2018-01-01-preview.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        CheckManagementGroupNameAvailability:
+          value: 2018-03-01-preview
+        GetEntities:
+          value: 2018-01-01-preview
+        ListManagementGroups:
+          value: 2018-03-01-preview
+        DeleteManagementGroup:
+          value: 2018-03-01-preview
+        GetManagementGroup:
+          value: 2018-03-01-preview
+        GetManagementGroupWithExpand:
+          value: 2018-03-01-preview
+        GetManagementGroupsWithExpandAndRecurse:
+          value: 2018-03-01-preview
+        PatchManagementGroup:
+          value: 2018-03-01-preview
+        PutManagementGroup:
+          value: 2018-03-01-preview
+        GetDescendants:
+          value: 2018-03-01-preview
+        DeleteSubscriptionFromManagementGroup:
+          value: 2018-03-01-preview
+        AddSubscriptionToManagementGroup:
+          value: 2018-03-01-preview
+        StartTenantBackfill:
+          value: 2018-03-01-preview
+        TenantBackfillStatus:
+          value: 2018-03-01-preview
+    CacheControlHeader:
+      description: Indicates that the request shouldn't utilize any caches.
+      in: header
+      name: Cache-Control
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        default: no-cache
+      examples:
+        GetEntities:
+          value: no-cache
+        ListManagementGroups:
+          value: no-cache
+        DeleteManagementGroup:
+          value: no-cache
+        GetManagementGroup:
+          value: no-cache
+        GetManagementGroupWithExpand:
+          value: no-cache
+        GetManagementGroupsWithExpandAndRecurse:
+          value: no-cache
+        PatchManagementGroup:
+          value: no-cache
+        PutManagementGroup:
+          value: no-cache
+        DeleteSubscriptionFromManagementGroup:
+          value: no-cache
+        AddSubscriptionToManagementGroup:
+          value: no-cache
+    EntityFilterParameter:
+      description: The filter parameter allows you to filter on the name or display name
+        fields. You can check for equality on the name field (e.g. name eq
+        '{entityName}')  and you can check for substrings on either the name or
+        display name fields(e.g. contains(name, '{substringToSearch}'),
+        contains(displayName, '{substringToSearch')). Note that the
+        '{entityName}' and '{substringToSearch}' fields are checked case
+        insensitively.
+      in: query
+      name: $filter
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    EntityViewParameter:
+      description: The view parameter allows clients to filter the type of data that is
+        returned by the getEntities call.
+      in: query
+      name: $view
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - FullHierarchy
+          - GroupsOnly
+          - SubscriptionsOnly
+          - Audit
+    ExpandParameter:
+      description: The $expand=children query string parameter allows clients to request
+        inclusion of children in the response payload.
+      in: query
+      name: $expand
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - children
+      examples:
+        GetManagementGroupWithExpand:
+          value: children
+        GetManagementGroupsWithExpandAndRecurse:
+          value: children
+    FilterParameter:
+      description: A filter which allows the exclusion of subscriptions from results (i.e.
+        '$filter=children.childType ne Subscription')
+      in: query
+      name: $filter
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    GroupIdParameter:
+      description: Management Group ID.
+      in: path
+      name: groupId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        DeleteManagementGroup:
+          value: GroupToDelete
+        GetManagementGroup:
+          value: 20000000-0001-0000-0000-000000000000
+        GetManagementGroupWithExpand:
+          value: 20000000-0001-0000-0000-000000000000
+        GetManagementGroupsWithExpandAndRecurse:
+          value: 20000000-0001-0000-0000-000000000000
+        PatchManagementGroup:
+          value: ChildGroup
+        PutManagementGroup:
+          value: ChildGroup
+        GetDescendants:
+          value: 20000000-0000-0000-0000-000000000000
+        DeleteSubscriptionFromManagementGroup:
+          value: Group
+        AddSubscriptionToManagementGroup:
+          value: Group
+    GroupNameParameter:
+      description: A filter which allows the get entities call to focus on a particular
+        group (i.e. "$filter=name eq 'groupName'")
+      in: query
+      name: groupName
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    OperationResultIdParameter:
+      description: The id of the operation result.
+      in: path
+      name: operationResultId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - create
+          - delete
+    RecurseParameter:
+      description: The $recurse=true query string parameter allows clients to request
+        inclusion of entire hierarchy in the response payload. Note
+        that  $expand=children must be passed up if $recurse is set to true.
+      in: query
+      name: $recurse
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: boolean
+      examples:
+        GetManagementGroupsWithExpandAndRecurse:
+          value: true
+    SearchParameter:
+      description: The $search parameter is used in conjunction with the $filter parameter
+        to return three different outputs depending on the parameter passed in.
+        With $search=AllowedParents the API will return the entity info of all
+        groups that the requested entity will be able to reparent to as
+        determined by the user's permissions. With $search=AllowedChildren the
+        API will return the entity info of all entities that can be added as
+        children of the requested entity. With
+        $search=ParentAndFirstLevelChildren the API will return the parent
+        and  first level of children that the user has either direct access to
+        or indirect access via one of their descendants.
+      in: query
+      name: $search
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - AllowedParents
+          - AllowedChildren
+          - ParentAndFirstLevelChildren
+          - ParentOnly
+          - ChildrenOnly
+    SelectParameter:
+      description: This parameter specifies the fields to include in the response. Can
+        include any combination of
+        Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
+        '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'.
+        When specified the $select parameter can override select in $skipToken.
+      in: query
+      name: $select
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SkipParameter:
+      description: Number of entities to skip over when retrieving results. Passing this in
+        will override $skipToken.
+      in: query
+      name: $skip
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: integer
+    SkipTokenParameter:
+      description: Page continuation token is only used if a previous operation returned a
+        partial result. If a previous response contains a nextLink element, the
+        value of the nextLink element will include a token parameter that
+        specifies a starting point to use for subsequent calls.
+      in: query
+      name: $skiptoken
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: Subscription ID.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        DeleteSubscriptionFromManagementGroup:
+          value: 728bcbe4-8d56-4510-86c2-4921b8beefbc
+        AddSubscriptionToManagementGroup:
+          value: 728bcbe4-8d56-4510-86c2-4921b8beefbc
+    TopParameter:
+      description: Number of elements to return when retrieving results. Passing this in
+        will override $skipToken.
+      in: query
+      name: $top
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: integer
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    CheckNameAvailabilityRequest:
+      description: Management group name availability check parameters.
+      properties:
+        name:
+          description: the name to check for availability
+          type: string
+        type:
+          description: fully qualified resource type which includes provider namespace
+          enum:
+            - /providers/Microsoft.Management/managementGroups
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Type
+            values:
+              - value: /providers/Microsoft.Management/managementGroups
+      type: object
+    CheckNameAvailabilityResult:
+      description: Describes the result of the request to check management group name
+        availability.
+      properties:
+        message:
+          description: Required if nameAvailable == false. Localized. If reason == invalid,
+            provide the user with the reason why the given name is invalid, and
+            provide the resource naming requirements so that the user can select
+            a valid name. If reason == AlreadyExists, explain that is already in
+            use, and direct them to select a different name.
+          readOnly: true
+          type: string
+        nameAvailable:
+          description: Required. True indicates name is valid and available. False
+            indicates the name is invalid, unavailable, or both.
+          readOnly: true
+          type: boolean
+        reason:
+          description: Required if nameAvailable == false. Invalid indicates the name
+            provided does not match the resource provider's naming requirements
+            (incorrect length, unsupported characters, etc.) AlreadyExists
+            indicates that the name is already in use and is therefore
+            unavailable.
+          enum:
+            - Invalid
+            - AlreadyExists
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Reason
+            values:
+              - value: Invalid
+              - value: AlreadyExists
+    CreateManagementGroupChildInfo:
+      description: The child information of a management group used during creation.
+      properties:
+        children:
+          description: The list of children.
+          items:
+            $ref: "#/components/schemas/CreateManagementGroupChildInfo"
+          readOnly: true
+          type: array
+        displayName:
+          description: The friendly name of the child resource.
+          readOnly: true
+          type: string
+        id:
+          description: The fully qualified ID for the child resource (management group or
+            subscription).  For example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        name:
+          description: The name of the child entity.
+          readOnly: true
+          type: string
+        roles:
+          description: The roles definitions associated with the management group.
+          items:
+            type: string
+          readOnly: true
+          type: array
+        type:
+          $ref: "#/components/schemas/ManagementGroupChildType"
+    CreateManagementGroupDetails:
+      description: The details of a management group used during creation.
+      properties:
+        parent:
+          $ref: "#/components/schemas/CreateParentGroupInfo"
+        updatedBy:
+          description: The identity of the principal or process that updated the object.
+          readOnly: true
+          type: string
+        updatedTime:
+          description: The date and time when this object was last updated.
+          format: date-time
+          readOnly: true
+          type: string
+        version:
+          description: The version number of the object.
+          format: int32
+          readOnly: true
+          type: number
+      type: object
+    CreateManagementGroupProperties:
+      description: The generic properties of a management group used during creation.
+      properties:
+        children:
+          description: The list of children.
+          items:
+            $ref: "#/components/schemas/CreateManagementGroupChildInfo"
+          readOnly: true
+          type: array
+          nullable: true
+        details:
+          $ref: "#/components/schemas/CreateManagementGroupDetails"
+        displayName:
+          description: The friendly name of the management group. If no value is passed
+            then this  field will be set to the groupId.
+          type: string
+          nullable: true
+        roles:
+          description: The roles definitions associated with the management group.
+          items:
+            type: string
+          readOnly: true
+          type: array
+          nullable: true
+        tenantId:
+          description: The AAD Tenant ID associated with the management group. For example,
+            00000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+      type: object
+    CreateManagementGroupRequest:
+      description: Management group creation parameters.
+      properties:
+        id:
+          description: The fully qualified ID for the management group.  For example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        name:
+          description: The name of the management group. For example,
+            00000000-0000-0000-0000-000000000000
+          type: string
+        properties:
+          $ref: "#/components/schemas/CreateManagementGroupProperties"
+        type:
+          description: The type of the resource.  For example,
+            /providers/Microsoft.Management/managementGroups
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    CreateParentGroupInfo:
+      description: (Optional) The ID of the parent management group used during creation.
+      properties:
+        displayName:
+          description: The friendly name of the parent management group.
+          readOnly: true
+          type: string
+        id:
+          description: The fully qualified ID for the parent management group.  For
+            example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          type: string
+        name:
+          description: The name of the parent management group
+          readOnly: true
+          type: string
+    DescendantInfo:
+      description: The descendant.
+      properties:
+        id:
+          description: The fully qualified ID for the descendant.  For example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+            or /subscriptions/0000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+          nullable: true
+        name:
+          description: The name of the descendant. For example,
+            00000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/DescendantInfoProperties"
+        type:
+          description: The type of the resource. For example,
+            /providers/Microsoft.Management/managementGroups or /subscriptions
+          readOnly: true
+          type: string
+          nullable: true
+    DescendantInfoProperties:
+      description: The generic properties of an descendant.
+      properties:
+        displayName:
+          description: The friendly name of the management group.
+          type: string
+          nullable: true
+        parent:
+          $ref: "#/components/schemas/DescendantParentGroupInfo"
+      type: object
+    DescendantListResult:
+      description: Describes the result of the request to view descendants.
+      properties:
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          readOnly: true
+          type: string
+        value:
+          description: The list of descendants.
+          items:
+            $ref: "#/components/schemas/DescendantInfo"
+          type: array
+    DescendantParentGroupInfo:
+      description: The ID of the parent management group.
+      properties:
+        id:
+          description: The fully qualified ID for the parent management group.  For
+            example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          type: string
+    EntityHierarchyItem:
+      description: The management group details for the hierarchy view.
+      properties:
+        id:
+          description: The fully qualified ID for the management group.  For example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        name:
+          description: The name of the management group. For example,
+            00000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/EntityHierarchyItemProperties"
+        type:
+          description: The type of the resource.  For example,
+            /providers/Microsoft.Management/managementGroups
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    EntityHierarchyItemProperties:
+      description: The generic properties of a management group.
+      properties:
+        children:
+          description: The list of children.
+          items:
+            $ref: "#/components/schemas/EntityHierarchyItem"
+          type: array
+          nullable: true
+        displayName:
+          description: The friendly name of the management group.
+          type: string
+        permissions:
+          $ref: "#/components/schemas/Permissions"
+      type: object
+    EntityInfo:
+      description: The entity.
+      properties:
+        id:
+          description: The fully qualified ID for the entity.  For example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+          nullable: true
+        name:
+          description: The name of the entity. For example,
+            00000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/EntityInfoProperties"
+        type:
+          description: The type of the resource. For example,
+            /providers/Microsoft.Management/managementGroups
+          readOnly: true
+          type: string
+          nullable: true
+    EntityInfoProperties:
+      description: The generic properties of an entity.
+      properties:
+        displayName:
+          description: The friendly name of the management group.
+          type: string
+          nullable: true
+        inheritedPermissions:
+          $ref: "#/components/schemas/Permissions"
+        numberOfChildGroups:
+          description: Number of child groups is the number of Groups that are exactly one
+            level underneath the current Group.
+          title: Number of Child Groups
+          type: integer
+          nullable: true
+        numberOfChildren:
+          description: Number of children is the number of Groups and Subscriptions that
+            are exactly one level underneath the current Group.
+          title: Number of Children
+          type: integer
+          nullable: true
+        numberOfDescendants:
+          title: Number of Descendants
+          type: integer
+          nullable: true
+        parent:
+          $ref: "#/components/schemas/EntityParentGroupInfo"
+        parentDisplayNameChain:
+          description: The parent display name chain from the root group to the immediate
+            parent
+          items:
+            type: string
+          type: array
+          nullable: true
+        parentNameChain:
+          description: The parent name chain from the root group to the immediate parent
+          items:
+            type: string
+          type: array
+          nullable: true
+        permissions:
+          $ref: "#/components/schemas/Permissions"
+        tenantId:
+          description: The AAD Tenant ID associated with the entity. For example,
+            00000000-0000-0000-0000-000000000000
+          type: string
+          nullable: true
+      type: object
+    EntityListResult:
+      description: Describes the result of the request to view entities.
+      properties:
+        count:
+          description: Total count of records that match the filter
+          readOnly: true
+          type: integer
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          readOnly: true
+          type: string
+        value:
+          description: The list of entities.
+          items:
+            $ref: "#/components/schemas/EntityInfo"
+          type: array
+    EntityParentGroupInfo:
+      description: (Optional) The ID of the parent management group.
+      properties:
+        id:
+          description: The fully qualified ID for the parent management group.  For
+            example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          type: string
+    ErrorDetails:
+      description: The details of the error.
+      properties:
+        code:
+          description: One of a server-defined set of error codes.
+          type: string
+        details:
+          description: A human-readable representation of the error's details.
+          type: string
+        message:
+          description: A human-readable representation of the error.
+          type: string
+    ErrorResponse:
+      description: The error object.
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorDetails"
+    ManagementGroup:
+      description: The management group details.
+      properties:
+        id:
+          description: The fully qualified ID for the management group.  For example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        name:
+          description: The name of the management group. For example,
+            00000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/ManagementGroupProperties"
+        type:
+          description: The type of the resource.  For example,
+            /providers/Microsoft.Management/managementGroups
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    ManagementGroupChildInfo:
+      description: The child information of a management group.
+      properties:
+        children:
+          description: The list of children.
+          items:
+            $ref: "#/components/schemas/ManagementGroupChildInfo"
+          type: array
+        displayName:
+          description: The friendly name of the child resource.
+          type: string
+        id:
+          description: The fully qualified ID for the child resource (management group or
+            subscription).  For example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          type: string
+        name:
+          description: The name of the child entity.
+          type: string
+        roles:
+          description: The roles definitions associated with the management group.
+          items:
+            type: string
+          type: array
+        type:
+          $ref: "#/components/schemas/ManagementGroupChildType"
+    ManagementGroupChildType:
+      description: The type of child resource.
+      enum:
+        - /providers/Microsoft.Management/managementGroups
+        - /subscriptions
+      type: string
+    ManagementGroupDetails:
+      description: The details of a management group.
+      properties:
+        parent:
+          $ref: "#/components/schemas/ParentGroupInfo"
+        updatedBy:
+          description: The identity of the principal or process that updated the object.
+          type: string
+        updatedTime:
+          description: The date and time when this object was last updated.
+          format: date-time
+          type: string
+        version:
+          description: The version number of the object.
+          format: int32
+          type: number
+      type: object
+    ManagementGroupInfo:
+      description: The management group resource.
+      properties:
+        id:
+          description: The fully qualified ID for the management group.  For example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        name:
+          description: The name of the management group. For example,
+            00000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/ManagementGroupInfoProperties"
+        type:
+          description: The type of the resource. For example,
+            /providers/Microsoft.Management/managementGroups
+          readOnly: true
+          type: string
+    ManagementGroupInfoProperties:
+      description: The generic properties of a management group.
+      properties:
+        displayName:
+          description: The friendly name of the management group.
+          type: string
+        tenantId:
+          description: The AAD Tenant ID associated with the management group. For example,
+            00000000-0000-0000-0000-000000000000
+          type: string
+      type: object
+    ManagementGroupListResult:
+      description: Describes the result of the request to list management groups.
+      properties:
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          readOnly: true
+          type: string
+        value:
+          description: The list of management groups.
+          items:
+            $ref: "#/components/schemas/ManagementGroupInfo"
+          type: array
+    ManagementGroupProperties:
+      description: The generic properties of a management group.
+      properties:
+        children:
+          description: The list of children.
+          items:
+            $ref: "#/components/schemas/ManagementGroupChildInfo"
+          type: array
+          nullable: true
+        details:
+          $ref: "#/components/schemas/ManagementGroupDetails"
+        displayName:
+          description: The friendly name of the management group.
+          type: string
+        roles:
+          description: The role definitions associated with the management group.
+          items:
+            type: string
+          type: array
+          nullable: true
+        tenantId:
+          description: The AAD Tenant ID associated with the management group. For example,
+            00000000-0000-0000-0000-000000000000
+          type: string
+      type: object
+    Operation:
+      description: Operation supported by the Microsoft.Management resource provider.
+      properties:
+        display:
+          $ref: "#/components/schemas/OperationDisplayProperties"
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}."
+          readOnly: true
+          type: string
+      type: object
+    OperationDisplayProperties:
+      description: The object that represents the operation.
+      properties:
+        description:
+          description: Operation description.
+          readOnly: true
+          type: string
+        operation:
+          description: The operation that can be performed.
+          readOnly: true
+          type: string
+        provider:
+          description: The name of the provider.
+          readOnly: true
+          type: string
+        resource:
+          description: The resource on which the operation is performed.
+          readOnly: true
+          type: string
+    OperationListResult:
+      description: Describes the result of the request to list Microsoft.Management
+        operations.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          readOnly: true
+          type: string
+        value:
+          description: List of operations supported by the Microsoft.Management resource
+            provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          readOnly: true
+          type: array
+    OperationResults:
+      description: The results of an asynchronous operation.
+      properties:
+        id:
+          description: The fully qualified ID for the management group.  For example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        name:
+          description: The name of the management group. For example,
+            00000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string
+        properties:
+          properties:
+            provisioningState:
+              $ref: "#/components/schemas/ProvisioningState"
+          title: Properties
+          type: object
+          x-ms-client-flatten: true
+        type:
+          description: The type of the resource.  For example,
+            /providers/Microsoft.Management/managementGroups
+          readOnly: true
+          type: string
+    ParentGroupInfo:
+      description: (Optional) The ID of the parent management group.
+      properties:
+        displayName:
+          description: The friendly name of the parent management group.
+          type: string
+        id:
+          description: The fully qualified ID for the parent management group.  For
+            example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          type: string
+        name:
+          description: The name of the parent management group
+          type: string
+    PatchManagementGroupRequest:
+      description: Management group patch parameters.
+      properties:
+        displayName:
+          description: The friendly name of the management group.
+          type: string
+          nullable: true
+        parentId:
+          description: (Optional) The fully qualified ID for the parent management
+            group.  For example,
+            /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
+          type: string
+          nullable: true
+      type: object
+    Permissions:
+      description: The users specific permissions to this item.
+      enum:
+        - noaccess
+        - view
+        - edit
+        - delete
+      type: string
+    ProvisioningState:
+      description: The provisioning status.
+      enum:
+        - Updating
+      title: Provisioning State
+      type: string
+    TenantBackfillStatusResult:
+      description: The tenant backfill status
+      properties:
+        status:
+          description: The status of the Tenant Backfill
+          enum:
+            - NotStarted
+            - NotStartedButGroupsExist
+            - Started
+            - Failed
+            - Cancelled
+            - Completed
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Status
+            values:
+              - value: NotStarted
+              - value: NotStartedButGroupsExist
+              - value: Started
+              - value: Failed
+              - value: Cancelled
+              - value: Completed
+        tenantId:
+          description: The AAD Tenant ID associated with the management group. For example,
+            00000000-0000-0000-0000-000000000000
+          readOnly: true
+          type: string

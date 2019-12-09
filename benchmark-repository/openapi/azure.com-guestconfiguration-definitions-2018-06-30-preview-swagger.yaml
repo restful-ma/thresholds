@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  title: Common types
+  version: 2018-06-30-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/common/v1/definitions.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: guestconfiguration-definitions
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths: {}
+servers:
+  - url: https://azure.local
+components:
+  parameters:
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+    ResourceGroupNameParameter:
+      description: The resource group name.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        pattern: ^[-\w\._]+$
+    SubscriptionIdParameter:
+      description: Subscription ID which uniquely identify Microsoft Azure subscription.
+        The subscription ID forms part of the URI for every service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+    VmNameParameter:
+      description: The name of the virtual machine.
+      in: path
+      name: vmName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ErrorResponse:
+      description: Error response of an operation failure
+      properties:
+        message:
+          description: Error message indicating why the operation failed.
+          type: string
+    Operation:
+      description: GuestConfiguration REST API operation
+      properties:
+        display:
+          description: Provider, Resource, Operation and description values.
+          properties:
+            description:
+              description: Description about operation.
+              type: string
+            operation:
+              description: "Operation type: Read, write, delete, etc."
+              type: string
+            provider:
+              description: "Service provider: Microsoft.GuestConfiguration"
+              type: string
+            resource:
+              description: "Resource on which the operation is performed:  For ex. "
+              type: string
+        name:
+          description: "Operation name: For ex.
+            providers/Microsoft.GuestConfiguration/guestConfigurationAssignment\
+            s/write or read"
+          type: string
+        properties:
+          description: Provider, Resource, Operation and description values.
+          properties:
+            statusCode:
+              description: "Service provider: Microsoft.GuestConfiguration"
+              type: string
+          x-ms-client-flatten: true
+      type: object
+    OperationList:
+      description: The response model for the list of Automation operations
+      properties:
+        value:
+          description: List of Automation operations supported by the Automation resource
+            provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          type: array
+    ProxyResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: ARM proxy resource.
+      properties: {}
+      type: object
+    Resource:
+      description: The core properties of ARM resources
+      properties:
+        id:
+          description: ARM resource id of the guest configuration assignment.
+          readOnly: true
+          type: string
+        location:
+          description: Region where the VM is located.
+          readOnly: true
+          type: string
+        name:
+          description: Name of the guest configuration assignment.
+          readOnly: true
+          type: string
+        type:
+          description: The type of the resource.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    TrackedResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The resource model definition for a ARM tracked top level resource
+      properties:
+        location:
+          description: The Azure Region where the resource lives
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+          x-ms-mutability:
+            - read
+            - create
+            - update
+      type: object

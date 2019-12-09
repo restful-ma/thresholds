@@ -1,0 +1,2895 @@
+openapi: 3.0.0
+info:
+  version: 2017-08-08
+  x-release: v4
+  title: Amazon Connect Service
+  description: <p>The Amazon Connect API Reference provides descriptions, syntax, and usage
+    examples for each of the Amazon Connect actions, data types, parameters, and
+    errors. Amazon Connect is a cloud-based contact center solution that makes
+    it easy to set up and manage a customer contact center and provide reliable
+    customer engagement at any scale.</p> <p>Throttling limits for the Amazon
+    Connect API operations:</p> <p>For the <code>GetMetricData</code> and
+    <code>GetCurrentMetricData</code> operations, a RateLimit of 5 per second,
+    and a BurstLimit of 8 per second.</p> <p>For all other operations, a
+    RateLimit of 2 per second, and a BurstLimit of 5 per second.</p> <p>You can
+    request an increase to the throttling limits by submitting a <a
+    href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase">Amazon
+    Connect service limits increase form</a>. You must be signed in to your AWS
+    account to access the form.</p>
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: connect
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/connect-2017-08-08.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/connect/
+security:
+  - hmac: []
+paths:
+  "/users/{InstanceId}":
+    put:
+      operationId: CreateUser
+      description: Creates a new user account in your Amazon Connect instance.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateUserResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "483":
+          description: DuplicateResourceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DuplicateResourceException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "485":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "486":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Username
+                - PhoneConfig
+                - SecurityProfileIds
+                - RoutingProfileId
+              properties:
+                Username:
+                  description: The user name in Amazon Connect for the account to create.
+                    If you are using SAML for identity management in your Amazon
+                    Connect, the value for <code>Username</code> can include up
+                    to 64 characters from [a-zA-Z0-9_-.\@]+.
+                  type: string
+                  pattern: "[a-zA-Z0-9\\_\\-\\.]+"
+                  minLength: 1
+                  maxLength: 20
+                Password:
+                  description: The password for the user account to create. This is
+                    required if you are using Amazon Connect for identity
+                    management. If you are using SAML for identity management
+                    and include this parameter, an
+                    <code>InvalidRequestException</code> is returned.
+                  type: string
+                  pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\S]{8,64}$/
+                IdentityInfo:
+                  description: A <code>UserIdentityInfo</code> object that contains
+                    information about the user's identity, including email
+                    address, first name, and last name.
+                  type: object
+                  properties:
+                    FirstName:
+                      $ref: "#/components/schemas/AgentFirstName"
+                    LastName:
+                      $ref: "#/components/schemas/AgentLastName"
+                    Email:
+                      $ref: "#/components/schemas/Email"
+                PhoneConfig:
+                  description: A <code>UserPhoneConfig</code> object that contains
+                    information about the user phone configuration settings.
+                  type: object
+                  properties:
+                    PhoneType:
+                      $ref: "#/components/schemas/PhoneType"
+                    AutoAccept:
+                      $ref: "#/components/schemas/AutoAccept"
+                    AfterContactWorkTimeLimit:
+                      $ref: "#/components/schemas/AfterContactWorkTimeLimit"
+                    DeskPhoneNumber:
+                      $ref: "#/components/schemas/PhoneNumber"
+                DirectoryUserId:
+                  description: <p>The unique identifier for the user account in the
+                    directory service directory used for identity management. If
+                    Amazon Connect is unable to access the existing directory,
+                    you can use the <code>DirectoryUserId</code> to authenticate
+                    users. If you include the parameter, it is assumed that
+                    Amazon Connect cannot access the directory. If the parameter
+                    is not included, the <code>UserIdentityInfo</code> is used
+                    to authenticate users from your existing directory.</p>
+                    <p>This parameter is required if you are using an existing
+                    directory for identity management in Amazon Connect when
+                    Amazon Connect cannot access your directory to authenticate
+                    users. If you are using SAML for identity management and
+                    include this parameter, an
+                    <code>InvalidRequestException</code> is returned.</p>
+                  type: string
+                SecurityProfileIds:
+                  description: The unique identifier of the security profile to assign to
+                    the user created.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SecurityProfileId"
+                  minItems: 1
+                  maxItems: 10
+                RoutingProfileId:
+                  description: The unique identifier for the routing profile to assign to
+                    the user created.
+                  type: string
+                HierarchyGroupId:
+                  description: The unique identifier for the hierarchy group to assign to
+                    the user created.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/users/{InstanceId}/{UserId}":
+    delete:
+      operationId: DeleteUser
+      description: Deletes a user account from Amazon Connect.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+        - name: UserId
+          in: path
+          required: true
+          description: The unique identifier of the user to delete.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeUser
+      description: Returns a <code>User</code> object that contains information about the
+        user account specified by the <code>UserId</code>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeUserResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: UserId
+          in: path
+          required: true
+          description: Unique identifier for the user account to return.
+          schema:
+            type: string
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+  "/user-hierarchy-groups/{InstanceId}/{HierarchyGroupId}":
+    get:
+      operationId: DescribeUserHierarchyGroup
+      description: Returns a <code>HierarchyGroup</code> object that includes information
+        about a hierarchy group in your instance.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeUserHierarchyGroupResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: HierarchyGroupId
+          in: path
+          required: true
+          description: The identifier for the hierarchy group to return.
+          schema:
+            type: string
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/user-hierarchy-structure/{InstanceId}":
+    get:
+      operationId: DescribeUserHierarchyStructure
+      description: Returns a <code>HiearchyGroupStructure</code> object, which contains
+        data about the levels in the agent hierarchy.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeUserHierarchyStructureResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/contact/attributes/{InstanceId}/{InitialContactId}":
+    get:
+      operationId: GetContactAttributes
+      description: Retrieves the contact attributes associated with a contact.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetContactAttributesResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: InstanceId
+          in: path
+          required: true
+          description: The instance ID for the instance from which to retrieve contact
+            attributes.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+        - name: InitialContactId
+          in: path
+          required: true
+          description: The ID for the initial contact in Amazon Connect associated with the
+            attributes to update.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/metrics/current/{InstanceId}":
+    post:
+      operationId: GetCurrentMetricData
+      description: <p>The <code>GetCurrentMetricData</code> operation retrieves current
+        metric data from your Amazon Connect instance.</p> <p>If you are using
+        an IAM account, it must have permission to the
+        <code>connect:GetCurrentMetricData</code> action.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCurrentMetricDataResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Filters
+                - CurrentMetrics
+              properties:
+                Filters:
+                  description: The filter, either channel or queues, to apply to the metric
+                    results retrieved.
+                  type: object
+                  properties:
+                    Queues:
+                      $ref: "#/components/schemas/Queues"
+                    Channels:
+                      $ref: "#/components/schemas/Channels"
+                Groupings:
+                  description: <p>The grouping applied to the metrics returned. For
+                    example, when grouped by QUEUE, the metrics returned apply
+                    to each queue rather than aggregated for all queues. If you
+                    group by CHANNEL, you should include a Channels filter. The
+                    only supported channel is VOICE.</p> <p>If no
+                    <code>Grouping</code> is included in the request, a summary
+                    of <code>CurrentMetrics</code> is returned.</p>
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Grouping"
+                  maxItems: 2
+                CurrentMetrics:
+                  description: "<p>A list of <code>CurrentMetric</code> objects for the
+                    metrics to retrieve. Each <code>CurrentMetric</code>
+                    includes a name of a metric to retrieve and the unit to use
+                    for it. You must list each metric to retrieve data for in
+                    the request.</p> <p>The following metrics are available:</p>
+                    <dl> <dt>AGENTS_AVAILABLE</dt> <dd> <p>Unit: COUNT</p> </dd>
+                    <dt>AGENTS_ONLINE</dt> <dd> <p>Unit: COUNT</p> </dd>
+                    <dt>AGENTS_ON_CALL</dt> <dd> <p>Unit: COUNT</p> </dd>
+                    <dt>AGENTS_STAFFED</dt> <dd> <p>Unit: COUNT</p> </dd>
+                    <dt>AGENTS_AFTER_CONTACT_WORK</dt> <dd> <p>Unit: COUNT</p>
+                    </dd> <dt>AGENTS_NON_PRODUCTIVE</dt> <dd> <p>Unit: COUNT</p>
+                    </dd> <dt>AGENTS_ERROR</dt> <dd> <p>Unit: COUNT</p> </dd>
+                    <dt>CONTACTS_IN_QUEUE</dt> <dd> <p>Unit: COUNT</p> </dd>
+                    <dt>OLDEST_CONTACT_AGE</dt> <dd> <p>Unit: SECONDS</p> </dd>
+                    <dt>CONTACTS_SCHEDULED</dt> <dd> <p>Unit: COUNT</p> </dd>
+                    </dl>"
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/CurrentMetric"
+                NextToken:
+                  description: <p>The token for the next set of results. Use the value
+                    returned in the previous response in the next request to
+                    retrieve the next set of results.</p> <p>The token expires
+                    after 5 minutes from the time it is created. Subsequent
+                    requests that use the <a href="">NextToken</a> must use the
+                    same request parameters as the request that generated the
+                    token.</p>
+                  type: string
+                MaxResults:
+                  description: " <code>MaxResults</code> indicates the maximum number of
+                    results to return per page in the response, between 1 and
+                    100."
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/user/federate/{InstanceId}":
+    get:
+      operationId: GetFederationToken
+      description: Retrieves a token for federation.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetFederationTokenResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: UserNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserNotFoundException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+        "485":
+          description: DuplicateResourceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DuplicateResourceException"
+      parameters:
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/metrics/historical/{InstanceId}":
+    post:
+      operationId: GetMetricData
+      description: <p>The <code>GetMetricData</code> operation retrieves historical metrics
+        data from your Amazon Connect instance.</p> <p>If you are using an IAM
+        account, it must have permission to the
+        <code>connect:GetMetricData</code> action.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMetricDataResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - StartTime
+                - EndTime
+                - Filters
+                - HistoricalMetrics
+              properties:
+                StartTime:
+                  description: <p>The timestamp, in UNIX Epoch time format, at which to
+                    start the reporting interval for the retrieval of historical
+                    metrics data. The time must be specified using a multiple of
+                    5 minutes, such as 10:05, 10:10, 10:15.</p> <p>
+                    <code>StartTime</code> cannot be earlier than 24 hours
+                    before the time of the request. Historical metrics are
+                    available in Amazon Connect only for 24 hours.</p>
+                  type: string
+                  format: date-time
+                EndTime:
+                  description: <p>The timestamp, in UNIX Epoch time format, at which to end
+                    the reporting interval for the retrieval of historical
+                    metrics data. The time must be specified using an interval
+                    of 5 minutes, such as 11:00, 11:05, 11:10, and must be later
+                    than the <code>StartTime</code> timestamp.</p> <p>The time
+                    range between <code>StartTime</code> and
+                    <code>EndTime</code> must be less than 24 hours.</p>
+                  type: string
+                  format: date-time
+                Filters:
+                  description: The filter, either channel or queues, to apply to the metric
+                    results retrieved.
+                  type: object
+                  properties:
+                    Queues:
+                      $ref: "#/components/schemas/Queues"
+                    Channels:
+                      $ref: "#/components/schemas/Channels"
+                Groupings:
+                  description: <p>The grouping applied to the metrics returned. For
+                    example, when results are grouped by queueId, the metrics
+                    returned are grouped by queue. The values returned apply to
+                    the metrics for each queue rather than aggregated for all
+                    queues.</p> <p>The current version supports grouping by
+                    Queue</p> <p>If no <code>Grouping</code> is included in the
+                    request, a summary of <code>HistoricalMetrics</code> for all
+                    queues is returned.</p>
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Grouping"
+                  maxItems: 2
+                HistoricalMetrics:
+                  description: '<p>A list of <code>HistoricalMetric</code> objects that
+                    contain the metrics to retrieve with the request.</p> <p>A
+                    <code>HistoricalMetric</code> object contains:
+                    <code>HistoricalMetricName</code>, <code>Statistic</code>,
+                    <code>Threshold</code>, and <code>Unit</code>.</p> <p>You
+                    must list each metric to retrieve data for in the request.
+                    For each historical metric you include in the request, you
+                    must include a <code>Unit</code> and a
+                    <code>Statistic</code>. </p> <p>The following historical
+                    metrics are available:</p> <dl> <dt>CONTACTS_QUEUED</dt>
+                    <dd> <p>Unit: COUNT</p> <p>Statistic: SUM</p> </dd>
+                    <dt>CONTACTS_HANDLED</dt> <dd> <p>Unit: COUNT</p>
+                    <p>Statistics: SUM</p> </dd> <dt>CONTACTS_ABANDONED</dt>
+                    <dd> <p>Unit: COUNT</p> <p>Statistics: SUM</p> </dd>
+                    <dt>CONTACTS_CONSULTED</dt> <dd> <p>Unit: COUNT</p>
+                    <p>Statistics: SUM</p> </dd>
+                    <dt>CONTACTS_AGENT_HUNG_UP_FIRST</dt> <dd> <p>Unit:
+                    COUNT</p> <p>Statistics: SUM</p> </dd>
+                    <dt>CONTACTS_HANDLED_INCOMING</dt> <dd> <p>Unit: COUNT</p>
+                    <p>Statistics: SUM</p> </dd>
+                    <dt>CONTACTS_HANDLED_OUTBOUND</dt> <dd> <p>Unit: COUNT</p>
+                    <p>Statistics: SUM</p> </dd> <dt>CONTACTS_HOLD_ABANDONS</dt>
+                    <dd> <p>Unit: COUNT</p> <p>Statistics: SUM</p> </dd>
+                    <dt>CONTACTS_TRANSFERRED_IN</dt> <dd> <p>Unit: COUNT</p>
+                    <p>Statistics: SUM</p> </dd>
+                    <dt>CONTACTS_TRANSFERRED_OUT</dt> <dd> <p>Unit: COUNT</p>
+                    <p>Statistics: SUM</p> </dd>
+                    <dt>CONTACTS_TRANSFERRED_IN_FROM_QUEUE</dt> <dd> <p>Unit:
+                    COUNT</p> <p>Statistics: SUM</p> </dd>
+                    <dt>CONTACTS_TRANSFERRED_OUT_FROM_QUEUE</dt> <dd> <p>Unit:
+                    COUNT</p> <p>Statistics: SUM</p> </dd>
+                    <dt>CALLBACK_CONTACTS_HANDLED</dt> <dd> <p>Unit: COUNT</p>
+                    <p>Statistics: SUM</p> </dd>
+                    <dt>CALLBACK_CONTACTS_HANDLED</dt> <dd> <p>Unit: COUNT</p>
+                    <p>Statistics: SUM</p> </dd> <dt>API_CONTACTS_HANDLED</dt>
+                    <dd> <p>Unit: COUNT</p> <p>Statistics: SUM</p> </dd>
+                    <dt>CONTACTS_MISSED</dt> <dd> <p>Unit: COUNT</p>
+                    <p>Statistics: SUM</p> </dd> <dt>OCCUPANCY</dt> <dd>
+                    <p>Unit: PERCENT</p> <p>Statistics: AVG</p> </dd>
+                    <dt>HANDLE_TIME</dt> <dd> <p>Unit: SECONDS</p>
+                    <p>Statistics: AVG</p> </dd>
+                    <dt>AFTER_CONTACT_WORK_TIME</dt> <dd> <p>Unit: SECONDS</p>
+                    <p>Statistics: AVG</p> </dd> <dt>QUEUED_TIME</dt> <dd>
+                    <p>Unit: SECONDS</p> <p>Statistics: MAX</p> </dd>
+                    <dt>ABANDON_TIME</dt> <dd> <p>Unit: COUNT</p> <p>Statistics:
+                    SUM</p> </dd> <dt>QUEUE_ANSWER_TIME</dt> <dd> <p>Unit:
+                    SECONDS</p> <p>Statistics: AVG</p> </dd> <dt>HOLD_TIME</dt>
+                    <dd> <p>Unit: SECONDS</p> <p>Statistics: AVG</p> </dd>
+                    <dt>INTERACTION_TIME</dt> <dd> <p>Unit: SECONDS</p>
+                    <p>Statistics: AVG</p> </dd>
+                    <dt>INTERACTION_AND_HOLD_TIME</dt> <dd> <p>Unit: SECONDS</p>
+                    <p>Statistics: AVG</p> </dd> <dt>SERVICE_LEVEL</dt> <dd>
+                    <p>Unit: PERCENT</p> <p>Statistics: AVG</p> <p>Threshold:
+                    Only "Less than" comparisons are supported, with the
+                    following service level thresholds: 15, 20, 25, 30, 45, 60,
+                    90, 120, 180, 240, 300, 600</p> </dd> </dl>'
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/HistoricalMetric"
+                NextToken:
+                  description: The token for the next set of results. Use the value
+                    returned in the previous response in the next request to
+                    retrieve the next set of results.
+                  type: string
+                MaxResults:
+                  description: Indicates the maximum number of results to return per page
+                    in the response, between 1-100.
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/routing-profiles-summary/{InstanceId}":
+    get:
+      operationId: ListRoutingProfiles
+      description: Returns an array of <code>RoutingProfileSummary</code> objects that
+        includes information about the routing profiles in your instance.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListRoutingProfilesResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: The token for the next set of results. Use the value returned in the
+            previous response in the next request to retrieve the next set of
+            results.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of routing profiles to return in the response.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/security-profiles-summary/{InstanceId}":
+    get:
+      operationId: ListSecurityProfiles
+      description: Returns an array of SecurityProfileSummary objects that contain
+        information about the security profiles in your instance, including the
+        ARN, Id, and Name of the security profile.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSecurityProfilesResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: The token for the next set of results. Use the value returned in the
+            previous response in the next request to retrieve the next set of
+            results.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of security profiles to return.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/user-hierarchy-groups-summary/{InstanceId}":
+    get:
+      operationId: ListUserHierarchyGroups
+      description: Returns a <code>UserHierarchyGroupSummaryList</code>, which is an array
+        of <code>HierarchyGroupSummary</code> objects that contain information
+        about the hierarchy groups in your instance.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListUserHierarchyGroupsResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: The token for the next set of results. Use the value returned in the
+            previous response in the next request to retrieve the next set of
+            results.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of hierarchy groups to return.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/users-summary/{InstanceId}":
+    get:
+      operationId: ListUsers
+      description: Returns a <code>UserSummaryList</code>, which is an array of
+        <code>UserSummary</code> objects.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListUsersResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: The token for the next set of results. Use the value returned in the
+            previous response in the next request to retrieve the next set of
+            results.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of results to return in the response.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /contact/outbound-voice:
+    put:
+      operationId: StartOutboundVoiceContact
+      description: <p>The <code>StartOutboundVoiceContact</code> operation initiates a
+        contact flow to place an outbound call to a customer.</p> <p>If you are
+        using an IAM account, it must have permission to the
+        <code>connect:StartOutboundVoiceContact</code> action.</p> <p>There is a
+        60 second dialing timeout for this operation. If the call is not
+        connected after 60 seconds, the call fails.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartOutboundVoiceContactResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: DestinationNotAllowedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DestinationNotAllowedException"
+        "486":
+          description: OutboundContactNotPermittedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OutboundContactNotPermittedException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - DestinationPhoneNumber
+                - ContactFlowId
+                - InstanceId
+              properties:
+                DestinationPhoneNumber:
+                  description: The phone number of the customer in E.164 format.
+                  type: string
+                ContactFlowId:
+                  description: <p>The identifier for the contact flow to connect the
+                    outbound call to.</p> <p>To find the
+                    <code>ContactFlowId</code>, open the contact flow you want
+                    to use in the Amazon Connect contact flow editor. The ID for
+                    the contact flow is displayed in the address bar as part of
+                    the URL. For example, the contact flow ID is the set of
+                    characters at the end of the URL, after 'contact-flow/' such
+                    as <code>78ea8fd5-2659-4f2b-b528-699760ccfc1b</code>.</p>
+                  type: string
+                  maxLength: 500
+                InstanceId:
+                  description: The identifier for your Amazon Connect instance. To find the
+                    ID of your instance, open the AWS console and select Amazon
+                    Connect. Select the alias of the instance in the Instance
+                    alias column. The instance ID is displayed in the Overview
+                    section of your instance settings. For example, the instance
+                    ID is the set of characters at the end of the instance ARN,
+                    after instance/, such as
+                    10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                ClientToken:
+                  description: A unique, case-sensitive identifier that you provide to
+                    ensure the idempotency of the request. The token is valid
+                    for 7 days after creation. If a contact is already started,
+                    the contact ID is returned. If the contact is disconnected,
+                    a new contact is started.
+                  type: string
+                  maxLength: 500
+                SourcePhoneNumber:
+                  description: The phone number, in E.164 format, associated with your
+                    Amazon Connect instance to use for the outbound call.
+                  type: string
+                QueueId:
+                  description: <p>The queue to add the call to. If you specify a queue, the
+                    phone displayed for caller ID is the phone number specified
+                    in the queue. If you do not specify a queue, the queue used
+                    will be the queue defined in the contact flow.</p> <p>To
+                    find the <code>QueueId</code>, open the queue you want to
+                    use in the Amazon Connect Queue editor. The ID for the queue
+                    is displayed in the address bar as part of the URL. For
+                    example, the queue ID is the set of characters at the end of
+                    the URL, after 'queue/' such as
+                    <code>queue/aeg40574-2d01-51c3-73d6-bf8624d2168c</code>.</p>
+                  type: string
+                Attributes:
+                  description: <p>Specify a custom key-value pair using an attribute map.
+                    The attributes are standard Amazon Connect attributes, and
+                    can be accessed in contact flows just like any other contact
+                    attributes.</p> <p>There can be up to 32,768 UTF-8 bytes
+                    across all key-value pairs per contact. Attribute keys can
+                    include only alphanumeric, dash, and underscore
+                    characters.</p> <p>For example, if you want play a greeting
+                    when the customer answers the call, you can pass the
+                    customer name in attributes similar to the following:</p>
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/AttributeValue"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /contact/stop:
+    post:
+      operationId: StopContact
+      description: <p>Ends the contact initiated by the
+        <code>StartOutboundVoiceContact</code> operation.</p> <p>If you are
+        using an IAM account, it must have permission to the
+        <code>connect:StopContact</code> action.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StopContactResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ContactNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactNotFoundException"
+        "482":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ContactId
+                - InstanceId
+              properties:
+                ContactId:
+                  description: The unique identifier of the contact to end.
+                  type: string
+                  minLength: 1
+                  maxLength: 256
+                InstanceId:
+                  description: The identifier for your Amazon Connect instance. To find the
+                    ID of your instance, open the AWS console and select Amazon
+                    Connect. Select the alias of the instance in the Instance
+                    alias column. The instance ID is displayed in the Overview
+                    section of your instance settings. For example, the instance
+                    ID is the set of characters at the end of the instance ARN,
+                    after instance/, such as
+                    10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /contact/attributes:
+    post:
+      operationId: UpdateContactAttributes
+      description: <p>The <code>UpdateContactAttributes</code> operation lets you
+        programmatically create new, or update existing, contact attributes
+        associated with a contact. You can use the operation to add or update
+        attributes for both ongoing and completed contacts. For example, you can
+        update the customer's name or the reason the customer called while the
+        call is active, or add notes about steps that the agent took during the
+        call that are displayed to the next agent that takes the call. You can
+        also use the <code>UpdateContactAttributes</code> operation to update
+        attributes for a contact using data from your CRM application and save
+        the data with the contact in Amazon Connect. You could also flag calls
+        for additional analysis, such as legal review or identifying abusive
+        callers.</p> <p>Contact attributes are available in Amazon Connect for
+        24 months, and are then deleted.</p> <p> <i>Important:</i> </p> <p>You
+        cannot use the operation to update attributes for contacts that occurred
+        prior to the release of the API, September 12, 2018. You can update
+        attributes only for contacts that started after the release of the API.
+        If you attempt to update attributes for a contact that occurred prior to
+        the release of the API, a 400 error is returned. This applies also to
+        queued callbacks that were initiated prior to the release of the API but
+        are still active in your instance.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateContactAttributesResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - InitialContactId
+                - InstanceId
+                - Attributes
+              properties:
+                InitialContactId:
+                  description: The unique identifier of the contact for which to update
+                    attributes. This is the identifier for the contact
+                    associated with the first interaction with the contact
+                    center.
+                  type: string
+                  minLength: 1
+                  maxLength: 256
+                InstanceId:
+                  description: The identifier for your Amazon Connect instance. To find the
+                    ID of your instance, open the AWS console and select Amazon
+                    Connect. Select the alias of the instance in the Instance
+                    alias column. The instance ID is displayed in the Overview
+                    section of your instance settings. For example, the instance
+                    ID is the set of characters at the end of the instance ARN,
+                    after instance/, such as
+                    10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                Attributes:
+                  description: <p>Specify a custom key-value pair using an attribute map.
+                    The attributes are standard Amazon Connect attributes, and
+                    can be accessed in contact flows just like any other contact
+                    attributes.</p> <p>There can be up to 32,768 UTF-8 bytes
+                    across all key-value pairs per contact. Attribute keys can
+                    include only alphanumeric, dash, and underscore
+                    characters.</p>
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/AttributeValue"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/users/{InstanceId}/{UserId}/hierarchy":
+    post:
+      operationId: UpdateUserHierarchy
+      description: Assigns the specified hierarchy group to the user.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: UserId
+          in: path
+          required: true
+          description: The identifier of the user account to assign the hierarchy group to.
+          schema:
+            type: string
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                HierarchyGroupId:
+                  description: The identifier for the hierarchy group to assign to the user.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/users/{InstanceId}/{UserId}/identity-info":
+    post:
+      operationId: UpdateUserIdentityInfo
+      description: Updates the identity information for the specified user in a
+        <code>UserIdentityInfo</code> object, including email, first name, and
+        last name.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: UserId
+          in: path
+          required: true
+          description: The identifier for the user account to update identity information
+            for.
+          schema:
+            type: string
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - IdentityInfo
+              properties:
+                IdentityInfo:
+                  description: A <code>UserIdentityInfo</code> object that contains
+                    information about the user's identity, including email
+                    address, first name, and last name.
+                  type: object
+                  properties:
+                    FirstName:
+                      $ref: "#/components/schemas/AgentFirstName"
+                    LastName:
+                      $ref: "#/components/schemas/AgentLastName"
+                    Email:
+                      $ref: "#/components/schemas/Email"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/users/{InstanceId}/{UserId}/phone-config":
+    post:
+      operationId: UpdateUserPhoneConfig
+      description: Updates the phone configuration settings in the
+        <code>UserPhoneConfig</code> object for the specified user.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: UserId
+          in: path
+          required: true
+          description: The identifier for the user account to change phone settings for.
+          schema:
+            type: string
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - PhoneConfig
+              properties:
+                PhoneConfig:
+                  description: A <code>UserPhoneConfig</code> object that contains
+                    information about the user phone configuration settings.
+                  type: object
+                  properties:
+                    PhoneType:
+                      $ref: "#/components/schemas/PhoneType"
+                    AutoAccept:
+                      $ref: "#/components/schemas/AutoAccept"
+                    AfterContactWorkTimeLimit:
+                      $ref: "#/components/schemas/AfterContactWorkTimeLimit"
+                    DeskPhoneNumber:
+                      $ref: "#/components/schemas/PhoneNumber"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/users/{InstanceId}/{UserId}/routing-profile":
+    post:
+      operationId: UpdateUserRoutingProfile
+      description: Assigns the specified routing profile to a user.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: UserId
+          in: path
+          required: true
+          description: The identifier for the user account to assign the routing profile to.
+          schema:
+            type: string
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - RoutingProfileId
+              properties:
+                RoutingProfileId:
+                  description: The identifier of the routing profile to assign to the user.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/users/{InstanceId}/{UserId}/security-profiles":
+    post:
+      operationId: UpdateUserSecurityProfiles
+      description: Updates the security profiles assigned to the user.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalServiceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: UserId
+          in: path
+          required: true
+          description: The identifier of the user account to assign the security profiles.
+          schema:
+            type: string
+        - name: InstanceId
+          in: path
+          required: true
+          description: The identifier for your Amazon Connect instance. To find the ID of
+            your instance, open the AWS console and select Amazon Connect.
+            Select the alias of the instance in the Instance alias column. The
+            instance ID is displayed in the Overview section of your instance
+            settings. For example, the instance ID is the set of characters at
+            the end of the instance ARN, after instance/, such as
+            10a4c4eb-f57e-4d4c-b602-bf39176ced07.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - SecurityProfileIds
+              properties:
+                SecurityProfileIds:
+                  description: The identifiers for the security profiles to assign to the
+                    user.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SecurityProfileId"
+                  minItems: 1
+                  maxItems: 10
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://connect.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Amazon Connect multi-region endpoint
+  - url: https://connect.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Amazon Connect multi-region endpoint
+  - url: http://connect.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Amazon Connect endpoint for China (Beijing) and China (Ningxia)
+  - url: https://connect.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Amazon Connect endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    CreateUserResponse:
+      type: object
+      properties:
+        UserId:
+          $ref: "#/components/schemas/UserId"
+        UserArn:
+          $ref: "#/components/schemas/ARN"
+    AgentFirstName:
+      type: string
+      minLength: 1
+      maxLength: 100
+    AgentLastName:
+      type: string
+      minLength: 1
+      maxLength: 100
+    Email:
+      type: string
+    PhoneType:
+      type: string
+      enum:
+        - SOFT_PHONE
+        - DESK_PHONE
+    AutoAccept:
+      type: boolean
+    AfterContactWorkTimeLimit:
+      type: integer
+      minimum: 0
+    PhoneNumber:
+      type: string
+    SecurityProfileId:
+      type: string
+    InvalidRequestException: {}
+    InvalidParameterException: {}
+    LimitExceededException: {}
+    DuplicateResourceException: {}
+    ResourceNotFoundException: {}
+    ThrottlingException: {}
+    InternalServiceException: {}
+    DescribeUserResponse:
+      type: object
+      properties:
+        User:
+          $ref: "#/components/schemas/User"
+    DescribeUserHierarchyGroupResponse:
+      type: object
+      properties:
+        HierarchyGroup:
+          $ref: "#/components/schemas/HierarchyGroup"
+    DescribeUserHierarchyStructureResponse:
+      type: object
+      properties:
+        HierarchyStructure:
+          $ref: "#/components/schemas/HierarchyStructure"
+    GetContactAttributesResponse:
+      type: object
+      properties:
+        Attributes:
+          $ref: "#/components/schemas/Attributes"
+    GetCurrentMetricDataResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MetricResults:
+          $ref: "#/components/schemas/CurrentMetricResults"
+        DataSnapshotTime:
+          $ref: "#/components/schemas/timestamp"
+    Queues:
+      type: array
+      items:
+        $ref: "#/components/schemas/QueueId"
+      minItems: 1
+      maxItems: 100
+    Channels:
+      type: array
+      items:
+        $ref: "#/components/schemas/Channel"
+      maxItems: 1
+    Grouping:
+      type: string
+      enum:
+        - QUEUE
+        - CHANNEL
+    CurrentMetric:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/CurrentMetricName"
+        Unit:
+          $ref: "#/components/schemas/Unit"
+      description: A <code>CurrentMetric</code> object that contains the Name and Unit for
+        the metric.
+    GetFederationTokenResponse:
+      type: object
+      properties:
+        Credentials:
+          $ref: "#/components/schemas/Credentials"
+    UserNotFoundException: {}
+    GetMetricDataResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MetricResults:
+          $ref: "#/components/schemas/HistoricalMetricResults"
+    HistoricalMetric:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/HistoricalMetricName"
+        Threshold:
+          $ref: "#/components/schemas/Threshold"
+        Statistic:
+          $ref: "#/components/schemas/Statistic"
+        Unit:
+          $ref: "#/components/schemas/Unit"
+      description: A <code>HistoricalMetric</code> object that contains the Name, Unit,
+        Statistic, and Threshold for the metric.
+    ListRoutingProfilesResponse:
+      type: object
+      properties:
+        RoutingProfileSummaryList:
+          $ref: "#/components/schemas/RoutingProfileSummaryList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListSecurityProfilesResponse:
+      type: object
+      properties:
+        SecurityProfileSummaryList:
+          $ref: "#/components/schemas/SecurityProfileSummaryList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListUserHierarchyGroupsResponse:
+      type: object
+      properties:
+        UserHierarchyGroupSummaryList:
+          $ref: "#/components/schemas/HierarchyGroupSummaryList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListUsersResponse:
+      type: object
+      properties:
+        UserSummaryList:
+          $ref: "#/components/schemas/UserSummaryList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    StartOutboundVoiceContactResponse:
+      type: object
+      properties:
+        ContactId:
+          $ref: "#/components/schemas/ContactId"
+    AttributeValue:
+      type: string
+      minLength: 0
+      maxLength: 32767
+    DestinationNotAllowedException: {}
+    OutboundContactNotPermittedException: {}
+    StopContactResponse:
+      type: object
+      properties: {}
+    ContactNotFoundException: {}
+    UpdateContactAttributesResponse:
+      type: object
+      properties: {}
+    ARN:
+      type: string
+    AgentUsername:
+      type: string
+      pattern: "[a-zA-Z0-9\\_\\-\\.]+"
+      minLength: 1
+      maxLength: 20
+    AttributeName:
+      type: string
+      minLength: 1
+      maxLength: 32767
+    Attributes:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/AttributeValue"
+    Channel:
+      type: string
+      enum:
+        - VOICE
+    ClientToken:
+      type: string
+      maxLength: 500
+    Comparison:
+      type: string
+      enum:
+        - LT
+    ContactFlowId:
+      type: string
+      maxLength: 500
+    ContactId:
+      type: string
+      minLength: 1
+      maxLength: 256
+    Password:
+      type: string
+      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\S]{8,64}$/
+    UserIdentityInfo:
+      type: object
+      properties:
+        FirstName:
+          $ref: "#/components/schemas/AgentFirstName"
+        LastName:
+          $ref: "#/components/schemas/AgentLastName"
+        Email:
+          $ref: "#/components/schemas/Email"
+      description: A <code>UserIdentityInfo</code> object that contains information about
+        the user's identity, including email address, first name, and last name.
+    UserPhoneConfig:
+      type: object
+      required:
+        - PhoneType
+      properties:
+        PhoneType:
+          $ref: "#/components/schemas/PhoneType"
+        AutoAccept:
+          $ref: "#/components/schemas/AutoAccept"
+        AfterContactWorkTimeLimit:
+          $ref: "#/components/schemas/AfterContactWorkTimeLimit"
+        DeskPhoneNumber:
+          $ref: "#/components/schemas/PhoneNumber"
+      description: A <code>UserPhoneConfig</code> object that contains information about
+        the user phone configuration settings.
+    DirectoryUserId:
+      type: string
+    SecurityProfileIds:
+      type: array
+      items:
+        $ref: "#/components/schemas/SecurityProfileId"
+      minItems: 1
+      maxItems: 10
+    RoutingProfileId:
+      type: string
+    HierarchyGroupId:
+      type: string
+    InstanceId:
+      type: string
+      minLength: 1
+      maxLength: 100
+    CreateUserRequest:
+      type: object
+      required:
+        - Username
+        - PhoneConfig
+        - SecurityProfileIds
+        - RoutingProfileId
+      properties:
+        Username:
+          $ref: "#/components/schemas/AgentUsername"
+        Password:
+          $ref: "#/components/schemas/Password"
+        IdentityInfo:
+          $ref: "#/components/schemas/UserIdentityInfo"
+        PhoneConfig:
+          $ref: "#/components/schemas/UserPhoneConfig"
+        DirectoryUserId:
+          $ref: "#/components/schemas/DirectoryUserId"
+        SecurityProfileIds:
+          $ref: "#/components/schemas/SecurityProfileIds"
+        RoutingProfileId:
+          $ref: "#/components/schemas/RoutingProfileId"
+        HierarchyGroupId:
+          $ref: "#/components/schemas/HierarchyGroupId"
+    UserId:
+      type: string
+    SecurityToken:
+      type: string
+      format: password
+    timestamp:
+      type: string
+      format: date-time
+    Credentials:
+      type: object
+      properties:
+        AccessToken:
+          $ref: "#/components/schemas/SecurityToken"
+        AccessTokenExpiration:
+          $ref: "#/components/schemas/timestamp"
+        RefreshToken:
+          $ref: "#/components/schemas/SecurityToken"
+        RefreshTokenExpiration:
+          $ref: "#/components/schemas/timestamp"
+      description: The credentials to use for federation.
+    CurrentMetricName:
+      type: string
+      enum:
+        - AGENTS_ONLINE
+        - AGENTS_AVAILABLE
+        - AGENTS_ON_CALL
+        - AGENTS_NON_PRODUCTIVE
+        - AGENTS_AFTER_CONTACT_WORK
+        - AGENTS_ERROR
+        - AGENTS_STAFFED
+        - CONTACTS_IN_QUEUE
+        - OLDEST_CONTACT_AGE
+        - CONTACTS_SCHEDULED
+      description: A list of current metric names.
+    Unit:
+      type: string
+      enum:
+        - SECONDS
+        - COUNT
+        - PERCENT
+    Value:
+      type: number
+      format: double
+    CurrentMetricData:
+      type: object
+      properties:
+        Metric:
+          $ref: "#/components/schemas/CurrentMetric"
+        Value:
+          $ref: "#/components/schemas/Value"
+      description: A <code>CurrentMetricData</code> object.
+    CurrentMetricDataCollections:
+      type: array
+      items:
+        $ref: "#/components/schemas/CurrentMetricData"
+    Dimensions:
+      type: object
+      properties:
+        Queue:
+          $ref: "#/components/schemas/QueueReference"
+        Channel:
+          $ref: "#/components/schemas/Channel"
+      description: A <code>Dimensions</code> object that includes the Channel and Queue for
+        the metric.
+    CurrentMetricResult:
+      type: object
+      properties:
+        Dimensions:
+          $ref: "#/components/schemas/Dimensions"
+        Collections:
+          $ref: "#/components/schemas/CurrentMetricDataCollections"
+      description: A <code>CurrentMetricResult</code> object.
+    CurrentMetricResults:
+      type: array
+      items:
+        $ref: "#/components/schemas/CurrentMetricResult"
+    CurrentMetrics:
+      type: array
+      items:
+        $ref: "#/components/schemas/CurrentMetric"
+    DeleteUserRequest:
+      type: object
+      properties: {}
+    DescribeUserHierarchyGroupRequest:
+      type: object
+      properties: {}
+    HierarchyGroup:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/HierarchyGroupId"
+        Arn:
+          $ref: "#/components/schemas/ARN"
+        Name:
+          $ref: "#/components/schemas/HierarchyGroupName"
+        LevelId:
+          $ref: "#/components/schemas/HierarchyLevelId"
+        HierarchyPath:
+          $ref: "#/components/schemas/HierarchyPath"
+      description: A <code>HierarchyGroup</code> object that contains information about a
+        hierarchy group in your Amazon Connect instance.
+    DescribeUserHierarchyStructureRequest:
+      type: object
+      properties: {}
+    HierarchyStructure:
+      type: object
+      properties:
+        LevelOne:
+          $ref: "#/components/schemas/HierarchyLevel"
+        LevelTwo:
+          $ref: "#/components/schemas/HierarchyLevel"
+        LevelThree:
+          $ref: "#/components/schemas/HierarchyLevel"
+        LevelFour:
+          $ref: "#/components/schemas/HierarchyLevel"
+        LevelFive:
+          $ref: "#/components/schemas/HierarchyLevel"
+      description: A <code>HierarchyStructure</code> object that contains information about
+        the hierarchy group structure.
+    DescribeUserRequest:
+      type: object
+      properties: {}
+    User:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/UserId"
+        Arn:
+          $ref: "#/components/schemas/ARN"
+        Username:
+          $ref: "#/components/schemas/AgentUsername"
+        IdentityInfo:
+          $ref: "#/components/schemas/UserIdentityInfo"
+        PhoneConfig:
+          $ref: "#/components/schemas/UserPhoneConfig"
+        DirectoryUserId:
+          $ref: "#/components/schemas/DirectoryUserId"
+        SecurityProfileIds:
+          $ref: "#/components/schemas/SecurityProfileIds"
+        RoutingProfileId:
+          $ref: "#/components/schemas/RoutingProfileId"
+        HierarchyGroupId:
+          $ref: "#/components/schemas/HierarchyGroupId"
+      description: A <code>User</code> object that contains information about a user
+        account in your Amazon Connect instance, including configuration
+        settings.
+    QueueReference:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/QueueId"
+        Arn:
+          $ref: "#/components/schemas/ARN"
+      description: A QueueReference object that contains the the QueueId and ARN for the
+        queue resource for which metrics are returned.
+    Filters:
+      type: object
+      properties:
+        Queues:
+          $ref: "#/components/schemas/Queues"
+        Channels:
+          $ref: "#/components/schemas/Channels"
+      description: The filter, either channel or queues, to apply to the metric results
+        retrieved.
+    GetContactAttributesRequest:
+      type: object
+      properties: {}
+    Groupings:
+      type: array
+      items:
+        $ref: "#/components/schemas/Grouping"
+      maxItems: 2
+    NextToken:
+      type: string
+    MaxResult100:
+      type: integer
+      minimum: 1
+      maximum: 100
+    GetCurrentMetricDataRequest:
+      type: object
+      required:
+        - Filters
+        - CurrentMetrics
+      properties:
+        Filters:
+          $ref: "#/components/schemas/Filters"
+        Groupings:
+          $ref: "#/components/schemas/Groupings"
+        CurrentMetrics:
+          $ref: "#/components/schemas/CurrentMetrics"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResult100"
+    GetFederationTokenRequest:
+      type: object
+      properties: {}
+    HistoricalMetrics:
+      type: array
+      items:
+        $ref: "#/components/schemas/HistoricalMetric"
+    GetMetricDataRequest:
+      type: object
+      required:
+        - StartTime
+        - EndTime
+        - Filters
+        - HistoricalMetrics
+      properties:
+        StartTime:
+          $ref: "#/components/schemas/timestamp"
+        EndTime:
+          $ref: "#/components/schemas/timestamp"
+        Filters:
+          $ref: "#/components/schemas/Filters"
+        Groupings:
+          $ref: "#/components/schemas/Groupings"
+        HistoricalMetrics:
+          $ref: "#/components/schemas/HistoricalMetrics"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResult100"
+    HistoricalMetricResults:
+      type: array
+      items:
+        $ref: "#/components/schemas/HistoricalMetricResult"
+    HierarchyGroupName:
+      type: string
+    HierarchyLevelId:
+      type: string
+    HierarchyPath:
+      type: object
+      properties:
+        LevelOne:
+          $ref: "#/components/schemas/HierarchyGroupSummary"
+        LevelTwo:
+          $ref: "#/components/schemas/HierarchyGroupSummary"
+        LevelThree:
+          $ref: "#/components/schemas/HierarchyGroupSummary"
+        LevelFour:
+          $ref: "#/components/schemas/HierarchyGroupSummary"
+        LevelFive:
+          $ref: "#/components/schemas/HierarchyGroupSummary"
+      description: A <code>HierarchyPath</code> object that contains information about the
+        levels of the hierarchy group.
+    HierarchyGroupSummary:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/HierarchyGroupId"
+        Arn:
+          $ref: "#/components/schemas/ARN"
+        Name:
+          $ref: "#/components/schemas/HierarchyGroupName"
+      description: A <code>HierarchyGroupSummary</code> object that contains information
+        about the hierarchy group, including ARN, Id, and Name.
+    HierarchyGroupSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/HierarchyGroupSummary"
+    HierarchyLevelName:
+      type: string
+    HierarchyLevel:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/HierarchyLevelId"
+        Arn:
+          $ref: "#/components/schemas/ARN"
+        Name:
+          $ref: "#/components/schemas/HierarchyLevelName"
+      description: A <code>HierarchyLevel</code> object that contains information about the
+        levels in a hierarchy group, including ARN, Id, and Name.
+    HistoricalMetricName:
+      type: string
+      enum:
+        - CONTACTS_QUEUED
+        - CONTACTS_HANDLED
+        - CONTACTS_ABANDONED
+        - CONTACTS_CONSULTED
+        - CONTACTS_AGENT_HUNG_UP_FIRST
+        - CONTACTS_HANDLED_INCOMING
+        - CONTACTS_HANDLED_OUTBOUND
+        - CONTACTS_HOLD_ABANDONS
+        - CONTACTS_TRANSFERRED_IN
+        - CONTACTS_TRANSFERRED_OUT
+        - CONTACTS_TRANSFERRED_IN_FROM_QUEUE
+        - CONTACTS_TRANSFERRED_OUT_FROM_QUEUE
+        - CONTACTS_MISSED
+        - CALLBACK_CONTACTS_HANDLED
+        - API_CONTACTS_HANDLED
+        - OCCUPANCY
+        - HANDLE_TIME
+        - AFTER_CONTACT_WORK_TIME
+        - QUEUED_TIME
+        - ABANDON_TIME
+        - QUEUE_ANSWER_TIME
+        - HOLD_TIME
+        - INTERACTION_TIME
+        - INTERACTION_AND_HOLD_TIME
+        - SERVICE_LEVEL
+      description: A list of historical metric names.
+    Threshold:
+      type: object
+      properties:
+        Comparison:
+          $ref: "#/components/schemas/Comparison"
+        ThresholdValue:
+          $ref: "#/components/schemas/ThresholdValue"
+      description: A <code>Threshold</code> object that includes a comparison and
+        <code>ThresholdValue</code> to compare to. Used with service level
+        metrics.
+    Statistic:
+      type: string
+      enum:
+        - SUM
+        - MAX
+        - AVG
+    HistoricalMetricData:
+      type: object
+      properties:
+        Metric:
+          $ref: "#/components/schemas/HistoricalMetric"
+        Value:
+          $ref: "#/components/schemas/Value"
+      description: A <code>HistoricalMetricData</code> object than contains a
+        <code>Metric</code> and a <code>Value</code>.
+    HistoricalMetricDataCollections:
+      type: array
+      items:
+        $ref: "#/components/schemas/HistoricalMetricData"
+    HistoricalMetricResult:
+      type: object
+      properties:
+        Dimensions:
+          $ref: "#/components/schemas/Dimensions"
+        Collections:
+          $ref: "#/components/schemas/HistoricalMetricDataCollections"
+      description: The metrics data returned from a <code>GetMetricData</code> operation.
+    MaxResult1000:
+      type: integer
+      minimum: 1
+      maximum: 1000
+    ListRoutingProfilesRequest:
+      type: object
+      properties: {}
+    RoutingProfileSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/RoutingProfileSummary"
+    ListSecurityProfilesRequest:
+      type: object
+      properties: {}
+    SecurityProfileSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SecurityProfileSummary"
+    ListUserHierarchyGroupsRequest:
+      type: object
+      properties: {}
+    ListUsersRequest:
+      type: object
+      properties: {}
+    UserSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/UserSummary"
+    QueueId:
+      type: string
+    RoutingProfileName:
+      type: string
+      minLength: 1
+      maxLength: 100
+    RoutingProfileSummary:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/RoutingProfileId"
+        Arn:
+          $ref: "#/components/schemas/ARN"
+        Name:
+          $ref: "#/components/schemas/RoutingProfileName"
+      description: A <code>RoutingProfileSummary</code> object that contains information
+        about a routing profile, including ARN, Id, and Name.
+    SecurityProfileName:
+      type: string
+    SecurityProfileSummary:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/SecurityProfileId"
+        Arn:
+          $ref: "#/components/schemas/ARN"
+        Name:
+          $ref: "#/components/schemas/SecurityProfileName"
+      description: A <code>SecurityProfileSummary</code> object that contains information
+        about a security profile, including ARN, Id, Name.
+    StartOutboundVoiceContactRequest:
+      type: object
+      required:
+        - DestinationPhoneNumber
+        - ContactFlowId
+        - InstanceId
+      properties:
+        DestinationPhoneNumber:
+          $ref: "#/components/schemas/PhoneNumber"
+        ContactFlowId:
+          $ref: "#/components/schemas/ContactFlowId"
+        InstanceId:
+          $ref: "#/components/schemas/InstanceId"
+        ClientToken:
+          $ref: "#/components/schemas/ClientToken"
+        SourcePhoneNumber:
+          $ref: "#/components/schemas/PhoneNumber"
+        QueueId:
+          $ref: "#/components/schemas/QueueId"
+        Attributes:
+          $ref: "#/components/schemas/Attributes"
+    StopContactRequest:
+      type: object
+      required:
+        - ContactId
+        - InstanceId
+      properties:
+        ContactId:
+          $ref: "#/components/schemas/ContactId"
+        InstanceId:
+          $ref: "#/components/schemas/InstanceId"
+    ThresholdValue:
+      type: number
+      format: double
+    UpdateContactAttributesRequest:
+      type: object
+      required:
+        - InitialContactId
+        - InstanceId
+        - Attributes
+      properties:
+        InitialContactId:
+          $ref: "#/components/schemas/ContactId"
+        InstanceId:
+          $ref: "#/components/schemas/InstanceId"
+        Attributes:
+          $ref: "#/components/schemas/Attributes"
+    UpdateUserHierarchyRequest:
+      type: object
+      properties:
+        HierarchyGroupId:
+          $ref: "#/components/schemas/HierarchyGroupId"
+    UpdateUserIdentityInfoRequest:
+      type: object
+      required:
+        - IdentityInfo
+      properties:
+        IdentityInfo:
+          $ref: "#/components/schemas/UserIdentityInfo"
+    UpdateUserPhoneConfigRequest:
+      type: object
+      required:
+        - PhoneConfig
+      properties:
+        PhoneConfig:
+          $ref: "#/components/schemas/UserPhoneConfig"
+    UpdateUserRoutingProfileRequest:
+      type: object
+      required:
+        - RoutingProfileId
+      properties:
+        RoutingProfileId:
+          $ref: "#/components/schemas/RoutingProfileId"
+    UpdateUserSecurityProfilesRequest:
+      type: object
+      required:
+        - SecurityProfileIds
+      properties:
+        SecurityProfileIds:
+          $ref: "#/components/schemas/SecurityProfileIds"
+    UserSummary:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/UserId"
+        Arn:
+          $ref: "#/components/schemas/ARN"
+        Username:
+          $ref: "#/components/schemas/AgentUsername"
+      description: A <code>UserSummary</code> object that contains Information about a
+        user, including ARN, Id, and user name.

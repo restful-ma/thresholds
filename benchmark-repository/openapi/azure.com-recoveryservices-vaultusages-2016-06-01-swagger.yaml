@@ -1,0 +1,268 @@
+openapi: 3.0.0
+info:
+  title: RecoveryServicesClient
+  version: 2016-06-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2016-06-01/vaultusages.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: recoveryservices-vaultusages
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/usages":
+    get:
+      deprecated: false
+      description: Fetches the usages of the vault.
+      operationId: Usages_ListByVaults
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/VaultName"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultUsageList"
+              examples:
+                Gets vault usages:
+                  $ref: "#/components/examples/Gets_vault_usages"
+      tags:
+        - VaultUsages
+      x-ms-pageable: {}
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Gets_vault_usages:
+      value:
+        value:
+          - currentValue: 6
+            limit: -1
+            name:
+              localizedValue: Backup management servers
+              value: MABContainersCount
+            unit: Count
+          - currentValue: 3
+            limit: -1
+            name:
+              localizedValue: Backup items/Azure virtual machine backup
+              value: ProtectedItemCount
+            unit: Count
+          - currentValue: 0
+            limit: -1
+            name:
+              localizedValue: Critical
+              value: ProtectedItemCriticalCount
+            unit: Count
+          - currentValue: 0
+            limit: -1
+            name:
+              localizedValue: Warning
+              value: ProtectedItemWarningCount
+            unit: Count
+          - currentValue: 0
+            limit: -1
+            name:
+              localizedValue: Azure Virtual Machines
+              value: IaaSVMProtectedItemCount
+            unit: Count
+          - currentValue: 0
+            limit: -1
+            name:
+              localizedValue: Critical
+              value: IaaSVMProtectedItemCriticalCount
+            unit: Count
+          - currentValue: 0
+            limit: -1
+            name:
+              localizedValue: Warning
+              value: IaaSVMProtectedItemWarningCount
+            unit: Count
+          - currentValue: 0
+            limit: -1
+            name:
+              localizedValue: File-Folders
+              value: MABProtectedItemCount
+            unit: Count
+          - currentValue: 1
+            limit: -1
+            name:
+              localizedValue: DPM Protected Items Count
+              value: DPMProtectedItemCount
+            unit: Count
+          - currentValue: 2
+            limit: -1
+            name:
+              localizedValue: Azure Backup Server Protected Items Count
+              value: AzureBackupServerProtectedItemCount
+            unit: Count
+          - currentValue: 0
+            limit: -1
+            name:
+              localizedValue: In progress
+              value: InProgressJobsCount
+            quotaPeriod: P1D
+            unit: Count
+          - currentValue: 0
+            limit: -1
+            name:
+              localizedValue: Failed
+              value: FailedJobsCount
+            quotaPeriod: P1D
+            unit: Count
+          - currentValue: 117007930
+            limit: -1
+            name:
+              localizedValue: Cloud - GRS
+              value: GRSStorageUsage
+            unit: Bytes
+          - currentValue: 0
+            limit: -1
+            name:
+              localizedValue: Cloud - LRS
+              value: LRSStorageUsage
+            unit: Bytes
+          - currentValue: 5
+            limit: -1
+            name:
+              localizedValue: Protected Instances
+              value: ManagedInstances
+            unit: Count
+          - currentValue: 0
+            limit: -1
+            name:
+              localizedValue: Dedup - GRS
+              value: GRSDedupStorageUsage
+            unit: Bytes
+          - currentValue: 0
+            limit: -1
+            name:
+              localizedValue: Dedup - LRS
+              value: LRSDedupStorageUsage
+            unit: Bytes
+          - currentValue: 117851553792
+            limit: -1
+            name:
+              localizedValue: Backup Engines' Disk Used
+              value: UsedDiskSize
+            unit: Bytes
+  parameters:
+    ApiVersion:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Gets vault usages:
+          value: 2016-06-01
+    ResourceGroupName:
+      description: The name of the resource group where the recovery services vault is
+        present.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Gets vault usages:
+          value: Default-RecoveryServices-ResourceGroup
+    SubscriptionId:
+      description: The subscription Id.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Gets vault usages:
+          value: 77777777-b0c6-47a2-b37c-d8e65a629c18
+    VaultName:
+      description: The name of the recovery services vault.
+      in: path
+      name: vaultName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Gets vault usages:
+          value: swaggerExample
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account.
+  schemas:
+    NameInfo:
+      description: The name of usage.
+      properties:
+        localizedValue:
+          description: Localized value of usage.
+          type: string
+        value:
+          description: Value of usage.
+          type: string
+      type: object
+    VaultUsage:
+      description: Usages of a vault.
+      properties:
+        currentValue:
+          description: Current value of usage.
+          format: int64
+          type: integer
+        limit:
+          description: Limit of usage.
+          format: int64
+          type: integer
+        name:
+          $ref: "#/components/schemas/NameInfo"
+        nextResetTime:
+          description: Next reset time of usage.
+          format: date-time
+          type: string
+        quotaPeriod:
+          description: Quota period of usage.
+          type: string
+        unit:
+          description: Unit of the usage.
+          enum:
+            - Count
+            - Bytes
+            - Seconds
+            - Percent
+            - CountPerSecond
+            - BytesPerSecond
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: UsagesUnit
+      type: object
+    VaultUsageList:
+      description: Usage for vault.
+      properties:
+        value:
+          description: The list of usages for the given vault.
+          items:
+            $ref: "#/components/schemas/VaultUsage"
+          type: array
+      type: object

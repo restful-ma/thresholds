@@ -1,0 +1,1081 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: info@swaggerhub.com
+    name: SwaggerHub
+    url: https://swaggerhub.com
+  description: >
+    # Introduction
+
+    This is the registry API for SwaggerHub. It allows you to access, manage, and update your APIs and Domains in SwaggerHub bypassing the Web application.
+
+
+    # Authentication
+
+    Use your personal API Key: you can find it by visiting the [API Key page](https://app.swaggerhub.com/settings/apiKey).
+  title: SwaggerHub Registry
+  version: 1.0.47
+  x-apisguru-categories:
+    - developer_tools
+  x-logo:
+    url: https://twitter.com/SwaggerHub/profile_image?size=original
+  x-origin:
+    - format: swagger
+      url: https://api.swaggerhub.com/apis/swagger-hub/registry-api/1.0.47
+      version: "2.0"
+  x-providerName: swaggerhub.com
+tags:
+  - description: Operations for APIs
+    name: APIs
+  - description: Operations for Domains
+    name: Domains
+paths:
+  /apis:
+    get:
+      description: ""
+      operationId: searchApis
+      parameters:
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/state"
+        - description: Matches against tags associated with an API
+          in: query
+          name: tag
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/order"
+      responses:
+        "303":
+          description: 303 response
+          headers:
+            Location:
+              schema:
+                type: string
+      security:
+        - TokenSecured: []
+      summary: Retrieves a list of currently defined APIs in APIs.json format.
+      tags:
+        - APIs
+  "/apis/{owner}":
+    get:
+      description: ""
+      operationId: getOwnerApis
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/order"
+      responses:
+        "200":
+          description: A list of APIs in APIs.json format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApisJson"
+      security:
+        - TokenSecured: []
+      summary: Retrieves an APIs.json listing of all APIs defined for this owner
+      tags:
+        - APIs
+  "/apis/{owner}/{api}":
+    delete:
+      description: ""
+      operationId: deleteApi
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/api"
+      responses:
+        "200":
+          description: The API was successfully deleted
+        "403":
+          description: Access denied
+        "404":
+          description: The specified API not found
+        "409":
+          description: The API has published versions and cannot be deleted
+      security:
+        - TokenSecured: []
+      summary: Deletes the specified API
+      tags:
+        - APIs
+    get:
+      operationId: getApiVersions
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/api"
+      responses:
+        "200":
+          description: A list of API versions in APIs.json format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApisJson"
+      security:
+        - TokenSecured: []
+      summary: Retrieves an APIs.json listing for all API versions for this owner and
+        API
+      tags:
+        - APIs
+    post:
+      description: Saves the provided Swagger definition; the owner must match the token
+        owner. The version will be extracted from the Swagger definition itself.
+      operationId: saveDefinition
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/api"
+        - description: Defines whether the API has to be private
+          in: query
+          name: isPrivate
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: API version
+          in: query
+          name: version
+          required: false
+          schema:
+            type: string
+        - description: |
+            The OpenApi Specification (OAS)
+              version.
+            * 2.0 - For OAS2 (aka 'Swagger 2.0')
+            * 3.0.X - For OAS3
+          in: query
+          name: oas
+          required: false
+          schema:
+            type: string
+            enum:
+              - "2.0"
+              - 3.0.0
+              - 3.0.1
+            default: "2.0"
+        - description: Force update
+          in: query
+          name: force
+          required: false
+          schema:
+            type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+          application/yaml:
+            schema:
+              type: string
+        description: The Swagger definition of this API
+        required: true
+      responses:
+        "200":
+          description: The API was successfully saved
+        "201":
+          description: New API was successfully saved
+        "205":
+          description: The API was successfully saved and should be reloaded
+        "400":
+          description: The Swagger definition was invalid
+        "403":
+          description: Maximum number of APIs reached
+        "409":
+          description: Cannot overwrite a published API version
+        "415":
+          description: Invalid content type
+      security:
+        - TokenSecured: []
+      summary: Saves the provided Swagger definition
+      tags:
+        - APIs
+  "/apis/{owner}/{api}/.collaboration":
+    delete:
+      operationId: deleteCollaboration
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/api"
+      responses:
+        default:
+          description: Successfully deleted a collaboration
+      security:
+        - TokenSecured: []
+      summary: Deletes API's collaboration
+      tags:
+        - APIs
+    get:
+      operationId: getCollaboration
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/api"
+        - in: query
+          name: expandTeams
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        "200":
+          description: The existing collaboration on an API
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Collaboration"
+      security:
+        - TokenSecured: []
+      summary: Gets API's collaboration
+      tags:
+        - APIs
+    put:
+      operationId: updateCollaboration
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/api"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Collaboration"
+      responses:
+        default:
+          description: Successfully updated API collaboration
+      security:
+        - TokenSecured: []
+      summary: Updates API's collaboration
+      tags:
+        - APIs
+  "/apis/{owner}/{api}/{version}":
+    delete:
+      description: ""
+      operationId: deleteApiVersion
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/api"
+        - $ref: "#/components/parameters/version"
+      responses:
+        "200":
+          description: The API version was successfully deleted
+        "403":
+          description: Access denied
+        "404":
+          description: The specified API was not found
+        "409":
+          description: The API version is published and cannot be deleted or it is the only
+            version of this API
+      security:
+        - TokenSecured: []
+      summary: Deletes a particular version of the specified API
+      tags:
+        - APIs
+    get:
+      description: ""
+      operationId: getDefinition
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/api"
+        - $ref: "#/components/parameters/version"
+      responses:
+        "200":
+          description: The Swagger API in requested format
+          content:
+            application/json:
+              schema:
+                properties: {}
+                type: object
+            application/yaml:
+              schema:
+                properties: {}
+                type: object
+        "404":
+          description: The specified API not found
+      security:
+        - TokenSecured: []
+      summary: Retrieves the Swagger definition for the specified API and version
+      tags:
+        - APIs
+  "/apis/{owner}/{api}/{version}/.comment":
+    get:
+      description: >
+        Returns all the comments and replies added by collaborators in the
+        specified API version.
+      operationId: getApiComments
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/api"
+        - $ref: "#/components/parameters/version"
+      responses:
+        "200":
+          description: A list of comments for the specified API version
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ClosableComment"
+                type: array
+        "204":
+          description: No comments were found for the specified API version
+        "401":
+          description: The access token is missing or invalid
+        "403":
+          description: Access denied (insufficient user permissions)
+        "404":
+          description: The specified API or version was not found
+      security:
+        - TokenSecured: []
+      summary: Returns comments for the specified API version
+      tags:
+        - APIs
+  "/apis/{owner}/{api}/{version}/swagger.json":
+    get:
+      description: ""
+      operationId: getJsonDefinition
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/api"
+        - $ref: "#/components/parameters/version"
+      responses:
+        "200":
+          description: The Swagger API in JSON format
+          content:
+            application/json:
+              schema:
+                properties: {}
+                type: object
+        "404":
+          description: The specified API was not found
+      security:
+        - TokenSecured: []
+      summary: Retrieves the Swagger definition for the specified API and version in
+        JSON format
+      tags:
+        - APIs
+  "/apis/{owner}/{api}/{version}/swagger.yaml":
+    get:
+      description: ""
+      operationId: getYamlDefinition
+      parameters:
+        - $ref: "#/components/parameters/apiOwner"
+        - $ref: "#/components/parameters/api"
+        - $ref: "#/components/parameters/version"
+      responses:
+        "200":
+          description: The Swagger API in YAML format
+          content:
+            application/yaml:
+              schema:
+                properties: {}
+                type: object
+        "404":
+          description: The specified API was not found
+      security:
+        - TokenSecured: []
+      summary: Retrieves the Swagger definition for the specified API and version in
+        YAML format
+      tags:
+        - APIs
+  /domains:
+    get:
+      operationId: searchDomains
+      parameters:
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/state"
+        - description: Matches against tags associated with a domain
+          in: query
+          name: tag
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/order"
+      responses:
+        "303":
+          description: 303 response
+          headers:
+            Location:
+              schema:
+                type: string
+      security:
+        - TokenSecured: []
+      summary: Retrieves a list of currently defined domains in APIs.json format
+      tags:
+        - Domains
+  "/domains/{owner}":
+    get:
+      operationId: getOwnerDomains
+      parameters:
+        - $ref: "#/components/parameters/domainOwner"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/order"
+      responses:
+        "200":
+          description: A list of domains in APIs.json format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApisJson"
+      security:
+        - TokenSecured: []
+      summary: Retrieves an APIs.json listing of all domains defined for this owner
+      tags:
+        - Domains
+  "/domains/{owner}/{domain}":
+    delete:
+      operationId: deleteDomain
+      parameters:
+        - $ref: "#/components/parameters/domainOwner"
+        - $ref: "#/components/parameters/domain"
+        - description: Force update
+          in: query
+          name: force
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: The domain was successfully deleted
+        "403":
+          description: Access denied
+        "404":
+          description: The specified domain not found
+        "409":
+          description: The domain has published versions and can not be deleted
+        "424":
+          description: Cannot delete because there are some dependencies for domain
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Page"
+      security:
+        - TokenSecured: []
+      summary: Deletes the specified domain
+      tags:
+        - Domains
+    get:
+      operationId: getDomainVersions
+      parameters:
+        - $ref: "#/components/parameters/domainOwner"
+        - $ref: "#/components/parameters/domain"
+      responses:
+        "200":
+          description: A list of domain versions in APIs.json format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApisJson"
+      security:
+        - TokenSecured: []
+      summary: Retrieves an APIs.json listing for all domain versions for this owner
+        and domain
+      tags:
+        - Domains
+    post:
+      operationId: saveDomainDefinition
+      parameters:
+        - $ref: "#/components/parameters/domainOwner"
+        - $ref: "#/components/parameters/domain"
+        - description: Specifies whether the domain has to be private
+          in: query
+          name: isPrivate
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Domain version
+          in: query
+          name: version
+          required: true
+          schema:
+            type: string
+        - description: Force update
+          in: query
+          name: force
+          required: false
+          schema:
+            type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+          application/yaml:
+            schema:
+              type: string
+        description: The Swagger definition of this domain
+      responses:
+        "200":
+          description: The domain was successfully saved
+        "201":
+          description: New domain was successfully saved
+        "205":
+          description: The domain was successfully saved and should be reloaded
+        "403":
+          description: Maximum number of domains reached
+        "409":
+          description: Cannot overwrite a published domain version
+        "415":
+          description: Invalid content type
+      security:
+        - TokenSecured: []
+      summary: Saves the provided Swagger definition of a domain
+      tags:
+        - Domains
+  "/domains/{owner}/{domain}/{version}":
+    delete:
+      operationId: deleteDomainVersion
+      parameters:
+        - $ref: "#/components/parameters/domainOwner"
+        - $ref: "#/components/parameters/domain"
+        - $ref: "#/components/parameters/version"
+        - description: Force update
+          in: query
+          name: force
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: The domain version was successfully deleted
+        "403":
+          description: Access denied
+        "404":
+          description: The specified domain was not found
+        "409":
+          description: The domain version is published and can not be deleted or it is the
+            only version of this API
+        "424":
+          description: Cannot delete because there are some dependencies for domain
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Page"
+      security:
+        - TokenSecured: []
+      summary: Deletes a particular version of the specified domain
+      tags:
+        - Domains
+    get:
+      operationId: getDomainDefinition
+      parameters:
+        - $ref: "#/components/parameters/domainOwner"
+        - $ref: "#/components/parameters/domain"
+        - $ref: "#/components/parameters/version"
+      responses:
+        "200":
+          description: The Swagger domain in requested format
+          content:
+            application/json:
+              schema:
+                properties: {}
+                type: object
+            application/yaml:
+              schema:
+                properties: {}
+                type: object
+        "404":
+          description: The specified domain was not found
+      security:
+        - TokenSecured: []
+      summary: Retrieves the Swagger definition for the specified domain and version
+      tags:
+        - Domains
+  "/domains/{owner}/{domain}/{version}/.comment":
+    get:
+      description: >
+        Returns all the comments and replies added by collaborators in the
+        specified domain version.
+      operationId: getDomainComments
+      parameters:
+        - $ref: "#/components/parameters/domainOwner"
+        - $ref: "#/components/parameters/domain"
+        - $ref: "#/components/parameters/version"
+      responses:
+        "200":
+          description: Comments for the specified domain
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ClosableComment"
+                type: array
+        "204":
+          description: No comments were found for the specified domain version
+        "401":
+          description: The access token is missing or invalid
+        "403":
+          description: Access denied (insufficient user permissions)
+        "404":
+          description: The specified domain or version was not found
+      security:
+        - TokenSecured: []
+      summary: Returns comments for the specified domain version
+      tags:
+        - Domains
+  "/domains/{owner}/{domain}/{version}/domain.json":
+    get:
+      operationId: getDomainJsonDefinition
+      parameters:
+        - $ref: "#/components/parameters/domainOwner"
+        - $ref: "#/components/parameters/domain"
+        - $ref: "#/components/parameters/version"
+      responses:
+        "200":
+          description: Definition in JSON format
+          content:
+            application/json:
+              schema:
+                properties: {}
+                type: object
+        "404":
+          description: The specified domain was not found
+      security:
+        - TokenSecured: []
+      summary: Retrieves the definition for the specified domain and version in JSON
+        format
+      tags:
+        - Domains
+  "/domains/{owner}/{domain}/{version}/domain.yaml":
+    get:
+      operationId: getDomainYamlDefinition
+      parameters:
+        - $ref: "#/components/parameters/domainOwner"
+        - $ref: "#/components/parameters/domain"
+        - $ref: "#/components/parameters/version"
+      responses:
+        "200":
+          description: Definition in YAML format
+          content:
+            application/yaml:
+              schema:
+                properties: {}
+                type: object
+        "404":
+          description: The specified domain was not found
+      security:
+        - TokenSecured: []
+      summary: Retrieves the definition for the specified domain and version in YAML
+        format
+      tags:
+        - Domains
+  /specs:
+    get:
+      description: ""
+      operationId: searchApisAndDomains
+      parameters:
+        - description: |
+            Type of Swagger specs to search:
+            * API - APIs only
+            * DOMAIN - Domains only
+            * ANY - Both APIs and Domains
+          in: query
+          name: specType
+          required: false
+          schema:
+            type: string
+            enum:
+              - API
+              - DOMAIN
+              - ANY
+            default: ANY
+        - description: >
+            The visibility of a spec in SwaggerHub:
+
+            * PUBLIC - can be viewed by anyone
+
+            * PRIVATE - can only be viewed by you or your Org and those that you are collaborating with or have shared it with
+
+            * ANY - either PUBLIC or PRIVATE
+          in: query
+          name: visibility
+          required: false
+          schema:
+            type: string
+            enum:
+              - PUBLIC
+              - PRIVATE
+              - ANY
+            default: ANY
+        - $ref: "#/components/parameters/state"
+        - description: API or Domain owner identifier. Can be username or organization name
+          in: query
+          name: owner
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/sort"
+        - $ref: "#/components/parameters/order"
+      responses:
+        "200":
+          description: A list of APIs and Domains in APIs.json format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApisJson"
+      security:
+        - TokenSecured: []
+      summary: Retrieves a list of currently defined APIs and Domains in APIs.json
+        format
+      tags:
+        - APIs
+        - Domains
+servers:
+  - url: https://api.swaggerhub.com
+components:
+  parameters:
+    api:
+      description: API name (case-sensitive)
+      in: path
+      name: api
+      required: true
+      schema:
+        type: string
+    apiOwner:
+      description: API owner (user or organization, case-sensitive)
+      in: path
+      name: owner
+      required: true
+      schema:
+        type: string
+    domain:
+      description: Domain name (case-sensitive)
+      in: path
+      name: domain
+      required: true
+      schema:
+        type: string
+    domainOwner:
+      description: Domain owner (user or organization, case-sensitive)
+      in: path
+      name: owner
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Number of results per page
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+    order:
+      description: Sort order
+      in: query
+      name: order
+      required: false
+      schema:
+        type: string
+        enum:
+          - ASC
+          - DESC
+        default: ASC
+    page:
+      description: Page to return
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    query:
+      description: Free text query to match
+      in: query
+      name: query
+      required: false
+      schema:
+        type: string
+    sort:
+      description: |
+        Sort criteria or result set:
+        * NAME
+        * UPATED
+        * CREATED
+        * OWNER
+      in: query
+      name: sort
+      required: false
+      schema:
+        type: string
+        enum:
+          - NAME
+          - UPDATED
+          - CREATED
+          - OWNER
+        default: NAME
+    state:
+      description: >
+        Matches against published state of the spec:
+
+        * UNPUBLISHED - spec is a draft, a work in progress
+
+        * PUBLISHED - spec is a stable version ready for consuming from client applications
+
+        * ANY - either PUBLISHED or UNPUBLISHED
+      in: query
+      name: state
+      required: false
+      schema:
+        type: string
+        enum:
+          - ALL
+          - PUBLISHED
+          - UNPUBLISHED
+        default: ALL
+    version:
+      description: Version identifier (case-sensitive)
+      in: path
+      name: version
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    TokenSecured:
+      description: Specify your SwaggerHub API key found in
+        https://app.swaggerhub.com/settings/apiKey.
+      in: header
+      name: Authorization
+      type: apiKey
+  schemas:
+    ApisJson:
+      properties:
+        apis:
+          items:
+            $ref: "#/components/schemas/ApisJsonApi"
+          type: array
+        created:
+          format: date-time
+          type: string
+        description:
+          example: Default registry listing
+          type: string
+        modified:
+          format: date-time
+          type: string
+        name:
+          example: Default listing
+          type: string
+        offset:
+          format: int32
+          type: integer
+        specificationVersion:
+          type: string
+        totalCount:
+          format: int64
+          type: integer
+        url:
+          type: string
+      type: object
+    ApisJsonApi:
+      properties:
+        description:
+          example: This is a sample Petstore server.
+          type: string
+        name:
+          example: petstore
+          type: string
+        properties:
+          example:
+            - type: Swagger
+              url: https://api.swaggerhub.com/apis/username/petstore/1.1
+            - type: X-Version
+              value: "1.1"
+            - type: X-Created
+              value: 2017-01-16T13:39:06Z
+            - type: X-Modified
+              value: 2017-01-25T11:48:13Z
+            - type: X-Published
+              value: "true"
+            - type: X-Versions
+              value: 1.0,*1.1,1.1-oas3
+            - type: X-Private
+              value: "false"
+            - type: X-Notifications
+              value: "true"
+          items:
+            $ref: "#/components/schemas/ApisJsonProperty"
+          type: array
+        tags:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    ApisJsonProperty:
+      description: an API property
+      properties:
+        type:
+          type: string
+      type: object
+    ClosableComment:
+      allOf:
+        - $ref: "#/components/schemas/Comment"
+        - properties:
+            position:
+              description: >
+                The line number (zero-based) the comment is associated with. For
+                example, if the comment is on line 7 in the editor,
+                `position`=6.
+              format: int32
+              type: integer
+            replies:
+              description: A list of replies to this comment
+              items:
+                $ref: "#/components/schemas/Comment"
+              type: array
+            status:
+              description: Comment status
+              enum:
+                - OPEN
+                - RESOLVED
+              type: string
+          type: object
+    Collaboration:
+      properties:
+        hint:
+          $ref: "#/components/schemas/CollaborationHint"
+        members:
+          items:
+            $ref: "#/components/schemas/CollaborationMembership"
+          type: array
+        owner:
+          readOnly: true
+          type: string
+        owners:
+          items:
+            type: string
+          type: array
+        pendingMembers:
+          items:
+            $ref: "#/components/schemas/CollaborationMembership"
+          type: array
+        teams:
+          items:
+            $ref: "#/components/schemas/CollaborationTeamMembership"
+          type: array
+      required:
+        - hint
+      type: object
+    CollaborationHint:
+      properties:
+        type:
+          description: type identifier of the managed entity
+          format: uuid
+          type: string
+      required:
+        - type
+      type: object
+    CollaborationMember:
+      properties:
+        name:
+          type: string
+        startTime:
+          format: date-time
+          readOnly: true
+          type: string
+        title:
+          readOnly: true
+          type: string
+        uuid:
+          readOnly: true
+          type: string
+      required:
+        - name
+      type: object
+    CollaborationMembership:
+      allOf:
+        - $ref: "#/components/schemas/CollaborationMember"
+        - properties:
+            blocked:
+              readOnly: true
+              type: boolean
+            donotdisturb:
+              readOnly: true
+              type: boolean
+            roles:
+              items:
+                enum:
+                  - EDIT
+                  - COMMENT
+                  - VIEW
+                type: string
+              type: array
+          required:
+            - roles
+          type: object
+    CollaborationTeamMembership:
+      allOf:
+        - $ref: "#/components/schemas/CollaborationMembership"
+        - properties:
+            members:
+              items:
+                $ref: "#/components/schemas/CollaborationMember"
+              type: array
+          type: object
+    Comment:
+      properties:
+        body:
+          description: Markdown contents of the comment
+          type: string
+        created:
+          description: The UTC date and time when the comment was added
+          format: date-time
+          type: string
+        id:
+          description: The unique ID of the comment
+          example: 141b0adb-f26a-438b-be78-906445c91a36
+          type: string
+        modified:
+          description: The UTC date and time the when the comment was last edited
+          format: date-time
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+      required:
+        - body
+        - created
+        - id
+        - user
+      type: object
+    Page:
+      properties:
+        items:
+          items:
+            properties: {}
+            type: object
+          type: array
+        offset:
+          format: int32
+          type: integer
+        total:
+          format: int64
+          type: integer
+      type: object
+    User:
+      description: The user who added a comment
+      properties:
+        active:
+          description: >
+            `true` means an existing user, `false` means the user is inactive
+            (for example, deleted)
+          type: boolean
+        id:
+          description: User name
+          example: alex
+          type: string
+      type: object

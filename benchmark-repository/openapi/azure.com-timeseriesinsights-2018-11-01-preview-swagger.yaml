@@ -1,0 +1,2939 @@
+openapi: 3.0.0
+info:
+  description: Time Series Insights environment data plane client for PAYG (Preview L1 SKU)
+    environments.
+  title: TimeSeriesInsightsClient
+  version: 2018-11-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/timeseriesinsights/data-plane/Microsoft.TimeSeriesInsights/preview/2018-11-01-preview/timeseriesinsights.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: timeseriesinsights
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /availability:
+    get:
+      description: Returns the time range and distribution of event count over the event
+        timestamp ($ts). This API can be used to provide landing experience of
+        navigating to the environment.
+      operationId: Query_GetAvailability
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+              example: 0d59d156-2807-4952-87bb-0e074417dbfb
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailabilityResponse"
+              examples:
+                AvailabilityGet:
+                  $ref: "#/components/examples/AvailabilityGet"
+                AvailabilityGetEmpty:
+                  $ref: "#/components/examples/AvailabilityGetEmpty"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - Query
+  /eventSchema:
+    post:
+      description: Returns environment event schema for a given search span. Event schema
+        is a set of property definitions. Event schema may not be contain all
+        persisted properties when there are too many properties.
+      operationId: Query_GetEventSchema
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetEventSchemaRequest"
+        description: Parameters to get event schema.
+        required: true
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSchema"
+              examples:
+                EventSchemaGet:
+                  $ref: "#/components/examples/EventSchemaGet"
+                EventSchemaGetEmpty:
+                  $ref: "#/components/examples/EventSchemaGetEmpty"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - Query
+  /timeseries/hierarchies:
+    get:
+      description: Returns time series hierarchies definitions in pages.
+      operationId: TimeSeriesHierarchies_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ContinuationToken"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetHierarchiesPage"
+              examples:
+                HierarchiesGetPage1:
+                  $ref: "#/components/examples/HierarchiesGetPage1"
+                HierarchiesGetPage2:
+                  $ref: "#/components/examples/HierarchiesGetPage2"
+                HierarchiesGetPage3:
+                  $ref: "#/components/examples/HierarchiesGetPage3"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - TimeSeriesHierarchies
+  /timeseries/hierarchies/$batch:
+    post:
+      description: Executes a batch get, create, update, delete operation on multiple time
+        series hierarchy definitions.
+      operationId: TimeSeriesHierarchies_ExecuteBatch
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HierarchiesBatchRequest"
+        description: Time series hierarchies batch request body.
+        required: true
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HierarchiesBatchResponse"
+              examples:
+                HierarchiesBatchDeleteByIds:
+                  $ref: "#/components/examples/HierarchiesBatchDeleteByIds"
+                HierarchiesBatchDeleteByNames:
+                  $ref: "#/components/examples/HierarchiesBatchDeleteByNames"
+                HierarchiesBatchGetByIds:
+                  $ref: "#/components/examples/HierarchiesBatchGetByIds"
+                HierarchiesBatchGetByNames:
+                  $ref: "#/components/examples/HierarchiesBatchGetByNames"
+                HierarchiesBatchPut:
+                  $ref: "#/components/examples/HierarchiesBatchPut"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - TimeSeriesHierarchies
+  /timeseries/instances:
+    get:
+      description: Gets time series instances in pages.
+      operationId: TimeSeriesInstances_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ContinuationToken"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetInstancesPage"
+              examples:
+                InstancesGetPage1:
+                  $ref: "#/components/examples/InstancesGetPage1"
+                InstancesGetPage2:
+                  $ref: "#/components/examples/InstancesGetPage2"
+                InstancesGetPage3:
+                  $ref: "#/components/examples/InstancesGetPage3"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - TimeSeriesInstances
+  /timeseries/instances/$batch:
+    post:
+      description: Executes a batch get, create, update, delete operation on multiple time
+        series instances.
+      operationId: TimeSeriesInstances_ExecuteBatch
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstancesBatchRequest"
+        description: Time series instances suggest request body.
+        required: true
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstancesBatchResponse"
+              examples:
+                InstancesBatchDeleteByIds:
+                  $ref: "#/components/examples/InstancesBatchDeleteByIds"
+                InstancesBatchDeleteByNames:
+                  $ref: "#/components/examples/InstancesBatchDeleteByNames"
+                InstancesBatchGetByIds:
+                  $ref: "#/components/examples/InstancesBatchGetByIds"
+                InstancesBatchGetByNames:
+                  $ref: "#/components/examples/InstancesBatchGetByNames"
+                InstancesBatchPut:
+                  $ref: "#/components/examples/InstancesBatchPut"
+                InstancesBatchUpdate:
+                  $ref: "#/components/examples/InstancesBatchUpdate"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - TimeSeriesInstances
+  /timeseries/instances/search:
+    post:
+      description: Partial list of hits on search for time series instances based on
+        instance attributes.
+      operationId: TimeSeriesInstances_Search
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ContinuationToken"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchInstancesRequest"
+        description: Time series instances search request body.
+        required: true
+      responses:
+        "200":
+          description: Successful search response.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchInstancesResponsePage"
+              examples:
+                SearchInstancesDefault:
+                  $ref: "#/components/examples/SearchInstancesDefault"
+                SearchInstancesExpandHierarchiesOnly:
+                  $ref: "#/components/examples/SearchInstancesExpandHierarchiesOnly"
+                SearchInstancesHierarchiesDefaultInputPage1:
+                  $ref: "#/components/examples/SearchInstancesHierarchiesDefaultInp\
+                    utPage1"
+                SearchInstancesHierarchiesDefaultInputPage2:
+                  $ref: "#/components/examples/SearchInstancesHierarchiesDefaultInp\
+                    utPage2"
+                SearchInstancesHierarchiesDefaultInputPage3:
+                  $ref: "#/components/examples/SearchInstancesHierarchiesDefaultInp\
+                    utPage3"
+                SearchInstancesOneLevel:
+                  $ref: "#/components/examples/SearchInstancesOneLevel"
+                SearchInstancesRecursive:
+                  $ref: "#/components/examples/SearchInstancesRecursive"
+                SearchInstancesUntilChildren:
+                  $ref: "#/components/examples/SearchInstancesUntilChildren"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - TimeSeriesInstances
+  /timeseries/instances/suggest:
+    post:
+      description: Suggests keywords based on time series instance attributes to be later
+        used in Search Instances.
+      operationId: TimeSeriesInstances_Suggest
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstancesSuggestRequest"
+        description: Time series instances suggest request body.
+        required: true
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstancesSuggestResponse"
+              examples:
+                InstancesSuggest:
+                  $ref: "#/components/examples/InstancesSuggest"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - TimeSeriesInstances
+  /timeseries/modelSettings:
+    get:
+      description: Returns the model settings which includes model display name, Time
+        Series ID properties and default type ID. Every pay-as-you-go
+        environment has a model that is automatically created.
+      operationId: ModelSettings_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModelSettingsResponse"
+              examples:
+                ModelSettingsGet:
+                  $ref: "#/components/examples/ModelSettingsGet"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - ModelSettings
+    patch:
+      description: Updates time series model settings - either the model name or default
+        type ID.
+      operationId: ModelSettings_Update
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateModelSettingsRequest"
+        description: Model settings update request body.
+        required: true
+      responses:
+        "200":
+          description: Successful operation returns new full model settings.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModelSettingsResponse"
+              examples:
+                ModelSettingsUpdateName:
+                  $ref: "#/components/examples/ModelSettingsUpdateName"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - ModelSettings
+  /timeseries/query:
+    post:
+      description: Executes Time Series Query in pages of results - Get Events, Get Series
+        or Aggregate Series.
+      operationId: Query_Execute
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ContinuationToken"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryRequest"
+        description: Time series query request body.
+        required: true
+      responses:
+        "200":
+          description: Successful query.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResultPage"
+              examples:
+                QueryAggregateSeriesPage1:
+                  $ref: "#/components/examples/QueryAggregateSeriesPage1"
+                QueryAggregateSeriesPage2:
+                  $ref: "#/components/examples/QueryAggregateSeriesPage2"
+                QueryAggregateSeriesWithSampleInterpolation:
+                  $ref: "#/components/examples/QueryAggregateSeriesWithSampleInterp\
+                    olation"
+                QueryGetEventsPage1:
+                  $ref: "#/components/examples/QueryGetEventsPage1"
+                QueryGetEventsPage2:
+                  $ref: "#/components/examples/QueryGetEventsPage2"
+                QueryGetEventsPage3:
+                  $ref: "#/components/examples/QueryGetEventsPage3"
+                QueryGetEventsPage4:
+                  $ref: "#/components/examples/QueryGetEventsPage4"
+                QueryGetEventsWithTakePage1:
+                  $ref: "#/components/examples/QueryGetEventsWithTakePage1"
+                QueryGetEventsWithTakePage2:
+                  $ref: "#/components/examples/QueryGetEventsWithTakePage2"
+                QueryGetSeriesPage1:
+                  $ref: "#/components/examples/QueryGetSeriesPage1"
+                QueryGetSeriesPage2:
+                  $ref: "#/components/examples/QueryGetSeriesPage2"
+                QueryGetSeriesPage3:
+                  $ref: "#/components/examples/QueryGetSeriesPage3"
+                QueryGetSeriesWithTakePage1:
+                  $ref: "#/components/examples/QueryGetSeriesWithTakePage1"
+                QueryGetSeriesWithTakePage2:
+                  $ref: "#/components/examples/QueryGetSeriesWithTakePage2"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - Query
+  /timeseries/types:
+    get:
+      description: Gets time series types in pages.
+      operationId: TimeSeriesTypes_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ContinuationToken"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetTypesPage"
+              examples:
+                TypesGetPage1:
+                  $ref: "#/components/examples/TypesGetPage1"
+                TypesGetPage2:
+                  $ref: "#/components/examples/TypesGetPage2"
+                TypesGetPage3:
+                  $ref: "#/components/examples/TypesGetPage3"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - TimeSeriesTypes
+  /timeseries/types/$batch:
+    post:
+      description: Executes a batch get, create, update, delete operation on multiple time
+        series types.
+      operationId: TimeSeriesTypes_ExecuteBatch
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/ClientRequestId"
+        - $ref: "#/components/parameters/ClientSessionId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TypesBatchRequest"
+        description: Time series types batch request body.
+        required: true
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TypesBatchResponse"
+              examples:
+                TypesBatchDeleteByIds:
+                  $ref: "#/components/examples/TypesBatchDeleteByIds"
+                TypesBatchDeleteByNames:
+                  $ref: "#/components/examples/TypesBatchDeleteByNames"
+                TypesBatchGetByIds:
+                  $ref: "#/components/examples/TypesBatchGetByIds"
+                TypesBatchGetByNames:
+                  $ref: "#/components/examples/TypesBatchGetByNames"
+                TypesBatchPut:
+                  $ref: "#/components/examples/TypesBatchPut"
+        default:
+          description: Unexpected error.
+          headers:
+            x-ms-request-id:
+              description: Server-generated request ID. Can be used to contact support to
+                investigate a request.
+              x-ms-client-name: serverRequestId
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TsiError"
+      tags:
+        - TimeSeriesTypes
+servers:
+  - url: https://azure.local
+  - url: https://{environmentFqdn}
+    variables:
+      environmentFqdn:
+        description: Per environment FQDN, for example
+          10000000-0000-0000-0000-100000000109.env.timeseries.azure.com. You can
+          obtain this domain name from the response of the Get Environments API,
+          Azure portal, or Azure Resource Manager.
+        x-ms-parameter-location: client
+        x-ms-skip-url-encoding: true
+        default: ""
+components:
+  examples:
+    AvailabilityGet:
+      value:
+        availability:
+          distribution:
+            2019-03-26T13:00:00Z: 386247
+            2019-03-27T00:00:00Z: 436968
+            2019-03-27T01:00:00Z: 432509
+            2019-03-27T02:00:00Z: 432487
+            2019-03-27T04:00:00Z: 432447
+            2019-03-27T05:00:00Z: 432340
+            2019-03-27T06:00:00Z: 432451
+            2019-03-27T07:00:00Z: 432436
+          intervalSize: PT1H
+          range:
+            from: 2019-03-14T06:38:27.153Z
+            to: 2019-03-27T03:57:11.697Z
+    AvailabilityGetEmpty:
+      value: {}
+    EventSchemaGet:
+      value:
+        properties:
+          - name: Building
+            type: String
+          - name: Room
+            type: String
+          - name: DeviceId
+            type: Double
+          - name: Temperature
+            type: Double
+          - name: Pressure
+            type: Double
+          - name: Status
+            type: String
+    EventSchemaGetEmpty:
+      value:
+        properties: []
+    HierarchiesGetPage1:
+      value:
+        continuationToken: aXsic2tpcCI6MTAwMCwidGFrZSI6MTAwMH0=
+        hierarchies:
+          - id: 6e292e54-9a26-4be1-9034-607d71492707
+            name: Location
+            source:
+              instanceFieldNames:
+                - state
+                - city
+    HierarchiesGetPage2:
+      value:
+        continuationToken: aXsic2tpcCI6MTAwMCwidGFrASI6MTAwMH0=
+        hierarchies:
+          - id: 6e292e54-9a26-4be1-9034-607d71492707
+            name: Location
+            source:
+              instanceFieldNames:
+                - state
+                - city
+    HierarchiesGetPage3:
+      value:
+        hierarchies: []
+    HierarchiesBatchDeleteByIds:
+      value:
+        delete:
+          - null
+    HierarchiesBatchDeleteByNames:
+      value:
+        delete:
+          - null
+    HierarchiesBatchGetByIds:
+      value:
+        get:
+          - hierarchy:
+              id: 6e292e54-9a26-4be1-9034-607d71492707
+              name: Location
+              source:
+                instanceFieldNames:
+                  - state
+                  - city
+          - hierarchy:
+              id: a28fd14c-6b98-4ab5-9301-3840f142d30e
+              name: ManufactureDate
+              source:
+                instanceFieldNames:
+                  - year
+                  - month
+    HierarchiesBatchGetByNames:
+      value:
+        get:
+          - hierarchy:
+              id: 6e292e54-9a26-4be1-9034-607d71492707
+              name: Location
+              source:
+                instanceFieldNames:
+                  - state
+                  - city
+          - hierarchy:
+              id: a28fd14c-6b98-4ab5-9301-3840f142d30e
+              name: ManufactureDate
+              source:
+                instanceFieldNames:
+                  - year
+                  - month
+    HierarchiesBatchPut:
+      value:
+        put:
+          - hierarchy:
+              id: 6e292e54-9a26-4be1-9034-607d71492707
+              name: Location
+              source:
+                instanceFieldNames:
+                  - state
+                  - city
+          - hierarchy:
+              id: a28fd14c-6b98-4ab5-9301-3840f142d30e
+              name: ManufactureDate
+              source:
+                instanceFieldNames:
+                  - year
+                  - month
+    InstancesGetPage1:
+      value:
+        continuationToken: aXsic2tpcCI6MTAwMCwidGFrZSI6MTAwMH0=
+        instances:
+          - description: ContosoFarm1W7_GenSpeed1
+            hierarchyIds:
+              - 33d72529-dd73-4c31-93d8-ae4e6cb5605d
+            instanceFields:
+              Name: GeneratorSpeed
+              Plant: Contoso Plant 1
+              System: Generator System
+              Unit: W7
+            name: F1W7.GS1
+            timeSeriesId:
+              - 006dfc2d-0324-4937-998c-d16f3b4f1952
+              - T1
+            typeId: 9b84e946-7b36-4aa0-9d26-71bf48cb2aff
+    InstancesGetPage2:
+      value:
+        continuationToken: aXsic2tpcCI6MTAwMCwidGFrASI6MTAwMH0=
+        instances:
+          - description: ContosoFarm1W6_GridVoltage3
+            hierarchyIds:
+              - 33d72529-dd73-4c31-93d8-ae4e6cb5605d
+            instanceFields:
+              Name: GridVoltagePhase3
+              Plant: Contoso Plant 1
+              System: Generator System
+              Unit: W6
+            timeSeriesId:
+              - fe984fd0-f632-49ab-990e-3ded259e29b8
+              - T1
+            typeId: 9b84e946-7b36-4aa0-9d26-71bf48cb2aff
+    InstancesGetPage3:
+      value:
+        instances: []
+    InstancesBatchDeleteByIds:
+      value:
+        delete:
+          - null
+          - code: InvalidInput
+            innerError:
+              code: CannotDeleteInstance
+            message: Time series instance with ID
+              '["18672e3d-2beb-4007-9846-042b09ef3c72", "T2"]' cannot be
+              deleted. There are already ingested events associated with this
+              time series ID.
+    InstancesBatchDeleteByNames:
+      value:
+        delete:
+          - null
+          - code: InvalidInput
+            innerError:
+              code: CannotDeleteInstance
+            message: Time series instance with ID
+              '["18672e3d-2beb-4007-9846-042b09ef3c72", "T2"]' cannot be
+              deleted. There are already ingested events associated with this
+              time series ID.
+    InstancesBatchGetByIds:
+      value:
+        get:
+          - instance:
+              description: ContosoFarm1W7_GenSpeed1
+              hierarchyIds:
+                - 33d72529-dd73-4c31-93d8-ae4e6cb5605d
+              instanceFields:
+                Name: GeneratorSpeed
+                Plant: Contoso Plant 1
+                System: Generator System
+                Unit: W7
+              name: F1W7.GS1
+              timeSeriesId:
+                - 006dfc2d-0324-4937-998c-d16f3b4f1952
+                - T1
+              typeId: 9b84e946-7b36-4aa0-9d26-71bf48cb2aff
+    InstancesBatchGetByNames:
+      value:
+        get:
+          - instance:
+              description: ContosoFarm1W7_GenSpeed1
+              hierarchyIds:
+                - 33d72529-dd73-4c31-93d8-ae4e6cb5605d
+              instanceFields:
+                Name: GeneratorSpeed
+                Plant: Contoso Plant 1
+                System: Generator System
+                Unit: W7
+              name: F1W7.GS1
+              timeSeriesId:
+                - 006dfc2d-0324-4937-998c-d16f3b4f1952
+                - T1
+              typeId: 9b84e946-7b36-4aa0-9d26-71bf48cb2aff
+    InstancesBatchPut:
+      value:
+        put:
+          - {}
+    InstancesBatchUpdate:
+      value:
+        update:
+          - {}
+    SearchInstancesDefault:
+      value:
+        instances:
+          hitCount: 2
+          hits:
+            - hierarchyIds:
+                - 1643004c-0a84-48a5-80e5-7688c5ae9295
+              name: instance1
+              timeSeriesId:
+                - Id1One
+                - Id2One
+                - "1.0"
+              typeId: 1be09af9-f089-4d6b-9f0b-48018b5f7393
+            - hierarchyIds:
+                - 1643004c-0a84-48a5-80e5-7688c5ae9295
+              name: instance2
+              timeSeriesId:
+                - Id1Two
+                - Id2Two
+                - "2.0"
+              typeId: 1be09af9-f089-4d6b-9f0b-48018b5f7393
+    SearchInstancesExpandHierarchiesOnly:
+      value:
+        hierarchyNodes:
+          hitCount: 1
+          hits:
+            - cumulativeInstanceCount: 2
+              hierarchyNodes:
+                hitCount: 2
+                hits:
+                  - cumulativeInstanceCount: 1
+                    name: San Diego
+                  - cumulativeInstanceCount: 1
+                    name: San Francisco
+              name: California
+        instances:
+          hitCount: 0
+          hits: []
+    SearchInstancesHierarchiesDefaultInputPage1:
+      value:
+        hierarchyNodes:
+          hitCount: 1
+          hits:
+            - cumulativeInstanceCount: 2
+              hierarchyNodes:
+                hitCount: 1
+                hits:
+                  - cumulativeInstanceCount: 2
+                    hierarchyNodes:
+                      continuationToken: aHsic2tpcCI6MiwidGFrZSI6MiwicmVxdWVzdEhhc2hDb2RlIjotNzA4NTgyODU0LCJlbnZpcm9ubWVudElkIjoiYmY0M2YxMzMtM2Y2OC00ZWMwLWJjYjQtZmQ2NDUzMGU0MjU2In0=
+                      hitCount: 2
+                      hits:
+                        - cumulativeInstanceCount: 1
+                          name: San Francisco
+                    name: California
+              name: Location
+        instances:
+          continuationToken: c3sic2tpcCI6MiwidGFrZSI6MiwicmVxdWVzdEhhc2hDb2RlIjotNTE3MDUxOTg0LCJlbnZpcm9ubWVudElkIjoiYmY0M2YxMzMtM2Y2OC00ZWMwLWJjYjQtZmQ2NDUzMGU0MjU2In0=
+          hitCount: 2
+          hits:
+            - hierarchyIds:
+                - 1643004c-0a84-48a5-80e5-7688c5ae9295
+              highlights:
+                description: <hit>floor</hit> <hit>100</hit>
+                hierarchyIds:
+                  - 1643004c-0a84-48a5-80e5-7688c5ae9295
+                hierarchyNames:
+                  - Location
+                instanceFieldNames:
+                  - state
+                  - city
+                instanceFieldValues:
+                  - California
+                  - San Francisco
+                name: instance2
+                timeSeriesId:
+                  - Id1Two
+                  - Id2Two
+                  - "2.0"
+                typeName: DefaultType
+              name: instance2
+              timeSeriesId:
+                - Id1Two
+                - Id2Two
+                - "2.0"
+              typeId: 1be09af9-f089-4d6b-9f0b-48018b5f7393
+    SearchInstancesHierarchiesDefaultInputPage2:
+      value:
+        instances:
+          hitCount: 2
+          hits:
+            - hierarchyIds:
+                - 1643004c-0a84-48a5-80e5-7688c5ae9295
+              highlights:
+                description: <hit>floor</hit> <hit>100</hit>
+                hierarchyIds:
+                  - 1643004c-0a84-48a5-80e5-7688c5ae9295
+                hierarchyNames:
+                  - Location
+                instanceFieldNames:
+                  - state
+                  - city
+                instanceFieldValues:
+                  - California
+                  - Los Angeles
+                name: instance1
+                timeSeriesId:
+                  - Id1One
+                  - Id2One
+                  - "1.0"
+                typeName: DefaultType
+              name: instance1
+              timeSeriesId:
+                - Id1One
+                - Id2One
+                - "1.0"
+              typeId: 1be09af9-f089-4d6b-9f0b-48018b5f7393
+    SearchInstancesHierarchiesDefaultInputPage3:
+      value:
+        hierarchyNodes:
+          hitCount: 1
+          hits:
+            - cumulativeInstanceCount: 2
+              hierarchyNodes:
+                hitCount: 1
+                hits:
+                  - cumulativeInstanceCount: 2
+                    hierarchyNodes:
+                      continuationToken: aHsic2tpcCI6MiwidGFrZSI6MiwicmVxdWVzdEhhc2hDb2RlIjotNzA4NTgyODU0LCJlbnZpcm9ubWVudElkIjoiYmY0M2YxMzMtM2Y2OC00ZWMwLWJjYjQtZmQ2NDUzMGU0MjU2In0=
+                      hitCount: 2
+                      hits:
+                        - cumulativeInstanceCount: 1
+                          name: San Diego
+                    name: California
+              name: Location
+    SearchInstancesOneLevel:
+      value:
+        hierarchyNodes:
+          hitCount: 1
+          hits:
+            - cumulativeInstanceCount: 2
+              name: Location
+        instances:
+          hitCount: 0
+          hits: []
+    SearchInstancesRecursive:
+      value:
+        instances:
+          hitCount: 2
+          hits:
+            - hierarchyIds:
+                - 1643004c-0a84-48a5-80e5-7688c5ae9295
+              name: instance1
+              timeSeriesId:
+                - Id1One
+                - Id2One
+                - "1.0"
+              typeId: 1be09af9-f089-4d6b-9f0b-48018b5f7393
+            - hierarchyIds:
+                - 1643004c-0a84-48a5-80e5-7688c5ae9295
+              name: instance2
+              timeSeriesId:
+                - Id1Two
+                - Id2Two
+                - "2.0"
+              typeId: 1be09af9-f089-4d6b-9f0b-48018b5f7393
+    SearchInstancesUntilChildren:
+      value:
+        hierarchyNodes:
+          hitCount: 1
+          hits:
+            - cumulativeInstanceCount: 2
+              hierarchyNodes:
+                hitCount: 2
+                hits:
+                  - cumulativeInstanceCount: 1
+                    name: San Diego
+                  - cumulativeInstanceCount: 1
+                    name: San Francisco
+              name: California
+        instances:
+          hitCount: 0
+          hits: []
+    InstancesSuggest:
+      value:
+        suggestions:
+          - highlightedSearchString: <hit>flo</hit>or 100
+            searchString: floor 100
+          - highlightedSearchString: sensor on <hit>flo</hit>or 0
+            searchString: sensor on floor 0
+          - highlightedSearchString: sensor on <hit>flo</hit>or 1
+            searchString: sensor on floor 1
+    ModelSettingsGet:
+      value:
+        modelSettings:
+          defaultTypeId: 5AB70D71-A8CD-410E-B70D-6F04AB9C132C
+          name: DefaultModel
+          timeSeriesIdProperties:
+            - name: DeviceId
+              type: String
+    ModelSettingsUpdateName:
+      value:
+        modelSettings:
+          defaultTypeId: 5AB70D71-A8CD-410E-B70D-6F04AB9C132C
+          name: Thermostats
+          timeSeriesIdProperties:
+            - name: DeviceId
+              type: String
+    QueryAggregateSeriesPage1:
+      value:
+        continuationToken: aXsic2tpcCI6MTAwMCwidGFrZSI6MTAwMH0=
+        progress: 50
+    QueryAggregateSeriesPage2:
+      value:
+        progress: 100
+        properties:
+          - name: Count
+            type: Double
+            values:
+              - 50
+              - 60
+              - 60
+              - 60
+              - 60
+              - 60
+              - 60
+              - 60
+              - 60
+              - 60
+              - null
+          - name: AverageTemperature
+            type: Double
+            values:
+              - 71.25
+              - 85
+              - 82.5
+              - 80
+              - 89.16666666666667
+              - 75
+              - 90
+              - 75.83333333333333
+              - 85
+              - 82.5
+              - null
+          - name: MinTemperature
+            type: Double
+            values:
+              - 65.125
+              - 77.625
+              - 65.125
+              - 72.625
+              - 65.125
+              - 67.625
+              - 82.625
+              - 65.125
+              - 77.625
+              - 65.125
+              - null
+          - name: MaxTemperature
+            type: Double
+            values:
+              - 77.375
+              - 92.375
+              - 99.875
+              - 87.375
+              - 99.875
+              - 82.375
+              - 97.375
+              - 99.875
+              - 92.375
+              - 99.875
+              - null
+        timestamps:
+          - 2016-08-01T00:00:00Z
+          - 2016-08-01T00:01:00Z
+          - 2016-08-01T00:02:00Z
+          - 2016-08-01T00:03:00Z
+          - 2016-08-01T00:04:00Z
+          - 2016-08-01T00:05:00Z
+          - 2016-08-01T00:06:00Z
+          - 2016-08-01T00:07:00Z
+          - 2016-08-01T00:08:00Z
+          - 2016-08-01T00:09:00Z
+          - 2016-08-01T00:10:00Z
+    QueryAggregateSeriesWithSampleInterpolation:
+      value:
+        progress: 100
+        properties:
+          - name: LinearSampleInterpolation
+            type: Double
+            values:
+              - 50
+              - 60
+              - 60
+              - 60
+              - 60
+              - 60
+              - 60
+              - 60
+              - 60
+              - 60
+              - 62
+          - name: StepSampleInterpolation
+            type: Double
+            values:
+              - 71.25
+              - 85
+              - 82.5
+              - 80
+              - 89.16666666666667
+              - 75
+              - 90
+              - 75.83333333333333
+              - 85
+              - 82.5
+              - 84
+        timestamps:
+          - 2016-08-01T00:00:00Z
+          - 2016-08-01T00:01:00Z
+          - 2016-08-01T00:02:00Z
+          - 2016-08-01T00:03:00Z
+          - 2016-08-01T00:04:00Z
+          - 2016-08-01T00:05:00Z
+          - 2016-08-01T00:06:00Z
+          - 2016-08-01T00:07:00Z
+          - 2016-08-01T00:08:00Z
+          - 2016-08-01T00:09:00Z
+          - 2016-08-01T00:10:00Z
+    QueryGetEventsPage1:
+      value:
+        continuationToken: aXsic2tpcCI6MTAwMCwidGFrZSI6MTAwMH0=
+        progress: 50
+    QueryGetEventsPage2:
+      value:
+        continuationToken: aXsic2tpcCI6MTAxYZwidGFrZSI6MTAwMH0=
+        progress: 50
+        properties:
+          - name: Building
+            type: String
+            values:
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+          - name: Temperature
+            type: Double
+            values:
+              - 65.125
+              - 65.375
+              - 65.625
+              - 65.875
+              - 66.125
+              - 66.375
+              - 66.625
+              - 66.875
+              - 67.125
+              - 67.375
+        timestamps:
+          - 2016-08-01T00:00:10Z
+          - 2016-08-01T00:00:11Z
+          - 2016-08-01T00:00:12Z
+          - 2016-08-01T00:00:13Z
+          - 2016-08-01T00:00:14Z
+          - 2016-08-01T00:00:15Z
+          - 2016-08-01T00:00:16Z
+          - 2016-08-01T00:00:17Z
+          - 2016-08-01T00:00:18Z
+          - 2016-08-01T00:00:19Z
+    QueryGetEventsPage3:
+      value:
+        continuationToken: aXsic2tpcCI6MTAbCDewidGFrZSI6MTAwMH0=
+        progress: 50
+        properties:
+          - name: Building
+            type: String
+            values:
+              - Millenium
+          - name: Temperature
+            type: Double
+            values:
+              - 67.575
+        timestamps:
+          - 2016-08-01T00:00:20Z
+    QueryGetEventsPage4:
+      value:
+        progress: 100
+        properties: []
+        timestamps: []
+    QueryGetEventsWithTakePage1:
+      value:
+        continuationToken: aXsic2tpcCI6MTAwMCwidGFrZSI6MTAwMH0=
+        progress: 50
+    QueryGetEventsWithTakePage2:
+      value:
+        continuationToken: aXsic2tpcCI6MTAxYZwidGFrZSI6MTAwMH0=
+        progress: 100
+        properties:
+          - name: Building
+            type: String
+            values:
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+              - Millenium
+          - name: Temperature
+            type: Double
+            values:
+              - 65.125
+              - 65.375
+              - 65.625
+              - 65.875
+              - 66.125
+              - 66.375
+              - 66.625
+              - 66.875
+              - 67.125
+              - 67.375
+        timestamps:
+          - 2016-08-01T00:00:10Z
+          - 2016-08-01T00:00:11Z
+          - 2016-08-01T00:00:12Z
+          - 2016-08-01T00:00:13Z
+          - 2016-08-01T00:00:14Z
+          - 2016-08-01T00:00:15Z
+          - 2016-08-01T00:00:16Z
+          - 2016-08-01T00:00:17Z
+          - 2016-08-01T00:00:18Z
+          - 2016-08-01T00:00:19Z
+    QueryGetSeriesPage1:
+      value:
+        continuationToken: aXsic2tpcCI6MTAwMCwidGFrZSI6MTAwMH0=
+        progress: 50
+    QueryGetSeriesPage2:
+      value:
+        continuationToken: aXsic2tpcCI6MTAxYZwidGFrZSI6MTAwMH0=
+        progress: 50
+        properties:
+          - name: temperatures
+            type: Double
+            values:
+              - 65.125
+              - 65.375
+              - 65.625
+              - 65.875
+              - 66.125
+              - 66.375
+              - 66.625
+              - 66.875
+              - 67.125
+              - 67.375
+              - 67.625
+        timestamps:
+          - 2016-08-01T00:00:10Z
+          - 2016-08-01T00:00:11Z
+          - 2016-08-01T00:00:12Z
+          - 2016-08-01T00:00:13Z
+          - 2016-08-01T00:00:14Z
+          - 2016-08-01T00:00:15Z
+          - 2016-08-01T00:00:16Z
+          - 2016-08-01T00:00:17Z
+          - 2016-08-01T00:00:18Z
+          - 2016-08-01T00:00:19Z
+          - 2016-08-01T00:00:20Z
+    QueryGetSeriesPage3:
+      value:
+        progress: 100
+        properties:
+          - name: temperatures
+            type: Double
+            values:
+              - 67.825
+        timestamps:
+          - 2016-08-01T00:00:21Z
+    QueryGetSeriesWithTakePage1:
+      value:
+        continuationToken: aXsic2tpcCI6MTAwMCwidGFrZSI6MTAwMH0=
+        progress: 50
+    QueryGetSeriesWithTakePage2:
+      value:
+        continuationToken: aXsic2tpcCI6MTAxYZwidGFrZSI6MTAwMH0=
+        progress: 100
+        properties:
+          - name: temperatures
+            type: Double
+            values:
+              - 65.125
+              - 65.375
+              - 65.625
+              - 65.875
+              - 66.125
+              - 66.375
+              - 66.625
+              - 66.875
+              - 67.125
+              - 67.375
+              - 67.625
+        timestamps:
+          - 2016-08-01T00:00:10Z
+          - 2016-08-01T00:00:11Z
+          - 2016-08-01T00:00:12Z
+          - 2016-08-01T00:00:13Z
+          - 2016-08-01T00:00:14Z
+          - 2016-08-01T00:00:15Z
+          - 2016-08-01T00:00:16Z
+          - 2016-08-01T00:00:17Z
+          - 2016-08-01T00:00:18Z
+          - 2016-08-01T00:00:19Z
+          - 2016-08-01T00:00:20Z
+    TypesGetPage1:
+      value:
+        continuationToken: aXsic2tpcCI6MTAwMCwidGFrZSI6MTAwMH0=
+        types:
+          - description: My Default type
+            id: 1be09af9-f089-4d6b-9f0b-48018b5f7393
+            name: DefaultType
+            variables:
+              EventCount:
+                aggregation:
+                  tsx: count()
+                kind: aggregate
+    TypesGetPage2:
+      value:
+        continuationToken: aXsic2tpcCI6MTAwMCwidGFrASI6MTAwMH0=
+        types:
+          - description: Wind turbine sensor
+            id: 9b84e946-7b36-4aa0-9d26-71bf48cb2aff
+            name: TurbineSensor
+            variables:
+              Value:
+                aggregation:
+                  tsx: avg($value)
+                kind: numeric
+                value:
+                  tsx: $event.value.Double
+    TypesGetPage3:
+      value:
+        types: []
+    TypesBatchDeleteByIds:
+      value:
+        delete:
+          - null
+    TypesBatchDeleteByNames:
+      value:
+        delete:
+          - null
+    TypesBatchGetByIds:
+      value:
+        get:
+          - timeSeriesType:
+              description: Default type
+              id: 1be09af9-f089-4d6b-9f0b-48018b5f7393
+              name: DefaultType
+              variables:
+                EventCount:
+                  aggregation:
+                    tsx: count()
+                  kind: aggregate
+          - timeSeriesType:
+              description: This is a temperature sensor.
+              id: c1cb7a33-ed9b-4cf1-9958-f3162fed8ee8
+              name: TemperatureSensor
+              variables:
+                AverageTemperature:
+                  aggregation:
+                    tsx: avg($value)
+                  kind: numeric
+                  value:
+                    tsx: $event.Temperature.Double
+    TypesBatchGetByNames:
+      value:
+        get:
+          - timeSeriesType:
+              description: Default type
+              id: 1be09af9-f089-4d6b-9f0b-48018b5f7393
+              name: DefaultType
+              variables:
+                EventCount:
+                  aggregation:
+                    tsx: count()
+                  kind: aggregate
+          - timeSeriesType:
+              description: This is a temperature sensor.
+              id: c1cb7a33-ed9b-4cf1-9958-f3162fed8ee8
+              name: TemperatureSensor
+              variables:
+                AverageTemperature:
+                  aggregation:
+                    tsx: avg($value)
+                  kind: numeric
+                  value:
+                    tsx: $event.Temperature.Double
+    TypesBatchPut:
+      value:
+        put:
+          - timeSeriesType:
+              description: My Default type
+              id: 1be09af9-f089-4d6b-9f0b-48018b5f7393
+              name: DefaultType
+              variables:
+                EventCount:
+                  aggregation:
+                    tsx: count()
+                  kind: aggregate
+          - timeSeriesType:
+              description: This is an outdoor temperature sensor.
+              id: c1cb7a33-ed9b-4cf1-9958-f3162fed8ee8
+              name: OutdoorTemperatureSensor
+              variables:
+                AverageTemperature:
+                  aggregation:
+                    tsx: avg($value)
+                  filter:
+                    tsx: $event.Mode.String = 'outdoor'
+                  kind: numeric
+                  value:
+                    tsx: $event.Temperature.Double
+  parameters:
+    ApiVersion:
+      description: Version of the API to be used with the client request. Currently
+        supported version is "2018-11-01-preview".
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+        default: 2018-11-01-preview
+      examples:
+        AvailabilityGet:
+          value: 2018-11-01-preview
+        AvailabilityGetEmpty:
+          value: 2018-11-01-preview
+        EventSchemaGet:
+          value: 2018-11-01-preview
+        EventSchemaGetEmpty:
+          value: 2018-11-01-preview
+        HierarchiesGetPage1:
+          value: 2018-11-01-preview
+        HierarchiesGetPage2:
+          value: 2018-11-01-preview
+        HierarchiesGetPage3:
+          value: 2018-11-01-preview
+        HierarchiesBatchDeleteByIds:
+          value: 2018-11-01-preview
+        HierarchiesBatchDeleteByNames:
+          value: 2018-11-01-preview
+        HierarchiesBatchGetByIds:
+          value: 2018-11-01-preview
+        HierarchiesBatchGetByNames:
+          value: 2018-11-01-preview
+        HierarchiesBatchPut:
+          value: 2018-11-01-preview
+        InstancesGetPage1:
+          value: 2018-11-01-preview
+        InstancesGetPage2:
+          value: 2018-11-01-preview
+        InstancesGetPage3:
+          value: 2018-11-01-preview
+        InstancesBatchDeleteByIds:
+          value: 2018-11-01-preview
+        InstancesBatchDeleteByNames:
+          value: 2018-11-01-preview
+        InstancesBatchGetByIds:
+          value: 2018-11-01-preview
+        InstancesBatchGetByNames:
+          value: 2018-11-01-preview
+        InstancesBatchPut:
+          value: 2018-11-01-preview
+        InstancesBatchUpdate:
+          value: 2018-11-01-preview
+        SearchInstancesDefault:
+          value: 2018-11-01-preview
+        SearchInstancesExpandHierarchiesOnly:
+          value: 2018-11-01-preview
+        SearchInstancesHierarchiesDefaultInputPage1:
+          value: 2018-11-01-preview
+        SearchInstancesHierarchiesDefaultInputPage2:
+          value: 2018-11-01-preview
+        SearchInstancesHierarchiesDefaultInputPage3:
+          value: 2018-11-01-preview
+        SearchInstancesOneLevel:
+          value: 2018-11-01-preview
+        SearchInstancesRecursive:
+          value: 2018-11-01-preview
+        SearchInstancesUntilChildren:
+          value: 2018-11-01-preview
+        InstancesSuggest:
+          value: 2018-11-01-preview
+        ModelSettingsGet:
+          value: 2018-11-01-preview
+        ModelSettingsUpdateName:
+          value: 2018-11-01-preview
+        QueryAggregateSeriesPage1:
+          value: 2018-11-01-preview
+        QueryAggregateSeriesPage2:
+          value: 2018-11-01-preview
+        QueryAggregateSeriesWithSampleInterpolation:
+          value: 2018-11-01-preview
+        QueryGetEventsPage1:
+          value: 2018-11-01-preview
+        QueryGetEventsPage2:
+          value: 2018-11-01-preview
+        QueryGetEventsPage3:
+          value: 2018-11-01-preview
+        QueryGetEventsPage4:
+          value: 2018-11-01-preview
+        QueryGetEventsWithTakePage1:
+          value: 2018-11-01-preview
+        QueryGetEventsWithTakePage2:
+          value: 2018-11-01-preview
+        QueryGetSeriesPage1:
+          value: 2018-11-01-preview
+        QueryGetSeriesPage2:
+          value: 2018-11-01-preview
+        QueryGetSeriesPage3:
+          value: 2018-11-01-preview
+        QueryGetSeriesWithTakePage1:
+          value: 2018-11-01-preview
+        QueryGetSeriesWithTakePage2:
+          value: 2018-11-01-preview
+        TypesGetPage1:
+          value: 2018-11-01-preview
+        TypesGetPage2:
+          value: 2018-11-01-preview
+        TypesGetPage3:
+          value: 2018-11-01-preview
+        TypesBatchDeleteByIds:
+          value: 2018-11-01-preview
+        TypesBatchDeleteByNames:
+          value: 2018-11-01-preview
+        TypesBatchGetByIds:
+          value: 2018-11-01-preview
+        TypesBatchGetByNames:
+          value: 2018-11-01-preview
+        TypesBatchPut:
+          value: 2018-11-01-preview
+    ClientRequestId:
+      description: Optional client request ID. Service records this value. Allows the
+        service to trace operation across services, and allows the customer to
+        contact support regarding a particular request.
+      in: header
+      name: x-ms-client-request-id
+      required: false
+      x-ms-client-name: clientRequestId
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ClientSessionId:
+      description: Optional client session ID. Service records this value. Allows the
+        service to trace a group of related operations across services, and
+        allows the customer to contact support regarding a particular group of
+        requests.
+      in: header
+      name: x-ms-client-session-id
+      required: false
+      x-ms-client-name: clientSessionId
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ContinuationToken:
+      description: Continuation token from previous page of results to retrieve the next
+        page of the results in calls that support pagination. To get the first
+        page results, specify null continuation token as parameter value.
+        Returned continuation token is null if all results have been returned,
+        and there is no next page of results.
+      in: header
+      name: x-ms-continuation
+      required: false
+      x-ms-client-name: continuationToken
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    EnvironmentFqdn:
+      description: Per environment FQDN, for example
+        10000000-0000-0000-0000-100000000109.env.timeseries.azure.com. You can
+        obtain this domain name from the response of the Get Environments API,
+        Azure portal, or Azure Resource Manager.
+      in: path
+      name: environmentFqdn
+      required: true
+      x-ms-parameter-location: client
+      x-ms-skip-url-encoding: true
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AggregateSeries:
+      description: Aggregate Series query. Allows to calculate an aggregated time series
+        from events for a given Time Series ID and search span.
+      properties:
+        filter:
+          $ref: "#/components/schemas/Tsx"
+        inlineVariables:
+          additionalProperties:
+            $ref: "#/components/schemas/Variable"
+          description: This allows the user the optionally define inline-variables apart
+            from the ones already defined in the model. When the inline variable
+            names have the same name as the model, the inline variable
+            definition takes precedence. Can be null.
+          type: object
+        interval:
+          description: 'Interval size is specified in ISO-8601 duration format. All
+            intervals are the same size. One month is always converted to 30
+            days, and one year is always 365 days. Examples: 1 minute is "PT1M",
+            1 millisecond is "PT0.001S". For more information, see
+            https://www.w3.org/TR/xmlschema-2/#duration'
+          format: duration
+          type: string
+        projectedVariables:
+          description: This allows the user to optionally select the variables that needs
+            to be projected. When it is null or not set, all the variables from
+            inlineVariables and model are returned. Can be null.
+          items:
+            type: string
+          type: array
+        searchSpan:
+          $ref: "#/components/schemas/DateTimeRange"
+        timeSeriesId:
+          $ref: "#/components/schemas/TimeSeriesId"
+      required:
+        - timeSeriesId
+        - searchSpan
+        - interval
+      type: object
+    AggregateVariable:
+      allOf:
+        - $ref: "#/components/schemas/Variable"
+        - properties:
+            aggregation:
+              $ref: "#/components/schemas/Tsx"
+          type: object
+      description: Aggregate variable represents any aggregation calculation. Aggregate
+        Variables does not support interpolation.
+      required:
+        - kind
+        - aggregation
+      x-ms-discriminator-value: aggregate
+    Availability:
+      description: Event availability information when environment contains events.
+        Contains time range of events and approximate distribution of events
+        over time.
+      properties:
+        distribution:
+          additionalProperties:
+            description: Key value pair where key represents the interval denoted by the
+              date time of the start of the interval and the value is the number
+              of events in that interval.
+            format: int32
+            readOnly: true
+            type: integer
+        intervalSize:
+          description: 'Interval size for the returned distribution of the events. Returned
+            interval is selected to return a reasonable number of points. All
+            intervals are the same size. On the wire interval is specified in
+            ISO-8601 duration format. One month is always converted to 30 days,
+            and one year is always 365 days. Examples: 1 minute is "PT1M", 1
+            millisecond is "PT0.001S". For more information, see
+            https://www.w3.org/TR/xmlschema-2/#duration'
+          format: duration
+          readOnly: true
+          type: string
+        range:
+          $ref: "#/components/schemas/DateTimeRange"
+      type: object
+    AvailabilityResponse:
+      description: Response of Get Availability operation. When environment has no data,
+        availability property is null.
+      properties:
+        availability:
+          $ref: "#/components/schemas/Availability"
+      type: object
+    DateTimeRange:
+      description: The range of time. Cannot be null or negative.
+      properties:
+        from:
+          description: Start timestamp of the time range. Start timestamp is inclusive when
+            used in time series query requests. Events that have this timestamp
+            are included.
+          format: date-time
+          type: string
+        to:
+          description: End timestamp of the time range. End timestamp is exclusive when
+            used in time series query requests. Events that match this timestamp
+            are excluded. Note that end timestamp is inclusive when returned by
+            Get Availability (meaning that there is an event with this exact
+            "to" timestamp).
+          format: date-time
+          type: string
+      required:
+        - from
+        - to
+      type: object
+    EventProperty:
+      description: Property of an event that is either stored or computed. Properties are
+        identified by both name and type. Different events can have properties
+        with same name, but different type.
+      properties:
+        name:
+          description: The name of the property.
+          type: string
+        type:
+          $ref: "#/components/schemas/PropertyType"
+      type: object
+    EventSchema:
+      description: Event schema of all events within a given search span. Event schema is a
+        set of property definitions. Properties are identified by both name and
+        type. Different events can have properties with same name, but different
+        type. Event schema may not be contain all persisted properties when
+        there are too many properties.
+      properties:
+        properties:
+          description: A set of property definitions. When environment has no data, the
+            returned array is empty.
+          items:
+            $ref: "#/components/schemas/EventProperty"
+          readOnly: true
+          type: array
+      type: object
+    GetEventSchemaRequest:
+      description: Request to get the event schema of all events within a given search span.
+      properties:
+        searchSpan:
+          $ref: "#/components/schemas/DateTimeRange"
+      required:
+        - searchSpan
+      type: object
+    GetEvents:
+      description: Get Events query. Allows to retrieve raw events for a given Time Series
+        ID and search span.
+      properties:
+        filter:
+          $ref: "#/components/schemas/Tsx"
+        projectedProperties:
+          description: Projected properties is an array of properties which you want to
+            project. These properties must appear in the events; otherwise, they
+            are not returned.
+          items:
+            $ref: "#/components/schemas/EventProperty"
+          type: array
+        searchSpan:
+          $ref: "#/components/schemas/DateTimeRange"
+        take:
+          description: Maximum number of property values in the whole response set, not the
+            maximum number of property values per page. Defaults to 10,000 when
+            not set. Maximum value of take can be 250,000.
+          format: int32
+          type: integer
+        timeSeriesId:
+          $ref: "#/components/schemas/TimeSeriesId"
+      required:
+        - timeSeriesId
+        - searchSpan
+      type: object
+    GetHierarchiesPage:
+      allOf:
+        - $ref: "#/components/schemas/PagedResponse"
+        - properties:
+            hierarchies:
+              description: Partial list of time series hierarchies returned in a single
+                request. Can be empty if server was unable to fill the page in
+                this request, or there is no more objects when continuation
+                token is null.
+              items:
+                $ref: "#/components/schemas/TimeSeriesHierarchy"
+              readOnly: true
+              type: array
+          type: object
+      description: Partial list of time series hierarchies returned in a single request.
+    GetInstancesPage:
+      allOf:
+        - $ref: "#/components/schemas/PagedResponse"
+        - properties:
+            instances:
+              description: Partial list of time series instances returned in a single
+                request. Can be empty if server was unable to fill the page in
+                this request, or there is no more objects when continuation
+                token is null.
+              items:
+                $ref: "#/components/schemas/TimeSeriesInstance"
+              readOnly: true
+              type: array
+          type: object
+      description: Partial list of time series instances returned in a single request.
+    GetSeries:
+      description: Get Series query. Allows to retrieve time series of calculated variable
+        values from events for a given Time Series ID and search span.
+      properties:
+        filter:
+          $ref: "#/components/schemas/Tsx"
+        inlineVariables:
+          additionalProperties:
+            $ref: "#/components/schemas/Variable"
+          description: Optional inline variables apart from the ones already defined in the
+            time series type in the model. When the inline variable name is the
+            same name as in the model, the inline variable definition takes
+            precedence. Can be null.
+          type: object
+        projectedVariables:
+          description: Selected variables that needs to be projected in the query result.
+            When it is null or not set, all the variables from inlineVariables
+            and time series type in the model are returned. Can be null.
+          items:
+            type: string
+          type: array
+        searchSpan:
+          $ref: "#/components/schemas/DateTimeRange"
+        take:
+          description: Maximum number of property values in the whole response set, not the
+            maximum number of property values per page. Defaults to 10,000 when
+            not set. Maximum value of take can be 250,000.
+          format: int32
+          type: integer
+        timeSeriesId:
+          $ref: "#/components/schemas/TimeSeriesId"
+      required:
+        - timeSeriesId
+        - searchSpan
+      type: object
+    GetTypesPage:
+      allOf:
+        - $ref: "#/components/schemas/PagedResponse"
+        - properties:
+            types:
+              description: Partial list of time series types returned in a single request.
+                Can be empty if server was unable to fill the page with more
+                types in this request, or there is no more types when
+                continuation token is null.
+              items:
+                $ref: "#/components/schemas/TimeSeriesType"
+              readOnly: true
+              type: array
+          type: object
+      description: Partial list of time series types returned in a single request.
+    HierarchiesBatchRequest:
+      description: Request to perform a single operation on a batch of hierarchies. Exactly
+        one of "get", "put" or "delete" must be set.
+      properties:
+        delete:
+          $ref: "#/components/schemas/HierarchiesRequestBatchGetDelete"
+        get:
+          $ref: "#/components/schemas/HierarchiesRequestBatchGetDelete"
+        put:
+          description: '"put" should be set while creating or updating hierarchies.'
+          items:
+            $ref: "#/components/schemas/TimeSeriesHierarchy"
+          type: array
+      type: object
+    HierarchiesBatchResponse:
+      description: Response of a single operation on a batch of time series hierarchies.
+        Only one of "get", "put" or "delete" will be set.
+      properties:
+        delete:
+          description: List of error objects corresponding by position to the "delete"
+            array in the request - null when the operation is successful.
+          items:
+            $ref: "#/components/schemas/TsiErrorBody"
+          readOnly: true
+          type: array
+        get:
+          description: List of hierarchy or error objects corresponding by position to the
+            "get" array in the request. Hierarchy object is set when operation
+            is successful and error object is set when operation is
+            unsuccessful.
+          items:
+            $ref: "#/components/schemas/TimeSeriesHierarchyOrError"
+          readOnly: true
+          type: array
+        put:
+          description: List of hierarchy or error object corresponding by position to the
+            "put" array in the request. Hierarchy object is set when operation
+            is successful and error object is set when operation is
+            unsuccessful.
+          items:
+            $ref: "#/components/schemas/TimeSeriesHierarchyOrError"
+          readOnly: true
+          type: array
+      type: object
+    HierarchiesExpandParameter:
+      description: Definition of whether to expand hierarchy nodes in the same search
+        instances call.
+      properties:
+        kind:
+          description: Kind of the expansion of hierarchy nodes. When it is set to
+            'UntilChildren', the hierarchy nodes are expanded recursively until
+            there is more than one child. When it is set to 'OneLevel', the
+            hierarchies are expanded only at the single level matching path
+            search instances parameter. Optional, default is 'UntilChildren'.
+          enum:
+            - UntilChildren
+            - OneLevel
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: HierarchiesExpandKind
+      type: object
+    HierarchiesRequestBatchGetDelete:
+      description: Request to get or delete multiple time series hierarchies. Exactly one
+        of "hierarchyIds" or "names" must be set.
+      properties:
+        hierarchyIds:
+          description: List of hierarchy IDs.
+          items:
+            format: uuid
+            type: string
+          type: array
+        names:
+          description: List of hierarchy names.
+          items:
+            type: string
+          type: array
+      type: object
+    HierarchiesSortParameter:
+      description: Definition of sorting of hierarchy nodes.
+      properties:
+        by:
+          description: Value to use for hierarchy node sorting. When it is set to
+            'CumulativeInstanceCount', the returned hierarchies are sorted based
+            on the total instances belonging to the hierarchy node and its child
+            hierarchy nodes. When it is set to 'Name', the returned hierarchies
+            are sorted based on the hierarchy name. Optional, default is
+            'CumulativeInstanceCount'.
+          enum:
+            - CumulativeInstanceCount
+            - Name
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: HierarchiesSortBy
+      type: object
+    HierarchyHit:
+      description: The hierarchy node which contains the instances matching the query based
+        on the input. May be empty or null.
+      properties:
+        cumulativeInstanceCount:
+          description: Total number of instances that belong to this node and it's subtrees
+            matching the query.
+          format: int32
+          readOnly: true
+          type: integer
+        hierarchyNodes:
+          $ref: "#/components/schemas/SearchHierarchyNodesResponse"
+        name:
+          description: Name of the hierarchy node. May be empty, cannot be null.
+          readOnly: true
+          type: string
+      type: object
+    InstanceHit:
+      description: Time series instance that is returned by instances search call. Returned
+        instance matched the search request and contains highlighted text to be
+        displayed to the user if it is set to 'true'.
+      properties:
+        hierarchyIds:
+          description: List of time series hierarchy IDs that time series instance which
+            matched the search request belongs to. Cannot be used to lookup
+            hierarchies. May be null.
+          items:
+            format: uuid
+            type: string
+          readOnly: true
+          type: array
+        highlights:
+          description: Highlighted text of time series instance to be displayed to the
+            user. Highlighting inserts <hit> and </hit> tags in the portions of
+            text that matched the search string. Do not use any of the
+            highlighted properties to do further API calls.
+          properties:
+            description:
+              description: Highlighted description of time series instance. May be null.
+              readOnly: true
+              type: string
+            hierarchyIds:
+              description: List of highlighted time series hierarchy IDs that time series
+                instance belongs to. Cannot be used to lookup hierarchies. May
+                be null.
+              items:
+                format: uuid
+                type: string
+              readOnly: true
+              type: array
+            hierarchyNames:
+              description: List of highlighted time series hierarchy names that time series
+                instance belongs to. Cannot be used to lookup hierarchies. May
+                be null.
+              items:
+                type: string
+              readOnly: true
+              type: array
+            instanceFieldNames:
+              description: List of highlighted time series instance field names. May be
+                null.
+              items:
+                type: string
+              readOnly: true
+              type: array
+            instanceFieldValues:
+              description: List of highlighted time series instance field values. May be
+                null.
+              items:
+                type: string
+              readOnly: true
+              type: array
+            name:
+              description: Highlighted name of time series instance. May be null.
+              readOnly: true
+              type: string
+            timeSeriesId:
+              description: List of highlighted string values of Time Series ID for
+                displaying. Cannot be used to lookup instance.
+              items:
+                type: string
+              readOnly: true
+              type: array
+            typeName:
+              description: Highlighted time series type name that this instance belongs to.
+              readOnly: true
+              type: string
+          readOnly: true
+          type: object
+        name:
+          description: Name of the time series instance that matched the search request.
+            May be null.
+          readOnly: true
+          type: string
+        timeSeriesId:
+          $ref: "#/components/schemas/TimeSeriesId"
+        typeId:
+          description: Represents the type that time series instance which matched the
+            search request belongs to. Never null.
+          format: uuid
+          readOnly: true
+          type: string
+      type: object
+    InstanceOrError:
+      description: Result of a batch operation on a particular time series instance.
+        Instance object is set when operation is successful (except put
+        operation) and error object is set when operation is unsuccessful.
+      properties:
+        error:
+          $ref: "#/components/schemas/TsiErrorBody"
+        instance:
+          $ref: "#/components/schemas/TimeSeriesInstance"
+      type: object
+    InstancesBatchRequest:
+      description: Request to perform a single operation on a batch of instances. Exactly
+        one of "get", "put", "update" or "delete" must be set.
+      properties:
+        delete:
+          $ref: "#/components/schemas/InstancesRequestBatchGetOrDelete"
+        get:
+          $ref: "#/components/schemas/InstancesRequestBatchGetOrDelete"
+        put:
+          description: Time series instances to be created or updated.
+          items:
+            $ref: "#/components/schemas/TimeSeriesInstance"
+          type: array
+        update:
+          description: Time series instances to be updated onlRequest to perform a single
+            operation on a batch of instances. y. If instance does not exist, an
+            error is returned.
+          items:
+            $ref: "#/components/schemas/TimeSeriesInstance"
+          type: array
+      type: object
+    InstancesBatchResponse:
+      description: Response of a single operation on a batch of instances. Only one of
+        "get", "put", "update" or "delete" will be set based on the request.
+      properties:
+        delete:
+          description: List of error objects corresponding by position to the "delete"
+            array in the request. Null means the instance has been deleted, or
+            did not exist. Error object is set when operation is unsuccessful
+            (e.g. when there are events associated with this time series
+            instance).
+          items:
+            $ref: "#/components/schemas/TsiErrorBody"
+          readOnly: true
+          type: array
+        get:
+          description: List of instance or error objects corresponding by position to the
+            "get" array in the request. Instance object is set when operation is
+            successful and error object is set when operation is unsuccessful.
+          items:
+            $ref: "#/components/schemas/InstanceOrError"
+          readOnly: true
+          type: array
+        put:
+          description: List of error objects corresponding by position to the "put" array
+            in the request. Error object is set when operation is unsuccessful.
+          items:
+            $ref: "#/components/schemas/InstanceOrError"
+          readOnly: true
+          type: array
+        update:
+          description: List of error objects corresponding by position to the "update"
+            array in the request. Instance object is set when operation is
+            successful and error object is set when operation is unsuccessful.
+          items:
+            $ref: "#/components/schemas/InstanceOrError"
+          readOnly: true
+          type: array
+      type: object
+    InstancesRequestBatchGetOrDelete:
+      description: Request to get or delete instances by time series IDs or time series
+        names. Exactly one of "timeSeriesIds" or "names" must be set.
+      properties:
+        names:
+          description: List of names of the time series instances to return or delete.
+          items:
+            type: string
+          type: array
+        timeSeriesIds:
+          description: List of time series IDs of the time series instances to return or
+            delete.
+          items:
+            $ref: "#/components/schemas/TimeSeriesId"
+          type: array
+      type: object
+    InstancesSearchStringSuggestion:
+      description: Suggested search string to be used for further search for time series
+        instances.
+      properties:
+        highlightedSearchString:
+          description: Highlighted suggested search string to be displayed to the user.
+            Highlighting inserts <hit> and </hit> tags in the portions of text
+            that matched the search string. Do not use highlighted search string
+            to do further search calls.
+          readOnly: true
+          type: string
+        searchString:
+          description: Suggested search string. Can be used for further search for time
+            series instances.
+          readOnly: true
+          type: string
+      type: object
+    InstancesSortParameter:
+      description: Definition of how time series instances are sorted before being returned
+        by search instances call.
+      properties:
+        by:
+          description: Value to use for sorting of the time series instances before being
+            returned by search instances call. When it is set to 'Rank', the
+            returned instances are sorted based on the relevance. When it is set
+            to 'DisplayName', the returned results are sorted based on the
+            display name. Display name is the name of the instance if it exists,
+            otherwise, display name is the time series ID. Default is 'Rank'.
+          enum:
+            - Rank
+            - DisplayName
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: InstancesSortBy
+      type: object
+    InstancesSuggestRequest:
+      description: Request to get search string suggestions for time series instances
+        search based on prefix text.
+      properties:
+        searchString:
+          description: Search string for which suggestions are required. Empty is allowed,
+            but not null.
+          type: string
+        take:
+          description: Maximum number of suggestions expected in the result. Defaults to 10
+            when not set.
+          format: int32
+          type: integer
+      required:
+        - searchString
+      type: object
+    InstancesSuggestResponse:
+      description: Response of getting suggestions for search for time series instances.
+      properties:
+        suggestions:
+          description: List of instance suggestions for searching time series models.
+          items:
+            $ref: "#/components/schemas/InstancesSearchStringSuggestion"
+          readOnly: true
+          type: array
+      type: object
+    Interpolation:
+      description: 'The interpolation operation to be performed on the raw data points.
+        Interpolation is only supported in "numeric" variables. Currently, only
+        sampling of interpolated time series is allowed. Allowed aggregate
+        function - eg: left($value). Can be null if no interpolation needs to be
+        applied.'
+      properties:
+        boundary:
+          description: The time range to the left and right of the search span to be used
+            for Interpolation. This is helpful in scenarios where the data
+            points are missing close to the start or end of the input search
+            span. Can be null.
+          properties:
+            span:
+              format: duration
+              type: string
+          type: object
+        kind:
+          description: 'The type of interpolation technique : "Linear" or "Step".'
+          enum:
+            - Linear
+            - Step
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: InterpolationKind
+      type: object
+    ModelSettingsResponse:
+      description: Response containing full time series model settings which include model
+        name, Time Series ID properties and default type ID.
+      properties:
+        modelSettings:
+          $ref: "#/components/schemas/TimeSeriesModelSettings"
+      type: object
+    NumericVariable:
+      allOf:
+        - $ref: "#/components/schemas/Variable"
+        - properties:
+            aggregation:
+              $ref: "#/components/schemas/Tsx"
+            interpolation:
+              $ref: "#/components/schemas/Interpolation"
+            value:
+              $ref: "#/components/schemas/Tsx"
+          type: object
+      description: Numeric variable represents a single continuous numeric signal that can
+        be reconstructed using interpolation.
+      required:
+        - kind
+        - value
+        - aggregation
+      x-ms-discriminator-value: numeric
+    PagedResponse:
+      description: Partial result that has continuation token to fetch the next partial
+        result.
+      properties:
+        continuationToken:
+          description: If returned, this means that current results represent a partial
+            result. Continuation token allows to get the next page of results.
+            To get the next page of query results, send the same request with
+            continuation token parameter in "x-ms-continuation" HTTP header.
+          readOnly: true
+          type: string
+      type: object
+    PropertyType:
+      description: The type of the property that is either stored in events or computed by
+        a calculation.
+      enum:
+        - Bool
+        - DateTime
+        - Double
+        - String
+        - TimeSpan
+      type: string
+      x-ms-enum:
+        modelAsString: true
+        name: PropertyTypes
+    PropertyValues:
+      allOf:
+        - $ref: "#/components/schemas/EventProperty"
+        - properties:
+            values:
+              description: Values of a single property corresponding to the timestamps. May
+                contain nulls. Type of values matches the type of property.
+              items: {}
+              type: array
+          type: object
+      description: Values of a single property corresponding to the timestamps. May contain
+        nulls. Type of values matches the type of property.
+    QueryRequest:
+      description: Request to execute a time series query over events. Exactly one of
+        "getEvents", "getSeries" or "aggregateSeries" must be set.
+      properties:
+        aggregateSeries:
+          $ref: "#/components/schemas/AggregateSeries"
+        getEvents:
+          $ref: "#/components/schemas/GetEvents"
+        getSeries:
+          $ref: "#/components/schemas/GetSeries"
+      type: object
+    QueryResultPage:
+      allOf:
+        - $ref: "#/components/schemas/PagedResponse"
+        - properties:
+            progress:
+              description: Approximate progress of the query in percentage. It can be
+                between 0 and 100. When the continuation token in the response
+                is null, the progress is expected to be 100.
+              format: double
+              readOnly: true
+              type: number
+            properties:
+              description: Collection of time series properties and values for each of the
+                timestamps.  Can be null if server was unable to fill the page
+                in this request, or can be empty if there are no more objects
+                when continuation token is null.
+              items:
+                $ref: "#/components/schemas/PropertyValues"
+              readOnly: true
+              type: array
+            timestamps:
+              description: The timestamps of the values of the time series. If an
+                aggregation over intervals is used, timestamps represent the
+                start of corresponding intervals. If events are retrieved,
+                timestamps are values of timestamp $ts property of events. Can
+                be null if server was unable to fill the page in this request,
+                or can be empty if there are no more objects when continuation
+                token is null.
+              items:
+                format: date-time
+                type: string
+              readOnly: true
+              type: array
+          type: object
+      description: A single page of query results. If query has not finished yet, a page
+        will have continuation token set. In this case, to get the next page of
+        results, send the same request again with continuation token parameter.
+        If query has completed, the continuation token is null. It is also
+        possible to get an empty page with only continuation token set when no
+        query results have been computed yet. If paging has completed
+        (continuation token is null), then timestamps and properties may be
+        empty if there is no data to return.
+    SearchHierarchyNodesResponse:
+      description: The hierarchy nodes which contains the instances matching the query
+        based on the input. May be empty or null.
+      properties:
+        continuationToken:
+          description: If returned, this means that current results represent a partial
+            result. Continuation token allows to get the next page of results.
+            To get the next page of query results, send the same request with
+            continuation token parameter in "x-ms-continuation" HTTP header.
+          readOnly: true
+          type: string
+        hitCount:
+          description: Total number of hierarchy nodes which contains the instances
+            matching the query based on the input.
+          format: int32
+          readOnly: true
+          type: integer
+        hits:
+          description: The list of hierarchy nodes which contains the instances matching
+            the query based on the input. May be empty.
+          items:
+            $ref: "#/components/schemas/HierarchyHit"
+          readOnly: true
+          type: array
+      type: object
+    SearchInstancesHierarchiesParameters:
+      description: Parameter of how to return time series instance hierarchies by search
+        instances call.
+      properties:
+        expand:
+          $ref: "#/components/schemas/HierarchiesExpandParameter"
+        pageSize:
+          description: Maximum number of hierarchies in the same level to return in the
+            same page. Optional, default is 10 when not set. Range is from 1 to
+            100. If there are results beyond the page size, the continuation
+            token can be used to fetch the next page.
+          format: int32
+          type: integer
+        sort:
+          $ref: "#/components/schemas/HierarchiesSortParameter"
+      type: object
+    SearchInstancesParameters:
+      description: Parameters of how to return time series instances by search instances
+        call.
+      properties:
+        highlights:
+          description: Definition of highlighted search results or not. When it is set to
+            'true', the highlighted search results are returned. When it is set
+            to 'false', the highlighted search results are not returned. Default
+            is 'true'.
+          type: boolean
+        pageSize:
+          description: Maximum number of instances expected in each page of the result.
+            Defaults to 10 when not set. Ranges from 1 to 100. If there are
+            results beyond the page size, the user can use the continuation
+            token to fetch the next page.
+          format: int32
+          type: integer
+        recursive:
+          description: Definition of which instances are returned. When recursive is set to
+            'true', all instances that have the path that starts with path the
+            path parameter are returned. When recursive is set to 'false', only
+            instances that have the path that exactly matches the path parameter
+            are returned. Using recursive search allows to implement search user
+            experience, while using non-recursive search allows to implement
+            navigation experience. Optional, default is 'true'.
+          type: boolean
+        sort:
+          $ref: "#/components/schemas/InstancesSortParameter"
+      type: object
+    SearchInstancesRequest:
+      description: Request to execute a search query against time series instances and
+        return matching time series instances.
+      properties:
+        hierarchies:
+          $ref: "#/components/schemas/SearchInstancesHierarchiesParameters"
+        instances:
+          $ref: "#/components/schemas/SearchInstancesParameters"
+        path:
+          description: 'Filter on hierarchy path of time series instances. Path is
+            represented as array of string path segments. First element should
+            be hierarchy name. Example: ["Location", "California"]. Optional,
+            case sensitive, never empty and can be null.'
+          items:
+            type: string
+          type: array
+        searchString:
+          description: 'Query search string that will be matched to the attributes of time
+            series instances. Example: "floor 100". Case-insensitive, must be
+            present, but can be empty string.'
+          type: string
+      required:
+        - searchString
+      type: object
+    SearchInstancesResponse:
+      description: The instances matching the query based on the input. May be empty or
+        null.
+      properties:
+        continuationToken:
+          description: If returned, this means that current results represent a partial
+            result. Continuation token allows to get the next page of results.
+            To get the next page of query results, send the same request with
+            continuation token parameter in "x-ms-continuation" HTTP header.
+          readOnly: true
+          type: string
+        hitCount:
+          description: Total number of instances matching the query based on the input.
+          format: int32
+          readOnly: true
+          type: integer
+        hits:
+          description: The list of instances matching the query based on the input. May be
+            empty.
+          items:
+            $ref: "#/components/schemas/InstanceHit"
+          readOnly: true
+          type: array
+      type: object
+    SearchInstancesResponsePage:
+      description: Single page of the search results.
+      properties:
+        hierarchyNodes:
+          $ref: "#/components/schemas/SearchHierarchyNodesResponse"
+        instances:
+          $ref: "#/components/schemas/SearchInstancesResponse"
+      type: object
+    TimeSeriesHierarchy:
+      description: Time series hierarchy organizes time series instances into a tree.
+      properties:
+        id:
+          description: Unique hierarchy identifier that is a immutable GUID. Can be null
+            while creating hierarchy objects and then server generates the id,
+            not null on get and delete operations.
+          format: uuid
+          type: string
+        name:
+          description: User-given unique name for the type. It is mutable and not null.
+          type: string
+        source:
+          description: Definition of how time series hierarchy tree levels are created.
+          properties:
+            instanceFieldNames:
+              description: List of instance field names that must be set in all time series
+                instances that belong to this hierarchy. The order of the
+                instance fields defines the levels in the hierarchy.
+              items:
+                type: string
+              type: array
+          type: object
+      required:
+        - name
+        - source
+      type: object
+    TimeSeriesHierarchyOrError:
+      description: Result of a batch operation on a particular time series hierarchy.
+        Hierarchy is set when operation is successful and error object is set
+        when operation is unsuccessful.
+      properties:
+        error:
+          $ref: "#/components/schemas/TsiErrorBody"
+        hierarchy:
+          $ref: "#/components/schemas/TimeSeriesHierarchy"
+      type: object
+    TimeSeriesId:
+      description: A single Time Series ID value that is an array of primitive values that
+        uniquely identifies a time series instance (e.g. a single device). Note
+        that a single Time Series ID can be composite if multiple properties are
+        specified as Time Series ID at environment creation time. The position
+        and type of values must match Time Series ID properties specified on the
+        environment and returned by Get Model Setting API. Cannot be empty.
+      items:
+        description: A single Time Series ID value that is an array of primitive values
+          that uniquely identifies a time series instance (e.g. a single
+          device). Note that a single Time Series ID can be composite if
+          multiple properties are specified as Time Series ID at environment
+          creation time. The position and type of values must match Time Series
+          ID properties specified on the environment and returned by Get Model
+          Setting API. Cannot be empty.
+      minItems: 1
+      type: array
+    TimeSeriesIdProperties:
+      description: Time series ID properties defined during environment creation.
+      items:
+        $ref: "#/components/schemas/TimeSeriesIdProperty"
+      minItems: 1
+      type: array
+    TimeSeriesIdProperty:
+      description: A definition of a single property that can be used in time series ID
+        properties defined during environment creation.
+      properties:
+        name:
+          description: The name of the property.
+          readOnly: true
+          type: string
+        type:
+          description: The type of the property. Currently, only "String" is supported.
+          enum:
+            - String
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: TimeSeriesIdPropertyTypes
+      type: object
+    TimeSeriesInstance:
+      description: Time series instances are the time series themselves. In most cases, the
+        deviceId or assetId is the unique identifier of the asset in the
+        environment. Instances have descriptive information associated with them
+        called instance fields. At a minimum, instance fields include hierarchy
+        information. They can also include useful, descriptive data like the
+        manufacturer, operator, or the last service date.
+      properties:
+        description:
+          description: This optional field contains description about the instance.
+          type: string
+        hierarchyIds:
+          description: Set of time series hierarchy IDs that the instance belong to. May be
+            null.
+          items:
+            format: uuid
+            type: string
+          type: array
+        instanceFields:
+          additionalProperties: {}
+          description: Set of key-value pairs that contain user-defined instance
+            properties. May be null.
+          type: object
+        name:
+          description: Optional name of the instance which is unique in an environment.
+            Names acts as a mutable alias or display name of the time series
+            instance. Mutable, may be null.
+          type: string
+        timeSeriesId:
+          $ref: "#/components/schemas/TimeSeriesId"
+        typeId:
+          description: This represents the type that this instance belongs to. Never null.
+          format: uuid
+          type: string
+      required:
+        - timeSeriesId
+        - typeId
+      type: object
+    TimeSeriesModelSettings:
+      description: Time series model settings including model name, Time Series ID
+        properties and default type ID.
+      properties:
+        defaultTypeId:
+          description: Default type ID of the model that new time series instances will
+            automatically belong to.
+          format: uuid
+          readOnly: true
+          type: string
+        name:
+          description: 'Time series model display name which is shown in the UX. Examples:
+            "Temperature Sensors", "MyDevices".'
+          readOnly: true
+          type: string
+        timeSeriesIdProperties:
+          $ref: "#/components/schemas/TimeSeriesIdProperties"
+      type: object
+    TimeSeriesType:
+      description: Time series type defines variables or formulas for doing computation on
+        events associated with time series instances. Each time series instance
+        is associated with exactly one type. A type can have one or more
+        variables. For example, a time series instance might be of type
+        Temperature Sensor, which consists of the variables avg temperature, min
+        temperature, and max temperature.
+      properties:
+        description:
+          description: Description of the type. May be null.
+          type: string
+        id:
+          description: Unique type identifier that is immutable. Can be null on create or
+            update requests, and then server generates the ID. Not null on get
+            and delete operations.
+          format: uuid
+          type: string
+        name:
+          description: User-given unique name for the type. Mutable, not null.
+          type: string
+        variables:
+          additionalProperties:
+            $ref: "#/components/schemas/Variable"
+          description: Different variables associated with the type. Not empty, not null.
+      required:
+        - name
+        - variables
+      type: object
+    TimeSeriesTypeOrError:
+      description: Result of a batch operation on a particular time series type. Type
+        object is set when operation is successful and error object is set when
+        operation is unsuccessful.
+      properties:
+        error:
+          $ref: "#/components/schemas/TsiErrorBody"
+        timeSeriesType:
+          $ref: "#/components/schemas/TimeSeriesType"
+      type: object
+    TsiError:
+      description: Information about an API error.
+      properties:
+        error:
+          $ref: "#/components/schemas/TsiErrorBody"
+      type: object
+      x-ms-external: false
+    TsiErrorBody:
+      additionalProperties: true
+      description: A particular API error with an error code and a message.
+      properties:
+        code:
+          description: Language-independent, human-readable string that defines a
+            service-specific error code. This code serves as a more specific
+            indicator for the HTTP error code specified in the response. Can be
+            used to programmatically handle specific error cases.
+          readOnly: true
+          type: string
+        details:
+          description: Contains additional error information. May be null.
+          items:
+            $ref: "#/components/schemas/TsiErrorDetails"
+          readOnly: true
+          type: array
+        innerError:
+          $ref: "#/components/schemas/TsiErrorBody"
+        message:
+          description: Human-readable, language-independent representation of the error. It
+            is intended as an aid to developers and is not suitable for exposure
+            to end users.
+          readOnly: true
+          type: string
+        target:
+          description: Target of the particular error (for example, the name of the
+            property in error). May be null.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-external: false
+    TsiErrorDetails:
+      additionalProperties: true
+      description: Additional error information.
+      properties:
+        code:
+          description: Language-independent, human-readable string that defines a
+            service-specific error code. This code serves as a more specific
+            indicator for the HTTP error code specified in the response. Can be
+            used to programmatically handle specific error cases.
+          readOnly: true
+          type: string
+        message:
+          description: Human-readable, language-independent representation of the error. It
+            is intended as an aid to developers and is not suitable for exposure
+            to end users.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-external: false
+    Tsx:
+      description: "Time series expression (TSX) written as a single string. Examples:
+        \"$event.Status.String='Good'\", \"avg($event.Temperature)\". Refer to
+        the documentation on how to write time series expressions."
+      properties:
+        tsx:
+          description: "Time series expression (TSX) written as a single string. Examples:
+            \"$event.Status.String='Good'\", \"avg($event.Temperature)\". Refer
+            to the documentation on how to write time series expressions."
+          type: string
+      required:
+        - tsx
+      type: object
+    TypesBatchRequest:
+      description: Request to perform a single operation on a batch of time series types.
+        Exactly one of "get", "put" or "delete" must be set.
+      properties:
+        delete:
+          $ref: "#/components/schemas/TypesRequestBatchGetOrDelete"
+        get:
+          $ref: "#/components/schemas/TypesRequestBatchGetOrDelete"
+        put:
+          description: Definition of what time series types to update or create.
+          items:
+            $ref: "#/components/schemas/TimeSeriesType"
+          type: array
+      type: object
+    TypesBatchResponse:
+      description: Response of a single operation on a batch of time series types. Exactly
+        one of "get", "put" or "delete" will be set.
+      properties:
+        delete:
+          description: List of error objects corresponding by position to the "delete"
+            array in the request - null when the operation is successful.
+          items:
+            $ref: "#/components/schemas/TsiErrorBody"
+          readOnly: true
+          type: array
+        get:
+          description: List of types or error objects corresponding by position to the
+            "get" array in the request. Type object is set when operation is
+            successful and error object is set when operation is unsuccessful.
+          items:
+            $ref: "#/components/schemas/TimeSeriesTypeOrError"
+          readOnly: true
+          type: array
+        put:
+          description: List of types or error objects corresponding by position to the
+            "put" array in the request. Type object is set when operation is
+            successful and error object is set when operation is unsuccessful.
+          items:
+            $ref: "#/components/schemas/TimeSeriesTypeOrError"
+          readOnly: true
+          type: array
+      type: object
+    TypesRequestBatchGetOrDelete:
+      description: Request to get or delete time series types by IDs or type names. Exactly
+        one of "typeIds" or "names" must be set.
+      properties:
+        names:
+          description: List of names of time series types to return or delete.
+          items:
+            type: string
+          type: array
+        typeIds:
+          description: List of IDs of time series types to return or delete.
+          items:
+            format: uuid
+            type: string
+          type: array
+      type: object
+    UpdateModelSettingsRequest:
+      description: Request to update model settings. One of "name" or "defaultTypeId" must
+        be set.
+      properties:
+        defaultTypeId:
+          description: Default type id of the model that new instances will automatically
+            belong to.
+          format: uuid
+          type: string
+        name:
+          description: Model display name which is shown in the UX and mutable by the user.
+            Initial value is "DefaultModel".
+          type: string
+      type: object
+    Variable:
+      description: Variables are named calculations over values from the events. Time
+        Series Insights variable definitions contain formula and computation
+        rules. Variables are stored in the type definition in Time Series Model
+        and can be provided inline via Query APIs to override the stored
+        definition.
+      discriminator:
+        propertyName: kind
+      properties:
+        filter:
+          $ref: "#/components/schemas/Tsx"
+        interpolation:
+          $ref: "#/components/schemas/Interpolation"
+        kind:
+          description: Allowed "kind" values are - "numeric" or "aggregate". While
+            "numeric" allows you to specify value of the reconstructed signal
+            and the expression to aggregate them, the "aggregate" kind lets you
+            directly aggregate on the event properties without specifying value.
+          type: string
+      required:
+        - kind
+      type: object

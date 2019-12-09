@@ -1,0 +1,4129 @@
+openapi: 3.0.0
+info:
+  version: 2018-11-15
+  x-release: v4
+  title: AWS Backup
+  description: <fullname>AWS Backup</fullname> <p>AWS Backup is a unified backup service
+    designed to protect AWS services and their associated data. AWS Backup
+    simplifies the creation, migration, restoration, and deletion of backups,
+    while also providing reporting and auditing.</p>
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: backup
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/backup-2018-11-15.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/backup/
+security:
+  - hmac: []
+paths:
+  /backup/plans/:
+    put:
+      operationId: CreateBackupPlan
+      description: <p>Backup plans are documents that contain information that AWS Backup
+        uses to schedule tasks that create recovery points of resources.</p>
+        <p>If you call <code>CreateBackupPlan</code> with a plan that already
+        exists, the existing <code>backupPlanId</code> is returned.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateBackupPlanOutput"
+        "480":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "481":
+          description: AlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlreadyExistsException"
+        "482":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "483":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - BackupPlan
+              properties:
+                BackupPlan:
+                  description: Contains an optional backup plan display name and an array
+                    of <code>BackupRule</code> objects, each of which specifies
+                    a backup rule. Each rule in a backup plan is a separate
+                    scheduled task and can back up a different selection of AWS
+                    resources.
+                  type: object
+                  properties:
+                    BackupPlanName:
+                      $ref: "#/components/schemas/BackupPlanName"
+                    Rules:
+                      $ref: "#/components/schemas/BackupRulesInput"
+                BackupPlanTags:
+                  description: To help organize your resources, you can assign your own
+                    metadata to the resources that you create. Each tag is a
+                    key-value pair. The specified tags are assigned to all
+                    backups created with this plan.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/TagValue"
+                CreatorRequestId:
+                  description: Identifies the request and allows failed requests to be
+                    retried without the risk of executing the operation twice.
+                    If the request includes a <code>CreatorRequestId</code> that
+                    matches an existing backup plan, that plan is returned. This
+                    parameter is optional.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListBackupPlans
+      description: Returns metadata of your saved backup plans, including Amazon Resource
+        Names (ARNs), plan IDs, creation and deletion dates, version IDs, plan
+        names, and creator request IDs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListBackupPlansOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: nextToken
+          in: query
+          required: false
+          description: The next item following a partial list of returned items. For
+            example, if a request is made to return <code>maxResults</code>
+            number of items, <code>NextToken</code> allows you to return more
+            items in your list starting at the location pointed to by the next
+            token.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of items to be returned.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: includeDeleted
+          in: query
+          required: false
+          description: A Boolean value with a default value of <code>FALSE</code> that
+            returns deleted backup plans when set to <code>TRUE</code>.
+          schema:
+            type: boolean
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  "/backup/plans/{backupPlanId}/selections/":
+    put:
+      operationId: CreateBackupSelection
+      description: "<p>Creates a JSON document that specifies a set of resources to assign
+        to a backup plan. Resources can be included by specifying patterns for a
+        <code>ListOfTags</code> and selected <code>Resources</code>. </p> <p>For
+        example, consider the following patterns:</p> <ul> <li> <p>
+        <code>Resources:
+        \"arn:aws:ec2:region:account-id:volume/volume-id\"</code> </p> </li>
+        <li> <p> <code>ConditionKey:\"department\"</code> </p> <p>
+        <code>ConditionValue:\"finance\"</code> </p> <p>
+        <code>ConditionType:\"StringEquals\"</code> </p> </li> <li> <p>
+        <code>ConditionKey:\"importance\"</code> </p> <p>
+        <code>ConditionValue:\"critical\"</code> </p> <p>
+        <code>ConditionType:\"StringEquals\"</code> </p> </li> </ul> <p>Using
+        these patterns would back up all Amazon Elastic Block Store (Amazon EBS)
+        volumes that are tagged as <code>\"department=finance\"</code>,
+        <code>\"importance=critical\"</code>, in addition to an EBS volume with
+        the specified volume Id.</p> <p>Resources and conditions are additive in
+        that all resources that match the pattern are selected. This shouldn't
+        be confused with a logical AND, where all conditions must match. The
+        matching patterns are logically 'put together using the OR operator. In
+        other words, all patterns that match are selected for backup.</p>"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateBackupSelectionOutput"
+        "480":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "481":
+          description: AlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlreadyExistsException"
+        "482":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "483":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupPlanId
+          in: path
+          required: true
+          description: Uniquely identifies the backup plan to be associated with the
+            selection of resources.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - BackupSelection
+              properties:
+                BackupSelection:
+                  description: Used to specify a set of resources to a backup plan.
+                  type: object
+                  properties:
+                    SelectionName:
+                      $ref: "#/components/schemas/BackupSelectionName"
+                    IamRoleArn:
+                      $ref: "#/components/schemas/IAMRoleArn"
+                    Resources:
+                      $ref: "#/components/schemas/ResourceArns"
+                    ListOfTags:
+                      $ref: "#/components/schemas/ListOfTags"
+                CreatorRequestId:
+                  description: A unique string that identifies the request and allows
+                    failed requests to be retried without the risk of executing
+                    the operation twice.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListBackupSelections
+      description: Returns an array containing metadata of the resources associated with
+        the target backup plan.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListBackupSelectionsOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupPlanId
+          in: path
+          required: true
+          description: Uniquely identifies a backup plan.
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          required: false
+          description: The next item following a partial list of returned items. For
+            example, if a request is made to return <code>maxResults</code>
+            number of items, <code>NextToken</code> allows you to return more
+            items in your list starting at the location pointed to by the next
+            token.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of items to be returned.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  "/backup-vaults/{backupVaultName}":
+    put:
+      operationId: CreateBackupVault
+      description: <p>Creates a logical container where backups are stored. A
+        <code>CreateBackupVault</code> request includes a name, optionally one
+        or more resource tags, an encryption key, and a request ID.</p> <note>
+        <p>Sensitive data, such as passport numbers, should not be included the
+        name of a backup vault.</p> </note>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateBackupVaultOutput"
+        "480":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "481":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "482":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: AlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlreadyExistsException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                BackupVaultTags:
+                  description: Metadata that you can assign to help organize the resources
+                    that you create. Each tag is a key-value pair.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/TagValue"
+                EncryptionKeyArn:
+                  description: The server-side encryption key that is used to protect your
+                    backups; for example,
+                    <code>arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab</code>.
+                  type: string
+                CreatorRequestId:
+                  description: A unique string that identifies the request and allows
+                    failed requests to be retried without the risk of executing
+                    the operation twice.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    delete:
+      operationId: DeleteBackupVault
+      description: Deletes the backup vault identified by its name. A vault can be deleted
+        only if it is empty.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "484":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and theAWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+    get:
+      operationId: DescribeBackupVault
+      description: Returns metadata about a backup vault specified by its name.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeBackupVaultOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+  "/backup/plans/{backupPlanId}":
+    delete:
+      operationId: DeleteBackupPlan
+      description: Deletes a backup plan. A backup plan can only be deleted after all
+        associated selections of resources have been deleted. Deleting a backup
+        plan deletes the current version of a backup plan. Previous versions, if
+        any, will still exist.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteBackupPlanOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "484":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+      parameters:
+        - name: backupPlanId
+          in: path
+          required: true
+          description: Uniquely identifies a backup plan.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    post:
+      operationId: UpdateBackupPlan
+      description: Replaces the body of a saved backup plan identified by its
+        <code>backupPlanId</code> with the input document in JSON format. The
+        new version is uniquely identified by a <code>VersionId</code>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateBackupPlanOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupPlanId
+          in: path
+          required: true
+          description: Uniquely identifies a backup plan.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - BackupPlan
+              properties:
+                BackupPlan:
+                  description: Contains an optional backup plan display name and an array
+                    of <code>BackupRule</code> objects, each of which specifies
+                    a backup rule. Each rule in a backup plan is a separate
+                    scheduled task and can back up a different selection of AWS
+                    resources.
+                  type: object
+                  properties:
+                    BackupPlanName:
+                      $ref: "#/components/schemas/BackupPlanName"
+                    Rules:
+                      $ref: "#/components/schemas/BackupRulesInput"
+        required: true
+  "/backup/plans/{backupPlanId}/selections/{selectionId}":
+    delete:
+      operationId: DeleteBackupSelection
+      description: Deletes the resource selection associated with a backup plan that is
+        specified by the <code>SelectionId</code>.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupPlanId
+          in: path
+          required: true
+          description: Uniquely identifies a backup plan.
+          schema:
+            type: string
+        - name: selectionId
+          in: path
+          required: true
+          description: Uniquely identifies the body of a request to assign a set of
+            resources to a backup plan.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetBackupSelection
+      description: Returns selection metadata and a document in JSON format that specifies
+        a list of resources that are associated with a backup plan.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBackupSelectionOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupPlanId
+          in: path
+          required: true
+          description: Uniquely identifies a backup plan.
+          schema:
+            type: string
+        - name: selectionId
+          in: path
+          required: true
+          description: Uniquely identifies the body of a request to assign a set of
+            resources to a backup plan.
+          schema:
+            type: string
+  "/backup-vaults/{backupVaultName}/access-policy":
+    delete:
+      operationId: DeleteBackupVaultAccessPolicy
+      description: Deletes the policy document that manages permissions on a backup vault.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetBackupVaultAccessPolicy
+      description: Returns the access policy document that is associated with the named
+        backup vault.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBackupVaultAccessPolicyOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+    put:
+      operationId: PutBackupVaultAccessPolicy
+      description: Sets a resource-based policy that is used to manage access permissions
+        on the target backup vault. Requires a backup vault name and an access
+        policy document in JSON format.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Policy:
+                  description: The backup vault access policy document in JSON format.
+                  type: string
+        required: true
+  "/backup-vaults/{backupVaultName}/notification-configuration":
+    delete:
+      operationId: DeleteBackupVaultNotifications
+      description: Deletes event notifications for the specified backup vault.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the Region where they are created. They consist
+            of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetBackupVaultNotifications
+      description: Returns event notifications for the specified backup vault.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBackupVaultNotificationsOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+    put:
+      operationId: PutBackupVaultNotifications
+      description: Turns on notifications on a backup vault for the specified topic and
+        events.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - SNSTopicArn
+                - BackupVaultEvents
+              properties:
+                SNSTopicArn:
+                  description: The Amazon Resource Name (ARN) that specifies the topic for
+                    a backup vault’s events; for example,
+                    <code>arn:aws:sns:us-west-2:111122223333:MyVaultTopic</code>.
+                  type: string
+                BackupVaultEvents:
+                  description: An array of events that indicate the status of jobs to back
+                    up resources to the backup vault.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/BackupVaultEvent"
+        required: true
+  "/backup-vaults/{backupVaultName}/recovery-points/{recoveryPointArn}":
+    delete:
+      operationId: DeleteRecoveryPoint
+      description: Deletes the recovery point specified by a recovery point ID.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "484":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+        - name: recoveryPointArn
+          in: path
+          required: true
+          description: An Amazon Resource Name (ARN) that uniquely identifies a recovery
+            point; for example,
+            <code>arn:aws:backup:us-east-1:123456789012:recovery-point:1EB3B5E7-9EB0-435A-A80B-108B488B0D45</code>.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeRecoveryPoint
+      description: Returns metadata associated with a recovery point, including ID, status,
+        encryption, and lifecycle.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeRecoveryPointOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+        - name: recoveryPointArn
+          in: path
+          required: true
+          description: An Amazon Resource Name (ARN) that uniquely identifies a recovery
+            point; for example,
+            <code>arn:aws:backup:us-east-1:123456789012:recovery-point:1EB3B5E7-9EB0-435A-A80B-108B488B0D45</code>.
+          schema:
+            type: string
+    post:
+      operationId: UpdateRecoveryPointLifecycle
+      description: <p>Sets the transition lifecycle of a recovery point.</p> <p>The
+        lifecycle defines when a protected resource is transitioned to cold
+        storage and when it expires. AWS Backup transitions and expires backups
+        automatically according to the lifecycle that you define. </p>
+        <p>Backups transitioned to cold storage must be stored in cold storage
+        for a minimum of 90 days. Therefore, the “expire after days” setting
+        must be 90 days greater than the “transition to cold after days”
+        setting. The “transition to cold after days” setting cannot be changed
+        after a backup has been transitioned to cold. </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateRecoveryPointLifecycleOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+        - name: recoveryPointArn
+          in: path
+          required: true
+          description: An Amazon Resource Name (ARN) that uniquely identifies a recovery
+            point; for example,
+            <code>arn:aws:backup:us-east-1:123456789012:recovery-point:1EB3B5E7-9EB0-435A-A80B-108B488B0D45</code>.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Lifecycle:
+                  description: Contains an array of <code>Transition</code> objects
+                    specifying how long in days before a recovery point
+                    transitions to cold storage or is deleted.
+                  type: object
+                  properties:
+                    MoveToColdStorageAfterDays:
+                      $ref: "#/components/schemas/Long"
+                    DeleteAfterDays:
+                      $ref: "#/components/schemas/Long"
+        required: true
+  "/backup-jobs/{backupJobId}":
+    get:
+      operationId: DescribeBackupJob
+      description: Returns metadata associated with creating a backup of a resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeBackupJobOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "484":
+          description: DependencyFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyFailureException"
+      parameters:
+        - name: backupJobId
+          in: path
+          required: true
+          description: Uniquely identifies a request to AWS Backup to back up a resource.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    post:
+      operationId: StopBackupJob
+      description: Attempts to cancel a job to create a one-time backup of a resource.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "483":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupJobId
+          in: path
+          required: true
+          description: Uniquely identifies a request to AWS Backup to back up a resource.
+          schema:
+            type: string
+  "/resources/{resourceArn}":
+    get:
+      operationId: DescribeProtectedResource
+      description: Returns information about a saved resource, including the last time it
+        was backed-up, its Amazon Resource Name (ARN), and the AWS service type
+        of the saved resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeProtectedResourceOutput"
+        "480":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: An Amazon Resource Name (ARN) that uniquely identifies a resource.
+            The format of the ARN depends on the resource type.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/restore-jobs/{restoreJobId}":
+    get:
+      operationId: DescribeRestoreJob
+      description: Returns metadata associated with a restore job that is specified by a
+        job ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeRestoreJobOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "484":
+          description: DependencyFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependencyFailureException"
+      parameters:
+        - name: restoreJobId
+          in: path
+          required: true
+          description: Uniquely identifies the job that restores a recovery point.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/backup/plans/{backupPlanId}/toTemplate/":
+    get:
+      operationId: ExportBackupPlanTemplate
+      description: Returns the backup plan that is specified by the plan ID as a backup
+        template.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExportBackupPlanTemplateOutput"
+        "480":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "481":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "482":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: backupPlanId
+          in: path
+          required: true
+          description: Uniquely identifies a backup plan.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/backup/plans/{backupPlanId}/":
+    get:
+      operationId: GetBackupPlan
+      description: Returns the body of a backup plan in JSON format, in addition to plan
+        metadata.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBackupPlanOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupPlanId
+          in: path
+          required: true
+          description: Uniquely identifies a backup plan.
+          schema:
+            type: string
+        - name: versionId
+          in: query
+          required: false
+          description: Unique, randomly generated, Unicode, UTF-8 encoded strings that are
+            at most 1,024 bytes long. Version IDs cannot be edited.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /backup/template/json/toPlan:
+    post:
+      operationId: GetBackupPlanFromJSON
+      description: Returns a valid JSON document specifying a backup plan or an error.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBackupPlanFromJSONOutput"
+        "480":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "484":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - BackupPlanTemplateJson
+              properties:
+                BackupPlanTemplateJson:
+                  description: A customer-supplied backup plan document in JSON format.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/backup/template/plans/{templateId}/toPlan":
+    get:
+      operationId: GetBackupPlanFromTemplate
+      description: Returns the template specified by its <code>templateId</code> as a
+        backup plan.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBackupPlanFromTemplateOutput"
+        "480":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "481":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "482":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          description: Uniquely identifies a stored backup plan template.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/backup-vaults/{backupVaultName}/recovery-points/{recoveryPointArn}/restore-metadata":
+    get:
+      operationId: GetRecoveryPointRestoreMetadata
+      description: <p>Returns two sets of metadata key-value pairs. The first set lists the
+        metadata that the recovery point was created with. The second set lists
+        the metadata key-value pairs that are required to restore the recovery
+        point.</p> <p>These sets can be the same, or the restore metadata set
+        can contain different values if the target service to be restored has
+        changed since the recovery point was created and now requires additional
+        or different information in order to be restored.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetRecoveryPointRestoreMetadataOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+        - name: recoveryPointArn
+          in: path
+          required: true
+          description: An Amazon Resource Name (ARN) that uniquely identifies a recovery
+            point; for example,
+            <code>arn:aws:backup:us-east-1:123456789012:recovery-point:1EB3B5E7-9EB0-435A-A80B-108B488B0D45</code>.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /supported-resource-types:
+    get:
+      operationId: GetSupportedResourceTypes
+      description: Returns the AWS resource types supported by AWS Backup.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSupportedResourceTypesOutput"
+        "480":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /backup-jobs/:
+    get:
+      operationId: ListBackupJobs
+      description: Returns metadata about your backup jobs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListBackupJobsOutput"
+        "480":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "481":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: nextToken
+          in: query
+          required: false
+          description: The next item following a partial list of returned items. For
+            example, if a request is made to return <code>maxResults</code>
+            number of items, <code>NextToken</code> allows you to return more
+            items in your list starting at the location pointed to by the next
+            token.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of items to be returned.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: resourceArn
+          in: query
+          required: false
+          description: Returns only backup jobs that match the specified resource Amazon
+            Resource Name (ARN).
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: false
+          description: Returns only backup jobs that are in the specified state.
+          schema:
+            type: string
+            enum:
+              - CREATED
+              - PENDING
+              - RUNNING
+              - ABORTING
+              - ABORTED
+              - COMPLETED
+              - FAILED
+              - EXPIRED
+        - name: backupVaultName
+          in: query
+          required: false
+          description: Returns only backup jobs that will be stored in the specified backup
+            vault. Backup vaults are identified by names that are unique to the
+            account used to create them and the AWS Region where they are
+            created. They consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+        - name: createdBefore
+          in: query
+          required: false
+          description: Returns only backup jobs that were created before the specified date.
+          schema:
+            type: string
+            format: date-time
+        - name: createdAfter
+          in: query
+          required: false
+          description: Returns only backup jobs that were created after the specified date.
+          schema:
+            type: string
+            format: date-time
+        - name: resourceType
+          in: query
+          required: false
+          description: <p>Returns only backup jobs for the specified resources:</p> <ul>
+            <li> <p> <code>EBS</code> for Amazon Elastic Block Store</p> </li>
+            <li> <p> <code>SGW</code> for AWS Storage Gateway</p> </li> <li> <p>
+            <code>RDS</code> for Amazon Relational Database Service</p> </li>
+            <li> <p> <code>DDB</code> for Amazon DynamoDB</p> </li> <li> <p>
+            <code>EFS</code> for Amazon Elastic File System</p> </li> </ul>
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /backup/template/plans:
+    get:
+      operationId: ListBackupPlanTemplates
+      description: Returns metadata of your saved backup plan templates, including the
+        template ID, name, and the creation and deletion dates.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListBackupPlanTemplatesOutput"
+        "480":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "481":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "482":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: nextToken
+          in: query
+          required: false
+          description: The next item following a partial list of returned items. For
+            example, if a request is made to return <code>maxResults</code>
+            number of items, <code>NextToken</code> allows you to return more
+            items in your list starting at the location pointed to by the next
+            token.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of items to be returned.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/backup/plans/{backupPlanId}/versions/":
+    get:
+      operationId: ListBackupPlanVersions
+      description: Returns version metadata of your backup plans, including Amazon Resource
+        Names (ARNs), backup plan IDs, creation and deletion dates, plan names,
+        and version IDs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListBackupPlanVersionsOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupPlanId
+          in: path
+          required: true
+          description: Uniquely identifies a backup plan.
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          required: false
+          description: The next item following a partial list of returned items. For
+            example, if a request is made to return <code>maxResults</code>
+            number of items, <code>NextToken</code> allows you to return more
+            items in your list starting at the location pointed to by the next
+            token.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of items to be returned.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /backup-vaults/:
+    get:
+      operationId: ListBackupVaults
+      description: Returns a list of recovery point storage containers along with
+        information about them.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListBackupVaultsOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: nextToken
+          in: query
+          required: false
+          description: The next item following a partial list of returned items. For
+            example, if a request is made to return <code>maxResults</code>
+            number of items, <code>NextToken</code> allows you to return more
+            items in your list starting at the location pointed to by the next
+            token.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of items to be returned.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /resources/:
+    get:
+      operationId: ListProtectedResources
+      description: Returns an array of resources successfully backed up by AWS Backup,
+        including the time the resource was saved, an Amazon Resource Name (ARN)
+        of the resource, and a resource type.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListProtectedResourcesOutput"
+        "480":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "481":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: nextToken
+          in: query
+          required: false
+          description: The next item following a partial list of returned items. For
+            example, if a request is made to return <code>maxResults</code>
+            number of items, <code>NextToken</code> allows you to return more
+            items in your list starting at the location pointed to by the next
+            token.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of items to be returned.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/backup-vaults/{backupVaultName}/recovery-points/":
+    get:
+      operationId: ListRecoveryPointsByBackupVault
+      description: Returns detailed information about the recovery points stored in a
+        backup vault.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListRecoveryPointsByBackupVaultOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: backupVaultName
+          in: path
+          required: true
+          description: The name of a logical container where backups are stored. Backup
+            vaults are identified by names that are unique to the account used
+            to create them and the AWS Region where they are created. They
+            consist of lowercase letters, numbers, and hyphens.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+        - name: nextToken
+          in: query
+          required: false
+          description: The next item following a partial list of returned items. For
+            example, if a request is made to return <code>maxResults</code>
+            number of items, <code>NextToken</code> allows you to return more
+            items in your list starting at the location pointed to by the next
+            token.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of items to be returned.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: resourceArn
+          in: query
+          required: false
+          description: Returns only recovery points that match the specified resource
+            Amazon Resource Name (ARN).
+          schema:
+            type: string
+        - name: resourceType
+          in: query
+          required: false
+          description: Returns only recovery points that match the specified resource type.
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+        - name: backupPlanId
+          in: query
+          required: false
+          description: Returns only recovery points that match the specified backup plan ID.
+          schema:
+            type: string
+        - name: createdBefore
+          in: query
+          required: false
+          description: Returns only recovery points that were created before the specified
+            timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: createdAfter
+          in: query
+          required: false
+          description: Returns only recovery points that were created after the specified
+            timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/resources/{resourceArn}/recovery-points/":
+    get:
+      operationId: ListRecoveryPointsByResource
+      description: Returns detailed information about recovery points of the type specified
+        by a resource Amazon Resource Name (ARN).
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListRecoveryPointsByResourceOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: An ARN that uniquely identifies a resource. The format of the ARN
+            depends on the resource type.
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          required: false
+          description: The next item following a partial list of returned items. For
+            example, if a request is made to return <code>maxResults</code>
+            number of items, <code>NextToken</code> allows you to return more
+            items in your list starting at the location pointed to by the next
+            token.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of items to be returned.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /restore-jobs/:
+    get:
+      operationId: ListRestoreJobs
+      description: Returns a list of jobs that AWS Backup initiated to restore a saved
+        resource, including metadata about the recovery process.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListRestoreJobsOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: nextToken
+          in: query
+          required: false
+          description: The next item following a partial list of returned items. For
+            example, if a request is made to return <code>maxResults</code>
+            number of items, <code>NextToken</code> allows you to return more
+            items in your list starting at the location pointed to by the next
+            token.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of items to be returned.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/tags/{resourceArn}/":
+    get:
+      operationId: ListTags
+      description: Returns a list of key-value pairs assigned to a target recovery point,
+        backup plan, or backup vault.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTagsOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: An Amazon Resource Name (ARN) that uniquely identifies a resource.
+            The format of the ARN depends on the type of resource. Valid targets
+            for <code>ListTags</code> are recovery points, backup plans, and
+            backup vaults.
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          required: false
+          description: The next item following a partial list of returned items. For
+            example, if a request is made to return <code>maxResults</code>
+            number of items, <code>NextToken</code> allows you to return more
+            items in your list starting at the location pointed to by the next
+            token.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of items to be returned.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /backup-jobs:
+    put:
+      operationId: StartBackupJob
+      description: Starts a job to create a one-time backup of the specified resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartBackupJobOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - BackupVaultName
+                - ResourceArn
+                - IamRoleArn
+              properties:
+                BackupVaultName:
+                  description: The name of a logical container where backups are stored.
+                    Backup vaults are identified by names that are unique to the
+                    account used to create them and the AWS Region where they
+                    are created. They consist of lowercase letters, numbers, and
+                    hyphens.
+                  type: string
+                  pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+                ResourceArn:
+                  description: An Amazon Resource Name (ARN) that uniquely identifies a
+                    resource. The format of the ARN depends on the resource
+                    type.
+                  type: string
+                IamRoleArn:
+                  description: Specifies the IAM role ARN used to create the target
+                    recovery point; for example,
+                    <code>arn:aws:iam::123456789012:role/S3Access</code>.
+                  type: string
+                IdempotencyToken:
+                  description: A customer chosen string that can be used to distinguish
+                    between calls to <code>StartBackupJob</code>. Idempotency
+                    tokens time out after one hour. Therefore, if you call
+                    <code>StartBackupJob</code> multiple times with the same
+                    idempotency token within one hour, AWS Backup recognizes
+                    that you are requesting only one backup job and initiates
+                    only one. If you change the idempotency token for each call,
+                    AWS Backup recognizes that you are requesting to start
+                    multiple backups.
+                  type: string
+                StartWindowMinutes:
+                  description: The amount of time in minutes before beginning a backup.
+                  type: integer
+                CompleteWindowMinutes:
+                  description: The amount of time AWS Backup attempts a backup before
+                    canceling the job and returning an error.
+                  type: integer
+                Lifecycle:
+                  description: Contains an array of <code>Transition</code> objects
+                    specifying how long in days before a recovery point
+                    transitions to cold storage or is deleted.
+                  type: object
+                  properties:
+                    MoveToColdStorageAfterDays:
+                      $ref: "#/components/schemas/Long"
+                    DeleteAfterDays:
+                      $ref: "#/components/schemas/Long"
+                RecoveryPointTags:
+                  description: To help organize your resources, you can assign your own
+                    metadata to the resources that you create. Each tag is a
+                    key-value pair.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/TagValue"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /restore-jobs:
+    put:
+      operationId: StartRestoreJob
+      description: <p>Recovers the saved resource identified by an Amazon Resource Name
+        (ARN). </p> <p>If the resource ARN is included in the request, then the
+        last complete backup of that resource is recovered. If the ARN of a
+        recovery point is supplied, then that recovery point is restored.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartRestoreJobOutput"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - RecoveryPointArn
+                - Metadata
+                - IamRoleArn
+              properties:
+                RecoveryPointArn:
+                  description: An ARN that uniquely identifies a recovery point; for
+                    example,
+                    <code>arn:aws:backup:us-east-1:123456789012:recovery-point:1EB3B5E7-9EB0-435A-A80B-108B488B0D45</code>.
+                  type: string
+                Metadata:
+                  description: A set of metadata key-value pairs. Lists the metadata that
+                    the recovery point was created with.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/MetadataValue"
+                IamRoleArn:
+                  description: The Amazon Resource Name (ARN) of the IAM role that AWS
+                    Backup uses to create the target recovery point; for
+                    example,
+                    <code>arn:aws:iam::123456789012:role/S3Access</code>.
+                  type: string
+                IdempotencyToken:
+                  description: "A customer chosen string that can be used to distinguish
+                    between calls to <code>StartRestoreJob</code>. Idempotency
+                    tokens time out after one hour. Therefore, if you call
+                    <code>StartRestoreJob</code> multiple times with the same
+                    idempotency token within one hour, AWS Backup recognizes
+                    that you are requesting only one restore job and initiates
+                    only one. If you change the idempotency token for each call,
+                    AWS Backup recognizes that you are requesting to start
+                    multiple restores. "
+                  type: string
+                ResourceType:
+                  description: <p>Starts a job to restore a recovery point for one of the
+                    following resources:</p> <ul> <li> <p> <code>EBS</code> for
+                    Amazon Elastic Block Store</p> </li> <li> <p>
+                    <code>SGW</code> for AWS Storage Gateway</p> </li> <li> <p>
+                    <code>RDS</code> for Amazon Relational Database Service</p>
+                    </li> <li> <p> <code>DDB</code> for Amazon DynamoDB</p>
+                    </li> <li> <p> <code>EFS</code> for Amazon Elastic File
+                    System</p> </li> </ul>
+                  type: string
+                  pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/tags/{resourceArn}":
+    post:
+      operationId: TagResource
+      description: Assigns a set of key-value pairs to a recovery point, backup plan, or
+        backup vault identified by an Amazon Resource Name (ARN).
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: An ARN that uniquely identifies a resource. The format of the ARN
+            depends on the type of the tagged resource.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Tags
+              properties:
+                Tags:
+                  description: "Key-value pairs that are used to help organize your
+                    resources. You can assign your own metadata to the resources
+                    you create. "
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/TagValue"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/untag/{resourceArn}":
+    post:
+      operationId: UntagResource
+      description: Removes a set of key-value pairs from a recovery point, backup plan, or
+        backup vault identified by an Amazon Resource Name (ARN)
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterValueException"
+        "482":
+          description: MissingParameterValueException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingParameterValueException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: An ARN that uniquely identifies a resource. The format of the ARN
+            depends on the type of the tagged resource.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - TagKeyList
+              properties:
+                TagKeyList:
+                  description: A list of keys to identify which key-value tags to remove
+                    from a resource.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/string"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://backup.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Backup multi-region endpoint
+  - url: https://backup.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Backup multi-region endpoint
+  - url: http://backup.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Backup endpoint for China (Beijing) and China (Ningxia)
+  - url: https://backup.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Backup endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    CreateBackupPlanOutput:
+      type: object
+      properties:
+        BackupPlanId:
+          $ref: "#/components/schemas/string"
+        BackupPlanArn:
+          $ref: "#/components/schemas/ARN"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        VersionId:
+          $ref: "#/components/schemas/string"
+    BackupPlanName:
+      type: string
+    BackupRulesInput:
+      type: array
+      items:
+        $ref: "#/components/schemas/BackupRuleInput"
+    TagValue:
+      type: string
+    LimitExceededException: {}
+    AlreadyExistsException: {}
+    InvalidParameterValueException: {}
+    MissingParameterValueException: {}
+    ServiceUnavailableException: {}
+    CreateBackupSelectionOutput:
+      type: object
+      properties:
+        SelectionId:
+          $ref: "#/components/schemas/string"
+        BackupPlanId:
+          $ref: "#/components/schemas/string"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+    BackupSelectionName:
+      type: string
+      pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+    IAMRoleArn:
+      type: string
+    ResourceArns:
+      type: array
+      items:
+        $ref: "#/components/schemas/ARN"
+    ListOfTags:
+      type: array
+      items:
+        $ref: "#/components/schemas/Condition"
+    CreateBackupVaultOutput:
+      type: object
+      properties:
+        BackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+        BackupVaultArn:
+          $ref: "#/components/schemas/ARN"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+    DeleteBackupPlanOutput:
+      type: object
+      properties:
+        BackupPlanId:
+          $ref: "#/components/schemas/string"
+        BackupPlanArn:
+          $ref: "#/components/schemas/ARN"
+        DeletionDate:
+          $ref: "#/components/schemas/timestamp"
+        VersionId:
+          $ref: "#/components/schemas/string"
+    ResourceNotFoundException: {}
+    InvalidRequestException: {}
+    DescribeBackupJobOutput:
+      type: object
+      properties:
+        BackupJobId:
+          $ref: "#/components/schemas/string"
+        BackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+        BackupVaultArn:
+          $ref: "#/components/schemas/ARN"
+        RecoveryPointArn:
+          $ref: "#/components/schemas/ARN"
+        ResourceArn:
+          $ref: "#/components/schemas/ARN"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        CompletionDate:
+          $ref: "#/components/schemas/timestamp"
+        State:
+          $ref: "#/components/schemas/BackupJobState"
+        StatusMessage:
+          $ref: "#/components/schemas/string"
+        PercentDone:
+          $ref: "#/components/schemas/string"
+        BackupSizeInBytes:
+          $ref: "#/components/schemas/Long"
+        IamRoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+        CreatedBy:
+          $ref: "#/components/schemas/RecoveryPointCreator"
+        ResourceType:
+          $ref: "#/components/schemas/ResourceType"
+        BytesTransferred:
+          $ref: "#/components/schemas/Long"
+        ExpectedCompletionDate:
+          $ref: "#/components/schemas/timestamp"
+        StartBy:
+          $ref: "#/components/schemas/timestamp"
+    DependencyFailureException: {}
+    DescribeBackupVaultOutput:
+      type: object
+      properties:
+        BackupVaultName:
+          $ref: "#/components/schemas/string"
+        BackupVaultArn:
+          $ref: "#/components/schemas/ARN"
+        EncryptionKeyArn:
+          $ref: "#/components/schemas/ARN"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        CreatorRequestId:
+          $ref: "#/components/schemas/string"
+        NumberOfRecoveryPoints:
+          $ref: "#/components/schemas/long"
+    DescribeProtectedResourceOutput:
+      type: object
+      properties:
+        ResourceArn:
+          $ref: "#/components/schemas/ARN"
+        ResourceType:
+          $ref: "#/components/schemas/ResourceType"
+        LastBackupTime:
+          $ref: "#/components/schemas/timestamp"
+    DescribeRecoveryPointOutput:
+      type: object
+      properties:
+        RecoveryPointArn:
+          $ref: "#/components/schemas/ARN"
+        BackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+        BackupVaultArn:
+          $ref: "#/components/schemas/ARN"
+        ResourceArn:
+          $ref: "#/components/schemas/ARN"
+        ResourceType:
+          $ref: "#/components/schemas/ResourceType"
+        CreatedBy:
+          $ref: "#/components/schemas/RecoveryPointCreator"
+        IamRoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+        Status:
+          $ref: "#/components/schemas/RecoveryPointStatus"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        CompletionDate:
+          $ref: "#/components/schemas/timestamp"
+        BackupSizeInBytes:
+          $ref: "#/components/schemas/Long"
+        CalculatedLifecycle:
+          $ref: "#/components/schemas/CalculatedLifecycle"
+        Lifecycle:
+          $ref: "#/components/schemas/Lifecycle"
+        EncryptionKeyArn:
+          $ref: "#/components/schemas/ARN"
+        IsEncrypted:
+          $ref: "#/components/schemas/boolean"
+        StorageClass:
+          $ref: "#/components/schemas/StorageClass"
+        LastRestoreTime:
+          $ref: "#/components/schemas/timestamp"
+    DescribeRestoreJobOutput:
+      type: object
+      properties:
+        RestoreJobId:
+          $ref: "#/components/schemas/string"
+        RecoveryPointArn:
+          $ref: "#/components/schemas/ARN"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        CompletionDate:
+          $ref: "#/components/schemas/timestamp"
+        Status:
+          $ref: "#/components/schemas/RestoreJobStatus"
+        StatusMessage:
+          $ref: "#/components/schemas/string"
+        PercentDone:
+          $ref: "#/components/schemas/string"
+        BackupSizeInBytes:
+          $ref: "#/components/schemas/Long"
+        IamRoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+        ExpectedCompletionTimeMinutes:
+          $ref: "#/components/schemas/Long"
+        CreatedResourceArn:
+          $ref: "#/components/schemas/ARN"
+    ExportBackupPlanTemplateOutput:
+      type: object
+      properties:
+        BackupPlanTemplateJson:
+          $ref: "#/components/schemas/string"
+    GetBackupPlanOutput:
+      type: object
+      properties:
+        BackupPlan:
+          $ref: "#/components/schemas/BackupPlan"
+        BackupPlanId:
+          $ref: "#/components/schemas/string"
+        BackupPlanArn:
+          $ref: "#/components/schemas/ARN"
+        VersionId:
+          $ref: "#/components/schemas/string"
+        CreatorRequestId:
+          $ref: "#/components/schemas/string"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        DeletionDate:
+          $ref: "#/components/schemas/timestamp"
+        LastExecutionDate:
+          $ref: "#/components/schemas/timestamp"
+    GetBackupPlanFromJSONOutput:
+      type: object
+      properties:
+        BackupPlan:
+          $ref: "#/components/schemas/BackupPlan"
+    GetBackupPlanFromTemplateOutput:
+      type: object
+      properties:
+        BackupPlanDocument:
+          $ref: "#/components/schemas/BackupPlan"
+    GetBackupSelectionOutput:
+      type: object
+      properties:
+        BackupSelection:
+          $ref: "#/components/schemas/BackupSelection"
+        SelectionId:
+          $ref: "#/components/schemas/string"
+        BackupPlanId:
+          $ref: "#/components/schemas/string"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        CreatorRequestId:
+          $ref: "#/components/schemas/string"
+    GetBackupVaultAccessPolicyOutput:
+      type: object
+      properties:
+        BackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+        BackupVaultArn:
+          $ref: "#/components/schemas/ARN"
+        Policy:
+          $ref: "#/components/schemas/IAMPolicy"
+    GetBackupVaultNotificationsOutput:
+      type: object
+      properties:
+        BackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+        BackupVaultArn:
+          $ref: "#/components/schemas/ARN"
+        SNSTopicArn:
+          $ref: "#/components/schemas/ARN"
+        BackupVaultEvents:
+          $ref: "#/components/schemas/BackupVaultEvents"
+    GetRecoveryPointRestoreMetadataOutput:
+      type: object
+      properties:
+        BackupVaultArn:
+          $ref: "#/components/schemas/ARN"
+        RecoveryPointArn:
+          $ref: "#/components/schemas/ARN"
+        RestoreMetadata:
+          $ref: "#/components/schemas/Metadata"
+    GetSupportedResourceTypesOutput:
+      type: object
+      properties:
+        ResourceTypes:
+          $ref: "#/components/schemas/ResourceTypes"
+    ListBackupJobsOutput:
+      type: object
+      properties:
+        BackupJobs:
+          $ref: "#/components/schemas/BackupJobsList"
+        NextToken:
+          $ref: "#/components/schemas/string"
+    ListBackupPlanTemplatesOutput:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/string"
+        BackupPlanTemplatesList:
+          $ref: "#/components/schemas/BackupPlanTemplatesList"
+    ListBackupPlanVersionsOutput:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/string"
+        BackupPlanVersionsList:
+          $ref: "#/components/schemas/BackupPlanVersionsList"
+    ListBackupPlansOutput:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/string"
+        BackupPlansList:
+          $ref: "#/components/schemas/BackupPlansList"
+    ListBackupSelectionsOutput:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/string"
+        BackupSelectionsList:
+          $ref: "#/components/schemas/BackupSelectionsList"
+    ListBackupVaultsOutput:
+      type: object
+      properties:
+        BackupVaultList:
+          $ref: "#/components/schemas/BackupVaultList"
+        NextToken:
+          $ref: "#/components/schemas/string"
+    ListProtectedResourcesOutput:
+      type: object
+      properties:
+        Results:
+          $ref: "#/components/schemas/ProtectedResourcesList"
+        NextToken:
+          $ref: "#/components/schemas/string"
+    ListRecoveryPointsByBackupVaultOutput:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/string"
+        RecoveryPoints:
+          $ref: "#/components/schemas/RecoveryPointByBackupVaultList"
+    ListRecoveryPointsByResourceOutput:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/string"
+        RecoveryPoints:
+          $ref: "#/components/schemas/RecoveryPointByResourceList"
+    ListRestoreJobsOutput:
+      type: object
+      properties:
+        RestoreJobs:
+          $ref: "#/components/schemas/RestoreJobsList"
+        NextToken:
+          $ref: "#/components/schemas/string"
+    ListTagsOutput:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/string"
+        Tags:
+          $ref: "#/components/schemas/Tags"
+    BackupVaultEvent:
+      type: string
+      enum:
+        - BACKUP_JOB_STARTED
+        - BACKUP_JOB_COMPLETED
+        - RESTORE_JOB_STARTED
+        - RESTORE_JOB_COMPLETED
+        - RECOVERY_POINT_MODIFIED
+        - BACKUP_PLAN_CREATED
+        - BACKUP_PLAN_MODIFIED
+    StartBackupJobOutput:
+      type: object
+      properties:
+        BackupJobId:
+          $ref: "#/components/schemas/string"
+        RecoveryPointArn:
+          $ref: "#/components/schemas/ARN"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+    Long:
+      type: integer
+    StartRestoreJobOutput:
+      type: object
+      properties:
+        RestoreJobId:
+          $ref: "#/components/schemas/RestoreJobId"
+    MetadataValue:
+      type: string
+    string:
+      type: string
+    UpdateBackupPlanOutput:
+      type: object
+      properties:
+        BackupPlanId:
+          $ref: "#/components/schemas/string"
+        BackupPlanArn:
+          $ref: "#/components/schemas/ARN"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        VersionId:
+          $ref: "#/components/schemas/string"
+    UpdateRecoveryPointLifecycleOutput:
+      type: object
+      properties:
+        BackupVaultArn:
+          $ref: "#/components/schemas/ARN"
+        RecoveryPointArn:
+          $ref: "#/components/schemas/ARN"
+        Lifecycle:
+          $ref: "#/components/schemas/Lifecycle"
+        CalculatedLifecycle:
+          $ref: "#/components/schemas/CalculatedLifecycle"
+    ARN:
+      type: string
+    BackupVaultName:
+      type: string
+      pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+    timestamp:
+      type: string
+      format: date-time
+    BackupJobState:
+      type: string
+      enum:
+        - CREATED
+        - PENDING
+        - RUNNING
+        - ABORTING
+        - ABORTED
+        - COMPLETED
+        - FAILED
+        - EXPIRED
+    RecoveryPointCreator:
+      type: object
+      properties:
+        BackupPlanId:
+          $ref: "#/components/schemas/string"
+        BackupPlanArn:
+          $ref: "#/components/schemas/ARN"
+        BackupPlanVersion:
+          $ref: "#/components/schemas/string"
+        BackupRuleId:
+          $ref: "#/components/schemas/string"
+      description: Contains information about the backup plan and rule that AWS Backup used
+        to initiate the recovery point backup.
+    ResourceType:
+      type: string
+      pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+    BackupJob:
+      type: object
+      properties:
+        BackupJobId:
+          $ref: "#/components/schemas/string"
+        BackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+        BackupVaultArn:
+          $ref: "#/components/schemas/ARN"
+        RecoveryPointArn:
+          $ref: "#/components/schemas/ARN"
+        ResourceArn:
+          $ref: "#/components/schemas/ARN"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        CompletionDate:
+          $ref: "#/components/schemas/timestamp"
+        State:
+          $ref: "#/components/schemas/BackupJobState"
+        StatusMessage:
+          $ref: "#/components/schemas/string"
+        PercentDone:
+          $ref: "#/components/schemas/string"
+        BackupSizeInBytes:
+          $ref: "#/components/schemas/Long"
+        IamRoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+        CreatedBy:
+          $ref: "#/components/schemas/RecoveryPointCreator"
+        ExpectedCompletionDate:
+          $ref: "#/components/schemas/timestamp"
+        StartBy:
+          $ref: "#/components/schemas/timestamp"
+        ResourceType:
+          $ref: "#/components/schemas/ResourceType"
+        BytesTransferred:
+          $ref: "#/components/schemas/Long"
+      description: Contains detailed information about a backup job.
+    BackupJobsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/BackupJob"
+    BackupRules:
+      type: array
+      items:
+        $ref: "#/components/schemas/BackupRule"
+    BackupPlan:
+      type: object
+      required:
+        - BackupPlanName
+        - Rules
+      properties:
+        BackupPlanName:
+          $ref: "#/components/schemas/BackupPlanName"
+        Rules:
+          $ref: "#/components/schemas/BackupRules"
+      description: Contains an optional backup plan display name and an array of
+        <code>BackupRule</code> objects, each of which specifies a backup rule.
+        Each rule in a backup plan is a separate scheduled task and can back up
+        a different selection of AWS resources.
+    BackupPlanInput:
+      type: object
+      required:
+        - BackupPlanName
+        - Rules
+      properties:
+        BackupPlanName:
+          $ref: "#/components/schemas/BackupPlanName"
+        Rules:
+          $ref: "#/components/schemas/BackupRulesInput"
+      description: Contains an optional backup plan display name and an array of
+        <code>BackupRule</code> objects, each of which specifies a backup rule.
+        Each rule in a backup plan is a separate scheduled task and can back up
+        a different selection of AWS resources.
+    BackupPlanTemplatesListMember:
+      type: object
+      properties:
+        BackupPlanTemplateId:
+          $ref: "#/components/schemas/string"
+        BackupPlanTemplateName:
+          $ref: "#/components/schemas/string"
+      description: An object specifying metadata associated with a backup plan template.
+    BackupPlanTemplatesList:
+      type: array
+      items:
+        $ref: "#/components/schemas/BackupPlanTemplatesListMember"
+    BackupPlansListMember:
+      type: object
+      properties:
+        BackupPlanArn:
+          $ref: "#/components/schemas/ARN"
+        BackupPlanId:
+          $ref: "#/components/schemas/string"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        DeletionDate:
+          $ref: "#/components/schemas/timestamp"
+        VersionId:
+          $ref: "#/components/schemas/string"
+        BackupPlanName:
+          $ref: "#/components/schemas/BackupPlanName"
+        CreatorRequestId:
+          $ref: "#/components/schemas/string"
+        LastExecutionDate:
+          $ref: "#/components/schemas/timestamp"
+      description: Contains metadata about a backup plan.
+    BackupPlanVersionsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/BackupPlansListMember"
+    BackupPlansList:
+      type: array
+      items:
+        $ref: "#/components/schemas/BackupPlansListMember"
+    BackupRuleName:
+      type: string
+      pattern: ^[a-zA-Z0-9\-\_\.]{1,50}$
+    CronExpression:
+      type: string
+    WindowMinutes:
+      type: integer
+    Lifecycle:
+      type: object
+      properties:
+        MoveToColdStorageAfterDays:
+          $ref: "#/components/schemas/Long"
+        DeleteAfterDays:
+          $ref: "#/components/schemas/Long"
+      description: Contains an array of <code>Transition</code> objects specifying how long
+        in days before a recovery point transitions to cold storage or is
+        deleted.
+    Tags:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/TagValue"
+    BackupRule:
+      type: object
+      required:
+        - RuleName
+        - TargetBackupVaultName
+      properties:
+        RuleName:
+          $ref: "#/components/schemas/BackupRuleName"
+        TargetBackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+        ScheduleExpression:
+          $ref: "#/components/schemas/CronExpression"
+        StartWindowMinutes:
+          $ref: "#/components/schemas/WindowMinutes"
+        CompletionWindowMinutes:
+          $ref: "#/components/schemas/WindowMinutes"
+        Lifecycle:
+          $ref: "#/components/schemas/Lifecycle"
+        RecoveryPointTags:
+          $ref: "#/components/schemas/Tags"
+        RuleId:
+          $ref: "#/components/schemas/string"
+      description: Specifies a scheduled task used to back up a selection of resources.
+    BackupRuleInput:
+      type: object
+      required:
+        - RuleName
+        - TargetBackupVaultName
+      properties:
+        RuleName:
+          $ref: "#/components/schemas/BackupRuleName"
+        TargetBackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+        ScheduleExpression:
+          $ref: "#/components/schemas/CronExpression"
+        StartWindowMinutes:
+          $ref: "#/components/schemas/WindowMinutes"
+        CompletionWindowMinutes:
+          $ref: "#/components/schemas/WindowMinutes"
+        Lifecycle:
+          $ref: "#/components/schemas/Lifecycle"
+        RecoveryPointTags:
+          $ref: "#/components/schemas/Tags"
+      description: Specifies a scheduled task used to back up a selection of resources.
+    BackupSelection:
+      type: object
+      required:
+        - SelectionName
+        - IamRoleArn
+      properties:
+        SelectionName:
+          $ref: "#/components/schemas/BackupSelectionName"
+        IamRoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+        Resources:
+          $ref: "#/components/schemas/ResourceArns"
+        ListOfTags:
+          $ref: "#/components/schemas/ListOfTags"
+      description: Used to specify a set of resources to a backup plan.
+    BackupSelectionsListMember:
+      type: object
+      properties:
+        SelectionId:
+          $ref: "#/components/schemas/string"
+        SelectionName:
+          $ref: "#/components/schemas/BackupSelectionName"
+        BackupPlanId:
+          $ref: "#/components/schemas/string"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        CreatorRequestId:
+          $ref: "#/components/schemas/string"
+        IamRoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+      description: Contains metadata about a <code>BackupSelection</code> object.
+    BackupSelectionsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/BackupSelectionsListMember"
+    BackupVaultEvents:
+      type: array
+      items:
+        $ref: "#/components/schemas/BackupVaultEvent"
+    BackupVaultListMember:
+      type: object
+      properties:
+        BackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+        BackupVaultArn:
+          $ref: "#/components/schemas/ARN"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        EncryptionKeyArn:
+          $ref: "#/components/schemas/ARN"
+        CreatorRequestId:
+          $ref: "#/components/schemas/string"
+        NumberOfRecoveryPoints:
+          $ref: "#/components/schemas/long"
+      description: Contains metadata about a backup vault.
+    BackupVaultList:
+      type: array
+      items:
+        $ref: "#/components/schemas/BackupVaultListMember"
+    long:
+      type: integer
+    Boolean:
+      type: boolean
+    CalculatedLifecycle:
+      type: object
+      properties:
+        MoveToColdStorageAt:
+          $ref: "#/components/schemas/timestamp"
+        DeleteAt:
+          $ref: "#/components/schemas/timestamp"
+      description: <p>Contains <code>DeleteAt</code> and <code>MoveToColdStorageAt</code>
+        timestamps, which are used to specify a lifecycle for a recovery
+        point.</p> <p>The lifecycle defines when a protected resource is
+        transitioned to cold storage and when it expires. AWS Backup transitions
+        and expires backups automatically according to the lifecycle that you
+        define. </p> <p>Backups transitioned to cold storage must be stored in
+        cold storage for a minimum of 90 days. Therefore, the “expire after
+        days” setting must be 90 days greater than the “transition to cold after
+        days” setting. The “transition to cold after days” setting cannot be
+        changed after a backup has been transitioned to cold. </p>
+    ConditionType:
+      type: string
+      enum:
+        - STRINGEQUALS
+    ConditionKey:
+      type: string
+    ConditionValue:
+      type: string
+    Condition:
+      type: object
+      required:
+        - ConditionType
+        - ConditionKey
+        - ConditionValue
+      properties:
+        ConditionType:
+          $ref: "#/components/schemas/ConditionType"
+        ConditionKey:
+          $ref: "#/components/schemas/ConditionKey"
+        ConditionValue:
+          $ref: "#/components/schemas/ConditionValue"
+      description: Contains an array of triplets made up of a condition type (such as
+        <code>StringEquals</code>), a key, and a value. Conditions are used to
+        filter resources in a selection that is assigned to a backup plan.
+    CreateBackupPlanInput:
+      type: object
+      required:
+        - BackupPlan
+      properties:
+        BackupPlan:
+          $ref: "#/components/schemas/BackupPlanInput"
+        BackupPlanTags:
+          $ref: "#/components/schemas/Tags"
+        CreatorRequestId:
+          $ref: "#/components/schemas/string"
+    CreateBackupSelectionInput:
+      type: object
+      required:
+        - BackupSelection
+      properties:
+        BackupSelection:
+          $ref: "#/components/schemas/BackupSelection"
+        CreatorRequestId:
+          $ref: "#/components/schemas/string"
+    CreateBackupVaultInput:
+      type: object
+      properties:
+        BackupVaultTags:
+          $ref: "#/components/schemas/Tags"
+        EncryptionKeyArn:
+          $ref: "#/components/schemas/ARN"
+        CreatorRequestId:
+          $ref: "#/components/schemas/string"
+    DeleteBackupPlanInput:
+      type: object
+      properties: {}
+    DeleteBackupSelectionInput:
+      type: object
+      properties: {}
+    DeleteBackupVaultAccessPolicyInput:
+      type: object
+      properties: {}
+    DeleteBackupVaultInput:
+      type: object
+      properties: {}
+    DeleteBackupVaultNotificationsInput:
+      type: object
+      properties: {}
+    DeleteRecoveryPointInput:
+      type: object
+      properties: {}
+    DescribeBackupJobInput:
+      type: object
+      properties: {}
+    DescribeBackupVaultInput:
+      type: object
+      properties: {}
+    DescribeProtectedResourceInput:
+      type: object
+      properties: {}
+    DescribeRecoveryPointInput:
+      type: object
+      properties: {}
+    RecoveryPointStatus:
+      type: string
+      enum:
+        - COMPLETED
+        - PARTIAL
+        - DELETING
+        - EXPIRED
+    boolean:
+      type: boolean
+    StorageClass:
+      type: string
+      enum:
+        - WARM
+        - COLD
+        - DELETED
+    RestoreJobId:
+      type: string
+    DescribeRestoreJobInput:
+      type: object
+      properties: {}
+    RestoreJobStatus:
+      type: string
+      enum:
+        - PENDING
+        - RUNNING
+        - COMPLETED
+        - ABORTED
+        - FAILED
+    ExportBackupPlanTemplateInput:
+      type: object
+      properties: {}
+    GetBackupPlanFromJSONInput:
+      type: object
+      required:
+        - BackupPlanTemplateJson
+      properties:
+        BackupPlanTemplateJson:
+          $ref: "#/components/schemas/string"
+    GetBackupPlanFromTemplateInput:
+      type: object
+      properties: {}
+    GetBackupPlanInput:
+      type: object
+      properties: {}
+    GetBackupSelectionInput:
+      type: object
+      properties: {}
+    GetBackupVaultAccessPolicyInput:
+      type: object
+      properties: {}
+    IAMPolicy:
+      type: string
+    GetBackupVaultNotificationsInput:
+      type: object
+      properties: {}
+    GetRecoveryPointRestoreMetadataInput:
+      type: object
+      properties: {}
+    Metadata:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/MetadataValue"
+    ResourceTypes:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResourceType"
+    MaxResults:
+      type: integer
+      minimum: 1
+      maximum: 1000
+    ListBackupJobsInput:
+      type: object
+      properties: {}
+    ListBackupPlanTemplatesInput:
+      type: object
+      properties: {}
+    ListBackupPlanVersionsInput:
+      type: object
+      properties: {}
+    ListBackupPlansInput:
+      type: object
+      properties: {}
+    ListBackupSelectionsInput:
+      type: object
+      properties: {}
+    ListBackupVaultsInput:
+      type: object
+      properties: {}
+    ListProtectedResourcesInput:
+      type: object
+      properties: {}
+    ProtectedResourcesList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ProtectedResource"
+    ListRecoveryPointsByBackupVaultInput:
+      type: object
+      properties: {}
+    RecoveryPointByBackupVaultList:
+      type: array
+      items:
+        $ref: "#/components/schemas/RecoveryPointByBackupVault"
+    ListRecoveryPointsByResourceInput:
+      type: object
+      properties: {}
+    RecoveryPointByResourceList:
+      type: array
+      items:
+        $ref: "#/components/schemas/RecoveryPointByResource"
+    ListRestoreJobsInput:
+      type: object
+      properties: {}
+    RestoreJobsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/RestoreJobsListMember"
+    ListTagsInput:
+      type: object
+      properties: {}
+    MetadataKey:
+      type: string
+    ProtectedResource:
+      type: object
+      properties:
+        ResourceArn:
+          $ref: "#/components/schemas/ARN"
+        ResourceType:
+          $ref: "#/components/schemas/ResourceType"
+        LastBackupTime:
+          $ref: "#/components/schemas/timestamp"
+      description: A structure that contains information about a backed-up resource.
+    PutBackupVaultAccessPolicyInput:
+      type: object
+      properties:
+        Policy:
+          $ref: "#/components/schemas/IAMPolicy"
+    PutBackupVaultNotificationsInput:
+      type: object
+      required:
+        - SNSTopicArn
+        - BackupVaultEvents
+      properties:
+        SNSTopicArn:
+          $ref: "#/components/schemas/ARN"
+        BackupVaultEvents:
+          $ref: "#/components/schemas/BackupVaultEvents"
+    RecoveryPointByBackupVault:
+      type: object
+      properties:
+        RecoveryPointArn:
+          $ref: "#/components/schemas/ARN"
+        BackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+        BackupVaultArn:
+          $ref: "#/components/schemas/ARN"
+        ResourceArn:
+          $ref: "#/components/schemas/ARN"
+        ResourceType:
+          $ref: "#/components/schemas/ResourceType"
+        CreatedBy:
+          $ref: "#/components/schemas/RecoveryPointCreator"
+        IamRoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+        Status:
+          $ref: "#/components/schemas/RecoveryPointStatus"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        CompletionDate:
+          $ref: "#/components/schemas/timestamp"
+        BackupSizeInBytes:
+          $ref: "#/components/schemas/Long"
+        CalculatedLifecycle:
+          $ref: "#/components/schemas/CalculatedLifecycle"
+        Lifecycle:
+          $ref: "#/components/schemas/Lifecycle"
+        EncryptionKeyArn:
+          $ref: "#/components/schemas/ARN"
+        IsEncrypted:
+          $ref: "#/components/schemas/boolean"
+        LastRestoreTime:
+          $ref: "#/components/schemas/timestamp"
+      description: Contains detailed information about the recovery points stored in a
+        backup vault.
+    RecoveryPointByResource:
+      type: object
+      properties:
+        RecoveryPointArn:
+          $ref: "#/components/schemas/ARN"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        Status:
+          $ref: "#/components/schemas/RecoveryPointStatus"
+        EncryptionKeyArn:
+          $ref: "#/components/schemas/ARN"
+        BackupSizeBytes:
+          $ref: "#/components/schemas/Long"
+        BackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+      description: Contains detailed information about a saved recovery point.
+    RestoreJobsListMember:
+      type: object
+      properties:
+        RestoreJobId:
+          $ref: "#/components/schemas/string"
+        RecoveryPointArn:
+          $ref: "#/components/schemas/ARN"
+        CreationDate:
+          $ref: "#/components/schemas/timestamp"
+        CompletionDate:
+          $ref: "#/components/schemas/timestamp"
+        Status:
+          $ref: "#/components/schemas/RestoreJobStatus"
+        StatusMessage:
+          $ref: "#/components/schemas/string"
+        PercentDone:
+          $ref: "#/components/schemas/string"
+        BackupSizeInBytes:
+          $ref: "#/components/schemas/Long"
+        IamRoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+        ExpectedCompletionTimeMinutes:
+          $ref: "#/components/schemas/Long"
+        CreatedResourceArn:
+          $ref: "#/components/schemas/ARN"
+      description: Contains metadata about a restore job.
+    StartBackupJobInput:
+      type: object
+      required:
+        - BackupVaultName
+        - ResourceArn
+        - IamRoleArn
+      properties:
+        BackupVaultName:
+          $ref: "#/components/schemas/BackupVaultName"
+        ResourceArn:
+          $ref: "#/components/schemas/ARN"
+        IamRoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+        IdempotencyToken:
+          $ref: "#/components/schemas/string"
+        StartWindowMinutes:
+          $ref: "#/components/schemas/WindowMinutes"
+        CompleteWindowMinutes:
+          $ref: "#/components/schemas/WindowMinutes"
+        Lifecycle:
+          $ref: "#/components/schemas/Lifecycle"
+        RecoveryPointTags:
+          $ref: "#/components/schemas/Tags"
+    StartRestoreJobInput:
+      type: object
+      required:
+        - RecoveryPointArn
+        - Metadata
+        - IamRoleArn
+      properties:
+        RecoveryPointArn:
+          $ref: "#/components/schemas/ARN"
+        Metadata:
+          $ref: "#/components/schemas/Metadata"
+        IamRoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+        IdempotencyToken:
+          $ref: "#/components/schemas/string"
+        ResourceType:
+          $ref: "#/components/schemas/ResourceType"
+    StopBackupJobInput:
+      type: object
+      properties: {}
+    TagKey:
+      type: string
+    TagKeyList:
+      type: array
+      items:
+        $ref: "#/components/schemas/string"
+    TagResourceInput:
+      type: object
+      required:
+        - Tags
+      properties:
+        Tags:
+          $ref: "#/components/schemas/Tags"
+    UntagResourceInput:
+      type: object
+      required:
+        - TagKeyList
+      properties:
+        TagKeyList:
+          $ref: "#/components/schemas/TagKeyList"
+    UpdateBackupPlanInput:
+      type: object
+      required:
+        - BackupPlan
+      properties:
+        BackupPlan:
+          $ref: "#/components/schemas/BackupPlanInput"
+    UpdateRecoveryPointLifecycleInput:
+      type: object
+      properties:
+        Lifecycle:
+          $ref: "#/components/schemas/Lifecycle"

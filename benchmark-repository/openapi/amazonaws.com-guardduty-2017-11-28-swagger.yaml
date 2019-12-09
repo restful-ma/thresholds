@@ -1,0 +1,4140 @@
+openapi: 3.0.0
+info:
+  version: 2017-11-28
+  x-release: v4
+  title: Amazon GuardDuty
+  description: 'Amazon GuardDuty is a continuous security monitoring service that analyzes
+    and processes the following data sources: VPC Flow Logs, AWS CloudTrail
+    event logs, and DNS logs. It uses threat intelligence feeds, such as lists
+    of malicious IPs and domains, and machine learning to identify unexpected
+    and potentially unauthorized and malicious activity within your AWS
+    environment. This can include issues like escalations of privileges, uses of
+    exposed credentials, or communication with malicious IPs, URLs, or domains.
+    For example, GuardDuty can detect compromised EC2 instances serving malware
+    or mining bitcoin. It also monitors AWS account access behavior for signs of
+    compromise, such as unauthorized infrastructure deployments, like instances
+    deployed in a region that has never been used, or unusual API calls, like a
+    password policy change to reduce password strength. GuardDuty informs you of
+    the status of your AWS environment by producing security findings that you
+    can view in the GuardDuty console or through Amazon CloudWatch events. For
+    more information, see <a
+    href="https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html">
+    Amazon GuardDuty User Guide</a>. '
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: guardduty
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/guardduty-2017-11-28.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/guardduty/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  "/detector/{detectorId}/master":
+    post:
+      operationId: AcceptInvitation
+      description: Accepts the invitation to be monitored by a master GuardDuty account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcceptInvitationResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty member account.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - masterId
+                - invitationId
+              properties:
+                masterId:
+                  description: The account ID of the master GuardDuty account whose
+                    invitation you're accepting.
+                  type: string
+                invitationId:
+                  description: This value is used to validate the master account to the
+                    member account.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetMasterAccount
+      description: Provides the details for the GuardDuty master account associated with
+        the current GuardDuty member account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMasterAccountResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty member account.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+  "/detector/{detectorId}/findings/archive":
+    post:
+      operationId: ArchiveFindings
+      description: <p>Archives GuardDuty findings specified by the list of finding IDs.</p>
+        <note> <p>Only the master account can archive findings. Member accounts
+        do not have permission to archive findings from their accounts.</p>
+        </note>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArchiveFindingsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The ID of the detector that specifies the GuardDuty service whose
+            findings you want to archive.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - findingIds
+              properties:
+                findingIds:
+                  description: IDs of the findings that you want to archive.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/FindingId"
+                  minItems: 0
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /detector:
+    post:
+      operationId: CreateDetector
+      description: Creates a single Amazon GuardDuty detector. A detector is a resource
+        that represents the GuardDuty service. To start using GuardDuty, you
+        must create a detector in each region that you enable the service. You
+        can have only one detector per account per region.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateDetectorResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - enable
+              properties:
+                enable:
+                  description: A boolean value that specifies whether the detector is to be
+                    enabled.
+                  type: boolean
+                clientToken:
+                  description: The idempotency token for the create request.
+                  type: string
+                  minLength: 0
+                  maxLength: 64
+                findingPublishingFrequency:
+                  description: A enum value that specifies how frequently customer got
+                    Finding updates published.
+                  type: string
+                  enum:
+                    - FIFTEEN_MINUTES
+                    - ONE_HOUR
+                    - SIX_HOURS
+                tags:
+                  description: The tags to be added to a new detector resource.
+                  type: object
+                  minProperties: 1
+                  maxProperties: 200
+                  additionalProperties:
+                    $ref: "#/components/schemas/TagValue"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListDetectors
+      description: Lists detectorIds of all the existing Amazon GuardDuty detector
+        resources.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListDetectorsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: maxResults
+          in: query
+          required: false
+          description: You can use this parameter to indicate the maximum number of items
+            you want in the response. The default value is 50. The maximum value
+            is 50.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+        - name: nextToken
+          in: query
+          required: false
+          description: You can use this parameter when paginating results. Set the value of
+            this parameter to null on your first call to the list action. For
+            subsequent calls to the action fill nextToken in the request with
+            the value of NextToken from the previous response to continue
+            listing data.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  "/detector/{detectorId}/filter":
+    post:
+      operationId: CreateFilter
+      description: Creates a filter using the specified finding criteria.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateFilterResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty account for which you
+            want to create a filter.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - findingCriteria
+              properties:
+                name:
+                  description: The name of the filter.
+                  type: string
+                  minLength: 3
+                  maxLength: 64
+                description:
+                  description: The description of the filter.
+                  type: string
+                  minLength: 0
+                  maxLength: 512
+                action:
+                  description: Specifies the action that is to be applied to the findings
+                    that match the filter.
+                  type: string
+                  enum:
+                    - NOOP
+                    - ARCHIVE
+                  minLength: 1
+                  maxLength: 300
+                rank:
+                  description: Specifies the position of the filter in the list of current
+                    filters. Also specifies the order in which this filter is
+                    applied to the findings.
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+                findingCriteria:
+                  description: Contains finding criteria information.
+                  type: object
+                  properties:
+                    Criterion:
+                      $ref: "#/components/schemas/Criterion"
+                clientToken:
+                  description: The idempotency token for the create request.
+                  type: string
+                  minLength: 0
+                  maxLength: 64
+                tags:
+                  description: The tags to be added to a new filter resource.
+                  type: object
+                  minProperties: 1
+                  maxProperties: 200
+                  additionalProperties:
+                    $ref: "#/components/schemas/TagValue"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListFilters
+      description: Returns a paginated list of the current filters.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListFiltersResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector the filter is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: maxResults
+          in: query
+          required: false
+          description: You can use this parameter to indicate the maximum number of items
+            you want in the response. The default value is 50. The maximum value
+            is 50.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+        - name: nextToken
+          in: query
+          required: false
+          description: You can use this parameter when paginating results. Set the value of
+            this parameter to null on your first call to the list action. For
+            subsequent calls to the action fill nextToken in the request with
+            the value of NextToken from the previous response to continue
+            listing data.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  "/detector/{detectorId}/ipset":
+    post:
+      operationId: CreateIPSet
+      description: Creates a new IPSet - a list of trusted IP addresses that have been
+        whitelisted for secure communication with AWS infrastructure and
+        applications.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateIPSetResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty account for which you
+            want to create an IPSet.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - format
+                - location
+                - activate
+              properties:
+                name:
+                  description: The user friendly name to identify the IPSet. This name is
+                    displayed in all findings that are triggered by activity
+                    that involves IP addresses included in this IPSet.
+                  type: string
+                  minLength: 1
+                  maxLength: 300
+                format:
+                  description: The format of the file that contains the IPSet.
+                  type: string
+                  enum:
+                    - TXT
+                    - STIX
+                    - OTX_CSV
+                    - ALIEN_VAULT
+                    - PROOF_POINT
+                    - FIRE_EYE
+                  minLength: 1
+                  maxLength: 300
+                location:
+                  description: The URI of the file that contains the IPSet. For example
+                    (https://s3.us-west-2.amazonaws.com/my-bucket/my-object-key)
+                  type: string
+                  minLength: 1
+                  maxLength: 300
+                activate:
+                  description: A boolean value that indicates whether GuardDuty is to start
+                    using the uploaded IPSet.
+                  type: boolean
+                clientToken:
+                  description: The idempotency token for the create request.
+                  type: string
+                  minLength: 0
+                  maxLength: 64
+                tags:
+                  description: The tags to be added to a new IP set resource.
+                  type: object
+                  minProperties: 1
+                  maxProperties: 200
+                  additionalProperties:
+                    $ref: "#/components/schemas/TagValue"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListIPSets
+      description: Lists the IPSets of the GuardDuty service specified by the detector ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListIPSetsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector the ipSet is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: maxResults
+          in: query
+          required: false
+          description: You can use this parameter to indicate the maximum number of items
+            you want in the response. The default value is 50. The maximum value
+            is 50.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+        - name: nextToken
+          in: query
+          required: false
+          description: You can use this parameter when paginating results. Set the value of
+            this parameter to null on your first call to the list action. For
+            subsequent calls to the action fill nextToken in the request with
+            the value of NextToken from the previous response to continue
+            listing data.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  "/detector/{detectorId}/member":
+    post:
+      operationId: CreateMembers
+      description: Creates member accounts of the current AWS account by specifying a list
+        of AWS account IDs. The current AWS account can then invite these
+        members to manage GuardDuty in their accounts.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateMembersResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty account with which
+            you want to associate member accounts.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - accountDetails
+              properties:
+                accountDetails:
+                  description: A list of account ID and email address pairs of the accounts
+                    that you want to associate with the master GuardDuty
+                    account.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AccountDetail"
+                  minItems: 1
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListMembers
+      description: Lists details about all member accounts for the current GuardDuty master
+        account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListMembersResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector the member is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: maxResults
+          in: query
+          required: false
+          description: You can use this parameter to indicate the maximum number of items
+            you want in the response. The default value is 50. The maximum value
+            is 50.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+        - name: nextToken
+          in: query
+          required: false
+          description: You can use this parameter when paginating results. Set the value of
+            this parameter to null on your first call to the list action. For
+            subsequent calls to the action fill nextToken in the request with
+            the value of NextToken from the previous response to continue
+            listing data.
+          schema:
+            type: string
+        - name: onlyAssociated
+          in: query
+          required: false
+          description: Specifies whether to only return associated members or to return all
+            members (including members which haven't been invited yet or have
+            been disassociated).
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  "/detector/{detectorId}/findings/create":
+    post:
+      operationId: CreateSampleFindings
+      description: Generates example findings of types specified by the list of finding
+        types. If 'NULL' is specified for findingTypes, the API generates
+        example findings of all supported finding types.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateSampleFindingsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The ID of the detector to create sample findings for.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                findingTypes:
+                  description: Types of sample findings that you want to generate.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/FindingType"
+                  minItems: 0
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/threatintelset":
+    post:
+      operationId: CreateThreatIntelSet
+      description: Create a new ThreatIntelSet. ThreatIntelSets consist of known malicious
+        IP addresses. GuardDuty generates findings based on ThreatIntelSets.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateThreatIntelSetResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty account for which you
+            want to create a threatIntelSet.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - format
+                - location
+                - activate
+              properties:
+                name:
+                  description: A user-friendly ThreatIntelSet name that is displayed in all
+                    finding generated by activity that involves IP addresses
+                    included in this ThreatIntelSet.
+                  type: string
+                  minLength: 1
+                  maxLength: 300
+                format:
+                  description: The format of the file that contains the ThreatIntelSet.
+                  type: string
+                  enum:
+                    - TXT
+                    - STIX
+                    - OTX_CSV
+                    - ALIEN_VAULT
+                    - PROOF_POINT
+                    - FIRE_EYE
+                  minLength: 1
+                  maxLength: 300
+                location:
+                  description: The URI of the file that contains the ThreatIntelSet. For
+                    example
+                    (https://s3.us-west-2.amazonaws.com/my-bucket/my-object-key).
+                  type: string
+                  minLength: 1
+                  maxLength: 300
+                activate:
+                  description: A boolean value that indicates whether GuardDuty is to start
+                    using the uploaded ThreatIntelSet.
+                  type: boolean
+                clientToken:
+                  description: The idempotency token for the create request.
+                  type: string
+                  minLength: 0
+                  maxLength: 64
+                tags:
+                  description: The tags to be added to a new Threat List resource.
+                  type: object
+                  minProperties: 1
+                  maxProperties: 200
+                  additionalProperties:
+                    $ref: "#/components/schemas/TagValue"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListThreatIntelSets
+      description: Lists the ThreatIntelSets of the GuardDuty service specified by the
+        detector ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListThreatIntelSetsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector the threatIntelSet is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: maxResults
+          in: query
+          required: false
+          description: You can use this parameter to indicate the maximum number of items
+            you want in the response. The default value is 50. The maximum value
+            is 50.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+        - name: nextToken
+          in: query
+          required: false
+          description: You can use this parameter when paginating results. Set the value of
+            this parameter to null on your first call to the list action. For
+            subsequent calls to the action fill nextToken in the request with
+            the value of NextToken from the previous response to continue
+            listing data.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  /invitation/decline:
+    post:
+      operationId: DeclineInvitations
+      description: Declines invitations sent to the current member account by AWS account
+        specified by their account IDs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeclineInvitationsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - accountIds
+              properties:
+                accountIds:
+                  description: A list of account IDs of the AWS accounts that sent
+                    invitations to the current member account that you want to
+                    decline invitations from.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AccountId"
+                  minItems: 1
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}":
+    delete:
+      operationId: DeleteDetector
+      description: Deletes a Amazon GuardDuty detector specified by the detector ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteDetectorResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector that you want to delete.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetDetector
+      description: Retrieves an Amazon GuardDuty detector specified by the detectorId.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetDetectorResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector that you want to get.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+    post:
+      operationId: UpdateDetector
+      description: Updates an Amazon GuardDuty detector specified by the detectorId.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateDetectorResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector that you want to update.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enable:
+                  description: Updated boolean value for the detector that specifies
+                    whether the detector is enabled.
+                  type: boolean
+                findingPublishingFrequency:
+                  description: A enum value that specifies how frequently customer got
+                    Finding updates published.
+                  type: string
+                  enum:
+                    - FIFTEEN_MINUTES
+                    - ONE_HOUR
+                    - SIX_HOURS
+        required: true
+  "/detector/{detectorId}/filter/{filterName}":
+    delete:
+      operationId: DeleteFilter
+      description: Deletes the filter specified by the filter name.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteFilterResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector the filter is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: filterName
+          in: path
+          required: true
+          description: The name of the filter you want to delete.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetFilter
+      description: Returns the details of the filter specified by the filter name.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetFilterResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector the filter is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: filterName
+          in: path
+          required: true
+          description: The name of the filter you want to get.
+          schema:
+            type: string
+    post:
+      operationId: UpdateFilter
+      description: Updates the filter specified by the filter name.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateFilterResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector that specifies the GuardDuty service
+            where you want to update a filter.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: filterName
+          in: path
+          required: true
+          description: The name of the filter.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  description: The description of the filter.
+                  type: string
+                  minLength: 0
+                  maxLength: 512
+                action:
+                  description: Specifies the action that is to be applied to the findings
+                    that match the filter.
+                  type: string
+                  enum:
+                    - NOOP
+                    - ARCHIVE
+                  minLength: 1
+                  maxLength: 300
+                rank:
+                  description: Specifies the position of the filter in the list of current
+                    filters. Also specifies the order in which this filter is
+                    applied to the findings.
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+                findingCriteria:
+                  description: Contains finding criteria information.
+                  type: object
+                  properties:
+                    Criterion:
+                      $ref: "#/components/schemas/Criterion"
+        required: true
+  "/detector/{detectorId}/ipset/{ipSetId}":
+    delete:
+      operationId: DeleteIPSet
+      description: Deletes the IPSet specified by the IPSet ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteIPSetResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector the ipSet is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: ipSetId
+          in: path
+          required: true
+          description: The unique ID of the ipSet you want to delete.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetIPSet
+      description: Retrieves the IPSet specified by the IPSet ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetIPSetResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector the ipSet is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: ipSetId
+          in: path
+          required: true
+          description: The unique ID of the ipSet you want to get.
+          schema:
+            type: string
+    post:
+      operationId: UpdateIPSet
+      description: Updates the IPSet specified by the IPSet ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateIPSetResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The detectorID that specifies the GuardDuty service whose IPSet you
+            want to update.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: ipSetId
+          in: path
+          required: true
+          description: The unique ID that specifies the IPSet that you want to update.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: The unique ID that specifies the IPSet that you want to
+                    update.
+                  type: string
+                  minLength: 1
+                  maxLength: 300
+                location:
+                  description: The updated URI of the file that contains the IPSet. For
+                    example
+                    (https://s3.us-west-2.amazonaws.com/my-bucket/my-object-key).
+                  type: string
+                  minLength: 1
+                  maxLength: 300
+                activate:
+                  description: The updated boolean value that specifies whether the IPSet
+                    is active or not.
+                  type: boolean
+        required: true
+  /invitation/delete:
+    post:
+      operationId: DeleteInvitations
+      description: Deletes invitations sent to the current member account by AWS accounts
+        specified by their account IDs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteInvitationsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - accountIds
+              properties:
+                accountIds:
+                  description: A list of account IDs of the AWS accounts that sent
+                    invitations to the current member account that you want to
+                    delete invitations from.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AccountId"
+                  minItems: 1
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/member/delete":
+    post:
+      operationId: DeleteMembers
+      description: Deletes GuardDuty member accounts (to the current GuardDuty master
+        account) specified by the account IDs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteMembersResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty account whose members
+            you want to delete.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - accountIds
+              properties:
+                accountIds:
+                  description: A list of account IDs of the GuardDuty member accounts that
+                    you want to delete.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AccountId"
+                  minItems: 1
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/threatintelset/{threatIntelSetId}":
+    delete:
+      operationId: DeleteThreatIntelSet
+      description: Deletes ThreatIntelSet specified by the ThreatIntelSet ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteThreatIntelSetResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector the threatIntelSet is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: threatIntelSetId
+          in: path
+          required: true
+          description: The unique ID of the threatIntelSet you want to delete.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetThreatIntelSet
+      description: Retrieves the ThreatIntelSet that is specified by the ThreatIntelSet ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetThreatIntelSetResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector the threatIntelSet is associated with.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: threatIntelSetId
+          in: path
+          required: true
+          description: The unique ID of the threatIntelSet you want to get.
+          schema:
+            type: string
+    post:
+      operationId: UpdateThreatIntelSet
+      description: Updates the ThreatIntelSet specified by ThreatIntelSet ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateThreatIntelSetResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The detectorID that specifies the GuardDuty service whose
+            ThreatIntelSet you want to update.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: threatIntelSetId
+          in: path
+          required: true
+          description: The unique ID that specifies the ThreatIntelSet that you want to
+            update.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: The unique ID that specifies the ThreatIntelSet that you
+                    want to update.
+                  type: string
+                  minLength: 1
+                  maxLength: 300
+                location:
+                  description: The updated URI of the file that contains the
+                    ThreateIntelSet. For example
+                    (https://s3.us-west-2.amazonaws.com/my-bucket/my-object-key)
+                  type: string
+                  minLength: 1
+                  maxLength: 300
+                activate:
+                  description: The updated boolean value that specifies whether the
+                    ThreateIntelSet is active or not.
+                  type: boolean
+        required: true
+  "/detector/{detectorId}/master/disassociate":
+    post:
+      operationId: DisassociateFromMasterAccount
+      description: Disassociates the current GuardDuty member account from its master
+        account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisassociateFromMasterAccountResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty member account.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/member/disassociate":
+    post:
+      operationId: DisassociateMembers
+      description: Disassociates GuardDuty member accounts (to the current GuardDuty master
+        account) specified by the account IDs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisassociateMembersResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty account whose members
+            you want to disassociate from master.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - accountIds
+              properties:
+                accountIds:
+                  description: A list of account IDs of the GuardDuty member accounts that
+                    you want to disassociate from master.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AccountId"
+                  minItems: 1
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/findings/get":
+    post:
+      operationId: GetFindings
+      description: Describes Amazon GuardDuty findings specified by finding IDs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetFindingsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The ID of the detector that specifies the GuardDuty service whose
+            findings you want to retrieve.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - findingIds
+              properties:
+                findingIds:
+                  description: IDs of the findings that you want to retrieve.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/FindingId"
+                  minItems: 0
+                  maxItems: 50
+                sortCriteria:
+                  description: Contains information about the criteria for sorting.
+                  type: object
+                  properties:
+                    AttributeName:
+                      $ref: "#/components/schemas/String"
+                    OrderBy:
+                      $ref: "#/components/schemas/OrderBy"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/findings/statistics":
+    post:
+      operationId: GetFindingsStatistics
+      description: Lists Amazon GuardDuty findings' statistics for the specified detector
+        ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetFindingsStatisticsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The ID of the detector that specifies the GuardDuty service whose
+            findings' statistics you want to retrieve.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - findingStatisticTypes
+              properties:
+                findingStatisticTypes:
+                  description: Types of finding statistics to retrieve.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/FindingStatisticType"
+                  minItems: 0
+                  maxItems: 10
+                findingCriteria:
+                  description: Contains finding criteria information.
+                  type: object
+                  properties:
+                    Criterion:
+                      $ref: "#/components/schemas/Criterion"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /invitation/count:
+    get:
+      operationId: GetInvitationsCount
+      description: Returns the count of all GuardDuty membership invitations that were sent
+        to the current member account except the currently accepted invitation.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetInvitationsCountResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/member/get":
+    post:
+      operationId: GetMembers
+      description: Retrieves GuardDuty member accounts (to the current GuardDuty master
+        account) specified by the account IDs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMembersResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty account whose members
+            you want to retrieve.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - accountIds
+              properties:
+                accountIds:
+                  description: A list of account IDs of the GuardDuty member accounts that
+                    you want to describe.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AccountId"
+                  minItems: 1
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/member/invite":
+    post:
+      operationId: InviteMembers
+      description: Invites other AWS accounts (created as members of the current AWS
+        account by CreateMembers) to enable GuardDuty and allow the current AWS
+        account to view and manage these accounts' GuardDuty findings on their
+        behalf as the master account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InviteMembersResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty account with which
+            you want to invite members.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - accountIds
+              properties:
+                accountIds:
+                  description: A list of account IDs of the accounts that you want to
+                    invite to GuardDuty as members.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AccountId"
+                  minItems: 1
+                  maxItems: 50
+                disableEmailNotification:
+                  description: A boolean value that specifies whether you want to disable
+                    email notification to the accounts that you’re inviting to
+                    GuardDuty as members.
+                  type: boolean
+                message:
+                  description: The invitation message that you want to send to the accounts
+                    that you’re inviting to GuardDuty as members.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/findings":
+    post:
+      operationId: ListFindings
+      description: Lists Amazon GuardDuty findings for the specified detector ID.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListFindingsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The ID of the detector that specifies the GuardDuty service whose
+            findings you want to list.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                findingCriteria:
+                  description: Contains finding criteria information.
+                  type: object
+                  properties:
+                    Criterion:
+                      $ref: "#/components/schemas/Criterion"
+                sortCriteria:
+                  description: Contains information about the criteria for sorting.
+                  type: object
+                  properties:
+                    AttributeName:
+                      $ref: "#/components/schemas/String"
+                    OrderBy:
+                      $ref: "#/components/schemas/OrderBy"
+                maxResults:
+                  description: You can use this parameter to indicate the maximum number of
+                    items you want in the response. The default value is 50. The
+                    maximum value is 50.
+                  type: integer
+                  minimum: 1
+                  maximum: 50
+                nextToken:
+                  description: You can use this parameter when paginating results. Set the
+                    value of this parameter to null on your first call to the
+                    list action. For subsequent calls to the action fill
+                    nextToken in the request with the value of NextToken from
+                    the previous response to continue listing data.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /invitation:
+    get:
+      operationId: ListInvitations
+      description: Lists all GuardDuty membership invitations that were sent to the current
+        AWS account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListInvitationsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: maxResults
+          in: query
+          required: false
+          description: You can use this parameter to indicate the maximum number of items
+            you want in the response. The default value is 50. The maximum value
+            is 50.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+        - name: nextToken
+          in: query
+          required: false
+          description: You can use this parameter when paginating results. Set the value of
+            this parameter to null on your first call to the list action. For
+            subsequent calls to the action fill nextToken in the request with
+            the value of NextToken from the previous response to continue
+            listing data.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/tags/{resourceArn}":
+    get:
+      operationId: ListTagsForResource
+      description: Lists tags for a resource. Tagging is currently supported for detectors,
+        finding filters, IP sets, and Threat Intel sets, with a limit of 50 tags
+        per resource. When invoked, this operation returns all assigned tags for
+        a given resource..
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTagsForResourceResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: "The Amazon Resource Name (ARN) for the given GuardDuty resource "
+          schema:
+            type: string
+            pattern: ^arn:[A-Za-z_.-]{1,20}:guardduty:[A-Za-z0-9_/.-]{0,63}:\d+:detector/[A-Za-z0-9_/.-]{32,264}$
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    post:
+      operationId: TagResource
+      description: Adds tags to a resource.
+      responses:
+        "204":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagResourceResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: "The Amazon Resource Name (ARN) for the given GuardDuty resource "
+          schema:
+            type: string
+            pattern: ^arn:[A-Za-z_.-]{1,20}:guardduty:[A-Za-z0-9_/.-]{0,63}:\d+:detector/[A-Za-z0-9_/.-]{32,264}$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tags
+              properties:
+                tags:
+                  description: The tags to be added to a resource.
+                  type: object
+                  minProperties: 1
+                  maxProperties: 200
+                  additionalProperties:
+                    $ref: "#/components/schemas/TagValue"
+        required: true
+  "/detector/{detectorId}/member/start":
+    post:
+      operationId: StartMonitoringMembers
+      description: Re-enables GuardDuty to monitor findings of the member accounts
+        specified by the account IDs. A master GuardDuty account can run this
+        command after disabling GuardDuty from monitoring these members'
+        findings by running StopMonitoringMembers.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartMonitoringMembersResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty account whom you want
+            to re-enable to monitor members' findings.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - accountIds
+              properties:
+                accountIds:
+                  description: A list of account IDs of the GuardDuty member accounts whose
+                    findings you want the master account to monitor.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AccountId"
+                  minItems: 1
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/member/stop":
+    post:
+      operationId: StopMonitoringMembers
+      description: Disables GuardDuty from monitoring findings of the member accounts
+        specified by the account IDs. After running this command, a master
+        GuardDuty account can run StartMonitoringMembers to re-enable GuardDuty
+        to monitor these members’ findings.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StopMonitoringMembersResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The unique ID of the detector of the GuardDuty account that you want
+            to stop from monitor members' findings.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - accountIds
+              properties:
+                accountIds:
+                  description: A list of account IDs of the GuardDuty member accounts whose
+                    findings you want the master account to stop monitoring.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AccountId"
+                  minItems: 1
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/findings/unarchive":
+    post:
+      operationId: UnarchiveFindings
+      description: Unarchives Amazon GuardDuty findings specified by the list of finding
+        IDs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnarchiveFindingsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The ID of the detector that specifies the GuardDuty service whose
+            findings you want to unarchive.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - findingIds
+              properties:
+                findingIds:
+                  description: IDs of the findings that you want to unarchive.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/FindingId"
+                  minItems: 0
+                  maxItems: 50
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/tags/{resourceArn}#tagKeys":
+    delete:
+      operationId: UntagResource
+      description: Removes tags from a resource.
+      responses:
+        "204":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UntagResourceResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: "The Amazon Resource Name (ARN) for the given GuardDuty resource "
+          schema:
+            type: string
+            pattern: ^arn:[A-Za-z_.-]{1,20}:guardduty:[A-Za-z0-9_/.-]{0,63}:\d+:detector/[A-Za-z0-9_/.-]{32,264}$
+        - name: tagKeys
+          in: query
+          required: true
+          description: The tag keys to remove from a resource.
+          schema:
+            type: array
+            items:
+              type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/detector/{detectorId}/findings/feedback":
+    post:
+      operationId: UpdateFindingsFeedback
+      description: Marks specified Amazon GuardDuty findings as useful or not useful.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateFindingsFeedbackResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: detectorId
+          in: path
+          required: true
+          description: The ID of the detector that specifies the GuardDuty service whose
+            findings you want to mark as useful or not useful.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 300
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - findingIds
+                - feedback
+              properties:
+                findingIds:
+                  description: IDs of the findings that you want to mark as useful or not
+                    useful.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/FindingId"
+                  minItems: 0
+                  maxItems: 50
+                feedback:
+                  description: "Valid values: USEFUL | NOT_USEFUL"
+                  type: string
+                  enum:
+                    - USEFUL
+                    - NOT_USEFUL
+                comments:
+                  description: Additional feedback about the GuardDuty findings.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://guardduty.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Amazon GuardDuty multi-region endpoint
+  - url: https://guardduty.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Amazon GuardDuty multi-region endpoint
+  - url: http://guardduty.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Amazon GuardDuty endpoint for China (Beijing) and China (Ningxia)
+  - url: https://guardduty.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Amazon GuardDuty endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    AcceptInvitationResponse:
+      type: object
+      properties: {}
+    BadRequestException: {}
+    InternalServerErrorException: {}
+    ArchiveFindingsResponse:
+      type: object
+      properties: {}
+    FindingId:
+      type: string
+      minLength: 1
+      maxLength: 300
+    CreateDetectorResponse:
+      type: object
+      properties:
+        DetectorId:
+          $ref: "#/components/schemas/DetectorId"
+    TagValue:
+      type: string
+      maxLength: 256
+    CreateFilterResponse:
+      type: object
+      required:
+        - Name
+      properties:
+        Name:
+          $ref: "#/components/schemas/FilterName"
+    Criterion:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/Condition"
+    CreateIPSetResponse:
+      type: object
+      required:
+        - IpSetId
+      properties:
+        IpSetId:
+          $ref: "#/components/schemas/String"
+    CreateMembersResponse:
+      type: object
+      required:
+        - UnprocessedAccounts
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/UnprocessedAccounts"
+    AccountDetail:
+      type: object
+      required:
+        - AccountId
+        - Email
+      properties:
+        AccountId:
+          $ref: "#/components/schemas/AccountId"
+        Email:
+          $ref: "#/components/schemas/Email"
+      description: Contains information about the account.
+    CreateSampleFindingsResponse:
+      type: object
+      properties: {}
+    FindingType:
+      type: string
+      minLength: 1
+      maxLength: 50
+    CreateThreatIntelSetResponse:
+      type: object
+      required:
+        - ThreatIntelSetId
+      properties:
+        ThreatIntelSetId:
+          $ref: "#/components/schemas/String"
+    DeclineInvitationsResponse:
+      type: object
+      required:
+        - UnprocessedAccounts
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/UnprocessedAccounts"
+    AccountId:
+      type: string
+      minLength: 12
+      maxLength: 12
+    DeleteDetectorResponse:
+      type: object
+      properties: {}
+    DeleteFilterResponse:
+      type: object
+      properties: {}
+    DeleteIPSetResponse:
+      type: object
+      properties: {}
+    DeleteInvitationsResponse:
+      type: object
+      required:
+        - UnprocessedAccounts
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/UnprocessedAccounts"
+    DeleteMembersResponse:
+      type: object
+      required:
+        - UnprocessedAccounts
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/UnprocessedAccounts"
+    DeleteThreatIntelSetResponse:
+      type: object
+      properties: {}
+    DisassociateFromMasterAccountResponse:
+      type: object
+      properties: {}
+    DisassociateMembersResponse:
+      type: object
+      required:
+        - UnprocessedAccounts
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/UnprocessedAccounts"
+    GetDetectorResponse:
+      type: object
+      required:
+        - ServiceRole
+        - Status
+      properties:
+        CreatedAt:
+          $ref: "#/components/schemas/String"
+        FindingPublishingFrequency:
+          $ref: "#/components/schemas/FindingPublishingFrequency"
+        ServiceRole:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/DetectorStatus"
+        UpdatedAt:
+          $ref: "#/components/schemas/String"
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    GetFilterResponse:
+      type: object
+      required:
+        - Name
+        - Action
+        - FindingCriteria
+      properties:
+        Name:
+          $ref: "#/components/schemas/FilterName"
+        Description:
+          $ref: "#/components/schemas/FilterDescription"
+        Action:
+          $ref: "#/components/schemas/FilterAction"
+        Rank:
+          $ref: "#/components/schemas/FilterRank"
+        FindingCriteria:
+          $ref: "#/components/schemas/FindingCriteria"
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    GetFindingsResponse:
+      type: object
+      required:
+        - Findings
+      properties:
+        Findings:
+          $ref: "#/components/schemas/Findings"
+    String:
+      type: string
+    OrderBy:
+      type: string
+      enum:
+        - ASC
+        - DESC
+    GetFindingsStatisticsResponse:
+      type: object
+      required:
+        - FindingStatistics
+      properties:
+        FindingStatistics:
+          $ref: "#/components/schemas/FindingStatistics"
+    FindingStatisticType:
+      type: string
+      enum:
+        - COUNT_BY_SEVERITY
+    GetIPSetResponse:
+      type: object
+      required:
+        - Name
+        - Format
+        - Location
+        - Status
+      properties:
+        Name:
+          $ref: "#/components/schemas/Name"
+        Format:
+          $ref: "#/components/schemas/IpSetFormat"
+        Location:
+          $ref: "#/components/schemas/Location"
+        Status:
+          $ref: "#/components/schemas/IpSetStatus"
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    GetInvitationsCountResponse:
+      type: object
+      properties:
+        InvitationsCount:
+          $ref: "#/components/schemas/Integer"
+    GetMasterAccountResponse:
+      type: object
+      required:
+        - Master
+      properties:
+        Master:
+          $ref: "#/components/schemas/Master"
+    GetMembersResponse:
+      type: object
+      required:
+        - Members
+        - UnprocessedAccounts
+      properties:
+        Members:
+          $ref: "#/components/schemas/Members"
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/UnprocessedAccounts"
+    GetThreatIntelSetResponse:
+      type: object
+      required:
+        - Name
+        - Format
+        - Location
+        - Status
+      properties:
+        Name:
+          $ref: "#/components/schemas/Name"
+        Format:
+          $ref: "#/components/schemas/ThreatIntelSetFormat"
+        Location:
+          $ref: "#/components/schemas/Location"
+        Status:
+          $ref: "#/components/schemas/ThreatIntelSetStatus"
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    InviteMembersResponse:
+      type: object
+      required:
+        - UnprocessedAccounts
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/UnprocessedAccounts"
+    ListDetectorsResponse:
+      type: object
+      required:
+        - DetectorIds
+      properties:
+        DetectorIds:
+          $ref: "#/components/schemas/DetectorIds"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    ListFiltersResponse:
+      type: object
+      required:
+        - FilterNames
+      properties:
+        FilterNames:
+          $ref: "#/components/schemas/FilterNames"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    ListFindingsResponse:
+      type: object
+      required:
+        - FindingIds
+      properties:
+        FindingIds:
+          $ref: "#/components/schemas/FindingIds"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    ListIPSetsResponse:
+      type: object
+      required:
+        - IpSetIds
+      properties:
+        IpSetIds:
+          $ref: "#/components/schemas/IpSetIds"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    ListInvitationsResponse:
+      type: object
+      properties:
+        Invitations:
+          $ref: "#/components/schemas/Invitations"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    ListMembersResponse:
+      type: object
+      properties:
+        Members:
+          $ref: "#/components/schemas/Members"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    ListTagsForResourceResponse:
+      type: object
+      properties:
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    ListThreatIntelSetsResponse:
+      type: object
+      required:
+        - ThreatIntelSetIds
+      properties:
+        ThreatIntelSetIds:
+          $ref: "#/components/schemas/ThreatIntelSetIds"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    StartMonitoringMembersResponse:
+      type: object
+      required:
+        - UnprocessedAccounts
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/UnprocessedAccounts"
+    StopMonitoringMembersResponse:
+      type: object
+      required:
+        - UnprocessedAccounts
+      properties:
+        UnprocessedAccounts:
+          $ref: "#/components/schemas/UnprocessedAccounts"
+    TagResourceResponse:
+      type: object
+      properties: {}
+    UnarchiveFindingsResponse:
+      type: object
+      properties: {}
+    UntagResourceResponse:
+      type: object
+      properties: {}
+    TagKey:
+      type: string
+      pattern: ^(?!aws:)[a-zA-Z+-=._:/]+$
+      minLength: 1
+      maxLength: 128
+    UpdateDetectorResponse:
+      type: object
+      properties: {}
+    UpdateFilterResponse:
+      type: object
+      required:
+        - Name
+      properties:
+        Name:
+          $ref: "#/components/schemas/FilterName"
+    UpdateFindingsFeedbackResponse:
+      type: object
+      properties: {}
+    UpdateIPSetResponse:
+      type: object
+      properties: {}
+    UpdateThreatIntelSetResponse:
+      type: object
+      properties: {}
+    DetectorId:
+      type: string
+      minLength: 1
+      maxLength: 300
+    AcceptInvitationRequest:
+      type: object
+      required:
+        - MasterId
+        - InvitationId
+      properties:
+        MasterId:
+          $ref: "#/components/schemas/String"
+        InvitationId:
+          $ref: "#/components/schemas/String"
+    AccessKeyDetails:
+      type: object
+      properties:
+        AccessKeyId:
+          $ref: "#/components/schemas/String"
+        PrincipalId:
+          $ref: "#/components/schemas/String"
+        UserName:
+          $ref: "#/components/schemas/String"
+        UserType:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the access keys.
+    Email:
+      type: string
+      minLength: 1
+      maxLength: 64
+    AccountDetails:
+      type: array
+      items:
+        $ref: "#/components/schemas/AccountDetail"
+      minItems: 1
+      maxItems: 50
+    AccountIds:
+      type: array
+      items:
+        $ref: "#/components/schemas/AccountId"
+      minItems: 1
+      maxItems: 50
+    AwsApiCallAction:
+      type: object
+      properties:
+        Api:
+          $ref: "#/components/schemas/String"
+        CallerType:
+          $ref: "#/components/schemas/String"
+        DomainDetails:
+          $ref: "#/components/schemas/DomainDetails"
+        RemoteIpDetails:
+          $ref: "#/components/schemas/RemoteIpDetails"
+        ServiceName:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the API operation.
+    DnsRequestAction:
+      type: object
+      properties:
+        Domain:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the DNS request.
+    NetworkConnectionAction:
+      type: object
+      properties:
+        Blocked:
+          $ref: "#/components/schemas/Boolean"
+        ConnectionDirection:
+          $ref: "#/components/schemas/String"
+        LocalPortDetails:
+          $ref: "#/components/schemas/LocalPortDetails"
+        Protocol:
+          $ref: "#/components/schemas/String"
+        RemoteIpDetails:
+          $ref: "#/components/schemas/RemoteIpDetails"
+        RemotePortDetails:
+          $ref: "#/components/schemas/RemotePortDetails"
+      description: Contains information about the network connection.
+    PortProbeAction:
+      type: object
+      properties:
+        Blocked:
+          $ref: "#/components/schemas/Boolean"
+        PortProbeDetails:
+          $ref: "#/components/schemas/PortProbeDetails"
+      description: Contains information about the port probe.
+    Action:
+      type: object
+      properties:
+        ActionType:
+          $ref: "#/components/schemas/String"
+        AwsApiCallAction:
+          $ref: "#/components/schemas/AwsApiCallAction"
+        DnsRequestAction:
+          $ref: "#/components/schemas/DnsRequestAction"
+        NetworkConnectionAction:
+          $ref: "#/components/schemas/NetworkConnectionAction"
+        PortProbeAction:
+          $ref: "#/components/schemas/PortProbeAction"
+      description: Contains information about action.
+    FindingIds:
+      type: array
+      items:
+        $ref: "#/components/schemas/FindingId"
+      minItems: 0
+      maxItems: 50
+    ArchiveFindingsRequest:
+      type: object
+      required:
+        - FindingIds
+      properties:
+        FindingIds:
+          $ref: "#/components/schemas/FindingIds"
+    DomainDetails:
+      type: object
+      properties:
+        Domain:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the domain.
+    RemoteIpDetails:
+      type: object
+      properties:
+        City:
+          $ref: "#/components/schemas/City"
+        Country:
+          $ref: "#/components/schemas/Country"
+        GeoLocation:
+          $ref: "#/components/schemas/GeoLocation"
+        IpAddressV4:
+          $ref: "#/components/schemas/String"
+        Organization:
+          $ref: "#/components/schemas/Organization"
+      description: Continas information about the remote IP address.
+    Boolean:
+      type: boolean
+    City:
+      type: object
+      properties:
+        CityName:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the city associated with the IP address.
+    ClientToken:
+      type: string
+      minLength: 0
+      maxLength: 64
+    Eq:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    Neq:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    Integer:
+      type: integer
+    Equals:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    NotEquals:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    Long:
+      type: integer
+    Condition:
+      type: object
+      properties:
+        Eq:
+          $ref: "#/components/schemas/Eq"
+        Neq:
+          $ref: "#/components/schemas/Neq"
+        Gt:
+          $ref: "#/components/schemas/Integer"
+        Gte:
+          $ref: "#/components/schemas/Integer"
+        Lt:
+          $ref: "#/components/schemas/Integer"
+        Lte:
+          $ref: "#/components/schemas/Integer"
+        Equals:
+          $ref: "#/components/schemas/Equals"
+        NotEquals:
+          $ref: "#/components/schemas/NotEquals"
+        GreaterThan:
+          $ref: "#/components/schemas/Long"
+        GreaterThanOrEqual:
+          $ref: "#/components/schemas/Long"
+        LessThan:
+          $ref: "#/components/schemas/Long"
+        LessThanOrEqual:
+          $ref: "#/components/schemas/Long"
+      description: Contains information about the condition.
+    CountBySeverity:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/Integer"
+    Country:
+      type: object
+      properties:
+        CountryCode:
+          $ref: "#/components/schemas/String"
+        CountryName:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the country.
+    FindingPublishingFrequency:
+      type: string
+      enum:
+        - FIFTEEN_MINUTES
+        - ONE_HOUR
+        - SIX_HOURS
+    TagMap:
+      type: object
+      minProperties: 1
+      maxProperties: 200
+      additionalProperties:
+        $ref: "#/components/schemas/TagValue"
+    CreateDetectorRequest:
+      type: object
+      required:
+        - Enable
+      properties:
+        Enable:
+          $ref: "#/components/schemas/Boolean"
+        ClientToken:
+          $ref: "#/components/schemas/ClientToken"
+        FindingPublishingFrequency:
+          $ref: "#/components/schemas/FindingPublishingFrequency"
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    FilterName:
+      type: string
+      minLength: 3
+      maxLength: 64
+    FilterDescription:
+      type: string
+      minLength: 0
+      maxLength: 512
+    FilterAction:
+      type: string
+      enum:
+        - NOOP
+        - ARCHIVE
+      minLength: 1
+      maxLength: 300
+    FilterRank:
+      type: integer
+      minimum: 1
+      maximum: 100
+    FindingCriteria:
+      type: object
+      properties:
+        Criterion:
+          $ref: "#/components/schemas/Criterion"
+      description: Contains finding criteria information.
+    CreateFilterRequest:
+      type: object
+      required:
+        - Name
+        - FindingCriteria
+      properties:
+        Name:
+          $ref: "#/components/schemas/FilterName"
+        Description:
+          $ref: "#/components/schemas/FilterDescription"
+        Action:
+          $ref: "#/components/schemas/FilterAction"
+        Rank:
+          $ref: "#/components/schemas/FilterRank"
+        FindingCriteria:
+          $ref: "#/components/schemas/FindingCriteria"
+        ClientToken:
+          $ref: "#/components/schemas/ClientToken"
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    Name:
+      type: string
+      minLength: 1
+      maxLength: 300
+    IpSetFormat:
+      type: string
+      enum:
+        - TXT
+        - STIX
+        - OTX_CSV
+        - ALIEN_VAULT
+        - PROOF_POINT
+        - FIRE_EYE
+      minLength: 1
+      maxLength: 300
+    Location:
+      type: string
+      minLength: 1
+      maxLength: 300
+    CreateIPSetRequest:
+      type: object
+      required:
+        - Name
+        - Format
+        - Location
+        - Activate
+      properties:
+        Name:
+          $ref: "#/components/schemas/Name"
+        Format:
+          $ref: "#/components/schemas/IpSetFormat"
+        Location:
+          $ref: "#/components/schemas/Location"
+        Activate:
+          $ref: "#/components/schemas/Boolean"
+        ClientToken:
+          $ref: "#/components/schemas/ClientToken"
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    CreateMembersRequest:
+      type: object
+      required:
+        - AccountDetails
+      properties:
+        AccountDetails:
+          $ref: "#/components/schemas/AccountDetails"
+    UnprocessedAccounts:
+      type: array
+      items:
+        $ref: "#/components/schemas/UnprocessedAccount"
+      minItems: 0
+      maxItems: 50
+    FindingTypes:
+      type: array
+      items:
+        $ref: "#/components/schemas/FindingType"
+      minItems: 0
+      maxItems: 50
+    CreateSampleFindingsRequest:
+      type: object
+      properties:
+        FindingTypes:
+          $ref: "#/components/schemas/FindingTypes"
+    ThreatIntelSetFormat:
+      type: string
+      enum:
+        - TXT
+        - STIX
+        - OTX_CSV
+        - ALIEN_VAULT
+        - PROOF_POINT
+        - FIRE_EYE
+      minLength: 1
+      maxLength: 300
+    CreateThreatIntelSetRequest:
+      type: object
+      required:
+        - Name
+        - Format
+        - Location
+        - Activate
+      properties:
+        Name:
+          $ref: "#/components/schemas/Name"
+        Format:
+          $ref: "#/components/schemas/ThreatIntelSetFormat"
+        Location:
+          $ref: "#/components/schemas/Location"
+        Activate:
+          $ref: "#/components/schemas/Boolean"
+        ClientToken:
+          $ref: "#/components/schemas/ClientToken"
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    DeclineInvitationsRequest:
+      type: object
+      required:
+        - AccountIds
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIds"
+    DeleteDetectorRequest:
+      type: object
+      properties: {}
+    DeleteFilterRequest:
+      type: object
+      properties: {}
+    DeleteIPSetRequest:
+      type: object
+      properties: {}
+    DeleteInvitationsRequest:
+      type: object
+      required:
+        - AccountIds
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIds"
+    DeleteMembersRequest:
+      type: object
+      required:
+        - AccountIds
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIds"
+    DeleteThreatIntelSetRequest:
+      type: object
+      properties: {}
+    DetectorIds:
+      type: array
+      items:
+        $ref: "#/components/schemas/DetectorId"
+      minItems: 0
+      maxItems: 50
+    DetectorStatus:
+      type: string
+      enum:
+        - ENABLED
+        - DISABLED
+      minLength: 1
+      maxLength: 300
+    DisassociateFromMasterAccountRequest:
+      type: object
+      properties: {}
+    DisassociateMembersRequest:
+      type: object
+      required:
+        - AccountIds
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIds"
+    Double:
+      type: number
+      format: double
+    ThreatIntelligenceDetails:
+      type: array
+      items:
+        $ref: "#/components/schemas/ThreatIntelligenceDetail"
+    Evidence:
+      type: object
+      properties:
+        ThreatIntelligenceDetails:
+          $ref: "#/components/schemas/ThreatIntelligenceDetails"
+      description: Contains information about the reason that the finding was generated.
+    Feedback:
+      type: string
+      enum:
+        - USEFUL
+        - NOT_USEFUL
+    FilterNames:
+      type: array
+      items:
+        $ref: "#/components/schemas/FilterName"
+      minItems: 0
+      maxItems: 50
+    Resource:
+      type: object
+      properties:
+        AccessKeyDetails:
+          $ref: "#/components/schemas/AccessKeyDetails"
+        InstanceDetails:
+          $ref: "#/components/schemas/InstanceDetails"
+        ResourceType:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the resource.
+    Service:
+      type: object
+      properties:
+        Action:
+          $ref: "#/components/schemas/Action"
+        Evidence:
+          $ref: "#/components/schemas/Evidence"
+        Archived:
+          $ref: "#/components/schemas/Boolean"
+        Count:
+          $ref: "#/components/schemas/Integer"
+        DetectorId:
+          $ref: "#/components/schemas/DetectorId"
+        EventFirstSeen:
+          $ref: "#/components/schemas/String"
+        EventLastSeen:
+          $ref: "#/components/schemas/String"
+        ResourceRole:
+          $ref: "#/components/schemas/String"
+        ServiceName:
+          $ref: "#/components/schemas/String"
+        UserFeedback:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the service.
+    Finding:
+      type: object
+      required:
+        - AccountId
+        - Arn
+        - CreatedAt
+        - Id
+        - Region
+        - Resource
+        - SchemaVersion
+        - Severity
+        - Type
+        - UpdatedAt
+      properties:
+        AccountId:
+          $ref: "#/components/schemas/String"
+        Arn:
+          $ref: "#/components/schemas/String"
+        Confidence:
+          $ref: "#/components/schemas/Double"
+        CreatedAt:
+          $ref: "#/components/schemas/String"
+        Description:
+          $ref: "#/components/schemas/String"
+        Id:
+          $ref: "#/components/schemas/String"
+        Partition:
+          $ref: "#/components/schemas/String"
+        Region:
+          $ref: "#/components/schemas/String"
+        Resource:
+          $ref: "#/components/schemas/Resource"
+        SchemaVersion:
+          $ref: "#/components/schemas/String"
+        Service:
+          $ref: "#/components/schemas/Service"
+        Severity:
+          $ref: "#/components/schemas/Double"
+        Title:
+          $ref: "#/components/schemas/String"
+        Type:
+          $ref: "#/components/schemas/FindingType"
+        UpdatedAt:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the finding.
+    FindingStatisticTypes:
+      type: array
+      items:
+        $ref: "#/components/schemas/FindingStatisticType"
+      minItems: 0
+      maxItems: 10
+    FindingStatistics:
+      type: object
+      properties:
+        CountBySeverity:
+          $ref: "#/components/schemas/CountBySeverity"
+      description: Contains information about finding statistics.
+    Findings:
+      type: array
+      items:
+        $ref: "#/components/schemas/Finding"
+      minItems: 0
+      maxItems: 50
+    GeoLocation:
+      type: object
+      properties:
+        Lat:
+          $ref: "#/components/schemas/Double"
+        Lon:
+          $ref: "#/components/schemas/Double"
+      description: "Contains information about the "
+    GetDetectorRequest:
+      type: object
+      properties: {}
+    GetFilterRequest:
+      type: object
+      properties: {}
+    SortCriteria:
+      type: object
+      properties:
+        AttributeName:
+          $ref: "#/components/schemas/String"
+        OrderBy:
+          $ref: "#/components/schemas/OrderBy"
+      description: Contains information about the criteria for sorting.
+    GetFindingsRequest:
+      type: object
+      required:
+        - FindingIds
+      properties:
+        FindingIds:
+          $ref: "#/components/schemas/FindingIds"
+        SortCriteria:
+          $ref: "#/components/schemas/SortCriteria"
+    GetFindingsStatisticsRequest:
+      type: object
+      required:
+        - FindingStatisticTypes
+      properties:
+        FindingStatisticTypes:
+          $ref: "#/components/schemas/FindingStatisticTypes"
+        FindingCriteria:
+          $ref: "#/components/schemas/FindingCriteria"
+    GetIPSetRequest:
+      type: object
+      properties: {}
+    IpSetStatus:
+      type: string
+      enum:
+        - INACTIVE
+        - ACTIVATING
+        - ACTIVE
+        - DEACTIVATING
+        - ERROR
+        - DELETE_PENDING
+        - DELETED
+      minLength: 1
+      maxLength: 300
+    GetInvitationsCountRequest:
+      type: object
+      properties: {}
+    GetMasterAccountRequest:
+      type: object
+      properties: {}
+    Master:
+      type: object
+      properties:
+        AccountId:
+          $ref: "#/components/schemas/AccountId"
+        InvitationId:
+          $ref: "#/components/schemas/String"
+        RelationshipStatus:
+          $ref: "#/components/schemas/String"
+        InvitedAt:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the Master account and invitation.
+    GetMembersRequest:
+      type: object
+      required:
+        - AccountIds
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIds"
+    Members:
+      type: array
+      items:
+        $ref: "#/components/schemas/Member"
+      minItems: 0
+      maxItems: 50
+    GetThreatIntelSetRequest:
+      type: object
+      properties: {}
+    ThreatIntelSetStatus:
+      type: string
+      enum:
+        - INACTIVE
+        - ACTIVATING
+        - ACTIVE
+        - DEACTIVATING
+        - ERROR
+        - DELETE_PENDING
+        - DELETED
+      minLength: 1
+      maxLength: 300
+    GuardDutyArn:
+      type: string
+      pattern: ^arn:[A-Za-z_.-]{1,20}:guardduty:[A-Za-z0-9_/.-]{0,63}:\d+:detector/[A-Za-z0-9_/.-]{32,264}$
+    IamInstanceProfile:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/String"
+        Id:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the instance profile.
+    NetworkInterfaces:
+      type: array
+      items:
+        $ref: "#/components/schemas/NetworkInterface"
+    ProductCodes:
+      type: array
+      items:
+        $ref: "#/components/schemas/ProductCode"
+    Tags:
+      type: array
+      items:
+        $ref: "#/components/schemas/Tag"
+    InstanceDetails:
+      type: object
+      properties:
+        AvailabilityZone:
+          $ref: "#/components/schemas/String"
+        IamInstanceProfile:
+          $ref: "#/components/schemas/IamInstanceProfile"
+        ImageDescription:
+          $ref: "#/components/schemas/String"
+        ImageId:
+          $ref: "#/components/schemas/String"
+        InstanceId:
+          $ref: "#/components/schemas/String"
+        InstanceState:
+          $ref: "#/components/schemas/String"
+        InstanceType:
+          $ref: "#/components/schemas/String"
+        LaunchTime:
+          $ref: "#/components/schemas/String"
+        NetworkInterfaces:
+          $ref: "#/components/schemas/NetworkInterfaces"
+        Platform:
+          $ref: "#/components/schemas/String"
+        ProductCodes:
+          $ref: "#/components/schemas/ProductCodes"
+        Tags:
+          $ref: "#/components/schemas/Tags"
+      description: Contains information about the details of an instance.
+    Invitation:
+      type: object
+      properties:
+        AccountId:
+          $ref: "#/components/schemas/AccountId"
+        InvitationId:
+          $ref: "#/components/schemas/String"
+        RelationshipStatus:
+          $ref: "#/components/schemas/String"
+        InvitedAt:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the invitation.
+    Invitations:
+      type: array
+      items:
+        $ref: "#/components/schemas/Invitation"
+      minItems: 0
+      maxItems: 50
+    InviteMembersRequest:
+      type: object
+      required:
+        - AccountIds
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIds"
+        DisableEmailNotification:
+          $ref: "#/components/schemas/Boolean"
+        Message:
+          $ref: "#/components/schemas/String"
+    IpSetIds:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+      minItems: 0
+      maxItems: 50
+    Ipv6Addresses:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    MaxResults:
+      type: integer
+      minimum: 1
+      maximum: 50
+    ListDetectorsRequest:
+      type: object
+      properties: {}
+    ListFiltersRequest:
+      type: object
+      properties: {}
+    ListFindingsRequest:
+      type: object
+      properties:
+        FindingCriteria:
+          $ref: "#/components/schemas/FindingCriteria"
+        SortCriteria:
+          $ref: "#/components/schemas/SortCriteria"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    ListIPSetsRequest:
+      type: object
+      properties: {}
+    ListInvitationsRequest:
+      type: object
+      properties: {}
+    ListMembersRequest:
+      type: object
+      properties: {}
+    ListTagsForResourceRequest:
+      type: object
+      properties: {}
+    ListThreatIntelSetsRequest:
+      type: object
+      properties: {}
+    ThreatIntelSetIds:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+      minItems: 0
+      maxItems: 50
+    LocalPortDetails:
+      type: object
+      properties:
+        Port:
+          $ref: "#/components/schemas/Integer"
+        PortName:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the port for the local connection.
+    Member:
+      type: object
+      required:
+        - AccountId
+        - MasterId
+        - Email
+        - RelationshipStatus
+        - UpdatedAt
+      properties:
+        AccountId:
+          $ref: "#/components/schemas/AccountId"
+        DetectorId:
+          $ref: "#/components/schemas/DetectorId"
+        MasterId:
+          $ref: "#/components/schemas/String"
+        Email:
+          $ref: "#/components/schemas/Email"
+        RelationshipStatus:
+          $ref: "#/components/schemas/String"
+        InvitedAt:
+          $ref: "#/components/schemas/String"
+        UpdatedAt:
+          $ref: "#/components/schemas/String"
+      description: "Continas information about the member account "
+    RemotePortDetails:
+      type: object
+      properties:
+        Port:
+          $ref: "#/components/schemas/Integer"
+        PortName:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the remote port.
+    PrivateIpAddresses:
+      type: array
+      items:
+        $ref: "#/components/schemas/PrivateIpAddressDetails"
+    SecurityGroups:
+      type: array
+      items:
+        $ref: "#/components/schemas/SecurityGroup"
+    NetworkInterface:
+      type: object
+      properties:
+        Ipv6Addresses:
+          $ref: "#/components/schemas/Ipv6Addresses"
+        NetworkInterfaceId:
+          $ref: "#/components/schemas/String"
+        PrivateDnsName:
+          $ref: "#/components/schemas/String"
+        PrivateIpAddress:
+          $ref: "#/components/schemas/String"
+        PrivateIpAddresses:
+          $ref: "#/components/schemas/PrivateIpAddresses"
+        PublicDnsName:
+          $ref: "#/components/schemas/String"
+        PublicIp:
+          $ref: "#/components/schemas/String"
+        SecurityGroups:
+          $ref: "#/components/schemas/SecurityGroups"
+        SubnetId:
+          $ref: "#/components/schemas/String"
+        VpcId:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the network interface.
+    Organization:
+      type: object
+      properties:
+        Asn:
+          $ref: "#/components/schemas/String"
+        AsnOrg:
+          $ref: "#/components/schemas/String"
+        Isp:
+          $ref: "#/components/schemas/String"
+        Org:
+          $ref: "#/components/schemas/String"
+      description: Continas information about the organization.
+    PortProbeDetails:
+      type: array
+      items:
+        $ref: "#/components/schemas/PortProbeDetail"
+    PortProbeDetail:
+      type: object
+      properties:
+        LocalPortDetails:
+          $ref: "#/components/schemas/LocalPortDetails"
+        RemoteIpDetails:
+          $ref: "#/components/schemas/RemoteIpDetails"
+      description: Contains information about the port probe details.
+    PrivateIpAddressDetails:
+      type: object
+      properties:
+        PrivateDnsName:
+          $ref: "#/components/schemas/String"
+        PrivateIpAddress:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the private IP address.
+    ProductCode:
+      type: object
+      properties:
+        Code:
+          $ref: "#/components/schemas/String"
+        ProductType:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the product code.
+    SecurityGroup:
+      type: object
+      properties:
+        GroupId:
+          $ref: "#/components/schemas/String"
+        GroupName:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the security group.
+    StartMonitoringMembersRequest:
+      type: object
+      required:
+        - AccountIds
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIds"
+    StopMonitoringMembersRequest:
+      type: object
+      required:
+        - AccountIds
+      properties:
+        AccountIds:
+          $ref: "#/components/schemas/AccountIds"
+    Tag:
+      type: object
+      properties:
+        Key:
+          $ref: "#/components/schemas/String"
+        Value:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the tag associated with the resource.
+    TagKeyList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TagKey"
+      minItems: 1
+      maxItems: 200
+    TagResourceRequest:
+      type: object
+      required:
+        - Tags
+      properties:
+        Tags:
+          $ref: "#/components/schemas/TagMap"
+    ThreatNames:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    ThreatIntelligenceDetail:
+      type: object
+      properties:
+        ThreatListName:
+          $ref: "#/components/schemas/String"
+        ThreatNames:
+          $ref: "#/components/schemas/ThreatNames"
+      description: An instance of a threat intelligence detail that constitutes evidence
+        for the finding.
+    UnarchiveFindingsRequest:
+      type: object
+      required:
+        - FindingIds
+      properties:
+        FindingIds:
+          $ref: "#/components/schemas/FindingIds"
+    UnprocessedAccount:
+      type: object
+      required:
+        - AccountId
+        - Result
+      properties:
+        AccountId:
+          $ref: "#/components/schemas/AccountId"
+        Result:
+          $ref: "#/components/schemas/String"
+      description: Contains information about the accounts that were not processed.
+    UntagResourceRequest:
+      type: object
+      properties: {}
+    UpdateDetectorRequest:
+      type: object
+      properties:
+        Enable:
+          $ref: "#/components/schemas/Boolean"
+        FindingPublishingFrequency:
+          $ref: "#/components/schemas/FindingPublishingFrequency"
+    UpdateFilterRequest:
+      type: object
+      properties:
+        Description:
+          $ref: "#/components/schemas/FilterDescription"
+        Action:
+          $ref: "#/components/schemas/FilterAction"
+        Rank:
+          $ref: "#/components/schemas/FilterRank"
+        FindingCriteria:
+          $ref: "#/components/schemas/FindingCriteria"
+    UpdateFindingsFeedbackRequest:
+      type: object
+      required:
+        - FindingIds
+        - Feedback
+      properties:
+        FindingIds:
+          $ref: "#/components/schemas/FindingIds"
+        Feedback:
+          $ref: "#/components/schemas/Feedback"
+        Comments:
+          $ref: "#/components/schemas/String"
+    UpdateIPSetRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/Name"
+        Location:
+          $ref: "#/components/schemas/Location"
+        Activate:
+          $ref: "#/components/schemas/Boolean"
+    UpdateThreatIntelSetRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/Name"
+        Location:
+          $ref: "#/components/schemas/Location"
+        Activate:
+          $ref: "#/components/schemas/Boolean"

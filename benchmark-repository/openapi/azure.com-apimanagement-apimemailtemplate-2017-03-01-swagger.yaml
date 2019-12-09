@@ -1,0 +1,1205 @@
+openapi: 3.0.0
+info:
+  description: Use these REST APIs for performing operations on Email Templates associated
+    with your Azure API Management deployment.
+  title: ApiManagementClient
+  version: 2017-03-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/control-plane/Microsoft.ApiManagement/preview/2017-03-01/apimemailtemplate.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: apimanagement-apimemailtemplate
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - apim_key: []
+paths:
+  /templates:
+    get:
+      description: Lists a collection of properties defined within a service instance.
+      operationId: EmailTemplate_List
+      parameters:
+        - description: >-
+            | Field          | Supported operators    | Supported
+            functions                         |
+
+            |----------------|------------------------|---------------------------------------------|
+
+            | id             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListTemplates:
+              value: 2017-03-01
+      responses:
+        "200":
+          description: A Collection of the Email Template for the specified API Management
+            service instance.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailTemplateCollection"
+              examples:
+                ApiManagementListTemplates:
+                  $ref: "#/components/examples/ApiManagementListTemplates"
+      tags:
+        - EmailTemplate
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/templates/{templateName}":
+    delete:
+      description: Reset the Email Template to default template provided by the API
+        Management service instance.
+      operationId: EmailTemplate_Delete
+      parameters:
+        - $ref: "#/components/parameters/TemplateNameParameter"
+        - description: The entity state (Etag) version of the Email Template to delete. A
+            value of "*" can be used for If-Match to unconditionally apply the
+            operation.
+          in: header
+          name: If-Match
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteTemplates:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteTemplates:
+              value: 2017-03-01
+      responses:
+        "204":
+          description: Email Template was successfully reset to default.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - EmailTemplates
+    get:
+      description: Gets the details of the email template specified by its identifier.
+      operationId: EmailTemplate_Get
+      parameters:
+        - $ref: "#/components/parameters/TemplateNameParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetTemplates:
+              value: 2017-03-01
+      responses:
+        "200":
+          description: The response body contains the specified Email template.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailTemplateContract"
+              examples:
+                ApiManagementGetTemplates:
+                  $ref: "#/components/examples/ApiManagementGetTemplates"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - EmailTemplates
+    patch:
+      description: Updates the specific Email Template.
+      operationId: EmailTemplate_Update
+      parameters:
+        - $ref: "#/components/parameters/TemplateNameParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementPatchTemplates:
+              value: 2017-03-01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailTemplateUpdateParameters"
+        description: Update parameters.
+        required: true
+      responses:
+        "204":
+          description: Email Template was successfully updated.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - EmailTemplates
+    put:
+      description: Updates an Email Template.
+      operationId: EmailTemplate_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/TemplateNameParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementPutTemplates:
+              value: 2017-03-01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailTemplateUpdateParameters"
+        description: Email Template update parameters.
+        required: true
+      responses:
+        "200":
+          description: Email Template was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailTemplateContract"
+              examples:
+                ApiManagementPutTemplates:
+                  $ref: "#/components/examples/ApiManagementPutTemplates"
+        "201":
+          description: Email Template was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailTemplateContract"
+              examples:
+                ApiManagementPutTemplates:
+                  $ref: "#/components/examples/ApiManagementPutTemplates"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - EmailTemplates
+servers:
+  - url: https://azure.local
+  - url: "{apimBaseUrl}"
+    variables:
+      apimBaseUrl:
+        description: The management endpoint of the API Management service, for example
+          https://myapimservice.management.azure-api.net.
+        x-ms-skip-url-encoding: true
+        default: ""
+components:
+  examples:
+    ApiManagementListTemplates:
+      value:
+        count: 14
+        value:
+          - body: "<!DOCTYPE html >\r
+
+              <html>\r
+
+              \  <head />\r
+
+              \  <body>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">Dear $DevFirstName $DevLastName,</p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">\r
+
+              \          We are happy to let you know that your
+              request to publish the $AppName application in the application
+              gallery has been approved. Your application has been published and
+              can be viewed <a
+              href=\"http://$DevPortalUrl/Applications/Details/$AppId\">here</a\
+              >.\r
+
+              \        </p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">Best,</p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">The $OrganizationName API Team</p>\r
+
+              \  </body>\r
+
+              </html>"
+            description: Developers who submitted their application for publication in the
+              application gallery on the developer portal receive this email
+              after their submission is approved.
+            id: /templates/ApplicationApprovedNotificationMessage
+            isDefault: true
+            parameters:
+              - name: AppId
+                title: Application id
+              - name: AppName
+                title: Application name
+              - name: DevFirstName
+                title: Developer first name
+              - name: DevLastName
+                title: Developer last name
+              - name: OrganizationName
+                title: Organization name
+              - name: DevPortalUrl
+                title: Developer portal URL
+            subject: Your application $AppName is published in the application gallery
+            title: Application gallery submission approved
+          - body: "<!DOCTYPE html >\r
+
+              <html>\r
+
+              \  <head />\r
+
+              \  <body>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">Dear $DevFirstName $DevLastName,</p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">\r
+
+              \          On behalf of $OrganizationName and our
+              customers we thank you for giving us a try. Your $OrganizationName
+              API account is now closed.\r
+
+              \        </p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">Thank you,</p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">Your $OrganizationName Team</p>\r
+
+              \    <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r
+
+              \    <p />\r
+
+              \  </body>\r
+
+              </html>"
+            description: Developers receive this fairwell email after they close their
+              account.
+            id: /templates/AccountClosedDeveloper
+            isDefault: true
+            parameters:
+              - name: DevFirstName
+                title: Developer first name
+              - name: DevLastName
+                title: Developer last name
+              - name: OrganizationName
+                title: Organization name
+              - name: DevPortalUrl
+                title: Developer portal URL
+            subject: Thank you for using the $OrganizationName API!
+            title: Developer farewell letter
+          - body: "<!DOCTYPE html >\r
+
+              <html>\r
+
+              \  <head>\r
+
+              \    <style>\r
+
+              \          body {font-size:12pt; font-family:\"Segoe
+              UI\",\"Segoe WP\",\"Tahoma\",\"Arial\",\"sans-serif\";}\r
+
+              \          .alert { color: red; }\r
+
+              \          .child1 { padding-left: 20px; }\r
+
+              \          .child2 { padding-left: 40px; }\r
+
+              \          .number { text-align: right; }\r
+
+              \          .text { text-align: left; }\r
+
+              \          th, td { padding: 4px 10px; min-width:
+              100px; }\r
+
+              \          th { background-color: #DDDDDD;}\r
+
+              \        </style>\r
+
+              \  </head>\r
+
+              \  <body>\r
+
+              \    <p>Greetings $DevFirstName $DevLastName!</p>\r
+
+              \    <p>\r
+
+              \          You are approaching the quota limit on
+              you subscription to the <strong>$ProdName</strong> product
+              (primary key $SubPrimaryKey).\r
+
+              \          #if ($QuotaResetDate != \"\")\r
+
+              \          This quota will be renewed on
+              $QuotaResetDate.\r
+
+              \          #else\r
+
+              \          This quota will not be renewed.\r
+
+              \          #end\r
+
+              \        </p>\r
+
+              \    <p>Below are details on quota usage for the
+              subscription:</p>\r
+
+              \    <p>\r
+
+              \      <table>\r
+
+              \        <thead>\r
+
+              \          <th class=\"text\">Quota Scope</th>\r
+
+              \          <th class=\"number\">Calls</th>\r
+
+              \          <th class=\"number\">Call Quota</th>\r
+
+              \          <th class=\"number\">Bandwidth</th>\r
+
+              \          <th class=\"number\">Bandwidth
+              Quota</th>\r
+
+              \        </thead>\r
+
+              \        <tbody>\r
+
+              \          <tr>\r
+
+              \            <td class=\"text\">Subscription</td>\r
+
+              \            <td class=\"number\">\r
+
+              \                  #if ($CallsAlert == true)\r
+
+              \                  <span
+              class=\"alert\">$Calls</span>\r
+
+              \                  #else\r
+
+              \                  $Calls\r
+
+              \                  #end\r
+
+              \                </td>\r
+
+              \            <td class=\"number\">$CallQuota</td>\r
+
+              \            <td class=\"number\">\r
+
+              \                  #if ($BandwidthAlert == true)\r
+
+              \                  <span
+              class=\"alert\">$Bandwidth</span>\r
+
+              \                  #else\r
+
+              \                  $Bandwidth\r
+
+              \                  #end\r
+
+              \                </td>\r
+
+              \            <td
+              class=\"number\">$BandwidthQuota</td>\r
+
+              \          </tr>\r
+
+              \              #foreach ($api in $Apis)\r
+
+              \              <tr><td class=\"child1 text\">API:
+              $api.Name</td><td class=\"number\">\r
+
+              \                  #if ($api.CallsAlert == true)\r
+
+              \                  <span
+              class=\"alert\">$api.Calls</span>\r
+
+              \                  #else\r
+
+              \                  $api.Calls\r
+
+              \                  #end\r
+
+              \                </td><td
+              class=\"number\">$api.CallQuota</td><td class=\"number\">\r
+
+              \                  #if ($api.BandwidthAlert ==
+              true)\r
+
+              \                  <span
+              class=\"alert\">$api.Bandwidth</span>\r
+
+              \                  #else\r
+
+              \                  $api.Bandwidth\r
+
+              \                  #end\r
+
+              \                </td><td
+              class=\"number\">$api.BandwidthQuota</td></tr>\r
+
+              \              #foreach ($operation in
+              $api.Operations)\r
+
+              \              <tr><td class=\"child2
+              text\">Operation: $operation.Name</td><td class=\"number\">\r
+
+              \                  #if ($operation.CallsAlert ==
+              true)\r
+
+              \                  <span
+              class=\"alert\">$operation.Calls</span>\r
+
+              \                  #else\r
+
+              \                  $operation.Calls\r
+
+              \                  #end\r
+
+              \                </td><td
+              class=\"number\">$operation.CallQuota</td><td class=\"number\">\r
+
+              \                  #if ($operation.BandwidthAlert ==
+              true)\r
+
+              \                  <span
+              class=\"alert\">$operation.Bandwidth</span>\r
+
+              \                  #else\r
+
+              \                  $operation.Bandwidth\r
+
+              \                  #end\r
+
+              \                </td><td
+              class=\"number\">$operation.BandwidthQuota</td></tr>\r
+
+              \              #end\r
+
+              \              #end\r
+
+              \            </tbody>\r
+
+              \      </table>\r
+
+              \    </p>\r
+
+              \    <p>Thank you,</p>\r
+
+              \    <p>$OrganizationName API Team</p>\r
+
+              \    <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r
+
+              \    <p />\r
+
+              \  </body>\r
+
+              </html>"
+            description: Developers receive this email to alert them when they are
+              approaching a quota limit.
+            id: /templates/QuotaLimitApproachingDeveloperNotificationMessage
+            isDefault: true
+            parameters:
+              - name: DevFirstName
+                title: Developer first name
+              - name: DevLastName
+                title: Developer last name
+              - name: ProdName
+                title: Product name
+              - name: OrganizationName
+                title: Organization name
+              - name: SubPrimaryKey
+                title: Primary Subscription key
+              - name: DevPortalUrl
+                title: Developer portal URL
+              - name: QuotaResetDate
+                title: Quota reset date
+            subject: You are approaching an API quota limit
+            title: Developer quota limit approaching notification
+          - body: "<!DOCTYPE html >\r
+
+              <html>\r
+
+              \  <head>\r
+
+              \    <meta charset=\"UTF-8\" />\r
+
+              \    <title>Letter</title>\r
+
+              \  </head>\r
+
+              \  <body>\r
+
+              \    <h1
+              style=\"color:#000505;font-size:18pt;font-family:'Segoe UI'\">\r
+
+              \          Welcome to <span
+              style=\"color:#003363\">$OrganizationName API!</span></h1>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">Dear $DevFirstName $DevLastName,</p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">Your $OrganizationName API program registration is completed
+              and we are thrilled to have you as a customer. Here are a few
+              important bits of information for your reference:</p>\r
+
+              \    <table width=\"100%\" style=\"margin:20px
+              0\">\r
+
+              \      <tr>\r
+
+              \            #if ($IdentityProvider == \"Basic\")\r
+
+              \            <td width=\"50%\"
+              style=\"height:40px;vertical-align:top;font-family:'Segoe
+              UI';font-size:12pt\">\r
+
+              \              Please use the following
+              <strong>username</strong> when signing into any of the
+              ${OrganizationName}-hosted developer portals:\r
+
+              \            </td><td
+              style=\"vertical-align:top;font-family:'Segoe
+              UI';font-size:12pt\"><strong>$DevUsername</strong></td>\r
+
+              \            #else\r
+
+              \            <td width=\"50%\"
+              style=\"height:40px;vertical-align:top;font-family:'Segoe
+              UI';font-size:12pt\">\r
+
+              \              Please use the following
+              <strong>$IdentityProvider account</strong> when signing into any
+              of the ${OrganizationName}-hosted developer portals:\r
+
+              \            </td><td
+              style=\"vertical-align:top;font-family:'Segoe
+              UI';font-size:12pt\"><strong>$DevUsername</strong></td>            \
+              \r
+
+              \            #end\r
+
+              \          </tr>\r
+
+              \      <tr>\r
+
+              \        <td
+              style=\"height:40px;vertical-align:top;font-family:'Segoe
+              UI';font-size:12pt\">\r
+
+              \              We will direct all communications to
+              the following <strong>email address</strong>:\r
+
+              \            </td>\r
+
+              \        <td
+              style=\"vertical-align:top;font-family:'Segoe
+              UI';font-size:12pt\">\r
+
+              \          <a href=\"mailto:$DevEmail\"
+              style=\"text-decoration:none\">\r
+
+              \            <strong>$DevEmail</strong>\r
+
+              \          </a>\r
+
+              \        </td>\r
+
+              \      </tr>\r
+
+              \    </table>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">Best of luck in your API pursuits!</p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">$OrganizationName API Team</p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">\r
+
+              \      <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r
+
+              \    </p>\r
+
+              \  </body>\r
+
+              </html>"
+            description: Developers receive this “welcome” email after they confirm their
+              new account.
+            id: /templates/NewDeveloperNotificationMessage
+            isDefault: true
+            parameters:
+              - name: DevFirstName
+                title: Developer first name
+              - name: DevLastName
+                title: Developer last name
+              - name: DevUsername
+                title: Developer user name
+              - name: DevEmail
+                title: Developer email
+              - name: OrganizationName
+                title: Organization name
+              - name: DevPortalUrl
+                title: Developer portal URL
+              - name: IdentityProvider
+                title: Identity Provider selected by Organization
+            subject: Welcome to the $OrganizationName API!
+            title: Developer welcome letter
+          - body: "<!DOCTYPE html >\r
+
+              <html>\r
+
+              \  <head>\r
+
+              \    <meta charset=\"UTF-8\" />\r
+
+              \    <title>Letter</title>\r
+
+              \  </head>\r
+
+              \  <body>\r
+
+              \    <table width=\"100%\">\r
+
+              \      <tr>\r
+
+              \        <td>\r
+
+              \          <p
+              style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName
+              $DevLastName,</p>\r
+
+              \          <p
+              style=\"font-size:12pt;font-family:'Segoe UI'\"></p>\r
+
+              \          <p
+              style=\"font-size:12pt;font-family:'Segoe UI'\">You are receiving
+              this email because you made a change to the email address on your
+              $OrganizationName API account.</p>\r
+
+              \          <p
+              style=\"font-size:12pt;font-family:'Segoe UI'\">Please click on
+              the following link to confirm the change:</p>\r
+
+              \          <p
+              style=\"font-size:12pt;font-family:'Segoe UI'\">\r
+
+              \            <a id=\"confirmUrl\"
+              href=\"$ConfirmUrl\" style=\"text-decoration:none\">\r
+
+              \              <strong>$ConfirmUrl</strong>\r
+
+              \            </a>\r
+
+              \          </p>\r
+
+              \          <p
+              style=\"font-size:12pt;font-family:'Segoe UI'\">If clicking the
+              link does not work, please copy-and-paste or re-type it into your
+              browser's address bar and hit \"Enter\".</p>\r
+
+              \          <p
+              style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r
+
+              \          <p
+              style=\"font-size:12pt;font-family:'Segoe UI'\">$OrganizationName
+              API Team</p>\r
+
+              \          <p
+              style=\"font-size:12pt;font-family:'Segoe UI'\">\r
+
+              \            <a
+              href=\"$DevPortalUrl\">$DevPortalUrl</a>\r
+
+              \          </p>\r
+
+              \        </td>\r
+
+              \      </tr>\r
+
+              \    </table>\r
+
+              \  </body>\r
+
+              </html>"
+            description: Developers receive this email to confirm a new e-mail address
+              after they change their existing one associated with their
+              account.
+            id: /templates/EmailChangeIdentityDefault
+            isDefault: true
+            parameters:
+              - name: DevFirstName
+                title: Developer first name
+              - name: DevLastName
+                title: Developer last name
+              - name: OrganizationName
+                title: Organization name
+              - name: DevPortalUrl
+                title: Developer portal URL
+              - name: ConfirmUrl
+                title: Developer confirmation URL
+            subject: Please confirm the new email associated with your
+              $OrganizationName API account
+            title: Email change confirmation
+          - body: "<!DOCTYPE html >\r
+
+              <html>\r
+
+              \  <head />\r
+
+              \  <body>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">Dear $DevFirstName $DevLastName,</p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">\r
+
+              \          Your account has been created. Please
+              follow the link below to visit the $OrganizationName developer
+              portal and claim it:\r
+
+              \        </p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">\r
+
+              \      <a href=\"$ConfirmUrl\">$ConfirmUrl</a>\r
+
+              \    </p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">Best,</p>\r
+
+              \    <p style=\"font-size:12pt;font-family:'Segoe
+              UI'\">The $OrganizationName API Team</p>\r
+
+              \  </body>\r
+
+              </html>"
+            description: An e-mail invitation to create an account, sent on request by API
+              publishers.
+            id: /templates/InviteUserNotificationMessage
+            isDefault: true
+            parameters:
+              - name: OrganizationName
+                title: Organization name
+              - name: DevFirstName
+                title: Developer first name
+              - name: DevLastName
+                title: Developer last name
+              - name: ConfirmUrl
+                title: Confirmation link
+            subject: You are invited to join the $OrganizationName developer network
+            title: Invite user
+    ApiManagementGetTemplates:
+      value:
+        body: "<!DOCTYPE html >\r
+
+          <html>\r
+
+          \  <head />\r
+
+          \  <body>\r
+
+          \    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear
+          $DevFirstName $DevLastName,</p>\r
+
+          \    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r
+
+          \          We are happy to let you know that your request to
+          publish the $AppName application in the application gallery has been
+          approved. Your application has been published and can be viewed <a
+          href=\"http://$DevPortalUrl/Applications/Details/$AppId\">here</a>.\r
+
+          \        </p>\r
+
+          \    <p style=\"font-size:12pt;font-family:'Segoe
+          UI'\">Best,</p>\r
+
+          \    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The
+          $OrganizationName API Team</p>\r
+
+          \  </body>\r
+
+          </html>"
+        description: Developers who submitted their application for publication in the
+          application gallery on the developer portal receive this email after
+          their submission is approved.
+        id: /templates/ApplicationApprovedNotificationMessage
+        isDefault: true
+        parameters:
+          - name: AppId
+            title: Application id
+          - name: AppName
+            title: Application name
+          - name: DevFirstName
+            title: Developer first name
+          - name: DevLastName
+            title: Developer last name
+          - name: OrganizationName
+            title: Organization name
+          - name: DevPortalUrl
+            title: Developer portal URL
+        subject: Your application $AppName is published in the application gallery
+        title: Application gallery submission approved
+    ApiManagementPutTemplates:
+      value:
+        body: "<!DOCTYPE html >\r
+
+          <html>\r
+
+          \  <head />\r
+
+          \  <body>\r
+
+          \    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear
+          $DevFirstName $DevLastName,</p>\r
+
+          \    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r
+
+          \          We are happy to let you know that your request to
+          publish the $AppName application in the application gallery has been
+          approved. Your application has been published and can be viewed <a
+          href=\"http://$DevPortalUrl/Applications/Details/$AppId\">here</a>.\r
+
+          \        </p>\r
+
+          \    <p style=\"font-size:12pt;font-family:'Segoe
+          UI'\">Best,</p>\r
+
+          \    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The
+          $OrganizationName API Team</p>\r
+
+          \  </body>\r
+
+          </html>"
+        description: Developers who submitted their application for publication in the
+          application gallery on the developer portal receive this email after
+          their submission is approved.
+        id: /templates/ApplicationApprovedNotificationMessage
+        isDefault: false
+        parameters:
+          - name: AppId
+            title: Application id
+          - name: AppName
+            title: Application name
+          - name: DevFirstName
+            title: Developer first name
+          - name: DevLastName
+            title: Developer last name
+          - name: OrganizationName
+            title: Organization name
+          - name: DevPortalUrl
+            title: Developer portal URL
+        subject: Your application $AppName is published in the application gallery
+        title: Application gallery submission approved
+  parameters:
+    TemplateNameParameter:
+      description: Email Template Name Identifier.
+      in: path
+      name: templateName
+      required: true
+      x-ms-enum:
+        modelAsString: true
+        name: TemplateName
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - applicationApprovedNotificationMessage
+          - accountClosedDeveloper
+          - quotaLimitApproachingDeveloperNotificationMessage
+          - newDeveloperNotificationMessage
+          - emailChangeIdentityDefault
+          - inviteUserNotificationMessage
+          - newCommentNotificationMessage
+          - confirmSignUpIdentityDefault
+          - newIssueNotificationMessage
+          - purchaseDeveloperNotificationMessage
+          - passwordResetIdentityDefault
+          - passwordResetByAdminNotificationMessage
+          - rejectDeveloperNotificationMessage
+          - requestDeveloperNotificationMessage
+      examples:
+        ApiManagementDeleteTemplates:
+          value: newIssueNotificationMessage
+        ApiManagementGetTemplates:
+          value: applicationApprovedNotificationMessage
+        ApiManagementPatchTemplates:
+          value: newIssueNotificationMessage
+        ApiManagementPutTemplates:
+          value: newIssueNotificationMessage
+  securitySchemes:
+    apim_key:
+      in: header
+      name: Authorization
+      type: apiKey
+  schemas:
+    EmailTemplateCollection:
+      description: Paged email template list representation.
+      properties:
+        count:
+          description: Total number of entities
+          type: integer
+        nextLink:
+          description: Next page link if any.
+          type: string
+        value:
+          description: Page values.
+          items:
+            $ref: "#/components/schemas/EmailTemplateContract"
+          type: array
+    EmailTemplateContract:
+      allOf:
+        - $ref: "#/components/schemas/EmailTemplateContractProperties"
+      description: Email Template details.
+      properties:
+        id:
+          description: Identifier of the Template Contract.
+          type: string
+    EmailTemplateContractProperties:
+      description: Email Template Contract properties.
+      properties:
+        body:
+          description: Email Template Body. This should be a valid XDocument
+          minLength: 1
+          type: string
+        description:
+          description: Description of the Email Template.
+          type: string
+        isDefault:
+          description: Whether the template is the default template provided by Api
+            Management or has been edited.
+          readOnly: true
+          type: boolean
+        parameters:
+          description: Email Template Parameter values.
+          items:
+            $ref: "#/components/schemas/EmailTemplateParametersContractProperties"
+          type: array
+        subject:
+          description: Subject of the Template.
+          maxLength: 1000
+          minLength: 1
+          type: string
+        title:
+          description: Title of the Template.
+          type: string
+      required:
+        - body
+        - subject
+    EmailTemplateParametersContractProperties:
+      description: Email Template Parameter contract.
+      properties:
+        description:
+          description: Template parameter description.
+          maxLength: 256
+          minLength: 1
+          pattern: ^[A-Za-z0-9-._]+$
+          type: string
+        name:
+          description: Template parameter name.
+          maxLength: 256
+          minLength: 1
+          pattern: ^[A-Za-z0-9-._]+$
+          type: string
+        title:
+          description: Template parameter title.
+          maxLength: 4096
+          minLength: 1
+          type: string
+    EmailTemplateUpdateParameters:
+      description: Email Template Update Contract properties.
+      properties:
+        body:
+          description: Email Template Body. This should be a valid XDocument
+          minLength: 1
+          type: string
+        description:
+          description: Description of the Email Template.
+          type: string
+        parameters:
+          description: Email Template Parameter values.
+          items:
+            $ref: "#/components/schemas/EmailTemplateParametersContractProperties"
+          type: array
+        subject:
+          description: Subject of the Template.
+          maxLength: 1000
+          minLength: 1
+          type: string
+        title:
+          description: Title of the Template.
+          type: string

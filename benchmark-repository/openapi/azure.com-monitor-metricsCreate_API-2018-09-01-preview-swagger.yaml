@@ -1,0 +1,229 @@
+openapi: 3.0.0
+info:
+  description: A client for issuing REST requests to the Azure metrics service.
+  title: Azure Metrics
+  version: 2018-09-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-ms-code-generation-settings:
+    name: AzureMetricsClient
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/monitor/data-plane/preview/2018-09-01-preview/metricsCreate_API.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: monitor-metricsCreate_API
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProvider}/{resourceTypeName}/{resourceName}/metrics":
+    post:
+      description: "**Post the metric values for a resource**."
+      operationId: Metrics_Create
+      parameters:
+        - description: Supports application/json and application/x-ndjson
+          in: header
+          name: Content-Type
+          required: true
+          schema:
+            type: string
+          examples:
+            Post azure metrics for cows sold with related metadata as dimensions:
+              value: application/json
+        - description: Content length of the payload
+          in: header
+          name: Content-Length
+          required: true
+          schema:
+            type: integer
+            format: int32
+          examples:
+            Post azure metrics for cows sold with related metadata as dimensions:
+              value: 783
+        - description: Authorization token issue for issued for audience
+            "https:\\monitoring.azure.com\"
+          in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          examples:
+            Post azure metrics for cows sold with related metadata as dimensions:
+              value: Bearer {AAD JWT token issued for "https:\\monitoring.azure.com\}"
+        - description: The azure subscription id
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Post azure metrics for cows sold with related metadata as dimensions:
+              value: b7ac8a0c-fbae-4e29-a0f7-09999b8857a1
+        - description: The ARM resource group name
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Post azure metrics for cows sold with related metadata as dimensions:
+              value: CowsSeller
+        - description: The ARM resource provider name
+          in: path
+          name: resourceProvider
+          required: true
+          schema:
+            type: string
+          examples:
+            Post azure metrics for cows sold with related metadata as dimensions:
+              value: Microsoft.Storage
+        - description: The ARM resource type name
+          in: path
+          name: resourceTypeName
+          required: true
+          schema:
+            type: string
+          examples:
+            Post azure metrics for cows sold with related metadata as dimensions:
+              value: storageAccounts
+        - description: The ARM resource name
+          in: path
+          name: resourceName
+          required: true
+          schema:
+            type: string
+          examples:
+            Post azure metrics for cows sold with related metadata as dimensions:
+              value: cowssellerstore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AzureMetricsDocument"
+        description: The Azure metrics document json payload
+        required: true
+      responses:
+        "200":
+          description: The azure metrics publish succeeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AzureMetricsResult"
+              examples:
+                Post azure metrics for cows sold with related metadata as dimensions:
+                  $ref: "#/components/examples/Post_azure_metrics_for_cows_sold_wit\
+                    h_related_metadata_as_dimensions"
+        default:
+          description: An unexpected error from the server. See response object for the
+            reason
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AzureMetricsResult"
+      tags:
+        - Metrics
+servers:
+  - url: https://monitoring.azure.com
+components:
+  examples:
+    Post_azure_metrics_for_cows_sold_with_related_metadata_as_dimensions:
+      value:
+        statusCode: 200
+  schemas:
+    ApiError:
+      properties:
+        code:
+          description: Gets or sets the azure metrics error code
+          type: string
+        message:
+          description: Gets or sets the azure metrics error message
+          type: string
+      type: object
+    ApiFailureResponse:
+      properties:
+        error:
+          $ref: "#/components/schemas/ApiError"
+      type: object
+    AzureMetricsBaseData:
+      properties:
+        dimNames:
+          description: Gets or sets the list of dimension names (optional)
+          items:
+            type: string
+          type: array
+        metric:
+          description: Gets or sets the Metric name
+          type: string
+        namespace:
+          description: Gets or sets the Metric namespace
+          type: string
+        series:
+          description: Gets or sets the list of time series data for the metric (one per
+            unique dimension combination)
+          items:
+            $ref: "#/components/schemas/AzureTimeSeriesData"
+          type: array
+      required:
+        - metric
+        - namespace
+        - series
+      type: object
+    AzureMetricsData:
+      properties:
+        baseData:
+          $ref: "#/components/schemas/AzureMetricsBaseData"
+      required:
+        - baseData
+      type: object
+    AzureMetricsDocument:
+      properties:
+        data:
+          $ref: "#/components/schemas/AzureMetricsData"
+        time:
+          description: Gets or sets Time property (in ISO 8601 format)
+          type: string
+      required:
+        - time
+        - data
+      type: object
+    AzureMetricsResult:
+      properties:
+        apiFailureResponse:
+          $ref: "#/components/schemas/ApiFailureResponse"
+        statusCode:
+          description: "Http status code response "
+          format: int32
+          type: integer
+      type: object
+    AzureTimeSeriesData:
+      properties:
+        count:
+          description: Gets or sets Count value
+          format: int32
+          type: integer
+        dimValues:
+          description: Gets or sets dimension values
+          items:
+            type: string
+          type: array
+        max:
+          description: Gets or sets Max value
+          format: double
+          type: number
+        min:
+          description: Gets or sets Min value
+          format: double
+          type: number
+        sum:
+          description: Gets or sets Sum value
+          format: double
+          type: number
+      required:
+        - min
+        - max
+        - sum
+        - count
+      type: object

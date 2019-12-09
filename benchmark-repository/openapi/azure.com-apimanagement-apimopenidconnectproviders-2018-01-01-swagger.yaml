@@ -1,0 +1,800 @@
+openapi: 3.0.0
+info:
+  description: Use these REST APIs for performing operations on OpenId Connect Provider
+    entity associated with your Azure API Management deployment. API Management
+    allows you to access APIs secured with token from [OpenID Connect Provider
+    ](http://openid.net/connect/) to be accessed from the Developer Console.
+  title: ApiManagementClient
+  version: 2018-01-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2018-01-01/apimopenidconnectproviders.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: apimanagement-apimopenidconnectproviders
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders":
+    get:
+      description: Lists all OpenID Connect Providers.
+      operationId: OpenIdConnectProvider_ListByService
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementListOpenIdConnectProviders:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementListOpenIdConnectProviders:
+              value: apimService1
+        - description: >-
+            | Field | Supported operators    | Supported
+            functions                         |
+
+            |-------|------------------------|---------------------------------------------|
+
+            | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListOpenIdConnectProviders:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListOpenIdConnectProviders:
+              value: subid
+      responses:
+        "200":
+          description: Lists of all the OpenId Connect Providers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenIdConnectProviderCollection"
+              examples:
+                ApiManagementListOpenIdConnectProviders:
+                  $ref: "#/components/examples/ApiManagementListOpenIdConnectProvid\
+                    ers"
+      tags:
+        - OpenIdConnectProviders
+      x-ms-odata: "#/components/schemas/OpenidConnectProviderContract"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}":
+    delete:
+      description: Deletes specific OpenID Connect Provider of the API Management service
+        instance.
+      operationId: OpenIdConnectProvider_Delete
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteOpenIdConnectProvider:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementDeleteOpenIdConnectProvider:
+              value: apimService1
+        - $ref: "#/components/parameters/OpenIdConnectIdParameter"
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteOpenIdConnectProvider:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteOpenIdConnectProvider:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteOpenIdConnectProvider:
+              value: subid
+      responses:
+        "200":
+          description: OpenId Connect Provider was successfully deleted.
+        "204":
+          description: OpenId Connect Provider was successfully deleted.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - OpenIdConnectProviders
+    get:
+      description: Gets specific OpenID Connect Provider.
+      operationId: OpenIdConnectProvider_Get
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetOpenIdConnectProvider:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetOpenIdConnectProvider:
+              value: apimService1
+        - $ref: "#/components/parameters/OpenIdConnectIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetOpenIdConnectProvider:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetOpenIdConnectProvider:
+              value: subid
+      responses:
+        "200":
+          description: The response body contains the specified OpenId Connect Provider
+            entity.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenidConnectProviderContract"
+              examples:
+                ApiManagementGetOpenIdConnectProvider:
+                  $ref: "#/components/examples/ApiManagementGetOpenIdConnectProvider"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - OpenIdConnectProviders
+    head:
+      description: Gets the entity state (Etag) version of the openIdConnectProvider
+        specified by its identifier.
+      operationId: OpenIdConnectProvider_GetEntityTag
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadOpenIdConnectProvider:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementHeadOpenIdConnectProvider:
+              value: apimService1
+        - $ref: "#/components/parameters/OpenIdConnectIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadOpenIdConnectProvider:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadOpenIdConnectProvider:
+              value: subid
+      responses:
+        "200":
+          description: Specified openidConnectProvider entity exists and current entity
+            state version is present in the ETag header.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - OpenIdConnectProviders
+    patch:
+      description: Updates the specific OpenID Connect Provider.
+      operationId: OpenIdConnectProvider_Update
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateOpenIdConnectProvider:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementUpdateOpenIdConnectProvider:
+              value: apimService1
+        - $ref: "#/components/parameters/OpenIdConnectIdParameter"
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateOpenIdConnectProvider:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateOpenIdConnectProvider:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateOpenIdConnectProvider:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OpenidConnectProviderUpdateContract"
+        description: Update parameters.
+        required: true
+      responses:
+        "204":
+          description: OpenId Connect Provider was successfully updated.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - OpenIdConnectProviders
+    put:
+      description: Creates or updates the OpenID Connect Provider.
+      operationId: OpenIdConnectProvider_CreateOrUpdate
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateOpenIdConnectProvider:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementCreateOpenIdConnectProvider:
+              value: apimService1
+        - $ref: "#/components/parameters/OpenIdConnectIdParameter"
+        - description: ETag of the Entity. Not required when creating an entity, but
+            required when updating an entity.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateOpenIdConnectProvider:
+              value: 2018-01-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateOpenIdConnectProvider:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OpenidConnectProviderContract"
+        description: Create parameters.
+        required: true
+      responses:
+        "200":
+          description: OpenIdConnect Provider was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenidConnectProviderContract"
+              examples:
+                ApiManagementCreateOpenIdConnectProvider:
+                  $ref: "#/components/examples/ApiManagementCreateOpenIdConnectProv\
+                    ider"
+        "201":
+          description: OpenIdConnect Provider was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenidConnectProviderContract"
+              examples:
+                ApiManagementCreateOpenIdConnectProvider:
+                  $ref: "#/components/examples/ApiManagementCreateOpenIdConnectProv\
+                    ider"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - OpenIdConnectProviders
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ApiManagementListOpenIdConnectProviders:
+      value:
+        nextLink: ""
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/openidConnectProviders/templateOpenIdConnect2
+            name: templateOpenIdConnect2
+            properties:
+              clientId: oidprovidertemplate2
+              clientSecret: oidsecretproviderTemplate2
+              description: open id provider template2
+              displayName: templateoidprovider2
+              metadataEndpoint: https://oidprovider-template2.net
+            type: Microsoft.ApiManagement/service/openidconnectproviders
+    ApiManagementGetOpenIdConnectProvider:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/openidConnectProviders/templateOpenIdConnect2
+        name: templateOpenIdConnect2
+        properties:
+          clientId: oidprovidertemplate2
+          clientSecret: oidsecretproviderTemplate2
+          description: open id provider template2
+          displayName: templateoidprovider2
+          metadataEndpoint: https://oidprovider-template2.net
+        type: Microsoft.ApiManagement/service/openidconnectproviders
+    ApiManagementCreateOpenIdConnectProvider:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/openidConnectProviders/templateOpenIdConnect3
+        name: templateOpenIdConnect3
+        properties:
+          clientId: oidprovidertemplate3
+          displayName: templateoidprovider3
+          metadataEndpoint: https://oidprovider-template3.net
+        type: Microsoft.ApiManagement/service/openidconnectproviders
+  parameters:
+    OpenIdConnectIdParameter:
+      description: Identifier of the OpenID Connect Provider.
+      in: path
+      name: opid
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        maxLength: 256
+        pattern: ^[^*#&+:<>?]+$
+      examples:
+        ApiManagementDeleteOpenIdConnectProvider:
+          value: templateOpenIdConnect3
+        ApiManagementGetOpenIdConnectProvider:
+          value: templateOpenIdConnect2
+        ApiManagementHeadOpenIdConnectProvider:
+          value: templateOpenIdConnect2
+        ApiManagementUpdateOpenIdConnectProvider:
+          value: templateOpenIdConnect2
+        ApiManagementCreateOpenIdConnectProvider:
+          value: templateOpenIdConnect3
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    OpenIdConnectProviderCollection:
+      description: Paged OpenIdProviders list representation.
+      properties:
+        nextLink:
+          description: Next page link if any.
+          type: string
+        value:
+          description: Page values.
+          items:
+            $ref: "#/components/schemas/OpenidConnectProviderContract"
+          type: array
+    OpenidConnectProviderContract:
+      allOf:
+        - description: The Resource definition.
+          properties:
+            id:
+              description: Resource ID.
+              readOnly: true
+              type: string
+            name:
+              description: Resource name.
+              readOnly: true
+              type: string
+            type:
+              description: Resource type for API Management resource.
+              readOnly: true
+              type: string
+          x-ms-azure-resource: true
+      description: OpenId Connect Provider details.
+      properties:
+        properties:
+          $ref: "#/components/schemas/OpenidConnectProviderContractProperties"
+    OpenidConnectProviderContractProperties:
+      description: OpenID Connect Providers Contract.
+      properties:
+        clientId:
+          description: Client ID of developer console which is the client application.
+          type: string
+        clientSecret:
+          description: Client Secret of developer console which is the client application.
+          type: string
+        description:
+          description: User-friendly description of OpenID Connect Provider.
+          type: string
+        displayName:
+          description: User-friendly OpenID Connect Provider name.
+          maxLength: 50
+          type: string
+        metadataEndpoint:
+          description: Metadata endpoint URI.
+          type: string
+      required:
+        - displayName
+        - metadataEndpoint
+        - clientId
+    OpenidConnectProviderUpdateContract:
+      description: Parameters supplied to the Update OpenID Connect Provider operation.
+      properties:
+        properties:
+          $ref: "#/components/schemas/OpenidConnectProviderUpdateContractProperties"
+    OpenidConnectProviderUpdateContractProperties:
+      description: Parameters supplied to the Update OpenID Connect Provider operation.
+      properties:
+        clientId:
+          description: Client ID of developer console which is the client application.
+          type: string
+        clientSecret:
+          description: Client Secret of developer console which is the client application.
+          type: string
+        description:
+          description: User-friendly description of OpenID Connect Provider.
+          type: string
+        displayName:
+          description: User-friendly OpenID Connect Provider name.
+          maxLength: 50
+          type: string
+        metadataEndpoint:
+          description: Metadata endpoint URI.
+          type: string

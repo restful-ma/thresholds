@@ -1,0 +1,529 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2015-05-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/firewallRules.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: sql-firewallRules
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules":
+    get:
+      description: Gets a list of firewall rules.
+      operationId: FirewallRules_ListByServer
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of firewall rules.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FirewallRuleListResult"
+              examples:
+                List Firewall Rules:
+                  $ref: "#/components/examples/List_Firewall_Rules"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - FirewallRules
+      x-ms-pageable:
+        nextLinkName: nextLink
+    put:
+      description: Replaces all firewall rules on the server.
+      operationId: FirewallRules_Replace
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FirewallRuleList"
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the firewall rules.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FirewallRule"
+              examples:
+                Replace firewall rules:
+                  $ref: "#/components/examples/Replace_firewall_rules"
+        "202":
+          description: Creating or updating the Server Firewall Rules is in progress.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidResourceId - Invalid resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidServerFirewallRuleResourceRequest - The server firewall rule resource request is invalid.
+
+             * 400 InvalidServerFirewallRuleResourceParameters - The server firewall rule resource parameter is invalid.
+
+             * 400 FirewallRuleNotIPv4Address - The provided firewall rule address is not IPv4
+
+             * 400 FirewallRuleInvalidRange - The specified firewall rule range is invalid.
+
+             * 400 FirewallRuleNameTooLong - The provided firewall rule name is too long
+
+             * 400 FirewallRuleNameEmpty - The provided firewall rule name is empty
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 OperationIdNotFound - The operation with Id does not exist.
+
+             * 409 OperationCancelled - The operation has been cancelled by user.
+
+             * 409 OperationInterrupted - The operation on the resource could not be completed because it was interrupted by another operation on the same resource.
+
+             * 500 OperationTimedOut - The operation timed out and automatically rolled back. Please retry the operation.
+      tags:
+        - FirewallRules
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}":
+    delete:
+      description: Deletes a firewall rule.
+      operationId: FirewallRules_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the firewall rule.
+          in: path
+          name: firewallRuleName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a firewall rule:
+              value: firewallrulecrudtest-7011
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully deleted the firewall rule.
+        "204":
+          description: The specified firewall rule does not exist.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidResourceId - Invalid resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidServerFirewallRuleResourceRequest - The server firewall rule resource request is invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 OperationIdNotFound - The operation with Id does not exist.
+
+             * 409 OperationCancelled - The operation has been cancelled by user.
+
+             * 409 OperationInterrupted - The operation on the resource could not be completed because it was interrupted by another operation on the same resource.
+
+             * 500 OperationTimedOut - The operation timed out and automatically rolled back. Please retry the operation.
+      tags:
+        - FirewallRules
+    get:
+      description: Gets a firewall rule.
+      operationId: FirewallRules_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the firewall rule.
+          in: path
+          name: firewallRuleName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get Firewall Rule:
+              value: firewallrulecrudtest-2304
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the specified firewall rule.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FirewallRule"
+              examples:
+                Get Firewall Rule:
+                  $ref: "#/components/examples/Get_Firewall_Rule"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 ResourceNotFound - The requested resource was not found.
+      tags:
+        - FirewallRules
+    put:
+      description: Creates or updates a firewall rule.
+      operationId: FirewallRules_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the firewall rule.
+          in: path
+          name: firewallRuleName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create a firewall rule max/min:
+              value: firewallrulecrudtest-5370
+            Update a firewall rule max/min:
+              value: firewallrulecrudtest-3927
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FirewallRule"
+        description: The required parameters for creating or updating a firewall rule.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the firewall rule.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FirewallRule"
+              examples:
+                Create a firewall rule max/min:
+                  $ref: "#/components/examples/Create_a_firewall_rule_max_min"
+                Update a firewall rule max/min:
+                  $ref: "#/components/examples/Update_a_firewall_rule_max_min"
+        "201":
+          description: Successfully created the firewall rule.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FirewallRule"
+              examples:
+                Create a firewall rule max/min:
+                  $ref: "#/components/examples/Create_a_firewall_rule_max_min"
+                Update a firewall rule max/min:
+                  $ref: "#/components/examples/Update_a_firewall_rule_max_min"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidResourceId - Invalid resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidServerFirewallRuleResourceRequest - The server firewall rule resource request is invalid.
+
+             * 400 InvalidServerFirewallRuleResourceParameters - The server firewall rule resource parameter is invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+      tags:
+        - FirewallRules
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    List_Firewall_Rules:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/firewallrulecrudtest-12/providers/Microsoft.Sql/servers/firewallrulecrudtest-6285/firewallRules/firewallrulecrudtest-2304
+            name: firewallrulecrudtest-2304
+            properties:
+              endIpAddress: 0.0.0.0
+              startIpAddress: 0.0.0.0
+            type: Microsoft.Sql/servers/firewallRules
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/firewallrulecrudtest-12/providers/Microsoft.Sql/servers/firewallrulecrudtest-6285/firewallRules/firewallrulecrudtest-3927
+            name: firewallrulecrudtest-3927
+            properties:
+              endIpAddress: 0.0.0.1
+              startIpAddress: 0.0.0.1
+            type: Microsoft.Sql/servers/firewallRules
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/firewallrulecrudtest-12/providers/Microsoft.Sql/servers/firewallrulecrudtest-6285/firewallRules/firewallrulecrudtest-5370
+            name: firewallrulecrudtest-5370
+            properties:
+              endIpAddress: 0.0.0.3
+              startIpAddress: 0.0.0.3
+            type: Microsoft.Sql/servers/firewallRules
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/firewallrulecrudtest-12/providers/Microsoft.Sql/servers/firewallrulecrudtest-6285/firewallRules/firewallrulecrudtest-5767
+            name: firewallrulecrudtest-5767
+            properties:
+              endIpAddress: 0.0.0.2
+              startIpAddress: 0.0.0.2
+            type: Microsoft.Sql/servers/firewallRules
+    Replace_firewall_rules:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/firewallrulecrudtest-12/providers/Microsoft.Sql/servers/firewallrulecrudtest-6285/firewallRules/firewallrulecrudtest-5370
+        name: firewallrulecrudtest-5370
+        properties:
+          endIpAddress: 0.0.0.3
+          startIpAddress: 0.0.0.3
+        type: Microsoft.Sql/servers/firewallRules
+    Get_Firewall_Rule:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/firewallrulecrudtest-12/providers/Microsoft.Sql/servers/firewallrulecrudtest-6285/firewallRules/firewallrulecrudtest-2304
+        name: firewallrulecrudtest-2304
+        properties:
+          endIpAddress: 0.0.0.0
+          startIpAddress: 0.0.0.0
+        type: Microsoft.Sql/servers/firewallRules
+    Create_a_firewall_rule_max_min:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/firewallrulecrudtest-12/providers/Microsoft.Sql/servers/firewallrulecrudtest-6285/firewallRules/firewallrulecrudtest-5370
+        name: firewallrulecrudtest-5370
+        properties:
+          endIpAddress: 0.0.0.3
+          startIpAddress: 0.0.0.3
+    Update_a_firewall_rule_max_min:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/firewallrulecrudtest-12/providers/Microsoft.Sql/servers/firewallrulecrudtest-6285/firewallRules/firewallrulecrudtest-3927
+        name: firewallrulecrudtest-3927
+        properties:
+          endIpAddress: 0.0.0.1
+          startIpAddress: 0.0.0.1
+        type: Microsoft.Sql/servers/firewallRules
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        List Firewall Rules:
+          value: 2015-05-01-preview
+        Replace firewall rules:
+          value: 2015-05-01-preview
+        Delete a firewall rule:
+          value: 2015-05-01-preview
+        Get Firewall Rule:
+          value: 2015-05-01-preview
+        Create a firewall rule max/min:
+          value: 2015-05-01-preview
+        Update a firewall rule max/min:
+          value: 2015-05-01-preview
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ManagedInstanceNameParameter:
+      description: The name of the managed instance.
+      in: path
+      name: managedInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        List Firewall Rules:
+          value: firewallrulecrudtest-12
+        Replace firewall rules:
+          value: firewallrulecrudtest-12
+        Delete a firewall rule:
+          value: firewallrulecrudtest-9886
+        Get Firewall Rule:
+          value: firewallrulecrudtest-12
+        Create a firewall rule max/min:
+          value: firewallrulecrudtest-12
+        Update a firewall rule max/min:
+          value: firewallrulecrudtest-12
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        List Firewall Rules:
+          value: firewallrulecrudtest-6285
+        Replace firewall rules:
+          value: firewallrulecrudtest-6285
+        Delete a firewall rule:
+          value: firewallrulecrudtest-2368
+        Get Firewall Rule:
+          value: firewallrulecrudtest-6285
+        Create a firewall rule max/min:
+          value: firewallrulecrudtest-6285
+        Update a firewall rule max/min:
+          value: firewallrulecrudtest-6285
+    SqlVirtualMachineContainerNameParameter:
+      description: The name of the SqlVirtualMachineContainer.
+      in: path
+      name: sqlVirtualMachineContainerName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineInstanceNameParameter:
+      description: The name of the SqlVirtualMachineInstance.
+      in: path
+      name: sqlVirtualMachineInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        List Firewall Rules:
+          value: 00000000-1111-2222-3333-444444444444
+        Replace firewall rules:
+          value: 00000000-1111-2222-3333-444444444444
+        Delete a firewall rule:
+          value: 00000000-1111-2222-3333-444444444444
+        Get Firewall Rule:
+          value: 00000000-1111-2222-3333-444444444444
+        Create a firewall rule max/min:
+          value: 00000000-1111-2222-3333-444444444444
+        Update a firewall rule max/min:
+          value: 00000000-1111-2222-3333-444444444444
+    VirtualClusterNameParameter:
+      description: The name of the virtual cluster.
+      in: path
+      name: virtualClusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    FirewallRule:
+      allOf:
+        - $ref: "#/components/schemas/ProxyResourceWithWritableName"
+      description: A server firewall rule.
+      properties:
+        properties:
+          $ref: "#/components/schemas/ServerFirewallRuleProperties"
+      type: object
+    FirewallRuleList:
+      description: A list of server firewall rules.
+      properties:
+        values:
+          items:
+            $ref: "#/components/schemas/FirewallRule"
+          type: array
+      type: object
+    FirewallRuleListResult:
+      description: The response to a list firewall rules request
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/FirewallRule"
+          readOnly: true
+          type: array
+      type: object
+    ProxyResourceWithWritableName:
+      allOf:
+        - $ref: "#/components/schemas/ResourceWithWritableName"
+      description: ARM proxy resource.
+      properties: {}
+      type: object
+    ResourceWithWritableName:
+      description: ARM resource.
+      properties:
+        id:
+          description: Resource ID.
+          readOnly: true
+          type: string
+        name:
+          description: Resource name.
+          type: string
+        type:
+          description: Resource type.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    ServerFirewallRuleProperties:
+      description: The properties of a server firewall rule.
+      properties:
+        endIpAddress:
+          description: The end IP address of the firewall rule. Must be IPv4 format. Must
+            be greater than or equal to startIpAddress. Use value '0.0.0.0' for
+            all Azure-internal IP addresses.
+          type: string
+        startIpAddress:
+          description: The start IP address of the firewall rule. Must be IPv4 format. Use
+            value '0.0.0.0' for all Azure-internal IP addresses.
+          type: string
+      type: object

@@ -1,0 +1,633 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: Fun Generators
+    url: http://fungenerators.com/
+  description: >
+    Fungenerators API gives access to the full set of generators available at
+    fungenerators.com so that you can integrate them in your workflow or an app.
+    [Click here to get details and subscribe](http://fungenerators.com/api) .
+    Here are the individual API links:
+
+      ## QR Code API ##
+      Generate QR Code images for text, url, email , business cards etc. You can decode QR Code images and get the contents as well. The best and complete QR Code API on the cloud. [Click here to subscribe](http://fungenerators.com/api/qrcode)
+  termsOfService: https://fungenerators.com/terms
+  title: Fun Generators
+  version: "1.5"
+  x-apisguru-categories:
+    - entertainment
+  x-origin:
+    - format: swagger
+      url: https://fungenerators.com/yaml/qrcode.yaml
+      version: "2.0"
+  x-providerName: fungenerators.com
+  x-serviceName: qrcode
+tags:
+  - description: QR code API
+    externalDocs:
+      description: Find out more
+      url: http://fungenerators.com/api/qrcode
+    name: QR Code
+paths:
+  /qrcode/business_card:
+    get:
+      description: Get a QR Code image for a business card aka VCARD
+      parameters:
+        - description: First Name
+          in: query
+          name: firstname
+          required: true
+          schema:
+            type: string
+            format: string
+        - description: Last Name
+          in: query
+          name: lastname
+          required: true
+          schema:
+            type: string
+            format: string
+        - description: Middle Name
+          in: query
+          name: middlename
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: Email id
+          in: query
+          name: email
+          required: true
+          schema:
+            type: string
+            format: string
+        - description: Company Name
+          in: query
+          name: company
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: Work Phone Number
+          in: query
+          name: phone_work
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: Home Phone Number
+          in: query
+          name: phone_home
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: Cell Phone Number
+          in: query
+          name: phone_cell
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: Street Address
+          in: query
+          name: street1
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: Street Address 2
+          in: query
+          name: street2
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: City
+          in: query
+          name: city
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: Zip Code
+          in: query
+          name: zip
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: State
+          in: query
+          name: state
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: Country
+          in: query
+          name: country
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: Output image format. Must be one of png/eps/raw/svg
+          in: query
+          name: format
+          required: false
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: 200  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "success": {
+                            "total": 1
+                        },
+                        "contents": [
+                            {
+                                "encoding": "base64",
+                                "format": "png",
+                                "content": "base64 encoded image file",
+                            }
+                        ]
+                    }
+        "401":
+          description: 401  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "error": {
+                            "code": 401,
+                            "message": "Unauthorized"
+                        }
+                    }
+      security:
+        - X-Fungenerators-Api-Secret: []
+      tags:
+        - QR Code
+  /qrcode/decode:
+    post:
+      description: Decode a QR Code image and return the cotents if successful
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                qrimage:
+                  description: QR Code image to decode and get the content value
+                  type: string
+                  format: binary
+              required:
+                - qrimage
+      responses:
+        "200":
+          description: 200  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                      "success": {
+                        "total": 1
+                      },
+                      "contents": {
+                          "content_value": "http://fungenerators.com/qr-code/"
+                      }
+                    }
+        "401":
+          description: 401  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "error": {
+                            "code": 401,
+                            "message": "Unauthorized"
+                        }
+                    }              
+      security:
+        - X-Fungenerators-Api-Secret: []
+      tags:
+        - QR Code
+  /qrcode/email:
+    get:
+      description: Get a QR Code image for an email
+      parameters:
+        - description: Email id to send the email to
+          in: query
+          name: email
+          required: true
+          schema:
+            type: string
+            format: string
+        - description: Subject of the email(optional)
+          in: query
+          name: subject
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: Body of the email(optional)
+          in: query
+          name: body
+          required: false
+          schema:
+            type: string
+            format: string
+        - description: Output image format. Must be one of png/png/eps/raw/svg
+          in: query
+          name: format
+          required: false
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: 200  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "success": {
+                            "total": 1
+                        },
+                        "contents": [
+                            {
+                                "encoding": "base64",
+                                "format": "png",
+                                "content": "base64 encoded image file",
+                            }
+                        ]
+                    }
+        "401":
+          description: 401  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "error": {
+                            "code": 401,
+                            "message": "Unauthorized"
+                        }
+                    }
+      security:
+        - X-Fungenerators-Api-Secret: []
+      tags:
+        - QR Code
+  /qrcode/phone:
+    get:
+      description: Get a QR Code image for a phone number
+      parameters:
+        - description: Phone Number
+          in: query
+          name: number
+          required: true
+          schema:
+            type: string
+            format: string
+        - description: Output image format. Must be one of png/eps/raw/svg
+          in: query
+          name: format
+          required: false
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: 200  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "success": {
+                            "total": 1
+                        },
+                        "contents": [
+                            {
+                                "encoding": "base64",
+                                "format": "png",
+                                "content": "base64 encoded image file",
+                            }
+                        ]
+                    }
+        "401":
+          description: 401  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "error": {
+                            "code": 401,
+                            "message": "Unauthorized"
+                        }
+                    }
+      security:
+        - X-Fungenerators-Api-Secret: []
+      tags:
+        - QR Code
+  /qrcode/raw:
+    get:
+      description: Get a QR Code image for a block of raw data
+      parameters:
+        - description: Raw Text value
+          in: query
+          name: rawtext
+          required: true
+          schema:
+            type: string
+            format: string
+        - description: Output image format. Must be one of png/eps/raw/svg
+          in: query
+          name: format
+          required: false
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: 200  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "success": {
+                            "total": 1
+                        },
+                        "contents": [
+                            {
+                                "encoding": "base64",
+                                "format": "png",
+                                "content": "base64 encoded image file",
+                            }
+                        ]
+                    }
+        "401":
+          description: 401  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "error": {
+                            "code": 401,
+                            "message": "Unauthorized"
+                        }
+                    }
+      security:
+        - X-Fungenerators-Api-Secret: []
+      tags:
+        - QR Code
+  /qrcode/skype:
+    get:
+      description: Get a QR Code image for a skype user
+      parameters:
+        - description: Skype User name
+          in: query
+          name: username
+          required: true
+          schema:
+            type: string
+            format: string
+        - description: Output image format. Must be one of png/eps/raw/svg
+          in: query
+          name: format
+          required: false
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: 200  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "success": {
+                            "total": 1
+                        },
+                        "contents": [
+                            {
+                                "encoding": "base64",
+                                "format": "png",
+                                "content": "base64 encoded image file",
+                            }
+                        ]
+                    }
+        "401":
+          description: 401  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "error": {
+                            "code": 401,
+                            "message": "Unauthorized"
+                        }
+                    }
+      security:
+        - X-Fungenerators-Api-Secret: []
+      tags:
+        - QR Code
+  /qrcode/sms:
+    get:
+      description: Get a QR Code image for a Phone number for SMS messaging
+      parameters:
+        - description: Phone Number to SMS
+          in: query
+          name: number
+          required: true
+          schema:
+            type: string
+            format: string
+        - description: Output image format. Must be one of png/eps/raw/svg
+          in: query
+          name: format
+          required: false
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: 200  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "success": {
+                            "total": 1
+                        },
+                        "contents": [
+                            {
+                                "encoding": "base64",
+                                "format": "png",
+                                "content": "base64 encoded image file",
+                            }
+                        ]
+                    }
+        "401":
+          description: 401  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "error": {
+                            "code": 401,
+                            "message": "Unauthorized"
+                        }
+                    }
+      security:
+        - X-Fungenerators-Api-Secret: []
+      tags:
+        - QR Code
+  /qrcode/text:
+    get:
+      description: Get a QR Code image for a block of text
+      parameters:
+        - description: Text value
+          in: query
+          name: text
+          required: true
+          schema:
+            type: string
+            format: string
+        - description: Output image format. Must be one of png/eps/raw/svg
+          in: query
+          name: format
+          required: false
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: 200  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "success": {
+                            "total": 1
+                        },
+                        "contents": [
+                            {
+                                "encoding": "base64",
+                                "format": "png",
+                                "content": "base64 encoded image file",
+                            }
+                        ]
+                    }
+        "401":
+          description: 401  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "error": {
+                            "code": 401,
+                            "message": "Unauthorized"
+                        }
+                    }
+      security:
+        - X-Fungenerators-Api-Secret: []
+      tags:
+        - QR Code
+  /qrcode/url:
+    get:
+      description: Get a QR Code image for a url
+      parameters:
+        - description: URL value
+          in: query
+          name: url
+          required: true
+          schema:
+            type: string
+            format: string
+        - description: Output image format. Must be one of png/raw/eps/svg
+          in: query
+          name: format
+          required: false
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: 200  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "success": {
+                            "total": 1
+                        },
+                        "contents": [
+                            {
+                                "encoding": "base64",
+                                "format": "png",
+                                "content": "base64 encoded image file",
+                            }
+                        ]
+                    }
+        "401":
+          description: 401  response
+          content:
+            application/json:
+              examples:
+                response:
+                  value: |-
+                    {
+                        "error": {
+                            "code": 401,
+                            "message": "Unauthorized"
+                        }
+                    }
+      security:
+        - X-Fungenerators-Api-Secret: []
+      tags:
+        - QR Code
+servers:
+  - url: https://api.fungenerators.com
+  - url: http://api.fungenerators.com
+components:
+  securitySchemes:
+    X-Fungenerators-Api-Secret:
+      in: header
+      name: X-Fungenerators-Api-Secret
+      type: apiKey

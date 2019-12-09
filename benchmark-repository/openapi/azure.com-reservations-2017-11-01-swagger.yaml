@@ -1,0 +1,1502 @@
+openapi: 3.0.0
+info:
+  description: This API describe Azure Reservation
+  title: Azure Reservation
+  version: 2017-11-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/reservations/resource-manager/Microsoft.Capacity/stable/2017-11-01/reservations.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: reservations
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  /providers/Microsoft.Capacity/operations:
+    get:
+      description: List all the operations.
+      operationId: Operation_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: List all the operations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationList"
+              examples:
+                GetOperations:
+                  $ref: "#/components/examples/GetOperations"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Get operations.
+      tags:
+        - Operation
+      x-ms-pageable:
+        nextLinkName: nextLink
+  /providers/Microsoft.Capacity/reservationOrders:
+    get:
+      description: List of all the `ReservationOrder`s that the user has access to in the
+        current tenant.
+      operationId: ReservationOrder_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: List of `ReservationOrder`s
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReservationOrderList"
+              examples:
+                ReservationOrderList:
+                  $ref: "#/components/examples/ReservationOrderList"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Get all `ReservationOrder`s.
+      tags:
+        - Reservation
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}":
+    get:
+      description: Get the details of the `ReservationOrder`.
+      operationId: ReservationOrder_Get
+      parameters:
+        - $ref: "#/components/parameters/ReservationOrderIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Get the details of the `ReservationOrder`.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReservationOrderResponse"
+              examples:
+                GetReservation:
+                  $ref: "#/components/examples/GetReservation"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Get a specific `ReservationOrder`.
+      tags:
+        - Reservation
+  "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/merge":
+    post:
+      description: Merge the specified `Reservation`s into a new `Reservation`. The two
+        `Reservation`s being merged must have same properties.
+      operationId: Reservation_Merge
+      parameters:
+        - $ref: "#/components/parameters/ReservationOrderIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MergeRequest"
+        description: Information needed for commercial request for a reservation
+        required: true
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          description: Returns the `Reservation` created after the merge.
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ReservationResponse"
+                type: array
+              examples:
+                Merge:
+                  $ref: "#/components/examples/Merge"
+        "202":
+          description: The request is accepted and is being processed
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Merges two `Reservation`s.
+      tags:
+        - Reservation, Merge
+      x-ms-long-running-operation: true
+  "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations":
+    get:
+      description: List `Reservation`s within a single `ReservationOrder`.
+      operationId: Reservation_List
+      parameters:
+        - $ref: "#/components/parameters/ReservationOrderIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: List `Reservation`s within a single `ReservationOrder`.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReservationList"
+              examples:
+                ReservationList:
+                  $ref: "#/components/examples/ReservationList"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Get `Reservation`s in a given reservation Order
+      tags:
+        - Reservation
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}":
+    get:
+      description: Get specific `Reservation` details.
+      operationId: Reservation_Get
+      parameters:
+        - $ref: "#/components/parameters/ReservationIdParameter"
+        - $ref: "#/components/parameters/ReservationOrderIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Get `Reservation` details.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReservationResponse"
+              examples:
+                GetReservation:
+                  $ref: "#/components/examples/GetReservation"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Get `Reservation` details.
+      tags:
+        - Reservation
+    patch:
+      description: Updates the applied scopes of the `Reservation`.
+      operationId: Reservation_Update
+      parameters:
+        - $ref: "#/components/parameters/ReservationOrderIdParameter"
+        - $ref: "#/components/parameters/ReservationIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Patch"
+        description: Information needed to patch a reservation item
+        required: true
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          description: Returns the updated `Reservation`.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReservationResponse"
+              examples:
+                PatchReservation:
+                  $ref: "#/components/examples/PatchReservation"
+        "202":
+          description: The request is accepted and is being processed
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Updates a `Reservation`.
+      tags:
+        - Reservation
+        - ApplyScope
+      x-ms-long-running-operation: true
+  "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/revisions":
+    get:
+      description: |
+        List of all the revisions for the `Reservation`.
+      operationId: Reservation_ListRevisions
+      parameters:
+        - $ref: "#/components/parameters/ReservationIdParameter"
+        - $ref: "#/components/parameters/ReservationOrderIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: List of all the revisions for the `Reservation`.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReservationList"
+              examples:
+                ReservationRevisions:
+                  $ref: "#/components/examples/ReservationRevisions"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Get `Reservation` revisions.
+      tags:
+        - Reservation
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/split":
+    post:
+      description: >
+        Split a `Reservation` into two `Reservation`s with specified quantity
+        distribution.
+      operationId: Reservation_Split
+      parameters:
+        - $ref: "#/components/parameters/ReservationOrderIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SplitRequest"
+        description: Information needed to Split a reservation item
+        required: true
+        x-ms-parameter-location: method
+      responses:
+        "200":
+          description: List of `Reservation`s created after the split operation.
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ReservationResponse"
+                type: array
+              examples:
+                Split:
+                  $ref: "#/components/examples/Split"
+        "202":
+          description: The request is accepted and is being processed
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Split the `Reservation`.
+      tags:
+        - Reservation, Split
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/appliedReservations":
+    get:
+      description: Get applicable `Reservation`s that are applied to this subscription.
+      operationId: GetAppliedReservationList
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Applicable `Reservation`s.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppliedReservations"
+              examples:
+                AppliedReservationList:
+                  $ref: "#/components/examples/AppliedReservationList"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Get list of applicable `Reservation`s.
+      tags:
+        - AppliedReservation
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/catalogs":
+    get:
+      operationId: GetCatalog
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: List of available resources
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Catalog"
+                type: array
+              examples:
+                Catalog:
+                  $ref: "#/components/examples/Catalog"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      summary: Get the regions and skus that are available for RI purchase for the
+        specified Azure subscription.
+      tags:
+        - Catalog
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    GetOperations:
+      value:
+        value:
+          - display:
+              description: Read All Reservations
+              operation: Get Reservations
+              provider: Microsoft Capacity
+              resource: Reservations
+            name: Microsoft.Capacity/reservationorders/read
+          - display:
+              description: Create any Reservation
+              operation: Create Reservations
+              provider: Microsoft Capacity
+              resource: Reservations
+            name: Microsoft.Capacity/reservationorders/write
+          - display:
+              description: Update any Reservation
+              operation: Update Reservations
+              provider: Microsoft Capacity
+              resource: Reservations
+            name: Microsoft.Capacity/reservationorders/action
+          - display:
+              description: Delete any Reservation
+              operation: Delete Reservations
+              provider: Microsoft Capacity
+              resource: Reservations
+            name: Microsoft.Capacity/reservationorders/delete
+          - display:
+              description: Read All Reservations
+              operation: Get Reservations
+              provider: Microsoft Capacity
+              resource: Reservations
+            name: Microsoft.Capacity/reservationorders/reservations/read
+          - display:
+              description: Create any Reservation
+              operation: Create Reservations
+              provider: Microsoft Capacity
+              resource: Reservations
+            name: Microsoft.Capacity/reservationorders/reservations/write
+          - display:
+              description: Update any Reservation
+              operation: Update Reservations
+              provider: Microsoft Capacity
+              resource: Reservations
+            name: Microsoft.Capacity/reservationorders/reservations/action
+          - display:
+              description: Delete any Reservation
+              operation: Delete Reservations
+              provider: Microsoft Capacity
+              resource: Reservations
+            name: Microsoft.Capacity/reservationorders/reservations/delete
+          - display:
+              description: Read All Reservations
+              operation: Get Reservations
+              provider: Microsoft Capacity
+              resource: Reservations
+            name: Microsoft.Capacity/reservationorders/reservations/revisions/read
+    ReservationOrderList:
+      value:
+        nextLink: https://management.azure.com/providers/Microsoft.Capacity/reservationOrders?api-version=2017-11-01&%24skiptoken=eyJyZyI6IjIwNTkyMzdlLWY3MmYtNDczYi1hNTZiLWExOGJkM2UwMDhlZCIsImlnIjpudWxsLCJzdCI6bnVsbH0%3d
+        value:
+          - etag: 7
+            id: /providers/microsoft.capacity/reservationOrders/1e6407ba-37a5-499f-80ed-a3f0f338e443
+            name: 1e6407ba-37a5-499f-80ed-a3f0f338e443
+            properties:
+              createdDateTime: 2017-08-29T21:22:56.8541664Z
+              originalQuantity: 1
+              provisioningState: Succeeded
+              requestDateTime: 2017-08-29T21:20:23.8134834Z
+              reservations:
+                - id: /providers/microsoft.capacity/reservationOrders/1e6407ba-37a5-499f-80ed-a3f0f338e443/reservations/cae5924e-7a15-419f-a369-124f52d4a106
+              term: P1Y
+            type: Microsoft.Capacity/reservationOrders
+          - etag: 7
+            id: /providers/microsoft.capacity/reservationOrders/1ea6e203-288e-4732-b9e1-da8bbe10c614
+            name: 1ea6e203-288e-4732-b9e1-da8bbe10c614
+            properties:
+              createdDateTime: 2017-08-30T12:58:20.526Z
+              originalQuantity: 9
+              provisioningState: Succeeded
+              requestDateTime: 2017-08-30T12:55:40.2799114Z
+              reservations:
+                - id: /providers/microsoft.capacity/reservationOrders/1ea6e203-288e-4732-b9e1-da8bbe10c614/reservations/d04fd48d-e3f6-42a3-a8f6-1ad0b7513e48
+              term: P1Y
+            type: Microsoft.Capacity/reservationOrders
+          - etag: 7
+            id: /providers/microsoft.capacity/reservationOrders/1f14354c-dc12-4c8d-8090-6f295a3a34aa
+            name: 1f14354c-dc12-4c8d-8090-6f295a3a34aa
+            properties:
+              createdDateTime: 2017-08-30T03:51:49.8083758Z
+              originalQuantity: 7
+              provisioningState: Succeeded
+              requestDateTime: 2017-08-30T03:49:19.0252126Z
+              reservations:
+                - id: /providers/microsoft.capacity/reservationOrders/1f14354c-dc12-4c8d-8090-6f295a3a34aa/reservations/c8c926bd-fc5d-4e29-9d43-b68340ac23a6
+              term: P1Y
+            type: Microsoft.Capacity/reservationOrders
+          - etag: 7
+            id: /providers/microsoft.capacity/reservationOrders/1f97f9a3-eaec-4f19-ab76-ccb53307aa54
+            name: 1f97f9a3-eaec-4f19-ab76-ccb53307aa54
+            properties:
+              createdDateTime: 2017-08-29T17:52:56.6426605Z
+              originalQuantity: 10
+              provisioningState: Succeeded
+              requestDateTime: 2017-08-29T17:50:22.0765208Z
+              reservations:
+                - id: /providers/microsoft.capacity/reservationOrders/1f97f9a3-eaec-4f19-ab76-ccb53307aa54/reservations/ca542bc5-94cb-4d42-b63a-393ef4f507d9
+              term: P1Y
+            type: Microsoft.Capacity/reservationOrders
+    GetReservation:
+      value:
+        etag: 2
+        id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc
+        location: eastus
+        name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/6ef59113-3482-40da-8d79-787f823e34bc
+        properties:
+          appliedScopeType: Single
+          appliedScopes:
+            - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+          displayName: cabri_test
+          effectiveDateTime: 2017-09-22T22:46:32.7632798Z
+          expiryDate: 2018-09-22
+          lastUpdatedDateTime: 2017-09-22T22:46:32.7632798Z
+          mergeProperties:
+            mergeSources:
+              - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+              - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+          provisioningState: Succeeded
+          quantity: 3
+        sku:
+          name: Standard_DS1_v2
+        type: Microsoft.Capacity/reservationOrders/reservations
+    Merge:
+      value:
+        - etag: 5
+          id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+          location: eastus
+          name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/00238563-7312-4c20-a134-8c030bf938a7
+          properties:
+            appliedScopeType: Single
+            appliedScopes:
+              - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+            displayName: cabri_test
+            effectiveDateTime: 2017-09-22T22:46:32.7632798Z
+            expiryDate: 2018-09-22
+            extendedStatusInfo:
+              message: This reservation was merged and is no longer active.
+              statusCode: Merged
+            lastUpdatedDateTime: 2017-09-22T22:46:32.7632798Z
+            mergeProperties:
+              mergeDestination: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc
+            provisioningState: Cancelled
+            quantity: 1
+            splitProperties:
+              splitSource: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/bcae77cd-3119-4766-919f-b50d36c75c7a
+          sku:
+            name: Standard_DS1_v2
+          type: Microsoft.Capacity/reservationOrders/reservations
+        - etag: 4
+          id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+          location: eastus
+          name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+          properties:
+            appliedScopeType: Single
+            appliedScopes:
+              - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+            displayName: cabri_test
+            effectiveDateTime: 2017-09-22T22:46:32.7632798Z
+            expiryDate: 2018-09-22
+            extendedStatusInfo:
+              message: This reservation was merged and is no longer active.
+              statusCode: Merged
+            lastUpdatedDateTime: 2017-09-22T22:46:32.7632798Z
+            mergeProperties:
+              mergeDestination: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc
+            provisioningState: Cancelled
+            quantity: 2
+            splitProperties:
+              splitSource: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/bcae77cd-3119-4766-919f-b50d36c75c7a
+          sku:
+            name: Standard_DS1_v2
+          type: Microsoft.Capacity/reservationOrders/reservations
+        - etag: 2
+          id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc
+          location: eastus
+          name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/6ef59113-3482-40da-8d79-787f823e34bc
+          properties:
+            appliedScopeType: Single
+            appliedScopes:
+              - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+            displayName: cabri_test
+            effectiveDateTime: 2017-09-22T22:46:32.7632798Z
+            expiryDate: 2018-09-22
+            lastUpdatedDateTime: 2017-09-22T22:46:32.7632798Z
+            mergeProperties:
+              mergeSources:
+                - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+                - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+            provisioningState: Succeeded
+            quantity: 3
+          sku:
+            name: Standard_DS1_v2
+          type: Microsoft.Capacity/reservationOrders/reservations
+    ReservationList:
+      value:
+        value:
+          - etag: 10
+            id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/bcae77cd-3119-4766-919f-b50d36c75c7a
+            location: eastus
+            name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/bcae77cd-3119-4766-919f-b50d36c75c7a
+            properties:
+              appliedScopeType: Single
+              appliedScopes:
+                - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+              displayName: cabri_test
+              effectiveDateTime: 2017-09-22T01:00:30.9253826Z
+              expiryDate: 2018-09-22
+              extendedStatusInfo:
+                message: This reservation was split and is no longer active.
+                statusCode: Split
+              lastUpdatedDateTime: 2017-09-22T01:00:36.3191627Z
+              provisioningState: Cancelled
+              quantity: 3
+              splitProperties:
+                splitDestinations:
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+            sku:
+              name: Standard_DS1_v2
+            type: Microsoft.Capacity/reservationOrders/reservations
+          - etag: 5
+            id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+            location: eastus
+            name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/00238563-7312-4c20-a134-8c030bf938a7
+            properties:
+              appliedScopeType: Single
+              appliedScopes:
+                - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+              displayName: cabri_test
+              effectiveDateTime: 2017-09-22T22:46:32.7632798Z
+              expiryDate: 2018-09-22
+              extendedStatusInfo:
+                message: This reservation was merged and is no longer active.
+                statusCode: Merged
+              lastUpdatedDateTime: 2017-09-22T22:46:32.7632798Z
+              mergeProperties:
+                mergeDestination: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc
+              provisioningState: Cancelled
+              quantity: 1
+              splitProperties:
+                splitSource: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/bcae77cd-3119-4766-919f-b50d36c75c7a
+            sku:
+              name: Standard_DS1_v2
+            type: Microsoft.Capacity/reservationOrders/reservations
+          - etag: 4
+            id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+            location: eastus
+            name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+            properties:
+              appliedScopeType: Single
+              appliedScopes:
+                - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+              displayName: cabri_test
+              effectiveDateTime: 2017-09-22T22:46:32.7632798Z
+              expiryDate: 2018-09-22
+              extendedStatusInfo:
+                message: This reservation was merged and is no longer active.
+                statusCode: Merged
+              lastUpdatedDateTime: 2017-09-22T22:46:32.7632798Z
+              mergeProperties:
+                mergeDestination: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc
+              provisioningState: Cancelled
+              quantity: 2
+              splitProperties:
+                splitSource: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/bcae77cd-3119-4766-919f-b50d36c75c7a
+            sku:
+              name: Standard_DS1_v2
+            type: Microsoft.Capacity/reservationOrders/reservations
+          - etag: 2
+            id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc
+            location: eastus
+            name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/6ef59113-3482-40da-8d79-787f823e34bc
+            properties:
+              appliedScopeType: Single
+              appliedScopes:
+                - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+              displayName: cabri_test
+              effectiveDateTime: 2017-09-22T22:46:32.7632798Z
+              expiryDate: 2018-09-22
+              lastUpdatedDateTime: 2017-09-22T22:46:32.7632798Z
+              mergeProperties:
+                mergeSources:
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+              provisioningState: Succeeded
+              quantity: 3
+            sku:
+              name: Standard_DS1_v2
+            type: Microsoft.Capacity/reservationOrders/reservations
+    PatchReservation:
+      value:
+        etag: 4
+        id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc
+        location: eastus
+        name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/6ef59113-3482-40da-8d79-787f823e34bc
+        properties:
+          appliedScopeType: Shared
+          displayName: cabri_test
+          effectiveDateTime: 2017-09-22T23:57:48.1891638Z
+          expiryDate: 2018-09-22
+          lastUpdatedDateTime: 2017-09-22T23:57:54.3768768Z
+          mergeProperties:
+            mergeSources:
+              - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+              - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+          provisioningState: Succeeded
+          quantity: 3
+        sku:
+          name: Standard_DS1_v2
+        type: Microsoft.Capacity/reservationOrders/reservations
+    ReservationRevisions:
+      value:
+        value:
+          - etag: 4
+            id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc/revisions/4
+            location: eastus
+            name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/6ef59113-3482-40da-8d79-787f823e34bc/4
+            properties:
+              appliedScopeType: Shared
+              displayName: cabri_test
+              effectiveDateTime: 2017-09-22T23:57:48.1891638Z
+              expiryDate: 2018-09-22
+              lastUpdatedDateTime: 2017-09-22T23:57:54.3768768Z
+              mergeProperties:
+                mergeSources:
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+              provisioningState: Succeeded
+              quantity: 3
+            sku:
+              name: Standard_DS1_v2
+            type: Microsoft.Capacity/reservationOrders/reservations/revisions
+          - etag: 3
+            id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc/revisions/3
+            location: eastus
+            name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/6ef59113-3482-40da-8d79-787f823e34bc/3
+            properties:
+              appliedScopeType: Single
+              appliedScopes:
+                - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+              displayName: cabri_test
+              effectiveDateTime: 2017-09-22T22:46:32.7632798Z
+              expiryDate: 2018-09-22
+              extendedStatusInfo:
+                message: An operation is in progress on your reservation. Please wait
+                  for operation to complete before taking further action
+                statusCode: Pending
+              lastUpdatedDateTime: 2017-09-22T23:57:47.488284Z
+              mergeProperties:
+                mergeSources:
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+              provisioningState: Succeeded
+              quantity: 3
+            sku:
+              name: Standard_DS1_v2
+            type: Microsoft.Capacity/reservationOrders/reservations/revisions
+          - etag: 2
+            id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc/revisions/2
+            location: eastus
+            name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/6ef59113-3482-40da-8d79-787f823e34bc/2
+            properties:
+              appliedScopeType: Single
+              appliedScopes:
+                - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+              displayName: cabri_test
+              effectiveDateTime: 2017-09-22T22:46:32.7632798Z
+              expiryDate: 2018-09-22
+              lastUpdatedDateTime: 2017-09-22T22:46:32.7632798Z
+              mergeProperties:
+                mergeSources:
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+              provisioningState: Succeeded
+              quantity: 3
+            sku:
+              name: Standard_DS1_v2
+            type: Microsoft.Capacity/reservationOrders/reservations/revisions
+          - etag: 1
+            id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/6ef59113-3482-40da-8d79-787f823e34bc/revisions/1
+            location: eastus
+            name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/6ef59113-3482-40da-8d79-787f823e34bc/1
+            properties:
+              appliedScopeType: Single
+              appliedScopes:
+                - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+              displayName: cabri_test
+              effectiveDateTime: 2017-09-22T22:46:27.3313607Z
+              expiryDate: 2018-09-22
+              lastUpdatedDateTime: 2017-09-22T22:46:27.3313607Z
+              mergeProperties:
+                mergeSources:
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+                  - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+              provisioningState: Creating
+              quantity: 3
+            sku:
+              name: Standard_DS1_v2
+            type: Microsoft.Capacity/reservationOrders/reservations/revisions
+    Split:
+      value:
+        - etag: 2
+          id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+          location: eastus
+          name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/00238563-7312-4c20-a134-8c030bf938a7
+          properties:
+            appliedScopeType: Single
+            appliedScopes:
+              - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+            displayName: cabri_test
+            effectiveDateTime: 2017-09-22T01:00:30.9253826Z
+            expiryDate: 2018-09-22
+            lastUpdatedDateTime: 2017-09-22T01:00:36.3191627Z
+            provisioningState: Succeeded
+            quantity: 1
+            splitProperties:
+              splitSource: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/bcae77cd-3119-4766-919f-b50d36c75c7a
+          sku:
+            name: Standard_DS1_v2
+          type: Microsoft.Capacity/reservationOrders/reservations
+        - etag: 2
+          id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+          location: eastus
+          name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+          properties:
+            appliedScopeType: Single
+            appliedScopes:
+              - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+            displayName: cabri_test
+            effectiveDateTime: 2017-09-22T01:00:30.9253826Z
+            expiryDate: 2018-09-22
+            lastUpdatedDateTime: 2017-09-22T01:00:36.3191627Z
+            provisioningState: Succeeded
+            quantity: 2
+            splitProperties:
+              splitSource: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/bcae77cd-3119-4766-919f-b50d36c75c7a
+          sku:
+            name: Standard_DS1_v2
+          type: Microsoft.Capacity/reservationOrders/reservations
+        - etag: 10
+          id: /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/bcae77cd-3119-4766-919f-b50d36c75c7a
+          location: eastus
+          name: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da/bcae77cd-3119-4766-919f-b50d36c75c7a
+          properties:
+            appliedScopeType: Single
+            appliedScopes:
+              - /subscriptions/98df3792-7962-4f18-8be2-d5576f122de3
+            displayName: cabri_test
+            effectiveDateTime: 2017-09-22T01:00:30.9253826Z
+            expiryDate: 2018-09-22
+            extendedStatusInfo:
+              message: This reservation was split and is no longer active.
+              statusCode: Split
+            lastUpdatedDateTime: 2017-09-22T01:00:36.3191627Z
+            provisioningState: Cancelled
+            quantity: 3
+            splitProperties:
+              splitDestinations:
+                - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/00238563-7312-4c20-a134-8c030bf938a7
+                - /providers/microsoft.capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/e0e4b4f5-77ea-4984-9ee4-6bf9850ee6de
+          sku:
+            name: Standard_DS1_v2
+          type: Microsoft.Capacity/reservationOrders/reservations
+    AppliedReservationList:
+      value:
+        id: /subscriptions/23bc208b-083f-4901-ae85-4f98c0c3b4b6/providers/microsoft.capacity/AppliedReservations/default
+        name: default
+        properties:
+          reservationOrderIds:
+            value:
+              - /providers/Microsoft.Capacity/reservationorders/e1eccf0b-2db4-4e84-97e7-98b50e9d46f7
+              - /providers/Microsoft.Capacity/reservationorders/741a32eb-6158-4cee-9642-a0243ae79fac
+              - /providers/Microsoft.Capacity/reservationorders/e061223d-fcff-4d10-bd49-56a740cfb96a
+              - /providers/Microsoft.Capacity/reservationorders/2eeb7234-970e-4663-b60b-85241b515901
+              - /providers/Microsoft.Capacity/reservationorders/9db2f4c5-b1c5-42a8-bd79-ee56cdde2c7f
+              - /providers/Microsoft.Capacity/reservationorders/5da7a877-6d6e-44af-8880-ed3f533bf928
+              - /providers/Microsoft.Capacity/reservationorders/f65b0d0a-f945-4105-821c-d00bc8bacde8
+              - /providers/Microsoft.Capacity/reservationorders/51304124-e477-4b07-b9fa-03b05c8b924b
+              - /providers/Microsoft.Capacity/reservationorders/f5409b98-8a42-4dc6-be0a-cc59bef4d0db
+              - /providers/Microsoft.Capacity/reservationorders/a495550a-80a4-46f8-8843-34d4df46f9a6
+              - /providers/Microsoft.Capacity/reservationorders/1a966e18-c272-4ce1-a0c2-d4e1039023c3
+              - /providers/Microsoft.Capacity/reservationorders/939310b4-f9de-4645-9569-ab5b6cfe958e
+              - /providers/Microsoft.Capacity/reservationorders/4193a889-7c3b-44dc-8b7b-bfd7aad6c723
+        type: Microsoft.Capacity/AppliedReservations
+    Catalog:
+      value:
+        - locations:
+            - eastus
+          name: Standard_DS4_v2
+          resourceType: virtualMachines
+          restrictions: []
+          size: DS4_v2
+          terms:
+            - P1Y
+            - P3Y
+          tier: Standard
+        - locations:
+            - CanadaCentral
+          name: Standard_D14_v2_Promo
+          resourceType: virtualMachines
+          restrictions:
+            - reasonCode: NotAvailableForSubscription
+              type: Term
+              values:
+                - P1Y
+            - reasonCode: NotAvailableForSubscription
+              type: Term
+              values:
+                - P3Y
+          size: D14_v2_Promo
+          terms:
+            - P1Y
+            - P3Y
+          tier: Standard
+        - locations:
+            - eastus
+          name: Standard_DS2_v2
+          resourceType: virtualMachines
+          restrictions: []
+          size: DS2_v2
+          terms:
+            - P1Y
+            - P3Y
+          tier: Standard
+        - locations:
+            - eastus
+          name: Standard_DS1_v2
+          resourceType: virtualMachines
+          restrictions: []
+          size: DS1_v2
+          terms:
+            - P1Y
+            - P3Y
+          tier: Standard
+  parameters:
+    ApiVersionParameter:
+      description: Supported version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        GetOperations:
+          value: 2017-11-01
+        ReservationOrderList:
+          value: 2017-11-01
+        GetReservation:
+          value: 2017-11-01
+        Merge:
+          value: 2017-11-01
+        ReservationList:
+          value: 2017-11-01
+        PatchReservation:
+          value: 2017-11-01
+        ReservationRevisions:
+          value: 2017-11-01
+        Split:
+          value: 2017-11-01
+        AppliedReservationList:
+          value: 2017-11-01
+        Catalog:
+          value: 2017-11-01
+    ReservationIdParameter:
+      description: Id of the Reservation Item
+      in: path
+      name: reservationId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        GetReservation:
+          value: 6ef59113-3482-40da-8d79-787f823e34bc
+        PatchReservation:
+          value: 6ef59113-3482-40da-8d79-787f823e34bc
+        ReservationRevisions:
+          value: 6ef59113-3482-40da-8d79-787f823e34bc
+    ReservationOrderIdParameter:
+      description: |
+        Order Id of the reservation
+      in: path
+      name: reservationOrderId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        GetReservation:
+          value: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da
+        Merge:
+          value: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da
+        ReservationList:
+          value: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da
+        PatchReservation:
+          value: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da
+        ReservationRevisions:
+          value: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da
+        Split:
+          value: 276e7ae4-84d0-4da6-ab4b-d6b94f3557da
+    SubscriptionIdParameter:
+      description: Id of the subscription
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        AppliedReservationList:
+          value: 23bc208b-083f-4901-ae85-4f98c0c3b4b6
+        Catalog:
+          value: "23bc208b-083f-4901-ae85-4f98c0c3b4b6 "
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AppliedReservationList:
+      properties:
+        nextLink:
+          description: Url to get the next page of reservations
+          type: string
+        value:
+          items:
+            description: Reservation resource Id.
+              "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}"
+            type: string
+          type: array
+      type: object
+    AppliedReservations:
+      properties:
+        id:
+          description: Identifier of the applied reservations
+          readOnly: true
+          type: string
+        name:
+          description: Name of resource
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/AppliedReservationsProperties"
+        type:
+          description: Type of resource. "Microsoft.Capacity/AppliedReservations"
+          readOnly: true
+          type: string
+      type: object
+    AppliedReservationsProperties:
+      properties:
+        reservationOrderIds:
+          $ref: "#/components/schemas/AppliedReservationList"
+      type: object
+    AppliedScopeType:
+      description: Type of the Applied Scope.
+      enum:
+        - Single
+        - Shared
+      type: string
+    AppliedScopes:
+      description: List of the subscriptions that the benefit will be applied. Do not
+        specify if AppliedScopeType is Shared.
+      items:
+        maxItems: 1
+        minItems: 1
+        type: string
+      type: array
+    Catalog:
+      properties:
+        capabilities:
+          items:
+            $ref: "#/components/schemas/SkuCapability"
+          readOnly: true
+          type: array
+        locations:
+          items:
+            description: The set of locations that the SKU is available.
+            type: string
+          readOnly: true
+          type: array
+        name:
+          description: The name of SKU
+          readOnly: true
+          type: string
+        resourceType:
+          description: The type of resource the SKU applies to.
+          readOnly: true
+          type: string
+        restrictions:
+          items:
+            $ref: "#/components/schemas/SkuRestriction"
+          readOnly: true
+          type: array
+        size:
+          description: The size of this SKU
+          readOnly: true
+          type: string
+        terms:
+          description: Available reservation terms for this resource
+          items:
+            $ref: "#/components/schemas/ReservationTerm"
+          readOnly: true
+          type: array
+        tier:
+          description: The tier of this SKU
+          readOnly: true
+          type: string
+      type: object
+    Error:
+      properties:
+        error:
+          $ref: "#/components/schemas/ExtendedErrorInfo"
+      type: object
+    ErrorResponseCode:
+      enum:
+        - NotSpecified
+        - InternalServerError
+        - ServerTimeout
+        - AuthorizationFailed
+        - BadRequest
+        - ClientCertificateThumbprintNotSet
+        - InvalidRequestContent
+        - OperationFailed
+        - HttpMethodNotSupported
+        - InvalidRequestUri
+        - MissingTenantId
+        - InvalidTenantId
+        - InvalidReservationOrderId
+        - InvalidReservationId
+        - ReservationIdNotInReservationOrder
+        - ReservationOrderNotFound
+        - InvalidSubscriptionId
+        - InvalidAccessToken
+        - InvalidLocationId
+        - UnauthenticatedRequestsThrottled
+        - InvalidHealthCheckType
+        - Forbidden
+        - BillingScopeIdCannotBeChanged
+        - AppliedScopesNotAssociatedWithCommerceAccount
+        - AppliedScopesSameAsExisting
+        - RoleAssignmentCreationFailed
+        - ReservationOrderCreationFailed
+        - ReservationOrderNotEnabled
+        - CapacityUpdateScopesFailed
+        - UnsupportedReservationTerm
+        - ReservationOrderIdAlreadyExists
+        - RiskCheckFailed
+        - CreateQuoteFailed
+        - ActivateQuoteFailed
+        - NonsupportedAccountId
+        - PaymentInstrumentNotFound
+        - MissingAppliedScopesForSingle
+        - NoValidReservationsToReRate
+        - ReRateOnlyAllowedForEA
+        - OperationCannotBePerformedInCurrentState
+        - InvalidSingleAppliedScopesCount
+        - InvalidFulfillmentRequestParameters
+        - NotSupportedCountry
+        - InvalidRefundQuantity
+        - PurchaseError
+        - BillingCustomerInputError
+        - BillingPaymentInstrumentSoftError
+        - BillingPaymentInstrumentHardError
+        - BillingTransientError
+        - BillingError
+        - FulfillmentConfigurationError
+        - FulfillmentOutOfStockError
+        - FulfillmentTransientError
+        - FulfillmentError
+        - CalculatePriceFailed
+      type: string
+    ExtendedErrorInfo:
+      properties:
+        code:
+          $ref: "#/components/schemas/ErrorResponseCode"
+        message:
+          type: string
+      type: object
+    ExtendedStatusInfo:
+      properties:
+        message:
+          description: The message giving detailed information about the status code.
+          type: string
+        statusCode:
+          $ref: "#/components/schemas/ReservationStatusCode"
+      type: object
+    Location:
+      description: Location in which the Resources needs to be reserved. It cannot be
+        changed after the resource has been created.
+      enum:
+        - westus
+        - eastus
+        - eastus2
+        - northcentralus
+        - westus2
+        - southcentralus
+        - centralus
+        - westeurope
+        - northeurope
+        - eastasia
+        - southeastasia
+        - japaneast
+        - japanwest
+        - brazilsouth
+        - australiaeast
+        - australiasoutheast
+        - southindia
+        - westindia
+        - centralindia
+        - canadacentral
+        - canadaeast
+        - uksouth
+        - westcentralus
+        - ukwest
+      type: string
+    MergeProperties:
+      properties:
+        sources:
+          description: Format of the resource id should be
+            /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+          items:
+            type: string
+          type: array
+      type: object
+    MergeRequest:
+      properties:
+        properties:
+          $ref: "#/components/schemas/MergeProperties"
+      type: object
+    OperationDisplay:
+      properties:
+        description:
+          type: string
+        operation:
+          type: string
+        provider:
+          type: string
+        resource:
+          type: string
+      type: object
+    OperationList:
+      properties:
+        nextLink:
+          description: Url to get the next page of items.
+          type: string
+        value:
+          items:
+            $ref: "#/components/schemas/OperationResponse"
+          type: array
+      type: object
+    OperationResponse:
+      properties:
+        display:
+          $ref: "#/components/schemas/OperationDisplay"
+        name:
+          type: string
+        origin:
+          type: string
+      type: object
+    Patch:
+      properties:
+        properties:
+          $ref: "#/components/schemas/PatchProperties"
+      type: object
+    PatchProperties:
+      properties:
+        appliedScopeType:
+          $ref: "#/components/schemas/AppliedScopeType"
+        appliedScopes:
+          $ref: "#/components/schemas/AppliedScopes"
+      type: object
+    ProvisioningState:
+      description: Represent the current state of the Reservation.
+      enum:
+        - Creating
+        - PendingResourceHold
+        - ConfirmedResourceHold
+        - PendingBilling
+        - ConfirmedBilling
+        - Created
+        - Succeeded
+        - Cancelled
+        - Expired
+        - BillingFailed
+        - Failed
+        - Split
+        - Merged
+      type: string
+    ReservationList:
+      properties:
+        nextLink:
+          description: Url to get the next page of reservations.
+          type: string
+        value:
+          items:
+            $ref: "#/components/schemas/ReservationResponse"
+          type: array
+      type: object
+    ReservationMergeProperties:
+      properties:
+        mergeDestination:
+          description: Reservation Resource Id Created due to the merge. Format of the
+            resource Id is
+            /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+          type: string
+        mergeSources:
+          description: Resource Ids of the Source Reservation's merged to form this
+            Reservation. Format of the resource Id is
+            /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+          items:
+            type: string
+          type: array
+      type: object
+    ReservationOrderList:
+      properties:
+        nextLink:
+          description: Url to get the next page of reservationOrders.
+          type: string
+        value:
+          items:
+            $ref: "#/components/schemas/ReservationOrderResponse"
+          type: array
+      type: object
+    ReservationOrderProperties:
+      properties:
+        createdDateTime:
+          description: This is the DateTime when the reservation was created.
+          format: date-time
+          type: string
+        displayName:
+          description: Friendly name for user to easily identified the reservation.
+          type: string
+        expiryDate:
+          description: This is the date when the Reservation will expire.
+          format: date
+          type: string
+        originalQuantity:
+          description: Total Quantity of the SKUs purchased in the Reservation.
+          format: int32
+          type: integer
+        provisioningState:
+          $ref: "#/components/schemas/ProvisioningState"
+        requestDateTime:
+          description: This is the DateTime when the reservation was initially requested
+            for purchase.
+          format: date-time
+          type: string
+        reservations:
+          items:
+            $ref: "#/components/schemas/ReservationResponse"
+          type: array
+        term:
+          $ref: "#/components/schemas/ReservationTerm"
+      type: object
+    ReservationOrderResponse:
+      properties:
+        etag:
+          type: integer
+        id:
+          description: Identifier of the reservation
+          readOnly: true
+          type: string
+        name:
+          description: Name of the reservation
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/ReservationOrderProperties"
+        type:
+          description: Type of resource. "Microsoft.Capacity/reservations"
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    ReservationProperties:
+      properties:
+        appliedScopeType:
+          $ref: "#/components/schemas/AppliedScopeType"
+        appliedScopes:
+          $ref: "#/components/schemas/AppliedScopes"
+        displayName:
+          description: Friendly name for user to easily identify the reservation
+          type: string
+        effectiveDateTime:
+          description: DateTime of the Reservation starting when this version is effective
+            from.
+          format: date-time
+          type: string
+        expiryDate:
+          description: This is the date when the Reservation will expire.
+          format: date
+          type: string
+        extendedStatusInfo:
+          $ref: "#/components/schemas/ExtendedStatusInfo"
+        lastUpdatedDateTime:
+          description: DateTime of the last time the Reservation was updated.
+          format: date-time
+          readOnly: true
+          type: string
+        mergeProperties:
+          $ref: "#/components/schemas/ReservationMergeProperties"
+        provisioningState:
+          $ref: "#/components/schemas/ProvisioningState"
+        quantity:
+          description: Quantity of the SKUs that are part of the Reservation.
+          format: int32
+          type: integer
+        splitProperties:
+          $ref: "#/components/schemas/ReservationSplitProperties"
+      type: object
+    ReservationResponse:
+      properties:
+        etag:
+          type: integer
+        id:
+          description: Identifier of the reservation
+          readOnly: true
+          type: string
+        kind:
+          description: Resource Provider type to be reserved.
+          enum:
+            - Microsoft.Compute
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Kind
+        location:
+          $ref: "#/components/schemas/Location"
+        name:
+          description: Name of the reservation
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/ReservationProperties"
+        sku:
+          $ref: "#/components/schemas/SkuName"
+        type:
+          description: Type of resource. "Microsoft.Capacity/reservationOrders/reservations"
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    ReservationSplitProperties:
+      properties:
+        splitDestinations:
+          description: List of destination Resource Id that are created due to split.
+            Format of the resource Id is
+            /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+          items:
+            type: string
+          type: array
+        splitSource:
+          description: Resource Id of the Reservation from which this is split. Format of
+            the resource Id is
+            /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+          type: string
+      type: object
+    ReservationStatusCode:
+      enum:
+        - None
+        - Pending
+        - Active
+        - PurchaseError
+        - PaymentInstrumentError
+        - Split
+        - Merged
+        - Expired
+        - Succeeded
+      type: string
+    ReservationTerm:
+      description: Represent the term of Reservation.
+      enum:
+        - P1Y
+        - P3Y
+      type: string
+    SkuCapability:
+      properties:
+        name:
+          description: An invariant to describe the feature.
+          type: string
+        value:
+          description: An invariant if the feature is measured by quantity.
+          type: string
+      type: object
+    SkuName:
+      properties:
+        name:
+          type: string
+      type: object
+    SkuRestriction:
+      properties:
+        reasonCode:
+          description: The reason for restriction.
+          type: string
+        type:
+          description: The type of restrictions.
+          type: string
+        values:
+          description: The value of restrictions. If the restriction type is set to
+            location. This would be different locations where the SKU is
+            restricted.
+          items:
+            type: string
+          type: array
+      type: object
+    SplitProperties:
+      properties:
+        quantities:
+          description: List of the quantities in the new reservations to create.
+          items:
+            maxItems: 2
+            minItems: 2
+            type: integer
+          type: array
+        reservationId:
+          description: Resource id of the reservation to be split. Format of the resource
+            id should be
+            /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+          type: string
+      type: object
+    SplitRequest:
+      properties:
+        properties:
+          $ref: "#/components/schemas/SplitProperties"
+      type: object

@@ -1,0 +1,386 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2015-05-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/blobAuditingPolicies.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: sql-blobAuditingPolicies
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/{blobAuditingPolicyName}":
+    get:
+      description: Gets a database's blob auditing policy.
+      operationId: DatabaseBlobAuditingPolicies_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database for which the blob audit policy is defined.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a database's blob auditing policy:
+              value: testdb
+        - description: The name of the blob auditing policy.
+          in: path
+          name: blobAuditingPolicyName
+          required: true
+          x-ms-enum:
+            modelAsString: true
+            name: BlobAuditingPolicyName
+          schema:
+            type: string
+            enum:
+              - default
+          examples:
+            Get a database's blob auditing policy:
+              value: default
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the database blob auditing policy.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatabaseBlobAuditingPolicy"
+              examples:
+                Get a database's blob auditing policy:
+                  $ref: "#/components/examples/Get_a_database_s_blob_auditing_policy"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 BlobAuditingIsNotSupportedOnResourceType - Blob Auditing is currently not supported for this resource type.
+
+             * 400 InvalidDatabaseBlobAuditingPolicyCreateRequest - The create database blob auditing policy request does not exist or has no properties object.
+
+             * 400 InvalidBlobAuditActionsAndGroups - Invalid audit actions or action groups.
+
+             * 400 DataSecurityInvalidUserSuppliedParameter - An invalid parameter value was provided by the client.
+
+             * 404 SourceDatabaseNotFound - The source database does not exist.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 500 DatabaseIsUnavailable - Loading failed. Please try again later.
+
+             * 500 GetBlobAuditingPolicyFailed - Failed to get Auditing settings
+      tags:
+        - BlobAuditing
+    put:
+      description: Creates or updates a database's blob auditing policy.
+      operationId: DatabaseBlobAuditingPolicies_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database for which the blob auditing policy will be
+            defined.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a database's blob auditing policy with all parameters:
+              value: testdb
+            Create or update a database's blob auditing policy with minimal parameters:
+              value: testdb
+        - description: The name of the blob auditing policy.
+          in: path
+          name: blobAuditingPolicyName
+          required: true
+          x-ms-enum:
+            modelAsString: true
+            name: BlobAuditingPolicyName
+          schema:
+            type: string
+            enum:
+              - default
+          examples:
+            Create or update a database's blob auditing policy with all parameters:
+              value: default
+            Create or update a database's blob auditing policy with minimal parameters:
+              value: default
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DatabaseBlobAuditingPolicy"
+        description: The database blob auditing policy.
+        required: true
+      responses:
+        "200":
+          description: Successfully set the database blob auditing policy.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatabaseBlobAuditingPolicy"
+              examples:
+                Create or update a database's blob auditing policy with all parameters:
+                  $ref: "#/components/examples/Create_or_update_a_database_s_blob_a\
+                    uditing_policy_with_all_parameters"
+                Create or update a database's blob auditing policy with minimal parameters:
+                  $ref: "#/components/examples/Create_or_update_a_database_s_blob_a\
+                    uditing_policy_with_minimal_parameters"
+        "201":
+          description: Successfully created the database blob auditing policy.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatabaseBlobAuditingPolicy"
+              examples:
+                Create or update a database's blob auditing policy with all parameters:
+                  $ref: "#/components/examples/Create_or_update_a_database_s_blob_a\
+                    uditing_policy_with_all_parameters"
+                Create or update a database's blob auditing policy with minimal parameters:
+                  $ref: "#/components/examples/Create_or_update_a_database_s_blob_a\
+                    uditing_policy_with_minimal_parameters"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 BlobAuditingIsNotSupportedOnResourceType - Blob Auditing is currently not supported for this resource type.
+
+             * 400 InvalidDatabaseBlobAuditingPolicyCreateRequest - The create database blob auditing policy request does not exist or has no properties object.
+
+             * 400 InvalidBlobAuditActionsAndGroups - Invalid audit actions or action groups.
+
+             * 400 DataSecurityInvalidUserSuppliedParameter - An invalid parameter value was provided by the client.
+
+             * 404 SourceDatabaseNotFound - The source database does not exist.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 500 DatabaseIsUnavailable - Loading failed. Please try again later.
+
+             * 500 UpsertBlobAuditingPolicyFailed - An error has occurred while saving Auditing settings, please try again later
+      tags:
+        - BlobAuditing
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_a_database_s_blob_auditing_policy:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/blobauditingtest-6852/providers/Microsoft.Sql/servers/blobauditingtest-2080/databases/testdb
+        kind: V12
+        name: default
+        properties:
+          auditActionsAndGroups: []
+          isAzureMonitorTargetEnabled: false
+          isStorageSecondaryKeyInUse: false
+          retentionDays: 0
+          state: Disabled
+          storageAccountSubscriptionId: 00000000-0000-0000-0000-000000000000
+          storageEndpoint: ""
+        type: Microsoft.Sql/servers/databases/auditingSettings
+    Create_or_update_a_database_s_blob_auditing_policy_with_all_parameters:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/blobauditingtest-4799/providers/Microsoft.Sql/servers/blobauditingtest-6440/databases/testdb
+        kind: V12
+        name: default
+        properties:
+          auditActionsAndGroups:
+            - DATABASE_LOGOUT_GROUP
+            - DATABASE_ROLE_MEMBER_CHANGE_GROUP
+            - UPDATE on database::TestDatabaseName by public
+          isAzureMonitorTargetEnabled: true
+          isStorageSecondaryKeyInUse: false
+          retentionDays: 0
+          state: Enabled
+          storageAccountAccessKey: ""
+          storageAccountSubscriptionId: 00000000-1234-0000-5678-000000000000
+          storageEndpoint: https://mystorage.blob.core.windows.net
+        type: Microsoft.Sql/servers/databases/auditingSettings
+    Create_or_update_a_database_s_blob_auditing_policy_with_minimal_parameters:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/blobauditingtest-4799/providers/Microsoft.Sql/servers/blobauditingtest-6440/databases/testdb
+        kind: V12
+        name: default
+        properties:
+          auditActionsAndGroups:
+            - SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP
+            - FAILED_DATABASE_AUTHENTICATION_GROUP
+            - BATCH_COMPLETED_GROUP
+          isAzureMonitorTargetEnabled: false
+          isStorageSecondaryKeyInUse: false
+          retentionDays: 0
+          state: Enabled
+          storageAccountAccessKey: ""
+          storageAccountSubscriptionId: 00000000-0000-0000-0000-000000000000
+          storageEndpoint: https://mystorage.blob.core.windows.net
+        type: Microsoft.Sql/servers/databases/auditingSettings
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Get a database's blob auditing policy:
+          value: 2015-05-01-preview
+        Create or update a database's blob auditing policy with all parameters:
+          value: 2015-05-01-preview
+        Create or update a database's blob auditing policy with minimal parameters:
+          value: 2015-05-01-preview
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get a database's blob auditing policy:
+          value: blobauditingtest-6852
+        Create or update a database's blob auditing policy with all parameters:
+          value: blobauditingtest-4799
+        Create or update a database's blob auditing policy with minimal parameters:
+          value: blobauditingtest-4799
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get a database's blob auditing policy:
+          value: blobauditingtest-2080
+        Create or update a database's blob auditing policy with all parameters:
+          value: blobauditingtest-6440
+        Create or update a database's blob auditing policy with minimal parameters:
+          value: blobauditingtest-6440
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Get a database's blob auditing policy:
+          value: 00000000-1111-2222-3333-444444444444
+        Create or update a database's blob auditing policy with all parameters:
+          value: 00000000-1111-2222-3333-444444444444
+        Create or update a database's blob auditing policy with minimal parameters:
+          value: 00000000-1111-2222-3333-444444444444
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    DatabaseBlobAuditingPolicy:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: A database blob auditing policy.
+      properties:
+        kind:
+          description: Resource kind.
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/DatabaseBlobAuditingPolicyProperties"
+      type: object
+    DatabaseBlobAuditingPolicyProperties:
+      description: Properties of a database blob auditing policy.
+      properties:
+        auditActionsAndGroups:
+          description: Specifies the Actions and Actions-Groups to audit.
+          items:
+            type: string
+          type: array
+        isStorageSecondaryKeyInUse:
+          description: Specifies whether storageAccountAccessKey value is the storage’s
+            secondary key.
+          type: boolean
+        retentionDays:
+          description: Specifies the number of days to keep in the audit logs.
+          format: int32
+          type: integer
+        state:
+          description: Specifies the state of the policy. If state is Enabled,
+            storageEndpoint and storageAccountAccessKey are required.
+          enum:
+            - Enabled
+            - Disabled
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: BlobAuditingPolicyState
+        storageAccountAccessKey:
+          description: Specifies the identifier key of the auditing storage account. If
+            state is Enabled, storageAccountAccessKey is required.
+          type: string
+          x-ms-mutability:
+            - create
+            - update
+        storageAccountSubscriptionId:
+          description: Specifies the blob storage subscription Id.
+          format: uuid
+          type: string
+        storageEndpoint:
+          description: Specifies the blob storage endpoint (e.g.
+            https://MyAccount.blob.core.windows.net). If state is Enabled,
+            storageEndpoint is required.
+          type: string
+      required:
+        - state
+      type: object

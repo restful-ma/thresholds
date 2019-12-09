@@ -1,0 +1,2289 @@
+openapi: 3.0.0
+info:
+  description: Use these API to manage Azure Relay resources through Azure Resource Manager.
+  title: Relay
+  version: 2017-04-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-ms-code-generation-settings:
+    name: RelayManagementClient
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/relay.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: relay
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.Relay/operations:
+    get:
+      description: Lists all available Relay REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+              examples:
+                RelayOperationsList:
+                  $ref: "#/components/examples/RelayOperationsList"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/checkNameAvailability":
+    post:
+      description: Check the specified namespace name availability.
+      operationId: Namespaces_CheckNameAvailability
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckNameAvailability"
+        description: Parameters to check availability of the specified namespace name.
+        required: true
+      responses:
+        "200":
+          description: Check availability returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckNameAvailabilityResult"
+              examples:
+                RelayCheckNameAvailability:
+                  $ref: "#/components/examples/RelayCheckNameAvailability"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Relay/namespaces":
+    get:
+      description: Lists all the available namespaces within the subscription regardless of
+        the resourceGroups.
+      operationId: Namespaces_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Namespaces returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RelayNamespaceListResult"
+              examples:
+                RelayNameSpaceListBySubscription:
+                  $ref: "#/components/examples/RelayNameSpaceListBySubscription"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces":
+    get:
+      description: Lists all the available namespaces within the ResourceGroup.
+      operationId: Namespaces_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Namespaces by resource group returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RelayNamespaceListResult"
+              examples:
+                RelayNameSpaceListByResourceGroup:
+                  $ref: "#/components/examples/RelayNameSpaceListByResourceGroup"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}":
+    delete:
+      description: Deletes an existing namespace. This operation also removes all
+        associated resources under the namespace.
+      operationId: Namespaces_Delete
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Namespace delete request succeeded.
+        "202":
+          description: Namespace delete request has been accepted for processing and the
+            operation will complete asynchronously.
+        "204":
+          description: Namespace delete request has been accepted, but the namespace was
+            not found.
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+      x-ms-long-running-operation: true
+    get:
+      description: Returns the description for the specified namespace.
+      operationId: Namespaces_Get
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Namespace description returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RelayNamespace"
+              examples:
+                RelayNameSpaceGet:
+                  $ref: "#/components/examples/RelayNameSpaceGet"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+    patch:
+      description: Creates or updates a namespace. Once created, this namespace's resource
+        manifest is immutable. This operation is idempotent.
+      operationId: Namespaces_Update
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RelayUpdateParameters"
+        description: Parameters for updating a namespace resource.
+        required: true
+      responses:
+        "200":
+          description: Namespace successfuly updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RelayNamespace"
+              examples:
+                RelayNameSpaceUpdate:
+                  $ref: "#/components/examples/RelayNameSpaceUpdate"
+        "201":
+          description: Namespace update request accepted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RelayNamespace"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+    put:
+      description: Create Azure Relay namespace.
+      operationId: Namespaces_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RelayNamespace"
+        description: Parameters supplied to create a namespace resource.
+        required: true
+      responses:
+        "200":
+          description: Namespace create request succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RelayNamespace"
+              examples:
+                RelayNamespaceCreate:
+                  $ref: "#/components/examples/RelayNamespaceCreate"
+        "201":
+          description: Namespace create request accepted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RelayNamespace"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules":
+    get:
+      description: Authorization rules for a namespace.
+      operationId: Namespaces_ListAuthorizationRules
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Namespace authorization rule returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorizationRuleListResult"
+              examples:
+                RelayNameSpaceAutorizationRuleListAll:
+                  $ref: "#/components/examples/RelayNameSpaceAutorizationRuleListAll"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}":
+    delete:
+      description: Deletes a namespace authorization rule.
+      operationId: Namespaces_DeleteAuthorizationRule
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Request to delete namespace authorization rule succeeded.
+        "204":
+          description: No content. The request has been accepted but the namespace
+            authorization rule was not found.
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+    get:
+      description: Authorization rule for a namespace by name.
+      operationId: Namespaces_GetAuthorizationRule
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Namespace Authorization rule returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorizationRule"
+              examples:
+                RelayNameSpaceAutorizationRuleGet:
+                  $ref: "#/components/examples/RelayNameSpaceAutorizationRuleGet"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+    put:
+      description: Creates or updates an authorization rule for a namespace.
+      operationId: Namespaces_CreateOrUpdateAuthorizationRule
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/AuthorizationRule"
+      responses:
+        "200":
+          description: Request to create namespace authorization rule succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorizationRule"
+              examples:
+                RelayNameSpaceAuthorizationRuleCreate:
+                  $ref: "#/components/examples/RelayNameSpaceAuthorizationRuleCreate"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}/listKeys":
+    post:
+      description: Primary and secondary connection strings to the namespace.
+      operationId: Namespaces_ListKeys
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessKeys"
+              examples:
+                RelayNameSpaceAuthorizationRuleListKey:
+                  $ref: "#/components/examples/RelayNameSpaceAuthorizationRuleListK\
+                    ey"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}/regenerateKeys":
+    post:
+      description: Regenerates the primary or secondary connection strings to the namespace.
+      operationId: Namespaces_RegenerateKeys
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/RegenerateAccessKeyParameters"
+      responses:
+        "200":
+          description: Successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessKeys"
+              examples:
+                RelayNameSpaceAuthorizationRuleRegenrateKey:
+                  $ref: "#/components/examples/RelayNameSpaceAuthorizationRuleRegen\
+                    rateKey"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Namespaces
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections":
+    get:
+      description: Lists the hybrid connection within the namespace.
+      operationId: HybridConnections_ListByNamespace
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Request to retrieve hybrid connections by namespace succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HybridConnectionListResult"
+              examples:
+                RelayHybridConnectionListAll:
+                  $ref: "#/components/examples/RelayHybridConnectionListAll"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - HybridConnections
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}":
+    delete:
+      description: Deletes a hybrid connection.
+      operationId: HybridConnections_Delete
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/hybridConnectionNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Request to delete hybrid connection succeeded.
+        "204":
+          description: No content. The request has been accepted but the hybrid connection
+            was not found.
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - HybridConnections
+    get:
+      description: Returns the description for the specified hybrid connection.
+      operationId: HybridConnections_Get
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/hybridConnectionNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Successfully retrieved description for the hybrid connection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HybridConnection"
+              examples:
+                RelayHybridConnectionGet:
+                  $ref: "#/components/examples/RelayHybridConnectionGet"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - HybridConnections
+    put:
+      description: Creates or updates a service hybrid connection. This operation is
+        idempotent.
+      operationId: HybridConnections_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/hybridConnectionNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HybridConnection"
+        description: Parameters supplied to create a hybrid connection.
+        required: true
+      responses:
+        "200":
+          description: Request to create hybrid connections succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HybridConnection"
+              examples:
+                RelayHybridConnectionCreate:
+                  $ref: "#/components/examples/RelayHybridConnectionCreate"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - HybridConnections
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules":
+    get:
+      description: Authorization rules for a hybrid connection.
+      operationId: HybridConnections_ListAuthorizationRules
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/hybridConnectionNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Authorization rules successfully returned.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorizationRuleListResult"
+              examples:
+                RelayHybridConnectionAutorizationRuleListAll:
+                  $ref: "#/components/examples/RelayHybridConnectionAutorizationRul\
+                    eListAll"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - HybridConnections
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}":
+    delete:
+      description: Deletes a hybrid connection authorization rule.
+      operationId: HybridConnections_DeleteAuthorizationRule
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/hybridConnectionNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Hybrid connection authorization rule deleted.
+        "204":
+          description: Authorization rule does not exist.
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - HybridConnections
+    get:
+      description: Hybrid connection authorization rule for a hybrid connection by name.
+      operationId: HybridConnections_GetAuthorizationRule
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/hybridConnectionNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Hybrid connection authorization rule returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorizationRule"
+              examples:
+                RelayHybridConnectionAutorizationRuleGet:
+                  $ref: "#/components/examples/RelayHybridConnectionAutorizationRul\
+                    eGet"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - HybridConnections
+    put:
+      description: Creates or updates an authorization rule for a hybrid connection.
+      operationId: HybridConnections_CreateOrUpdateAuthorizationRule
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/hybridConnectionNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/AuthorizationRule"
+      responses:
+        "200":
+          description: Hybrid connection authorization rule created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorizationRule"
+              examples:
+                RelayHybridConnectionAuthorizationRuleCreate:
+                  $ref: "#/components/examples/RelayHybridConnectionAuthorizationRu\
+                    leCreate"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - HybridConnections
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}/listKeys":
+    post:
+      description: Primary and secondary connection strings to the hybrid connection.
+      operationId: HybridConnections_ListKeys
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/hybridConnectionNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Request to retirve connection strings to the hybrid connection
+            succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessKeys"
+              examples:
+                RelayHybridConnectionAuthorizationRuleListKey:
+                  $ref: "#/components/examples/RelayHybridConnectionAuthorizationRu\
+                    leListKey"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - HybridConnections
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}/regenerateKeys":
+    post:
+      description: Regenerates the primary or secondary connection strings to the hybrid
+        connection.
+      operationId: HybridConnections_RegenerateKeys
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/hybridConnectionNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/RegenerateAccessKeyParameters"
+      responses:
+        "200":
+          description: Request to regenerate connection strings to hybrid connection
+            succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessKeys"
+              examples:
+                RelayHybridConnectionAuthorizationRuleRegenrateKey:
+                  $ref: "#/components/examples/RelayHybridConnectionAuthorizationRu\
+                    leRegenrateKey"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - HybridConnections
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays":
+    get:
+      description: Lists the WCF relays within the namespace.
+      operationId: WCFRelays_ListByNamespace
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: WCF relays returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WcfRelaysListResult"
+              examples:
+                RelayListAll:
+                  $ref: "#/components/examples/RelayListAll"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - WCFRelays
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}":
+    delete:
+      description: Deletes a WCF relay.
+      operationId: WCFRelays_Delete
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/relayNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: WCF relay deleted.
+        "204":
+          description: No content.
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - WCFRelays
+    get:
+      description: Returns the description for the specified WCF relay.
+      operationId: WCFRelays_Get
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/relayNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Successfully retrieved WCF relay description.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WcfRelay"
+              examples:
+                RelayGet:
+                  $ref: "#/components/examples/RelayGet"
+        "204":
+          description: WCF relay not found
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - WCFRelays
+    put:
+      description: Creates or updates a WCF relay. This operation is idempotent.
+      operationId: WCFRelays_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/relayNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WcfRelay"
+        description: Parameters supplied to create a WCF relay.
+        required: true
+      responses:
+        "200":
+          description: Request to create WCF relay succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WcfRelay"
+              examples:
+                RelayCreate:
+                  $ref: "#/components/examples/RelayCreate"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - WCFRelays
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules":
+    get:
+      description: Authorization rules for a WCF relay.
+      operationId: WCFRelays_ListAuthorizationRules
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/relayNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Authorization rules successfully returned.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorizationRuleListResult"
+              examples:
+                RelayAutorizationRuleListAll:
+                  $ref: "#/components/examples/RelayAutorizationRuleListAll"
+      tags:
+        - WCFRelays
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}":
+    delete:
+      description: Deletes a WCF relay authorization rule.
+      operationId: WCFRelays_DeleteAuthorizationRule
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/relayNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Request to delete WCF relay authorization rule succeeded.
+        "204":
+          description: Request accepted butthe authorization rule does not exist.
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - WCFRelays
+    get:
+      description: Get authorizationRule for a WCF relay by name.
+      operationId: WCFRelays_GetAuthorizationRule
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/relayNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Request for WCF relay authorization rule succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorizationRule"
+              examples:
+                RelayAutorizationRuleGet:
+                  $ref: "#/components/examples/RelayAutorizationRuleGet"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - WCFRelays
+    put:
+      description: Creates or updates an authorization rule for a WCF relay.
+      operationId: WCFRelays_CreateOrUpdateAuthorizationRule
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/relayNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/AuthorizationRule"
+      responses:
+        "200":
+          description: WCF relay authorization rule created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorizationRule"
+              examples:
+                RelayAuthorizationRuleCreate:
+                  $ref: "#/components/examples/RelayAuthorizationRuleCreate"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - WCFRelays
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}/listKeys":
+    post:
+      description: Primary and secondary connection strings to the WCF relay.
+      operationId: WCFRelays_ListKeys
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/relayNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessKeys"
+              examples:
+                RelayAuthorizationRuleListKey.json:
+                  $ref: "#/components/examples/RelayAuthorizationRuleListKey.json"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - WCFRelays
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}/regenerateKeys":
+    post:
+      description: Regenerates the primary or secondary connection strings to the WCF relay.
+      operationId: WCFRelays_RegenerateKeys
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/namespaceNameParameter"
+        - $ref: "#/components/parameters/relayNameParameter"
+        - $ref: "#/components/parameters/authorizationRuleNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/RegenerateAccessKeyParameters"
+      responses:
+        "200":
+          description: Successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessKeys"
+              examples:
+                RelayAuthorizationRuleRegenrateKey.json:
+                  $ref: "#/components/examples/RelayAuthorizationRuleRegenrateKey.j\
+                    son"
+        default:
+          description: Relay error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - WCFRelays
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    RelayOperationsList:
+      value:
+        value:
+          - display:
+              operation: Get namespace availability.
+              provider: Microsoft Azure Relay
+              resource: Non Resource Operation
+            name: Microsoft.Relay/checkNamespaceAvailability/action
+          - display:
+              operation: Registers the Relay Resource Provider
+              provider: Microsoft Azure Relay
+              resource: Relay and Hybridconnection Resource Provider
+            name: Microsoft.Relay/register/action
+          - display:
+              operation: "Create Or Update Namespace "
+              provider: Microsoft Azure Relay
+              resource: Namespace
+            name: Microsoft.Relay/namespaces/write
+          - display:
+              operation: Get Namespace Resource
+              provider: Microsoft Azure Relay
+              resource: Namespace
+            name: Microsoft.Relay/namespaces/read
+          - display:
+              operation: Delete Namespace
+              provider: Microsoft Azure Relay
+              resource: Namespace
+            name: Microsoft.Relay/namespaces/Delete
+          - display:
+              operation: Create or Update Namespace Authorization Rules
+              provider: Microsoft Azure Relay
+              resource: AuthorizationRules
+            name: Microsoft.Relay/namespaces/authorizationRules/write
+          - display:
+              operation: Delete Namespace Authorization Rule
+              provider: Microsoft Azure Relay
+              resource: AuthorizationRules
+            name: Microsoft.Relay/namespaces/authorizationRules/delete
+          - display:
+              operation: Get Namespace Listkeys
+              provider: Microsoft Azure Relay
+              resource: AuthorizationRules
+            name: Microsoft.Relay/namespaces/authorizationRules/listkeys/action
+          - display:
+              operation: Create or Update HybridConnection
+              provider: Microsoft Azure Relay
+              resource: HybridConnection
+            name: Microsoft.Relay/namespaces/HybridConnections/write
+          - display:
+              operation: Get HybridConnection
+              provider: Microsoft Azure Relay
+              resource: HybridConnection
+            name: Microsoft.Relay/namespaces/HybridConnections/read
+          - display:
+              operation: Delete HybridConnection
+              provider: Microsoft Azure Relay
+              resource: HybridConnection
+            name: Microsoft.Relay/namespaces/HybridConnections/Delete
+          - display:
+              operation: Create or Update HybridConnection Authorization Rule
+              provider: Microsoft Azure Relay
+              resource: HybridConnection AuthorizationRules
+            name: Microsoft.Relay/namespaces/HybridConnections/authorizationRules/write
+          - display:
+              operation: Delete HybridConnection Authorization Rules
+              provider: Microsoft Azure Relay
+              resource: HybridConnection AuthorizationRules
+            name: Microsoft.Relay/namespaces/HybridConnections/authorizationRules/delete
+          - display:
+              operation: List HybridConnection keys
+              provider: Microsoft Azure Relay
+              resource: HybridConnection AuthorizationRules
+            name: Microsoft.Relay/namespaces/HybridConnections/authorizationRules/listkeys/action
+          - display:
+              operation: Create or Update WcfRelay
+              provider: Microsoft Azure Relay
+              resource: WcfRelay
+            name: Microsoft.Relay/namespaces/WcfRelays/write
+          - display:
+              operation: Get WcfRelay
+              provider: Microsoft Azure Relay
+              resource: WcfRelay
+            name: Microsoft.Relay/namespaces/WcfRelays/read
+          - display:
+              operation: Delete WcfRelay
+              provider: Microsoft Azure Relay
+              resource: WcfRelay
+            name: Microsoft.Relay/namespaces/WcfRelays/Delete
+          - display:
+              operation: Create or Update WcfRelay Authorization Rule
+              provider: Microsoft Azure Relay
+              resource: WcfRelay AuthorizationRules
+            name: Microsoft.Relay/namespaces/WcfRelays/authorizationRules/write
+          - display:
+              operation: Delete WcfRelay Authorization Rules
+              provider: Microsoft Azure Relay
+              resource: WcfRelay AuthorizationRules
+            name: Microsoft.Relay/namespaces/WcfRelays/authorizationRules/delete
+          - display:
+              operation: List WcfRelay keys
+              provider: Microsoft Azure Relay
+              resource: WcfRelay AuthorizationRules
+            name: Microsoft.Relay/namespaces/WcfRelays/authorizationRules/listkeys/action
+    RelayCheckNameAvailability:
+      value:
+        message: ""
+        nameAvailable: true
+        reason: None
+    RelayNameSpaceListBySubscription:
+      value:
+        value:
+          - id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01
+            location: West US
+            name: sdk-RelayNamespace-01
+            properties:
+              createdAt: 2017-01-23T20:34:49.4131724Z
+              metricId: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef:sdk-RelayNamespace-01
+              provisioningState: Succeeded
+              serviceBusEndpoint: https://sdk-RelayNamespace-01.servicebus.windows.net:443/
+              updatedAt: 2017-01-23T20:34:59.4131724Z
+            sku:
+              name: Standard
+              tier: Standard
+            tags:
+              tag1: value1
+              tag2: value2
+            type: Microsoft.Relay/Namespaces
+          - id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-02
+            location: West US
+            name: sdk-RelayNamespace-02
+            properties:
+              createdAt: 2017-01-23T20:34:39.4131724Z
+              metricId: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef:sdk-RelayNamespace-02
+              provisioningState: Succeeded
+              serviceBusEndpoint: https://sdk-RelayNamespace-02.servicebus.windows.net:443/
+              updatedAt: 2017-01-23T20:34:49.4131724Z
+            sku:
+              name: Standard
+              tier: Standard
+            tags:
+              tag1: value1
+              tag2: value2
+            type: Microsoft.Relay/Namespaces
+    RelayNameSpaceListByResourceGroup:
+      value:
+        value:
+          - id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01
+            location: West US
+            name: sdk-RelayNamespace-01
+            properties:
+              createdAt: 2017-01-23T20:34:49.4131724Z
+              metricId: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef:sdk-RelayNamespace-01
+              provisioningState: Succeeded
+              serviceBusEndpoint: https://sdk-RelayNamespace-01.servicebus.windows.net:443/
+              updatedAt: 2017-01-23T20:34:59.4131724Z
+            sku:
+              name: Standard
+              tier: Standard
+            tags:
+              tag1: value1
+              tag2: value2
+            type: Microsoft.Relay/Namespaces
+          - id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-02
+            location: West US
+            name: sdk-RelayNamespace-02
+            properties:
+              createdAt: 2017-01-23T20:34:39.4131724Z
+              metricId: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef:sdk-RelayNamespace-02
+              provisioningState: Succeeded
+              serviceBusEndpoint: https://sdk-RelayNamespace-02.servicebus.windows.net:443/
+              updatedAt: 2017-01-23T20:34:49.4131724Z
+            sku:
+              name: Standard
+              tier: Standard
+            tags:
+              tag1: value1
+              tag2: value2
+            type: Microsoft.Relay/Namespaces
+    RelayNameSpaceGet:
+      value:
+        id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01
+        location: West US
+        name: sdk-RelayNamespace-01
+        properties:
+          createdAt: 2017-01-23T20:38:12.46Z
+          metricId: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef:sdk-RelayNamespace-01
+          provisioningState: Succeeded
+          serviceBusEndpoint: https://sdk-RelayNamespace-01.servicebus.windows.net:443/
+          updatedAt: 2017-01-23T20:38:34.533Z
+        sku:
+          name: Standard
+          tier: Standard
+        tags:
+          tag1: value1
+          tag2: value2
+        type: Microsoft.Relay/Namespaces
+    RelayNameSpaceUpdate:
+      value:
+        id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01
+        location: West US
+        name: sdk-RelayNamespace-01
+        properties:
+          metricId: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef:sdk-relaynamespace-01
+          provisioningState: Succeeded
+        tags:
+          tag3: value3
+          tag4: value4
+          tag5: value5
+          tag6: value6
+        type: Microsoft.Relay/Namespaces
+    RelayNamespaceCreate:
+      value:
+        id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01
+        location: West US
+        name: sdk-RelayNamespace-01
+        properties:
+          metricId: e2f361f0-3b27-4503-a9cc-21cfba380093:sdk-relaynamespace-01
+          provisioningState: Unknown
+        sku:
+          name: Standard
+          tier: Standard
+        tags:
+          tag1: value1
+          tag2: value2
+        type: Microsoft.Relay/Namespaces
+    RelayNameSpaceAutorizationRuleListAll:
+      value:
+        value:
+          - id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/AuthorizationRules/RootManageSharedAccessKey
+            name: RootManageSharedAccessKey
+            properties:
+              rights:
+                - Listen
+                - Manage
+                - Send
+            type: Microsoft.Relay/Namespaces/AuthorizationRules
+          - id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/AuthorizationRules/sdk-RelayAuthRules-01
+            name: sdk-RelayAuthRules-01
+            properties:
+              rights:
+                - Listen
+                - Send
+            type: Microsoft.Relay/Namespaces/AuthorizationRules
+    RelayNameSpaceAutorizationRuleGet:
+      value:
+        id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/AuthorizationRules/sdk-RelayAuthRules-01
+        name: sdk-RelayAuthRules-01
+        properties:
+          rights:
+            - Listen
+        type: Microsoft.Relay/Namespaces/AuthorizationRules
+    RelayNameSpaceAuthorizationRuleCreate:
+      value:
+        id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/AuthorizationRules/sdk-RelayAuthRules-01
+        name: sdk-RelayAuthRules-01
+        properties:
+          rights:
+            - Listen
+            - Send
+        type: Microsoft.Relay/Namespaces/AuthorizationRules
+    RelayNameSpaceAuthorizationRuleListKey:
+      value:
+        keyName: sdk-RelayAuthRules-01
+        primaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        primaryKey: "############################################"
+        secondaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        secondaryKey: "############################################"
+    RelayNameSpaceAuthorizationRuleRegenrateKey:
+      value:
+        keyName: sdk-RelayAuthRules-01
+        primaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        primaryKey: "############################################"
+        secondaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        secondaryKey: "############################################"
+    RelayHybridConnectionListAll:
+      value:
+        value:
+          - id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/HybridConnections/sdk-Relay-Hybrid-01
+            name: sdk-Relay-Hybrid-01
+            properties:
+              createdAt: 2017-01-23T20:34:49.4131724Z
+              listenerCount: 1
+              requiresClientAuthorization: true
+              updatedAt: 2017-01-23T20:34:49.4131724Z
+              userMetadata: usermetadata is a placeholder to store user-defined string data
+                for the HybridConnection endpoint.e.g. it can be used to
+                store  descriptive data, such as list of teams and their contact
+                information also user-defined configuration settings can be
+                stored.
+            type: Microsoft.Relay/Namespaces/HybridConnections
+    RelayHybridConnectionGet:
+      value:
+        id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/HybridConnections/sdk-Relay-Hybrid-01
+        name: sdk-Relay-Hybrid-01
+        properties:
+          createdAt: 2017-01-23T20:34:49.4131724Z
+          listenerCount: 1
+          requiresClientAuthorization: true
+          updatedAt: 2017-01-23T20:34:49.4131724Z
+          userMetadata: usermetadata is a placeholder to store user-defined string data for
+            the HybridConnection endpoint.e.g. it can be used to
+            store  descriptive data, such as list of teams and their contact
+            information also user-defined configuration settings can be stored.
+        type: Microsoft.Relay/Namespaces/HybridConnections
+    RelayHybridConnectionCreate:
+      value:
+        id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/HybridConnections/sdk-Relay-Hybrid-01
+        name: sdk-Relay-Hybrid-01
+        properties:
+          createdAt: 2017-01-23T20:34:49.4131724Z
+          requiresClientAuthorization: true
+          updatedAt: 2017-01-23T20:34:49.4131724Z
+        type: Microsoft.Relay/Namespaces/HybridConnections
+    RelayHybridConnectionAutorizationRuleListAll:
+      value:
+        value:
+          - id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/HybridConnections/sdk-Relay-Hybrid-01/AuthorizationRules/sdk-RelayAuthRules-01
+            name: sdk-RelayAuthRules-01
+            properties:
+              rights:
+                - Listen
+                - Send
+            type: Microsoft.Relay/Namespaces/Hybridconnections/AuthorizationRules
+    RelayHybridConnectionAutorizationRuleGet:
+      value:
+        id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/HybridConnections/sdk-Relay-Hybrid-01/AuthorizationRules/sdk-RelayAuthRules-01
+        name: sdk-RelayAuthRules-01
+        properties:
+          rights:
+            - Listen
+        type: Microsoft.Relay/Namespaces/Hybridconnections/AuthorizationRules
+    RelayHybridConnectionAuthorizationRuleCreate:
+      value:
+        id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/HybridConnections/sdk-Relay-Hybrid-01/AuthorizationRules/sdk-RelayAuthRules-01
+        name: sdk-RelayAuthRules-01
+        properties:
+          rights:
+            - Listen
+            - Send
+        type: Microsoft.Relay/Namespaces/Hybridconnections/AuthorizationRules
+    RelayHybridConnectionAuthorizationRuleListKey:
+      value:
+        keyName: sdk-RelayAuthRules-01
+        primaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        primaryKey: "############################################"
+        secondaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        secondaryKey: "############################################"
+    RelayHybridConnectionAuthorizationRuleRegenrateKey:
+      value:
+        keyName: sdk-RelayAuthRules-01
+        primaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        primaryKey: "############################################"
+        secondaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        secondaryKey: "############################################"
+    RelayListAll:
+      value:
+        value:
+          - id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/WcfRelays/sdk-Relay-Wcf-01
+            name: sdk-Relay-Wcf-01
+            properties:
+              createdAt: 2017-01-24T00:46:27.0049983Z
+              isDynamic: false
+              relayType: NetTcp
+              requiresClientAuthorization: true
+              requiresTransportSecurity: true
+              updatedAt: 2017-01-24T00:46:27.0049983Z
+              userMetadata: usermetadata is a placeholder to store user-defined string data
+                for the HybridConnection endpoint.e.g. it can be used to
+                store  descriptive data, such as list of teams and their contact
+                information also user-defined configuration settings can be
+                stored
+            type: Microsoft.Relay/Namespaces/WcfRelays
+    RelayGet:
+      value:
+        id: /subscriptions/e2f361f0-3b27-4503-a9cc-21cfba380093/resourceGroups/Default-ServiceBus-WestUS/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-9953/WcfRelays/sdk-Relay-Wcf-1194
+        name: sdk-Relay-Wcf-1194
+        properties:
+          createdAt: 2017-03-16T00:26:17.5014661Z
+          isDynamic: false
+          listenerCount: 0
+          relayType: NetTcp
+          requiresClientAuthorization: true
+          requiresTransportSecurity: true
+          updatedAt: 2017-03-16T00:26:17.5014661Z
+        type: Microsoft.Relay/WcfRelays
+    RelayCreate:
+      value:
+        id: /subscriptions/e2f361f0-3b27-4503-a9cc-21cfba380093/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-9953/WcfRelays/sdk-Relay-Wcf-1194
+        name: sdk-Relay-Wcf-1194
+        properties:
+          createdAt: 2017-03-16T00:26:17.5014661Z
+          isDynamic: false
+          relayType: NetTcp
+          requiresClientAuthorization: true
+          requiresTransportSecurity: true
+          updatedAt: 2017-03-16T00:26:17.5014661Z
+        type: Microsoft.Relay/WcfRelays
+    RelayAutorizationRuleListAll:
+      value:
+        value:
+          - id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/WcfRelays/sdk-Relay-Wcf-01/AuthorizationRules/sdk-RelayAuthRules-01
+            name: sdk-RelayAuthRules-01
+            properties:
+              rights:
+                - Listen
+                - Send
+            type: Microsoft.Relay/Namespaces/WcfRelay/AuthorizationRules
+    RelayAutorizationRuleGet:
+      value:
+        id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/WcfRelays/sdk-Relay-Wcf-01/AuthorizationRules/sdk-RelayAuthRules-01
+        name: sdk-RelayAuthRules-01
+        properties:
+          rights:
+            - Listen
+        type: Microsoft.Relay/Namespaces/WcfRelay/AuthorizationRules
+    RelayAuthorizationRuleCreate:
+      value:
+        id: /subscriptions/8c246e6a-cbc6-4a87-aff1-d6a886f376ef/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/sdk-RelayNamespace-01/WcfRelays/sdk-Relay-Wcf-01/AuthorizationRules/sdk-RelayAuthRules-01
+        name: sdk-RelayAuthRules-01
+        properties:
+          rights:
+            - Listen
+            - Send
+        type: Microsoft.Relay/Namespaces/WcfRelay/AuthorizationRules
+    RelayAuthorizationRuleListKey.json:
+      value:
+        keyName: sdk-RelayAuthRules-01
+        primaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        primaryKey: "############################################"
+        secondaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        secondaryKey: "############################################"
+    RelayAuthorizationRuleRegenrateKey.json:
+      value:
+        keyName: sdk-RelayAuthRules-01
+        primaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        primaryKey: "############################################"
+        secondaryConnectionString: Endpoint=sb://sdk-relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=sdk-RelayAuthRules-01;SharedAccessKey=############################################
+        secondaryKey: "############################################"
+  parameters:
+    ApiVersionParameter:
+      description: Client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        RelayOperationsList:
+          value: 2017-04-01
+        RelayCheckNameAvailability:
+          value: 2017-04-01
+        RelayNameSpaceListBySubscription:
+          value: 2017-04-01
+        RelayNameSpaceListByResourceGroup:
+          value: 2017-04-01
+        RelayNameSpaceDelete:
+          value: 2017-04-01
+        RelayNameSpaceGet:
+          value: 2017-04-01
+        RelayNameSpaceUpdate:
+          value: 2017-04-01
+        RelayNamespaceCreate:
+          value: 2017-04-01
+        RelayNameSpaceAutorizationRuleListAll:
+          value: 2017-04-01
+        RelayNameSpaceAutorizationRuleDelete:
+          value: 2017-04-01
+        RelayNameSpaceAutorizationRuleGet:
+          value: 2017-04-01
+        RelayNameSpaceAuthorizationRuleCreate:
+          value: 2017-04-01
+        RelayNameSpaceAuthorizationRuleListKey:
+          value: 2017-04-01
+        RelayNameSpaceAuthorizationRuleRegenrateKey:
+          value: 2017-04-01
+        RelayHybridConnectionListAll:
+          value: 2017-04-01
+        RelayHybridconnectionDelete:
+          value: 2017-04-01
+        RelayHybridConnectionGet:
+          value: 2017-04-01
+        RelayHybridConnectionCreate:
+          value: 2017-04-01
+        RelayHybridConnectionAutorizationRuleListAll:
+          value: 2017-04-01
+        RelayHybridConnectionAutorizationRuleDelete:
+          value: 2017-04-01
+        RelayHybridConnectionAutorizationRuleGet:
+          value: 2017-04-01
+        RelayHybridConnectionAuthorizationRuleCreate:
+          value: 2017-04-01
+        RelayHybridConnectionAuthorizationRuleListKey:
+          value: 2017-04-01
+        RelayHybridConnectionAuthorizationRuleRegenrateKey:
+          value: 2017-04-01
+        RelayListAll:
+          value: 2017-04-01
+        RelayDelete:
+          value: 2017-04-01
+        RelayGet:
+          value: 2017-04-01
+        RelayCreate:
+          value: 2017-04-01
+        RelayAutorizationRuleListAll:
+          value: 2017-04-01
+        RelayAutorizationRuleDelete:
+          value: 2017-04-01
+        RelayAutorizationRuleGet:
+          value: 2017-04-01
+        RelayAuthorizationRuleCreate:
+          value: 2017-04-01
+        RelayAuthorizationRuleListKey.json:
+          value: 2017-04-01
+        RelayAuthorizationRuleRegenrateKey.json:
+          value: 2017-04-01
+    SubscriptionIdParameter:
+      description: Subscription credentials which uniquely identify the Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        RelayCheckNameAvailability:
+          value: e2f361f0-3b27-4503-a9cc-21cfba380093
+        RelayNameSpaceListBySubscription:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayNameSpaceListByResourceGroup:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayNameSpaceDelete:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayNameSpaceGet:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayNameSpaceUpdate:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayNamespaceCreate:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayNameSpaceAutorizationRuleListAll:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayNameSpaceAutorizationRuleDelete:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayNameSpaceAutorizationRuleGet:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayNameSpaceAuthorizationRuleCreate:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayNameSpaceAuthorizationRuleListKey:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayNameSpaceAuthorizationRuleRegenrateKey:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayHybridConnectionListAll:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayHybridconnectionDelete:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayHybridConnectionGet:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayHybridConnectionCreate:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayHybridConnectionAutorizationRuleListAll:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayHybridConnectionAutorizationRuleDelete:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayHybridConnectionAutorizationRuleGet:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayHybridConnectionAuthorizationRuleCreate:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayHybridConnectionAuthorizationRuleListKey:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayHybridConnectionAuthorizationRuleRegenrateKey:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayListAll:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayDelete:
+          value: e2f361f0-3b27-4503-a9cc-21cfba380093
+        RelayGet:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayCreate:
+          value: e2f361f0-3b27-4503-a9cc-21cfba380093
+        RelayAutorizationRuleListAll:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayAutorizationRuleDelete:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayAutorizationRuleGet:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayAuthorizationRuleCreate:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayAuthorizationRuleListKey.json:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+        RelayAuthorizationRuleRegenrateKey.json:
+          value: 8c246e6a-cbc6-4a87-aff1-d6a886f376ef
+    authorizationRuleNameParameter:
+      description: The authorization rule name.
+      in: path
+      name: authorizationRuleName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+      examples:
+        RelayNameSpaceAutorizationRuleDelete:
+          value: sdk-RelayAuthRules-01
+        RelayNameSpaceAutorizationRuleGet:
+          value: sdk-RelayAuthRules-01
+        RelayNameSpaceAuthorizationRuleCreate:
+          value: sdk-RelayAuthRules-01
+        RelayNameSpaceAuthorizationRuleListKey:
+          value: sdk-RelayAuthRules-01
+        RelayNameSpaceAuthorizationRuleRegenrateKey:
+          value: sdk-RelayAuthRules-01
+        RelayHybridConnectionAutorizationRuleDelete:
+          value: sdk-RelayAuthRules-01
+        RelayHybridConnectionAutorizationRuleGet:
+          value: sdk-RelayAuthRules-01
+        RelayHybridConnectionAuthorizationRuleCreate:
+          value: sdk-RelayAuthRules-01
+        RelayHybridConnectionAuthorizationRuleListKey:
+          value: sdk-RelayAuthRules-01
+        RelayHybridConnectionAuthorizationRuleRegenrateKey:
+          value: sdk-RelayAuthRules-01
+        RelayAutorizationRuleDelete:
+          value: sdk-RelayAuthRules-01
+        RelayAutorizationRuleGet:
+          value: sdk-RelayAuthRules-01
+        RelayAuthorizationRuleCreate:
+          value: sdk-RelayAuthRules-01
+        RelayAuthorizationRuleListKey.json:
+          value: sdk-RelayAuthRules-01
+        RelayAuthorizationRuleRegenrateKey.json:
+          value: sdk-RelayAuthRules-01
+    hybridConnectionNameParameter:
+      description: The hybrid connection name.
+      in: path
+      name: hybridConnectionName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+      examples:
+        RelayHybridconnectionDelete:
+          value: sdk-Relay-Hybrid-01
+        RelayHybridConnectionGet:
+          value: sdk-Relay-Hybrid-01
+        RelayHybridConnectionCreate:
+          value: sdk-Relay-Hybrid-01
+        RelayHybridConnectionAutorizationRuleListAll:
+          value: sdk-Relay-Hybrid-01
+        RelayHybridConnectionAutorizationRuleDelete:
+          value: sdk-Relay-Hybrid-01
+        RelayHybridConnectionAutorizationRuleGet:
+          value: sdk-Relay-Hybrid-01
+        RelayHybridConnectionAuthorizationRuleCreate:
+          value: sdk-Relay-Hybrid-01
+        RelayHybridConnectionAuthorizationRuleListKey:
+          value: sdk-Relay-Hybrid-01
+        RelayHybridConnectionAuthorizationRuleRegenrateKey:
+          value: sdk-Relay-Hybrid-01
+    namespaceNameParameter:
+      description: The namespace name
+      in: path
+      name: namespaceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 6
+        maxLength: 50
+      examples:
+        RelayNameSpaceDelete:
+          value: sdk-RelayNamespace-01
+        RelayNameSpaceGet:
+          value: sdk-RelayNamespace-01
+        RelayNameSpaceUpdate:
+          value: sdk-RelayNamespace-01
+        RelayNamespaceCreate:
+          value: sdk-RelayNamespace-01
+        RelayNameSpaceAutorizationRuleListAll:
+          value: sdk-RelayNamespace-01
+        RelayNameSpaceAutorizationRuleDelete:
+          value: sdk-RelayNamespace-01
+        RelayNameSpaceAutorizationRuleGet:
+          value: sdk-RelayNamespace-01
+        RelayNameSpaceAuthorizationRuleCreate:
+          value: sdk-RelayNamespace-01
+        RelayNameSpaceAuthorizationRuleListKey:
+          value: sdk-RelayNamespace-01
+        RelayNameSpaceAuthorizationRuleRegenrateKey:
+          value: sdk-RelayNamespace-01
+        RelayHybridConnectionListAll:
+          value: sdk-RelayNamespace-01
+        RelayHybridconnectionDelete:
+          value: sdk-RelayNamespace-01
+        RelayHybridConnectionGet:
+          value: sdk-RelayNamespace-01
+        RelayHybridConnectionCreate:
+          value: sdk-RelayNamespace-01
+        RelayHybridConnectionAutorizationRuleListAll:
+          value: sdk-RelayNamespace-01
+        RelayHybridConnectionAutorizationRuleDelete:
+          value: sdk-RelayNamespace-01
+        RelayHybridConnectionAutorizationRuleGet:
+          value: sdk-RelayNamespace-01
+        RelayHybridConnectionAuthorizationRuleCreate:
+          value: sdk-RelayNamespace-01
+        RelayHybridConnectionAuthorizationRuleListKey:
+          value: sdk-RelayNamespace-01
+        RelayHybridConnectionAuthorizationRuleRegenrateKey:
+          value: sdk-RelayNamespace-01
+        RelayListAll:
+          value: sdk-RelayNamespace-01
+        RelayDelete:
+          value: sdk-RelayNamespace-01
+        RelayGet:
+          value: sdk-RelayNamespace-9953
+        RelayCreate:
+          value: sdk-RelayNamespace-9953
+        RelayAutorizationRuleListAll:
+          value: sdk-RelayNamespace-01
+        RelayAutorizationRuleDelete:
+          value: sdk-RelayNamespace-01
+        RelayAutorizationRuleGet:
+          value: sdk-RelayNamespace-01
+        RelayAuthorizationRuleCreate:
+          value: sdk-RelayNamespace-01
+        RelayAuthorizationRuleListKey.json:
+          value: sdk-RelayNamespace-01
+        RelayAuthorizationRuleRegenrateKey.json:
+          value: sdk-RelayNamespace-01
+    relayNameParameter:
+      description: The relay name.
+      in: path
+      name: relayName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+      examples:
+        RelayDelete:
+          value: sdk-Relay-wcf-01
+        RelayGet:
+          value: sdk-Relay-Wcf-1194
+        RelayCreate:
+          value: sdk-Relay-Wcf-1194
+        RelayAutorizationRuleListAll:
+          value: sdk-Relay-Wcf-01
+        RelayAutorizationRuleDelete:
+          value: sdk-Relay-wcf-01
+        RelayAutorizationRuleGet:
+          value: sdk-Relay-wcf-01
+        RelayAuthorizationRuleCreate:
+          value: sdk-Relay-wcf-01
+        RelayAuthorizationRuleListKey.json:
+          value: sdk-Relay-wcf-01
+        RelayAuthorizationRuleRegenrateKey.json:
+          value: sdk-Relay-wcf-01
+    resourceGroupNameParameter:
+      description: Name of the Resource group within the Azure subscription.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+      examples:
+        RelayNameSpaceListByResourceGroup:
+          value: RG-eg
+        RelayNameSpaceDelete:
+          value: RG-eg
+        RelayNameSpaceGet:
+          value: RG-eg
+        RelayNameSpaceUpdate:
+          value: RG-eg
+        RelayNamespaceCreate:
+          value: RG-eg
+        RelayNameSpaceAutorizationRuleListAll:
+          value: RG-eg
+        RelayNameSpaceAutorizationRuleDelete:
+          value: RG-eg
+        RelayNameSpaceAutorizationRuleGet:
+          value: RG-eg
+        RelayNameSpaceAuthorizationRuleCreate:
+          value: RG-eg
+        RelayNameSpaceAuthorizationRuleListKey:
+          value: RG-eg
+        RelayNameSpaceAuthorizationRuleRegenrateKey:
+          value: RG-eg
+        RelayHybridConnectionListAll:
+          value: RG-eg
+        RelayHybridconnectionDelete:
+          value: RG-eg
+        RelayHybridConnectionGet:
+          value: RG-eg
+        RelayHybridConnectionCreate:
+          value: RG-eg
+        RelayHybridConnectionAutorizationRuleListAll:
+          value: RG-eg
+        RelayHybridConnectionAutorizationRuleDelete:
+          value: RG-eg
+        RelayHybridConnectionAutorizationRuleGet:
+          value: RG-eg
+        RelayHybridConnectionAuthorizationRuleCreate:
+          value: RG-eg
+        RelayHybridConnectionAuthorizationRuleListKey:
+          value: RG-eg
+        RelayHybridConnectionAuthorizationRuleRegenrateKey:
+          value: RG-eg
+        RelayListAll:
+          value: RG-eg
+        RelayDelete:
+          value: RG-eg
+        RelayGet:
+          value: RG-eg
+        RelayCreate:
+          value: RG-eg
+        RelayAutorizationRuleListAll:
+          value: RG-eg
+        RelayAutorizationRuleDelete:
+          value: RG-eg
+        RelayAutorizationRuleGet:
+          value: RG-eg
+        RelayAuthorizationRuleCreate:
+          value: RG-eg
+        RelayAuthorizationRuleListKey.json:
+          value: RG-eg
+        RelayAuthorizationRuleRegenrateKey.json:
+          value: RG-eg
+  requestBodies:
+    RegenerateAccessKeyParameters:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RegenerateAccessKeyParameters"
+      description: Parameters supplied to regenerate authorization rule.
+      required: true
+    AuthorizationRule:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AuthorizationRule"
+      description: The authorization rule parameters.
+      required: true
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AccessKeys:
+      description: Namespace/Relay Connection String
+      properties:
+        keyName:
+          description: A string that describes the authorization rule.
+          type: string
+        primaryConnectionString:
+          description: Primary connection string of the created namespace authorization
+            rule.
+          type: string
+        primaryKey:
+          description: A base64-encoded 256-bit primary key for signing and validating the
+            SAS token.
+          type: string
+        secondaryConnectionString:
+          description: Secondary connection string of the created namespace authorization
+            rule.
+          type: string
+        secondaryKey:
+          description: A base64-encoded 256-bit secondary key for signing and validating
+            the SAS token.
+          type: string
+    AuthorizationRule:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Description of a namespace authorization rule.
+      properties:
+        properties:
+          description: Authorization rule properties.
+          properties:
+            rights:
+              description: The rights associated with the rule.
+              items:
+                enum:
+                  - Manage
+                  - Send
+                  - Listen
+                type: string
+                x-ms-enum:
+                  modelAsString: false
+                  name: AccessRights
+              type: array
+              uniqueItems: true
+          required:
+            - rights
+          x-ms-client-flatten: true
+      required:
+        - properties
+    AuthorizationRuleListResult:
+      description: The response from the list namespace operation.
+      properties:
+        nextLink:
+          description: Link to the next set of results. Not empty if value contains
+            incomplete list of authorization rules.
+          type: string
+        value:
+          description: Result of the list authorization rules operation.
+          items:
+            $ref: "#/components/schemas/AuthorizationRule"
+          type: array
+    CheckNameAvailability:
+      description: Description of the check name availability request properties.
+      properties:
+        name:
+          description: The namespace name to check for availability. The namespace name can
+            contain only letters, numbers, and hyphens. The namespace must start
+            with a letter, and it must end with a letter or number.
+          type: string
+      required:
+        - name
+    CheckNameAvailabilityResult:
+      description: Description of the check name availability request properties.
+      properties:
+        message:
+          description: The detailed info regarding the reason associated with the namespace.
+          readOnly: true
+          type: string
+        nameAvailable:
+          description: Value indicating namespace is available. Returns true if the
+            namespace is available; otherwise, false.
+          type: boolean
+        reason:
+          $ref: "#/components/schemas/UnavailableReason"
+    ErrorResponse:
+      description: Error reponse indicates Relay service is not able to process the
+        incoming request. The reason is provided in the error message.
+      properties:
+        code:
+          description: Error code.
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          type: string
+      type: object
+    HybridConnection:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Description of hybrid connection resource.
+      properties:
+        properties:
+          description: Properties of the HybridConnection.
+          properties:
+            createdAt:
+              description: The time the hybrid connection was created.
+              format: date-time
+              readOnly: true
+              type: string
+            listenerCount:
+              description: "The number of listeners for this hybrid connection. Note that
+                min : 1 and max:25 are supported."
+              format: int32
+              maximum: 25
+              minimum: 0
+              readOnly: true
+              type: integer
+            requiresClientAuthorization:
+              description: Returns true if client authorization is needed for this hybrid
+                connection; otherwise, false.
+              type: boolean
+            updatedAt:
+              description: The time the namespace was updated.
+              format: date-time
+              readOnly: true
+              type: string
+            userMetadata:
+              description: The usermetadata is a placeholder to store user-defined string
+                data for the hybrid connection endpoint. For example, it can be
+                used to store descriptive data, such as a list of teams and
+                their contact information. Also, user-defined configuration
+                settings can be stored.
+              type: string
+          x-ms-client-flatten: true
+    HybridConnectionListResult:
+      description: The response of the list hybrid connection operation.
+      properties:
+        nextLink:
+          description: Link to the next set of results. Not empty if value contains
+            incomplete list hybrid connection operation.
+          type: string
+        value:
+          description: Result of the list hybrid connections.
+          items:
+            $ref: "#/components/schemas/HybridConnection"
+          type: array
+    Operation:
+      description: A Relay REST API operation.
+      properties:
+        display:
+          description: The object that represents the operation.
+          properties:
+            operation:
+              description: "Operation type: Read, write, delete, etc."
+              readOnly: true
+              type: string
+            provider:
+              description: "Service provider: Relay."
+              readOnly: true
+              type: string
+            resource:
+              description: "Resource on which the operation is performed: Invoice, etc."
+              readOnly: true
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}"
+          readOnly: true
+          type: string
+      type: object
+    OperationListResult:
+      description: Result of the request to list Relay operations. It contains a list of
+        operations and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          readOnly: true
+          type: string
+        value:
+          description: List of Relay operations supported by resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          readOnly: true
+          type: array
+    RegenerateAccessKeyParameters:
+      description: Parameters supplied to the regenerate authorization rule operation,
+        specifies which key neeeds to be reset.
+      properties:
+        key:
+          description: Optional. If the key value is provided, this is set to key type, or
+            autogenerated key value set for key type.
+          type: string
+        keyType:
+          description: The access key to regenerate.
+          enum:
+            - PrimaryKey
+            - SecondaryKey
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: KeyType
+      required:
+        - keyType
+    RelayNamespace:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      description: Description of a namespace resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/RelayNamespaceProperties"
+        sku:
+          $ref: "#/components/schemas/Sku"
+    RelayNamespaceListResult:
+      description: The response from the list namespace operation.
+      properties:
+        nextLink:
+          description: Link to the next set of results. Not empty if value contains
+            incomplete list of namespaces.
+          type: string
+        value:
+          description: Result of the list namespace operation.
+          items:
+            $ref: "#/components/schemas/RelayNamespace"
+          type: array
+    RelayNamespaceProperties:
+      description: Properties of the namespace.
+      properties:
+        createdAt:
+          description: The time the namespace was created.
+          format: date-time
+          readOnly: true
+          type: string
+        metricId:
+          description: Identifier for Azure Insights metrics.
+          readOnly: true
+          type: string
+        provisioningState:
+          enum:
+            - Created
+            - Succeeded
+            - Deleted
+            - Failed
+            - Updating
+            - Unknown
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: provisioningStateEnum
+        serviceBusEndpoint:
+          description: Endpoint you can use to perform Service Bus operations.
+          readOnly: true
+          type: string
+        updatedAt:
+          description: The time the namespace was updated.
+          format: date-time
+          readOnly: true
+          type: string
+    RelayUpdateParameters:
+      allOf:
+        - $ref: "#/components/schemas/ResourceNamespacePatch"
+      description: Description of a namespace resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/RelayNamespaceProperties"
+        sku:
+          $ref: "#/components/schemas/Sku"
+    Resource:
+      description: The resource definition.
+      properties:
+        id:
+          description: Resource ID.
+          readOnly: true
+          type: string
+        name:
+          description: Resource name.
+          readOnly: true
+          type: string
+        type:
+          description: Resource type.
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    ResourceNamespacePatch:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Definition of resource.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+    Sku:
+      description: SKU of the namespace.
+      properties:
+        name:
+          description: Name of this SKU.
+          enum:
+            - Standard
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: SkuName
+        tier:
+          description: The tier of this SKU.
+          enum:
+            - Standard
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: SkuTier
+      required:
+        - name
+      type: object
+    TrackedResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Definition of resource.
+      properties:
+        location:
+          description: Resource location.
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+      required:
+        - location
+    UnavailableReason:
+      description: Specifies the reason for the unavailability of the service.
+      enum:
+        - None
+        - InvalidName
+        - SubscriptionIsDisabled
+        - NameInUse
+        - NameInLockdown
+        - TooManyNamespaceInCurrentSubscription
+      type: string
+      x-ms-enum:
+        modelAsString: false
+        name: UnavailableReason
+    WcfRelay:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Description of the WCF relay resource.
+      properties:
+        properties:
+          description: Properties of the WCF relay.
+          properties:
+            createdAt:
+              description: The time the WCF relay was created.
+              format: date-time
+              readOnly: true
+              type: string
+            isDynamic:
+              description: Returns true if the relay is dynamic; otherwise, false.
+              readOnly: true
+              type: boolean
+            listenerCount:
+              description: The number of listeners for this relay. Note that min :1 and
+                max:25 are supported.
+              format: int32
+              maximum: 25
+              minimum: 0
+              readOnly: true
+              type: integer
+            relayType:
+              description: WCF relay type.
+              enum:
+                - NetTcp
+                - Http
+              type: string
+              x-ms-enum:
+                modelAsString: false
+                name: Relaytype
+            requiresClientAuthorization:
+              description: Returns true if client authorization is needed for this relay;
+                otherwise, false.
+              type: boolean
+            requiresTransportSecurity:
+              description: Returns true if transport security is needed for this relay;
+                otherwise, false.
+              type: boolean
+            updatedAt:
+              description: The time the namespace was updated.
+              format: date-time
+              readOnly: true
+              type: string
+            userMetadata:
+              description: The usermetadata is a placeholder to store user-defined string
+                data for the WCF Relay endpoint. For example, it can be used to
+                store descriptive data, such as list of teams and their contact
+                information. Also, user-defined configuration settings can be
+                stored.
+              type: string
+          x-ms-client-flatten: true
+    WcfRelaysListResult:
+      description: The response of the list WCF relay operation.
+      properties:
+        nextLink:
+          description: Link to the next set of results. Not empty if value contains
+            incomplete list of WCF relays.
+          type: string
+        value:
+          description: Result of the list WCF relay operation.
+          items:
+            $ref: "#/components/schemas/WcfRelay"
+          type: array

@@ -1,0 +1,130 @@
+#%RAML 1.0
+title: Mozart Experience API
+version: 1.0.0
+
+baseUri: /v1
+
+securitySchemes:
+  auth: !include security/auth.raml
+  authByCookie: !include security/authByCookie.raml
+
+traits:
+  acceptEnvironment: !include traits/acceptEnvironment.raml
+  acceptOrganization: !include traits/acceptOrganization.raml
+  paged: !include traits/paged.raml
+
+resourceTypes:
+  collection: !include Resource Types/collection.raml
+  member: !include Resource Types/member.raml
+
+types: 
+  fileType: !include Data Types/file.raml
+  versionType: !include Data Types/version.raml
+  projectImportType: !include Data Types/projectImport.raml
+
+securedBy: [auth]
+
+/status:
+  get:
+  /apis:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                [
+                  { "name": "service", "url": "url", "isMock": true }
+                ]
+/info:
+  description: deployed services information
+  get:
+    responses:
+      200:
+        body:
+          application/json:                
+/auth:
+  securedBy: [auth]
+  /profile:
+    get:
+      headers:
+        Authorization:
+          type: string
+          required: true
+      responses:
+        200:
+          body:
+            application/json:
+  /me:
+    get:
+      headers:
+        Authorization:
+          type: string
+          required: true
+      responses:
+        200:
+          body:
+            application/json:
+/featureFlags:
+  securedBy: [auth]
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+/organizations:
+  securedBy: [auth]
+  description: Core Services User
+  /{organizationId}:
+    /files: !include resources/files.raml
+    /libraries: !include resources/libraries.raml
+    /metadata:
+      /generate_custom:
+        post:
+          body:
+            application/json:
+          responses:
+            200:
+              body:
+                application/json:
+    /deploy:
+      /{deployId}:
+        get:
+          responses:
+            200:
+              body:
+                application/json:
+      post:
+        queryParameters:
+          synchronous:
+            displayName: Synchronous
+            type: boolean
+            description: Do the deployment synchronously
+            required: false
+        body:
+          application/json:
+        responses:
+          200:
+            body:
+              application/json:
+    /environments:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+    /projects: !include resources/project.raml
+    /runtimes: !include resources/runtimes.raml
+    /custom:
+      /informant:
+        post:
+          body:
+            application/json:
+          responses:
+            200:
+              body:
+                application/json:
+            400:
+              body:
+                application/json:
+          

@@ -1,0 +1,551 @@
+openapi: 3.0.0
+info:
+  description: The Managed Service Identity Client.
+  title: ManagedServiceIdentityClient
+  version: 2018-11-30
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/ManagedIdentity.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: msi-ManagedIdentity
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.ManagedIdentity/operations:
+    get:
+      description: Lists available operations for the Microsoft.ManagedIdentity provider
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The operation was successful. The response contains the list of
+            available operations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+              examples:
+                MsiOperationsList:
+                  $ref: "#/components/examples/MsiOperationsList"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedIdentity/userAssignedIdentities":
+    get:
+      description: Lists all the userAssignedIdentities available under the specified
+        subscription.
+      operationId: UserAssignedIdentities_ListBySubscription
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The list of userAssignedIdentities was retrieved and returned
+            successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAssignedIdentitiesListResult"
+              examples:
+                IdentityListBySubscription:
+                  $ref: "#/components/examples/IdentityListBySubscription"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities":
+    get:
+      description: Lists all the userAssignedIdentities available under the specified
+        ResourceGroup.
+      operationId: UserAssignedIdentities_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The list of userAssignedIdentities was retrieved and returned
+            successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAssignedIdentitiesListResult"
+              examples:
+                IdentityListByResourceGroup:
+                  $ref: "#/components/examples/IdentityListByResourceGroup"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}":
+    delete:
+      description: Deletes the identity.
+      operationId: UserAssignedIdentities_Delete
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ResourceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. Deleted Identity.
+        "204":
+          description: The specified identity does not exist.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+    get:
+      description: Gets the identity.
+      operationId: UserAssignedIdentities_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ResourceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The requested identity.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Identity"
+              examples:
+                IdentityGet:
+                  $ref: "#/components/examples/IdentityGet"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+    patch:
+      description: Update an identity in the specified subscription and resource group.
+      operationId: UserAssignedIdentities_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ResourceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Identity"
+        description: Parameters to update the identity
+        required: true
+      responses:
+        "200":
+          description: Updated identity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Identity"
+              examples:
+                IdentityUpdate:
+                  $ref: "#/components/examples/IdentityUpdate"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+    put:
+      description: Create or update an identity in the specified subscription and resource
+        group.
+      operationId: UserAssignedIdentities_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ResourceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Identity"
+        description: Parameters to create or update the identity
+        required: true
+      responses:
+        "200":
+          description: Updated identity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Identity"
+              examples:
+                IdentityCreate:
+                  $ref: "#/components/examples/IdentityCreate"
+        "201":
+          description: Created identity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Identity"
+              examples:
+                IdentityCreate:
+                  $ref: "#/components/examples/IdentityCreate"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    MsiOperationsList:
+      value:
+        nextLink: https://serviceRoot/providers/Microsoft.ManagedIdentity/operations?api-version=2018-11-30&$skiptoken=X'12345'
+        value:
+          - display:
+              description: Gets an existing user assigned identity
+              operation: Get User Assigned Identity
+              provider: Managed Service Identity
+              resource: User Assigned Identities
+            name: Microsoft.ManagedIdentity/userAssignedIdentities/read
+          - display:
+              description: Creates a new user assigned identity or updates the tags
+                associated with an existing user assigned identity
+              operation: Create/Update User Assigned Identity
+              provider: Managed Service Identity
+              resource: User Assigned Identities
+            name: Microsoft.ManagedIdentity/userAssignedIdentities/write
+          - display:
+              description: Deletes an existing user assigned identity
+              operation: Delete User Assigned Identity
+              provider: Managed Service Identity
+              resource: User Assigned Identities
+            name: Microsoft.ManagedIdentity/userAssignedIdentities/delete
+    IdentityListBySubscription:
+      value:
+        nextLink: https://serviceRoot/subscriptions/subId/providers/Microsoft.ManagedIdentity/userAssignedIdentities?api-version=2018-11-30&$skiptoken=X'12345'
+        value:
+          - id: /subscriptions/subid/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName
+            location: cus
+            name: identityName
+            properties:
+              clientId: clientGUID
+              principalId: identityObjectID
+              tenantId: tenantGUID
+            tags:
+              key1: value1
+              key2: value2
+            type: Microsoft.ManagedIdentity/userAssignedIdentities
+    IdentityListByResourceGroup:
+      value:
+        nextLink: https://serviceRoot/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities?api-version=2018-11-30&$skiptoken=X'12345'
+        value:
+          - id: /subscriptions/subid/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName
+            location: cus
+            name: identityName
+            properties:
+              clientId: clientGUID
+              principalId: identityObjectID
+              tenantId: tenantGUID
+            tags:
+              key1: value1
+              key2: value2
+            type: Microsoft.ManagedIdentity/userAssignedIdentities
+    IdentityGet:
+      value:
+        id: /subscriptions/subid/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName
+        location: cus
+        name: identityName
+        properties:
+          clientId: clientGUID
+          principalId: identityObjectID
+          tenantId: tenantGUID
+        tags:
+          key1: value1
+          key2: value2
+        type: Microsoft.ManagedIdentity/userAssignedIdentities
+    IdentityUpdate:
+      value:
+        id: /subscriptions/subid/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName
+        location: cus
+        name: identityName
+        properties:
+          clientId: clientGUID
+          principalId: identityObjectID
+          tenantId: tenantGUID
+        tags:
+          key1: value1
+          key2: value2
+        type: Microsoft.ManagedIdentity/userAssignedIdentities
+    IdentityCreate:
+      value:
+        id: /subscriptions/subid/resourcegroups/rgName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName
+        location: cus
+        name: identityName
+        properties:
+          clientId: clientGUID
+          principalId: identityObjectID
+          tenantId: tenantGUID
+        tags:
+          key1: value1
+          key2: value2
+        type: Microsoft.ManagedIdentity/userAssignedIdentities
+  parameters:
+    ApiVersionParameter:
+      description: Version of API to invoke.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        MsiOperationsList:
+          value: 2018-11-30
+        IdentityListBySubscription:
+          value: 2018-11-30
+        IdentityListByResourceGroup:
+          value: 2018-11-30
+        IdentityDelete:
+          value: 2018-11-30
+        IdentityGet:
+          value: 2018-11-30
+        IdentityUpdate:
+          value: 2018-11-30
+        IdentityCreate:
+          value: 2018-11-30
+    ResourceGroupNameParameter:
+      description: The name of the Resource Group to which the identity belongs.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        IdentityListByResourceGroup:
+          value: rgName
+        IdentityDelete:
+          value: rgName
+        IdentityGet:
+          value: rgName
+        IdentityUpdate:
+          value: rgName
+        IdentityCreate:
+          value: rgName
+    ResourceNameParameter:
+      description: The name of the identity resource.
+      in: path
+      name: resourceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        IdentityDelete:
+          value: resourceName
+        IdentityGet:
+          value: resourceName
+        IdentityUpdate:
+          value: resourceName
+        IdentityCreate:
+          value: resourceName
+    SubscriptionIdParameter:
+      description: The Id of the Subscription to which the identity belongs.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        IdentityListBySubscription:
+          value: subid
+        IdentityListByResourceGroup:
+          value: subid
+        IdentityDelete:
+          value: subid
+        IdentityGet:
+          value: subid
+        IdentityUpdate:
+          value: subid
+        IdentityCreate:
+          value: subid
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    CloudError:
+      description: An error response from the ManagedServiceIdentity service.
+      properties:
+        error:
+          $ref: "#/components/schemas/CloudErrorBody"
+      x-ms-external: true
+    CloudErrorBody:
+      description: An error response from the ManagedServiceIdentity service.
+      properties:
+        code:
+          description: An identifier for the error.
+          type: string
+        details:
+          description: A list of additional details about the error.
+          items:
+            $ref: "#/components/schemas/CloudErrorBody"
+          type: array
+        message:
+          description: A message describing the error, intended to be suitable for display
+            in a user interface.
+          type: string
+        target:
+          description: The target of the particular error. For example, the name of the
+            property in error.
+          type: string
+      x-ms-external: true
+    Identity:
+      description: Describes an identity resource.
+      properties:
+        id:
+          description: The id of the created identity.
+          readOnly: true
+          type: string
+        location:
+          description: The Azure region where the identity lives.
+          type: string
+        name:
+          description: The name of the created identity.
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/IdentityProperties"
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags
+          type: object
+        type:
+          description: The type of resource i.e.
+            Microsoft.ManagedIdentity/userAssignedIdentities
+          enum:
+            - Microsoft.ManagedIdentity/userAssignedIdentities
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: UserAssignedIdentities
+      x-ms-azure-resource: true
+    IdentityProperties:
+      description: The properties associated with the identity.
+      properties:
+        clientId:
+          description: The id of the app associated with the identity. This is a random
+            generated UUID by MSI.
+          format: uuid
+          readOnly: true
+          type: string
+        clientSecretUrl:
+          description: " The ManagedServiceIdentity DataPlane URL that can be queried to
+            obtain the identity credentials. If identity is user assigned, then
+            the clientSecretUrl will not be present in the response, otherwise
+            it will be present."
+          readOnly: true
+          type: string
+        principalId:
+          description: The id of the service principal object associated with the created
+            identity.
+          format: uuid
+          readOnly: true
+          type: string
+        tenantId:
+          description: The id of the tenant which the identity belongs to.
+          format: uuid
+          readOnly: true
+          type: string
+      title: Identity properties.
+      type: object
+    Operation:
+      description: Operation supported by the Microsoft.ManagedIdentity REST API.
+      properties:
+        display:
+          $ref: "#/components/schemas/OperationDisplay"
+        name:
+          description: The name of the REST Operation. This is of the format
+            {provider}/{resource}/{operation}.
+          title: Operation Name.
+          type: string
+      title: Microsoft.ManagedIdentity Operation.
+      type: object
+    OperationDisplay:
+      description: The object that describes the operation.
+      properties:
+        description:
+          description: A description of the operation.
+          title: Operation description
+          type: string
+        operation:
+          description: "The type of operation. For example: read, write, delete."
+          title: Operation Type.
+          type: string
+        provider:
+          description: Friendly name of the resource provider.
+          title: Resource Provider Name.
+          type: string
+        resource:
+          description: The resource type on which the operation is performed.
+          title: Resource Type.
+          type: string
+      title: Operation Display.
+    OperationListResult:
+      description: A list of operations supported by Microsoft.ManagedIdentity Resource
+        Provider.
+      properties:
+        nextLink:
+          description: The url to get the next page of results, if any.
+          title: Next Link
+          type: string
+        value:
+          description: A list of operations supported by Microsoft.ManagedIdentity Resource
+            Provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          title: Operations List.
+          type: array
+      title: Operations List.
+    UserAssignedIdentitiesListResult:
+      description: Values returned by the List operation.
+      properties:
+        nextLink:
+          description: The url to get the next page of results, if any.
+          type: string
+        value:
+          description: The collection of userAssignedIdentities returned by the listing
+            operation.
+          items:
+            $ref: "#/components/schemas/Identity"
+          type: array

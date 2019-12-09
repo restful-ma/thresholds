@@ -1,0 +1,455 @@
+openapi: 3.0.0
+info:
+  description: The service for managing third party addons.
+  title: Azure Addons Resource Provider
+  version: 2017-05-15
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/addons/resource-manager/Microsoft.Addons/preview/2017-05-15/Addons.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: addons-Addons
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  /providers/Microsoft.Addons/operations:
+    get:
+      description: Lists all of the available Addons RP operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: List all the operations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationList"
+              examples:
+                Operations_List:
+                  $ref: "#/components/examples/Operations_List"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDefinition"
+      tags:
+        - Operations
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Addons/supportProviders/{providerName}/supportPlanTypes":
+    get:
+      description: Returns the Canonical Support Plans as well as whether they are enabled
+        or not for the subscription.
+      operationId: CanonicalSupportPlanTypes_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/SupportProviderName"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CanonicalSupportPlanStatus"
+              examples:
+                CanonicalSupportPlanTypes_Get:
+                  $ref: "#/components/examples/CanonicalSupportPlanTypes_Get"
+        default:
+          description: |-
+            '404' - 'Not Found'.
+            '400' - 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDefinition"
+      summary: Returns the Canonical Support Plans.
+      tags:
+        - CanonicalSupportPlanStatus
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Addons/supportProviders/{providerName}/supportPlanTypes/{planTypeName}":
+    delete:
+      description: Cancels the Canonical support plan of type {type} for the subscription.
+      operationId: SupportPlanTypes_Delete
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/SupportProviderName"
+        - $ref: "#/components/parameters/CanonicalSupportPlanType"
+      responses:
+        "202":
+          description: Accepted
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CanonicalSupportPlanResponseEnvelope"
+              examples:
+                SupportPlanTypes_Delete:
+                  $ref: "#/components/examples/SupportPlanTypes_Delete"
+        "204":
+          description: No Content
+        default:
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDefinition"
+      x-ms-long-running-operation: true
+    get:
+      description: Returns whether or not the canonical support plan of type {type} is
+        enabled for the subscription.
+      operationId: SupportPlanTypes_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/SupportProviderName"
+        - $ref: "#/components/parameters/CanonicalSupportPlanType"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CanonicalSupportPlanResponseEnvelope"
+              examples:
+                SupportPlanTypes_Get:
+                  $ref: "#/components/examples/SupportPlanTypes_Get"
+        "404":
+          description: Not Found
+        default:
+          description: |-
+            '404' - 'Not Found'.
+            '400' - 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDefinition"
+      tags:
+        - AddonDetails
+    put:
+      description: Creates or updates the Canonical support plan of type {type} for the
+        subscription.
+      operationId: SupportPlanTypes_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/SupportProviderName"
+        - $ref: "#/components/parameters/CanonicalSupportPlanType"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CanonicalSupportPlanResponseEnvelope"
+              examples:
+                SupportPlanTypes_CreateOrUpdate:
+                  $ref: "#/components/examples/SupportPlanTypes_CreateOrUpdate"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CanonicalSupportPlanResponseEnvelope"
+              examples:
+                SupportPlanTypes_CreateOrUpdate:
+                  $ref: "#/components/examples/SupportPlanTypes_CreateOrUpdate"
+        "404":
+          description: Not Found
+        default:
+          description: |-
+            '404' - 'Not Found'.
+            '400' - 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDefinition"
+      tags:
+        - AddonDetails
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Operations_List:
+      value:
+        - display:
+            description: Get the specified Canonical support plan state.
+            operation: Get Canonical support plan state
+            provider: Microsoft Addons
+            resource: supportPlanTypes
+          name: Microsoft.Addons/supportProviders/supportPlanTypes/read
+        - display:
+            description: Adds the Canonical support plan type specified.
+            operation: Adds a Canonical support plan.
+            provider: Microsoft Addons
+            resource: supportPlanTypes
+          name: Microsoft.Addons/supportProviders/supportPlanTypes/write
+        - display:
+            description: Removes the specified Canonical support plan
+            operation: Removes the Canonical support plan
+            provider: Microsoft Addons
+            resource: supportPlanTypes
+          name: Microsoft.Addons/supportProviders/supportPlanTypes/delete
+        - display:
+            description: Gets the available Canonical support plan types as well as some
+              extra metadata on their enabled status.
+            operation: Gets available Canonical support plan types.
+            provider: Microsoft Addons
+            resource: supportProviders
+          name: Microsoft.Addons/supportProviders/canonical/supportPlanTypes/get
+        - display:
+            description: Register the specified subscription with Microsoft.Addons
+            operation: Register for Microsoft.Addons
+            provider: Microsoft Addons
+            resource: register
+          name: Microsoft.Addons/register/action
+    CanonicalSupportPlanTypes_Get:
+      value:
+        - enabled: true
+          supportPlanType: standard
+          willEmitOneTimeChargeIfReEnabled: true
+          willEmitOneTimeChargeWhenEnabled: false
+        - enabled: false
+          supportPlanType: advanced
+          willEmitOneTimeChargeIfReEnabled: false
+          willEmitOneTimeChargeWhenEnabled: true
+        - enabled: false
+          supportPlanType: essential
+          willEmitOneTimeChargeIfReEnabled: false
+          willEmitOneTimeChargeWhenEnabled: false
+    SupportPlanTypes_Delete:
+      value:
+        id: subscriptions/d18d258f-bdba-4de1-8b51-e79d6c181d5e/providers/Microsoft.Addons/supportProviders/canonical/supportPlanTypes/Standard
+        name: Standard
+        properties:
+          provisioningState: Cancelling
+        type: Microsoft.Addons/supportProvider
+    SupportPlanTypes_Get:
+      value:
+        id: subscriptions/d18d258f-bdba-4de1-8b51-e79d6c181d5e/providers/Microsoft.Addons/supportProviders/canonical/supportPlanTypes/Standard
+        name: Standard
+        properties:
+          provisioningState: Succeeded
+        type: Microsoft.Addons/supportProvider
+    SupportPlanTypes_CreateOrUpdate:
+      value:
+        id: subscriptions/d18d258f-bdba-4de1-8b51-e79d6c181d5e/providers/Microsoft.Addons/supportProviders/canonical/supportPlanTypes/Standard
+        name: Standard
+        properties:
+          provisioningState: Purchasing
+        type: Microsoft.Addons/supportProvider
+  parameters:
+    ApiVersionParameter:
+      description: Client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Operations_List:
+          value: 2017-05-15
+        CanonicalSupportPlanTypes_Get:
+          value: 2017-05-15
+        SupportPlanTypes_Delete:
+          value: 2017-05-15
+        SupportPlanTypes_Get:
+          value: 2017-05-15
+        SupportPlanTypes_CreateOrUpdate:
+          value: 2017-05-15
+    CanonicalSupportPlanType:
+      description: The Canonical support plan type.
+      in: path
+      name: planTypeName
+      required: true
+      x-ms-enum:
+        modelAsString: true
+        name: PlanTypeName
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - Essential
+          - Standard
+          - Advanced
+      examples:
+        SupportPlanTypes_Delete:
+          value: Standard
+        SupportPlanTypes_Get:
+          value: Standard
+        SupportPlanTypes_CreateOrUpdate:
+          value: Standard
+    OperationResultsIdParameter:
+      description: The id representing an async operation.
+      in: path
+      name: operationResultsId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: Subscription credentials that uniquely identify the Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        CanonicalSupportPlanTypes_Get:
+          value: d18d258f-bdba-4de1-8b51-e79d6c181d5e
+        SupportPlanTypes_Delete:
+          value: d18d258f-bdba-4de1-8b51-e79d6c181d5e
+        SupportPlanTypes_Get:
+          value: d18d258f-bdba-4de1-8b51-e79d6c181d5e
+        SupportPlanTypes_CreateOrUpdate:
+          value: d18d258f-bdba-4de1-8b51-e79d6c181d5e
+    SupportProviderName:
+      description: The support plan type. For now the only valid type is "canonical".
+      in: path
+      name: providerName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        CanonicalSupportPlanTypes_Get:
+          value: Canonical
+        SupportPlanTypes_Delete:
+          value: Canonical
+        SupportPlanTypes_Get:
+          value: Canonical
+        SupportPlanTypes_CreateOrUpdate:
+          value: Canonical
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    CanonicalSupportPlanProperties:
+      description: The properties of the Canonical support plan.
+      properties:
+        provisioningState:
+          description: The provisioning state of the resource.
+          enum:
+            - Succeeded
+            - Failed
+            - Cancelled
+            - Purchasing
+            - Downgrading
+            - Cancelling
+            - Upgrading
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ProvisioningState
+      type: object
+    CanonicalSupportPlanResponseEnvelope:
+      description: The status of the Canonical support plan.
+      properties:
+        id:
+          description: The id of the ARM resource, e.g.
+            "/subscriptions/{id}/providers/Microsoft.Addons/supportProvider/{supportProviderName}/supportPlanTypes/{planTypeName}".
+          readOnly: true
+          type: string
+        name:
+          description: The name of the Canonical support plan, i.e. "essential", "standard"
+            or "advanced".
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/CanonicalSupportPlanProperties"
+        type:
+          description: Microsoft.Addons/supportProvider
+          readOnly: true
+          type: string
+      required:
+        - properties
+      type: object
+      x-ms-azure-resource: true
+    CanonicalSupportPlanStatus:
+      description: Contains Canonical support plan status information.
+      items:
+        properties:
+          enabled:
+            description: Whether the support plan is enabled for this subscription.
+            type: boolean
+          supportPlanType:
+            description: Support plan type.
+            enum:
+              - essential
+              - standard
+              - advanced
+            type: string
+            x-ms-enum:
+              modelAsString: true
+              name: SupportPlanType
+          willEmitOneTimeChargeIfReEnabled:
+            description: This indicates that when this support plan is cancelled and then
+              enabled that AddonsRP will emit a one-time charge.
+            type: boolean
+          willEmitOneTimeChargeWhenEnabled:
+            description: This indicates that when this support plan is enabled if AddonsRP
+              will emit a one-time charge.
+            type: boolean
+      title: Canonical Support Plan Status
+      type: array
+    ErrorDefinition:
+      description: Error description and code explaining why an operation failed.
+      properties:
+        code:
+          description: Service specific error code which serves as the substatus for the
+            HTTP error code.
+          maximum: 600
+          minimum: 100
+          type: integer
+        message:
+          description: Description of the error.
+          type: string
+      required:
+        - message
+        - code
+      title: Error
+      type: object
+    OperationList:
+      description: List of supported operations.
+      items:
+        $ref: "#/components/schemas/OperationsDefinition"
+      type: array
+    OperationsDefinition:
+      description: Definition object with the name and properties of an operation.
+      properties:
+        display:
+          $ref: "#/components/schemas/OperationsDisplayDefinition"
+        name:
+          description: Name of the operation.
+          type: string
+      type: object
+    OperationsDisplayDefinition:
+      description: Display object with properties of the operation.
+      properties:
+        description:
+          description: Description of the operation.
+          type: string
+        operation:
+          description: Short description of the operation.
+          type: string
+        provider:
+          description: Resource provider of the operation.
+          type: string
+        resource:
+          description: Resource for the operation.
+          type: string
+      type: object

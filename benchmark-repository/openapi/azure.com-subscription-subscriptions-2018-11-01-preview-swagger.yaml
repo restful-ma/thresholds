@@ -1,0 +1,280 @@
+openapi: 3.0.0
+info:
+  description: Subscription client provides an interface to create and manage Azure
+    subscriptions programmatically.
+  title: SubscriptionClient
+  version: 2018-11-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/subscription/resource-manager/Microsoft.Subscription/preview/2018-11-01-preview/subscriptions.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: subscription-subscriptions
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Subscription/createSubscription":
+    post:
+      description: The operation to create a new Azure subscription
+      operationId: SubscriptionFactory_CreateSubscription
+      parameters:
+        - description: The name of the Microsoft Customer Agreement billing account for
+            which you want to create the subscription.
+          in: path
+          name: billingAccountName
+          required: true
+          schema:
+            type: string
+          examples:
+            createSubscription:
+              value: 12a6eed9-5d39-4103-a5db-2db1db0a8c67
+        - description: The name of the invoice section in the billing account for which you
+            want to create the subscription.
+          in: path
+          name: invoiceSectionName
+          required: true
+          schema:
+            type: string
+          examples:
+            createSubscription:
+              value: b859d705-1ed7-4769-9d4b-19238e9e8ac2_10_31
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModernSubscriptionCreationParameters"
+        description: The subscription creation parameters.
+        required: true
+      responses:
+        "200":
+          description: Normal response for a successful query. The response body will
+            contain the data that matches the filters specified in the query
+            parameters.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionCreationResult"
+              examples:
+                createSubscription:
+                  $ref: "#/components/examples/createSubscription"
+        "202":
+          description: Accepted. Subscription creation is in progress.
+          headers:
+            Location:
+              description: GET this URL to retrieve the status of the asynchronous
+                operation.
+              schema:
+                type: string
+              example: /providers/Microsoft.Subscription/subscriptionOperations/aeb76128-ebde-4f5a-a9ed-e7bbf2dbc994?api-version=2018-11-01-preview
+            Retry-After:
+              description: The amount of delay to use while the status of the operation is
+                checked. The value is expressed in seconds.
+              schema:
+                type: integer
+              example: 8
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      x-ms-long-running-operation: true
+  "/providers/Microsoft.Subscription/subscriptionOperations/{operationId}":
+    get:
+      description: Get the status of the pending Microsoft.Subscription API operations.
+      operationId: SubscriptionOperation_Get
+      parameters:
+        - description: The operation ID, which can be found from the Location field in the
+            generate recommendation response header.
+          in: path
+          name: operationId
+          required: true
+          schema:
+            type: string
+          examples:
+            getPendingSubscriptionOperations:
+              value: e4b8d068-f574-462a-a76f-6fa0afc613c9
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: Successful completion of the asynchronous operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionCreationResult"
+              examples:
+                getPendingSubscriptionOperations:
+                  $ref: "#/components/examples/getPendingSubscriptionOperations"
+        "202":
+          description: Accepted. Subscription update is in progress.
+          headers:
+            Location:
+              description: The URL where the status of the asynchronous operation can be
+                checked.
+              schema:
+                type: string
+              example: /providers/Microsoft.Subscription/subscriptionOperations/e4b8d068-f574-462a-a76f-6fa0afc613c9?api-version=2018-11-01-preview
+            Retry-After:
+              description: The amount of delay to use while the status of the operation is
+                checked. The value is expressed in seconds.
+              schema:
+                type: integer
+              example: 8
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    createSubscription:
+      value:
+        subscriptionLink: /subscriptions/d0d6ee57-6530-4fca-93a6-b755a070be35
+    getPendingSubscriptionOperations:
+      value:
+        subscriptionLink: /subscriptions/4df8d5c2-1b7e-4dd5-bc61-640704bde633
+  parameters:
+    apiVersionParameter:
+      description: Version of the API to be used with the client request. Current version
+        is 2018-11-01-preview
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        createSubscription:
+          value: 2018-11-01-preview
+        getPendingSubscriptionOperations:
+          value: 2018-11-01-preview
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AdPrincipal:
+      description: Active Directory Principal who’ll get owner access on the new
+        subscription.
+      properties:
+        objectId:
+          description: Object id of the Principal
+          type: string
+      required:
+        - objectId
+    ErrorResponse:
+      description: Describes the format of Error response.
+      properties:
+        code:
+          description: Error code
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          type: string
+      type: object
+    ModernSubscriptionCreationParameters:
+      description: The parameters required to create a new subscription.
+      properties:
+        additionalParameters:
+          additionalProperties:
+            type: object
+          description: Additional, untyped parameters to support custom subscription
+            creation scenarios.
+          type: object
+        billingProfileId:
+          description: The ARM ID of the billing profile for which you want to create the
+            subscription.
+          type: string
+        costCenter:
+          description: If set, the cost center will show up on the Azure usage and charges
+            file.
+          type: string
+        displayName:
+          description: The friendly name of the subscription.
+          type: string
+        managementGroupId:
+          description: The identifier of the management group to which this subscription
+            will be associated.
+          type: string
+        owner:
+          $ref: "#/components/schemas/AdPrincipal"
+        skuId:
+          description: The SKU ID of the Azure plan. Azure plan determines the pricing and
+            service-level agreement of the subscription.  Use 001 for Microsoft
+            Azure Plan and 002 for Microsoft Azure Plan for DevTest.
+          type: string
+      required:
+        - displayName
+        - billingProfileId
+        - skuId
+    Operation:
+      description: REST API operation
+      properties:
+        display:
+          description: The object that represents the operation.
+          properties:
+            operation:
+              description: "Operation type: Read, write, delete, etc."
+              type: string
+            provider:
+              description: "Service provider: Microsoft.Subscription"
+              type: string
+            resource:
+              description: "Resource on which the operation is performed: Profile,
+                endpoint, etc."
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}"
+          type: string
+      type: object
+    OperationListResult:
+      description: Result of the request to list operations. It contains a list of
+        operations and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          type: string
+        value:
+          description: List of operations.
+          items:
+            $ref: "#/components/schemas/Operation"
+          type: array
+    SubscriptionCreationResult:
+      description: The created subscription object.
+      properties:
+        subscriptionLink:
+          description: The link to the new subscription. Use this link to check the status
+            of subscription creation operation.
+          type: string
+    SubscriptionOperation:
+      description: status of the subscription POST operation.
+      properties:
+        id:
+          description: The operation Id.
+          readOnly: true
+          type: string
+        status:
+          description: Status of the pending subscription
+          type: string
+        statusDetail:
+          description: Status Detail of the pending subscription
+          type: string
+    SubscriptionOperationListResult:
+      description: A list of pending subscription operations.
+      properties:
+        value:
+          description: A list of pending SubscriptionOperations
+          items:
+            $ref: "#/components/schemas/SubscriptionOperation"
+          type: array

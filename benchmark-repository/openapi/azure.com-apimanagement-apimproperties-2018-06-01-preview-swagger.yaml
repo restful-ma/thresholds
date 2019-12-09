@@ -1,0 +1,1116 @@
+openapi: 3.0.0
+info:
+  description: Use these REST APIs for performing operations on Property entity associated
+    with your Azure API Management deployment. API Management policies are a
+    powerful capability of the system that allow the publisher to change the
+    behavior of the API through configuration. Policies are a collection of
+    statements that are executed sequentially on the request or response of an
+    API. Policy statements can be constructed using literal text values, policy
+    expressions, and properties. Each API Management service instance has a
+    properties collection of key/value pairs that are global to the service
+    instance. These properties can be used to manage constant string values
+    across all API configuration and policies.
+  title: ApiManagementClient
+  version: 2018-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/resource-manager/Microsoft.ApiManagement/preview/2018-06-01-preview/apimproperties.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: apimanagement-apimproperties
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/properties":
+    get:
+      description: Lists a collection of properties defined within a service instance.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-properties
+      operationId: Property_ListByService
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementListProperties:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementListProperties:
+              value: apimService1
+        - description: "| Field       | Supported operators    | Supported
+            functions               |
+
+            |-------------|------------------------|---------------\
+            --------------------|
+
+            \r
+
+            |tags | ge, le, eq, ne, gt, lt | substringof, contains,
+            startswith, endswith, any, all|
+
+            |displayName | ge, le, eq, ne, gt, lt | substringof,
+            contains, startswith, endswith|\n"
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListProperties:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListProperties:
+              value: subid
+      responses:
+        "200":
+          description: A Collection of the Property entities for the specified API
+            Management service instance.
+          content:
+            application/json:
+              schema:
+                description: Paged Property list representation.
+                properties:
+                  nextLink:
+                    description: Next page link if any.
+                    type: string
+                  value:
+                    description: Page values.
+                    items:
+                      allOf:
+                        - description: The Resource definition.
+                          properties:
+                            id:
+                              description: Resource ID.
+                              readOnly: true
+                              type: string
+                            name:
+                              description: Resource name.
+                              readOnly: true
+                              type: string
+                            type:
+                              description: Resource type for API Management resource.
+                              readOnly: true
+                              type: string
+                          x-ms-azure-resource: true
+                      description: Property details.
+                      properties:
+                        properties:
+                          allOf:
+                            - description: Property Entity Base Parameters set.
+                              properties:
+                                secret:
+                                  description: Determines whether the value is a secret and
+                                    should be encrypted or not. Default value is
+                                    false.
+                                  type: boolean
+                                tags:
+                                  description: Optional tags that when provided can be used
+                                    to filter the property list.
+                                  items:
+                                    type: string
+                                  maxItems: 32
+                                  type: array
+                          description: Property Contract properties.
+                          properties:
+                            displayName:
+                              description: Unique name of Property. It may contain only
+                                letters, digits, period, dash, and underscore
+                                characters.
+                              maxLength: 256
+                              minLength: 1
+                              pattern: ^[A-Za-z0-9-._]+$
+                              type: string
+                            value:
+                              description: Value of the property. Can contain policy
+                                expressions. It may not be empty or consist only
+                                of whitespace.
+                              maxLength: 4096
+                              minLength: 1
+                              type: string
+                          required:
+                            - displayName
+                            - value
+                    type: array
+              examples:
+                ApiManagementListProperties:
+                  $ref: "#/components/examples/ApiManagementListProperties"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Property
+      x-ms-odata: ./definitions.json#/definitions/PropertyContract
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/properties/{propId}":
+    delete:
+      description: Deletes specific property from the API Management service instance.
+      operationId: Property_Delete
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteProperty:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementDeleteProperty:
+              value: apimService1
+        - description: Identifier of the property.
+          in: path
+          name: propId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementDeleteProperty:
+              value: testprop2
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteProperty:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteProperty:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteProperty:
+              value: subid
+      responses:
+        "200":
+          description: Property was successfully deleted.
+        "204":
+          description: Property was successfully deleted.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Property
+    get:
+      description: Gets the details of the property specified by its identifier.
+      operationId: Property_Get
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetProperty:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetProperty:
+              value: apimService1
+        - description: Identifier of the property.
+          in: path
+          name: propId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementGetProperty:
+              value: testarmTemplateproperties2
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetProperty:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetProperty:
+              value: subid
+      responses:
+        "200":
+          description: The response body contains the specified Property entity.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - description: The Resource definition.
+                    properties:
+                      id:
+                        description: Resource ID.
+                        readOnly: true
+                        type: string
+                      name:
+                        description: Resource name.
+                        readOnly: true
+                        type: string
+                      type:
+                        description: Resource type for API Management resource.
+                        readOnly: true
+                        type: string
+                    x-ms-azure-resource: true
+                description: Property details.
+                properties:
+                  properties:
+                    allOf:
+                      - description: Property Entity Base Parameters set.
+                        properties:
+                          secret:
+                            description: Determines whether the value is a secret and
+                              should be encrypted or not. Default value is
+                              false.
+                            type: boolean
+                          tags:
+                            description: Optional tags that when provided can be used to
+                              filter the property list.
+                            items:
+                              type: string
+                            maxItems: 32
+                            type: array
+                    description: Property Contract properties.
+                    properties:
+                      displayName:
+                        description: Unique name of Property. It may contain only letters,
+                          digits, period, dash, and underscore characters.
+                        maxLength: 256
+                        minLength: 1
+                        pattern: ^[A-Za-z0-9-._]+$
+                        type: string
+                      value:
+                        description: Value of the property. Can contain policy expressions.
+                          It may not be empty or consist only of whitespace.
+                        maxLength: 4096
+                        minLength: 1
+                        type: string
+                    required:
+                      - displayName
+                      - value
+              examples:
+                ApiManagementGetProperty:
+                  $ref: "#/components/examples/ApiManagementGetProperty"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Property
+    head:
+      description: Gets the entity state (Etag) version of the property specified by its
+        identifier.
+      operationId: Property_GetEntityTag
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadProperty:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementHeadProperty:
+              value: apimService1
+        - description: Identifier of the property.
+          in: path
+          name: propId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementHeadProperty:
+              value: testarmTemplateproperties2
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadProperty:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadProperty:
+              value: subid
+      responses:
+        "200":
+          description: Specified Property entity exists and current entity state version is
+            present in the ETag header.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Property
+    patch:
+      description: Updates the specific property.
+      operationId: Property_Update
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateProperty:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementUpdateProperty:
+              value: apimService1
+        - description: Identifier of the property.
+          in: path
+          name: propId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementUpdateProperty:
+              value: testprop2
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateProperty:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateProperty:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateProperty:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Property update Parameters.
+              properties:
+                properties:
+                  allOf:
+                    - description: Property Entity Base Parameters set.
+                      properties:
+                        secret:
+                          description: Determines whether the value is a secret and should
+                            be encrypted or not. Default value is false.
+                          type: boolean
+                        tags:
+                          description: Optional tags that when provided can be used to
+                            filter the property list.
+                          items:
+                            type: string
+                          maxItems: 32
+                          type: array
+                  description: Property Contract properties.
+                  properties:
+                    displayName:
+                      description: Unique name of Property. It may contain only letters,
+                        digits, period, dash, and underscore characters.
+                      maxLength: 256
+                      minLength: 1
+                      pattern: ^[A-Za-z0-9-._]+$
+                      type: string
+                    value:
+                      description: Value of the property. Can contain policy expressions.
+                        It may not be empty or consist only of whitespace.
+                      maxLength: 4096
+                      minLength: 1
+                      type: string
+        description: Update parameters.
+        required: true
+      responses:
+        "204":
+          description: Property was successfully updated.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Property
+    put:
+      description: Creates or updates a property.
+      operationId: Property_CreateOrUpdate
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateProperty:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementCreateProperty:
+              value: apimService1
+        - description: Identifier of the property.
+          in: path
+          name: propId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            maxLength: 256
+            pattern: ^[^*#&+:<>?]+$
+          examples:
+            ApiManagementCreateProperty:
+              value: testprop2
+        - description: ETag of the Entity. Not required when creating an entity, but
+            required when updating an entity.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateProperty:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateProperty:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - description: The Resource definition.
+                  properties:
+                    id:
+                      description: Resource ID.
+                      readOnly: true
+                      type: string
+                    name:
+                      description: Resource name.
+                      readOnly: true
+                      type: string
+                    type:
+                      description: Resource type for API Management resource.
+                      readOnly: true
+                      type: string
+                  x-ms-azure-resource: true
+              description: Property details.
+              properties:
+                properties:
+                  allOf:
+                    - description: Property Entity Base Parameters set.
+                      properties:
+                        secret:
+                          description: Determines whether the value is a secret and should
+                            be encrypted or not. Default value is false.
+                          type: boolean
+                        tags:
+                          description: Optional tags that when provided can be used to
+                            filter the property list.
+                          items:
+                            type: string
+                          maxItems: 32
+                          type: array
+                  description: Property Contract properties.
+                  properties:
+                    displayName:
+                      description: Unique name of Property. It may contain only letters,
+                        digits, period, dash, and underscore characters.
+                      maxLength: 256
+                      minLength: 1
+                      pattern: ^[A-Za-z0-9-._]+$
+                      type: string
+                    value:
+                      description: Value of the property. Can contain policy expressions.
+                        It may not be empty or consist only of whitespace.
+                      maxLength: 4096
+                      minLength: 1
+                      type: string
+                  required:
+                    - displayName
+                    - value
+        description: Create parameters.
+        required: true
+      responses:
+        "200":
+          description: Property was successfully updated.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - description: The Resource definition.
+                    properties:
+                      id:
+                        description: Resource ID.
+                        readOnly: true
+                        type: string
+                      name:
+                        description: Resource name.
+                        readOnly: true
+                        type: string
+                      type:
+                        description: Resource type for API Management resource.
+                        readOnly: true
+                        type: string
+                    x-ms-azure-resource: true
+                description: Property details.
+                properties:
+                  properties:
+                    allOf:
+                      - description: Property Entity Base Parameters set.
+                        properties:
+                          secret:
+                            description: Determines whether the value is a secret and
+                              should be encrypted or not. Default value is
+                              false.
+                            type: boolean
+                          tags:
+                            description: Optional tags that when provided can be used to
+                              filter the property list.
+                            items:
+                              type: string
+                            maxItems: 32
+                            type: array
+                    description: Property Contract properties.
+                    properties:
+                      displayName:
+                        description: Unique name of Property. It may contain only letters,
+                          digits, period, dash, and underscore characters.
+                        maxLength: 256
+                        minLength: 1
+                        pattern: ^[A-Za-z0-9-._]+$
+                        type: string
+                      value:
+                        description: Value of the property. Can contain policy expressions.
+                          It may not be empty or consist only of whitespace.
+                        maxLength: 4096
+                        minLength: 1
+                        type: string
+                    required:
+                      - displayName
+                      - value
+              examples:
+                ApiManagementCreateProperty:
+                  $ref: "#/components/examples/ApiManagementCreateProperty"
+        "201":
+          description: Property was successfully created.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - description: The Resource definition.
+                    properties:
+                      id:
+                        description: Resource ID.
+                        readOnly: true
+                        type: string
+                      name:
+                        description: Resource name.
+                        readOnly: true
+                        type: string
+                      type:
+                        description: Resource type for API Management resource.
+                        readOnly: true
+                        type: string
+                    x-ms-azure-resource: true
+                description: Property details.
+                properties:
+                  properties:
+                    allOf:
+                      - description: Property Entity Base Parameters set.
+                        properties:
+                          secret:
+                            description: Determines whether the value is a secret and
+                              should be encrypted or not. Default value is
+                              false.
+                            type: boolean
+                          tags:
+                            description: Optional tags that when provided can be used to
+                              filter the property list.
+                            items:
+                              type: string
+                            maxItems: 32
+                            type: array
+                    description: Property Contract properties.
+                    properties:
+                      displayName:
+                        description: Unique name of Property. It may contain only letters,
+                          digits, period, dash, and underscore characters.
+                        maxLength: 256
+                        minLength: 1
+                        pattern: ^[A-Za-z0-9-._]+$
+                        type: string
+                      value:
+                        description: Value of the property. Can contain policy expressions.
+                          It may not be empty or consist only of whitespace.
+                        maxLength: 4096
+                        minLength: 1
+                        type: string
+                    required:
+                      - displayName
+                      - value
+              examples:
+                ApiManagementCreateProperty:
+                  $ref: "#/components/examples/ApiManagementCreateProperty"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - Property
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ApiManagementListProperties:
+      value:
+        nextLink: ""
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/properties/592f1174cc83890dc4f32686
+            name: 592f1174cc83890dc4f32686
+            properties:
+              displayName: Logger-Credentials-592f1174cc83890dc4f32687
+              secret: true
+              value: Endpoint=sb://testtemplatetesteh.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=...
+            type: Microsoft.ApiManagement/service/properties
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/properties/testarmTemplateproperties2
+            name: testarmTemplateproperties2
+            properties:
+              displayName: propName
+              secret: false
+              tags:
+                - foo
+                - bar
+              value: propValue
+            type: Microsoft.ApiManagement/service/properties
+    ApiManagementGetProperty:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/properties/testarmTemplateproperties2
+        name: testarmTemplateproperties2
+        properties:
+          displayName: propName
+          secret: false
+          tags:
+            - foo
+            - bar
+          value: propValue
+        type: Microsoft.ApiManagement/service/properties
+    ApiManagementCreateProperty:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/properties/testprop2
+        name: testprop2
+        properties:
+          displayName: prop3name
+          secret: true
+          tags:
+            - foo
+            - bar
+          value: propValue
+        type: Microsoft.ApiManagement/service/properties
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account

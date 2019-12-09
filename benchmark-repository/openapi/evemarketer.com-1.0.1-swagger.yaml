@@ -1,0 +1,407 @@
+openapi: 3.0.0
+info:
+  contact:
+    x-twitter: EVEMarketer
+  description: EVEMarketer Marketstat API is almost compatible with EVE-Central's
+    Marketstat API.
+  title: EVEMarketer Marketstat
+  version: 1.0.1
+  x-apisguru-categories:
+    - entertainment
+  x-logo:
+    url: https://twitter.com/EVEMarketer/profile_image?size=original
+  x-origin:
+    - format: swagger
+      url: https://api.evemarketer.com/ec/swagger.yaml
+      version: "2.0"
+  x-providerName: evemarketer.com
+tags:
+  - description: marketstat
+    name: marketstat
+paths:
+  /marketstat:
+    get:
+      parameters:
+        - description: >
+            TypeID. Multiple TypeIDs can be specified in the following format
+            (up to 200 TypeIDs per request):
+
+            typeid=34&typeid=35 or typeid=34,35
+          in: query
+          name: typeid
+          required: true
+          schema:
+            type: array
+            items:
+              format: int32
+              type: integer
+        - description: Limit the statistics to a single region.
+          in: query
+          name: regionlimit
+          schema:
+            type: integer
+            format: int32
+        - description: Limit the statistics to a single solar system.
+          in: query
+          name: usesystem
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Successful Request
+          headers:
+            X-Ratelimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-Ratelimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-Ratelimit-Reset:
+              description: The time at which the current rate limit window resets in UTC
+                epoch seconds.
+              schema:
+                type: integer
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ExecAPI"
+        "400":
+          description: Invalid Parameters
+        "429":
+          description: Rate limit exceeded
+      summary: XML Marketstat
+      tags:
+        - marketstat
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                typeid:
+                  description: >
+                    TypeID. Multiple TypeIDs can be specified in the following
+                    format (up to 200 TypeIDs per request):
+
+                    typeid=34&typeid=35 or typeid=34,35
+                  type: array
+                  items:
+                    format: int32
+                    type: integer
+                regionlimit:
+                  description: Limit the statistics to a single region.
+                  type: integer
+                  format: int32
+                usesystem:
+                  description: Limit the statistics to a single solar system.
+                  type: integer
+                  format: int32
+              required:
+                - typeid
+      responses:
+        "200":
+          description: Successful Request
+          headers:
+            X-Ratelimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-Ratelimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-Ratelimit-Reset:
+              description: The time at which the current rate limit window resets in UTC
+                epoch seconds.
+              schema:
+                type: integer
+          content:
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ExecAPI"
+        "400":
+          description: Invalid Parameters
+        "429":
+          description: Rate limit exceeded
+      summary: XML Marketstat
+      tags:
+        - marketstat
+  /marketstat/json:
+    get:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                typeid:
+                  description: >
+                    TypeID. Multiple TypeIDs can be specified in the following
+                    format (up to 200 TypeIDs per request):
+
+                    typeid=34&typeid=35 or typeid=34,35
+                  type: array
+                  items:
+                    format: int32
+                    type: integer
+                regionlimit:
+                  description: Limit the statistics to a single region.
+                  type: integer
+                  format: int32
+                usesystem:
+                  description: Limit the statistics to a single region.
+                  type: integer
+                  format: int32
+              required:
+                - typeid
+      responses:
+        "200":
+          description: Successful Request
+          headers:
+            X-Ratelimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-Ratelimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-Ratelimit-Reset:
+              description: The time at which the current rate limit window resets in UTC
+                epoch seconds.
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Type"
+                type: array
+        "400":
+          description: Invalid Parameters
+        "429":
+          description: Rate limit exceeded
+      summary: JSON Marketstat
+      tags:
+        - marketstat
+    post:
+      parameters:
+        - description: >
+            TypeID. Multiple TypeIDs can be specified in the following format
+            (up to 200 TypeIDs per request):
+
+            typeid=34&typeid=35 or typeid=34,35
+          in: query
+          name: typeid
+          required: true
+          schema:
+            type: array
+            items:
+              format: int32
+              type: integer
+        - description: Limit the statistics to a single region.
+          in: query
+          name: regionlimit
+          schema:
+            type: integer
+            format: int32
+        - description: Limit the statistics to a single region.
+          in: query
+          name: usesystem
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Successful Request
+          headers:
+            X-Ratelimit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-Ratelimit-Remaining:
+              description: The number of remaining requests in the current period
+              schema:
+                type: integer
+            X-Ratelimit-Reset:
+              description: The time at which the current rate limit window resets in UTC
+                epoch seconds.
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Type"
+                type: array
+        "400":
+          description: Invalid Parameters
+        "429":
+          description: Rate limit exceeded
+      summary: JSON Marketstat
+      tags:
+        - marketstat
+servers:
+  - url: https://api.evemarketer.com/ec
+components:
+  schemas:
+    ExecAPI:
+      properties:
+        marketstat:
+          $ref: "#/components/schemas/MarketStatXML"
+        method:
+          example: marketstat_xml
+          type: string
+          xml:
+            attribute: true
+        version:
+          example: "2.0"
+          type: string
+          xml:
+            attribute: true
+      type: object
+    ForQuery:
+      properties:
+        bid:
+          description: is buy?
+          type: boolean
+        hours:
+          description: always 0
+          format: int32
+          type: integer
+        minq:
+          description: always 0
+          format: int32
+          type: integer
+        regions:
+          description: Region IDs
+          items:
+            example: 10000002
+            format: int32
+            type: integer
+          type: array
+        systems:
+          description: System IDs
+          items:
+            format: int32
+            type: integer
+          type: array
+        types:
+          description: Type IDs
+          items:
+            example: 44992
+            format: int32
+            type: integer
+          type: array
+      type: object
+    MarketStatXML:
+      items:
+        properties:
+          buy:
+            $ref: "#/components/schemas/TypeStatXML"
+          sell:
+            $ref: "#/components/schemas/TypeStatXML"
+        type: object
+      type: array
+    Type:
+      properties:
+        buy:
+          $ref: "#/components/schemas/TypeStat"
+        sell:
+          $ref: "#/components/schemas/TypeStat"
+      type: object
+    TypeStat:
+      properties:
+        avg:
+          description: Average Price
+          example: 3352708.11
+          format: double
+          type: number
+        fivePercent:
+          example: 2949353.31
+          format: double
+          type: number
+        forQuery:
+          $ref: "#/components/schemas/ForQuery"
+        generated:
+          description: Generated at (UNIX Timestamp msec)
+          example: 1499280224508
+          format: int64
+          type: integer
+        highToLow:
+          type: boolean
+        max:
+          example: 10000000
+          format: double
+          type: number
+        median:
+          description: Median Price
+          example: 3094978.97
+          format: double
+          type: number
+        min:
+          example: 2601400.03
+          format: double
+          type: number
+        stdDev:
+          description: Standard Deviation
+          example: 877391.25
+          format: double
+          type: number
+        variance:
+          example: 769815422537.24
+          format: double
+          type: number
+        volume:
+          description: Order Volume
+          example: 963208
+          format: int64
+          type: integer
+        wavg:
+          description: Weighted Average Price
+          example: 3204519.59
+          format: double
+          type: number
+      type: object
+    TypeStatXML:
+      properties:
+        avg:
+          description: Weighted Average Price
+          example: 3204519.59
+          format: double
+          type: number
+        max:
+          description: Maximum Price
+          example: 10000000
+          format: double
+          type: number
+        median:
+          description: Median Price
+          example: 3094978.97
+          format: double
+          type: number
+        min:
+          description: Minimum Price
+          example: 2601400.03
+          format: double
+          type: number
+        percentile:
+          description: 5% Price
+          example: 2949353.31
+          format: double
+          type: number
+        stddev:
+          description: Standard Deviation
+          example: 877391.25
+          format: double
+          type: number
+        volume:
+          description: Order Volume
+          example: 963208
+          format: int64
+          type: integer
+      type: object

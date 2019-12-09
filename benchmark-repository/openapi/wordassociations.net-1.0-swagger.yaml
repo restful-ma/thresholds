@@ -1,0 +1,353 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: contact@wordassociations.net
+  description: The Word Associations Network API allows developers to embed the ability to
+    find associations for a word or phrase into their mobile apps or web
+    services. Words are grouped by semantics, meaning, and psychological
+    perception. The Word Associations Network API currently supports English,
+    French, Spanish, German, Italian, Portuguese, and Russian vocabulary. Please
+    [register and subscribe](https://api.wordassociations.net/subscriptions/) to
+    one of available tariff plans to get a valid API key.
+  termsOfService: https://wordassociations.net/en/api
+  title: Word Associations
+  version: "1.0"
+  x-apisguru-categories:
+    - text
+  x-logo:
+    backgroundColor: "#FFFFFF"
+    url: https://wordassociations.net/en/images/network.png
+  x-origin:
+    - format: swagger
+      url: https://api.wordassociations.net/documentation/swagger.json
+      version: "2.0"
+  x-providerName: wordassociations.net
+security:
+  - internalApiKey: []
+paths:
+  /json/search:
+    get:
+      description: |
+        Gets associations with the given word or phrase.
+      parameters:
+        - description: >
+            Word or phrase to find associations with.
+
+            Tip. You can use multiple parameters 'text' in a request (from 1 to 10 inclusive). This way you can get associations for several input words or phrases in one response.
+
+            Restriction: regardless of the size of the text association lookup is always performed by the first 10 words of the text.
+          in: query
+          name: text
+          required: true
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+            minItems: 1
+            maxItems: 10
+        - description: |
+            Query language. Use language code for the language of the text:
+            * de - German;
+            * en - English;
+            * es - Spanish;
+            * fr - French;
+            * it - Italian;
+            * pt - Portuguese;
+            * ru - Russian;
+          in: query
+          name: lang
+          required: true
+          schema:
+            type: string
+            enum:
+              - de
+              - en
+              - es
+              - fr
+              - it
+              - pt
+              - ru
+        - description: >
+            Type of result.
+
+            Possible values: 
+
+            * stimulus - an input data (the text parameter) is considered as a response word. The service returns a list of stimuli words, which evoke a given response word;
+
+            * response - an input data (the text parameter) is considered as a stimulus word. The service returns a list of response words, which come to mind for a given stimulus word.
+          in: query
+          name: type
+          required: false
+          schema:
+            type: string
+            enum:
+              - stimulus
+              - response
+            default: stimulus
+        - description: >
+            Maximum number of results to return.
+
+            Allows to limit the number of results (associations) in response.
+
+            The value of this parameter is an integer number from 1 to 300 inclusive.
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 300
+            default: 50
+        - description: >
+            Parts of speech to return.
+
+            Allows to limit results by specified parts of speech. The value of this parameter is a list of parts of speech separated by comma.
+
+            The following parts of speech codes are supported:
+
+            * noun
+
+            * adjective
+
+            * verb
+
+            * adverb
+          in: query
+          name: pos
+          required: false
+          schema:
+            type: array
+            items:
+              enum:
+                - noun
+                - adjective
+                - verb
+                - adverb
+              type: string
+            default:
+              - noun
+              - adjective
+              - verb
+              - adverb
+        - description: |
+            Indentation switch for pretty printing of JSON response.
+            Allows to either turn on or off space indentation for a response.
+            The following values are allowed:
+            * yes - turns indentation with spaces on;
+            * no - turn indentation with spaces off;
+          in: query
+          name: indent
+          required: false
+          schema:
+            type: string
+            enum:
+              - yes
+              - no
+            default: yes
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Body"
+        "401":
+          description: Invalid API key
+        "429":
+          description: The monthly limit on the number of requests is exceeded
+        "501":
+          description: The specified language is not supported
+    post:
+      description: |
+        Gets associations with the given word or phrase.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                text:
+                  description: >
+                    Word or phrase to find associations with.
+
+                    Tip. You can use multiple parameters 'text' in a request (from 1 to 10 inclusive). This way you can get associations for several input words or phrases in one response.
+
+                    Restriction: regardless of the size of the text association lookup is always performed by the first 10 words of the text.
+                  type: array
+                  minItems: 1
+                  maxItems: 10
+                  items:
+                    type: string
+                lang:
+                  description: >
+                    Query language. Use language code for the language of the
+                    text:
+
+                    * de - German;
+
+                    * en - English;
+
+                    * es - Spanish;
+
+                    * fr - French;
+
+                    * it - Italian;
+
+                    * pt - Portuguese;
+
+                    * ru - Russian;
+                  type: string
+                  enum:
+                    - de
+                    - en
+                    - es
+                    - fr
+                    - it
+                    - pt
+                    - ru
+                type:
+                  description: >
+                    Type of result.
+
+                    Possible values: 
+
+                    * stimulus - an input data (the text parameter) is considered as a response word. The service returns a list of stimuli words, which evoke a given response word;
+
+                    * response - an input data (the text parameter) is considered as a stimulus word. The service returns a list of response words, which come to mind for a given stimulus word.
+                  type: string
+                  enum:
+                    - stimulus
+                    - response
+                  default: stimulus
+                limit:
+                  description: >
+                    Maximum number of results to return.
+
+                    Allows to limit the number of results (associations) in response.
+
+                    The value of this parameter is an integer number from 1 to 300 inclusive.
+                  type: integer
+                  minimum: 1
+                  maximum: 300
+                  default: 50
+                pos:
+                  description: >
+                    Parts of speech to return.
+
+                    Allows to limit results by specified parts of speech. The value of this parameter is a list of parts of speech separated by comma.
+
+                    The following parts of speech codes are supported:
+
+                    * noun
+
+                    * adjective
+
+                    * verb
+
+                    * adverb
+                  type: array
+                  default:
+                    - noun
+                    - adjective
+                    - verb
+                    - adverb
+                  items:
+                    enum:
+                      - noun
+                      - adjective
+                      - verb
+                      - adverb
+                    type: string
+                indent:
+                  description: >
+                    Indentation switch for pretty printing of JSON response.
+
+                    Allows to either turn on or off space indentation for a response.
+
+                    The following values are allowed:
+
+                    * yes - turns indentation with spaces on;
+
+                    * no - turn indentation with spaces off;
+                  type: string
+                  enum:
+                    - yes
+                    - no
+                  default: yes
+              required:
+                - text
+                - lang
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Body"
+        "401":
+          description: Invalid API key
+        "429":
+          description: The monthly limit on the number of requests is exceeded
+        "501":
+          description: The specified language is not supported
+servers:
+  - url: https://api.wordassociations.net/associations/v1.0
+components:
+  securitySchemes:
+    internalApiKey:
+      description: API key. Please register and subscribe to one of available tariff plans
+        to get a valid API key https://api.wordassociations.net/subscriptions/.
+      in: query
+      name: apikey
+      type: apiKey
+  schemas:
+    Body:
+      properties:
+        code:
+          format: int32
+          type: integer
+        request:
+          $ref: "#/components/schemas/Request"
+        response:
+          items:
+            $ref: "#/components/schemas/Response"
+          type: array
+        version:
+          type: string
+      type: object
+    Item:
+      properties:
+        item:
+          type: string
+        pos:
+          type: string
+        weight:
+          type: number
+      type: object
+    Request:
+      properties:
+        indent:
+          type: string
+        lang:
+          type: string
+        limit:
+          type: integer
+        pos:
+          type: string
+        text:
+          items:
+            type: string
+          type: array
+        type:
+          type: string
+      type: object
+    Response:
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/Item"
+          type: array
+        text:
+          type: string
+      type: object

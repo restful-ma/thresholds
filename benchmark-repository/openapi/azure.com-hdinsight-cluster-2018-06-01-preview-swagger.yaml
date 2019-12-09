@@ -1,0 +1,1702 @@
+openapi: 3.0.0
+info:
+  description: The HDInsight Management Client.
+  title: HDInsightManagementClient
+  version: 2018-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2018-06-01-preview/cluster.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: hdinsight-cluster
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusters":
+    get:
+      description: Lists all the HDInsight clusters under the subscription.
+      operationId: Clusters_List
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClusterListResult"
+              examples:
+                Get All Hadoop on Linux clusters:
+                  $ref: "#/components/examples/Get_All_Hadoop_on_Linux_clusters"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Clusters
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters":
+    get:
+      description: Lists the HDInsight clusters in a resource group.
+      operationId: Clusters_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClusterListResult"
+              examples:
+                Get All Hadoop on Linux clusters in a resource group:
+                  $ref: "#/components/examples/Get_All_Hadoop_on_Linux_clusters_in_\
+                    a_resource_group"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Clusters
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}":
+    delete:
+      description: Deletes the specified HDInsight cluster.
+      operationId: Clusters_Delete
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Ok response definition.
+        "202":
+          description: Accepted response definition.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Clusters
+      x-ms-long-running-operation: true
+    get:
+      description: Gets the specified cluster.
+      operationId: Clusters_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cluster"
+              examples:
+                Get Hadoop on Linux cluster:
+                  $ref: "#/components/examples/Get_Hadoop_on_Linux_cluster"
+                Get Spark on Linux cluster:
+                  $ref: "#/components/examples/Get_Spark_on_Linux_cluster"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Clusters
+    patch:
+      description: Patch HDInsight cluster with the specified parameters.
+      operationId: Clusters_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClusterPatchParameters"
+        description: The cluster patch request.
+        required: true
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cluster"
+              examples:
+                Patch HDInsight Linux clusters:
+                  $ref: "#/components/examples/Patch_HDInsight_Linux_clusters"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Clusters
+    put:
+      description: Creates a new HDInsight cluster with the specified parameters.
+      operationId: Clusters_Create
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClusterCreateParametersExtended"
+        description: The cluster create request.
+        required: true
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cluster"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Clusters
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/getGatewaySettings":
+    post:
+      description: Gets the gateway settings for the specified cluster.
+      operationId: Clusters_GetGatewaySettings
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GatewaySettings"
+              examples:
+                Get HTTP settings:
+                  $ref: "#/components/examples/Get_HTTP_settings"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Clusters
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/roles/{roleName}/resize":
+    post:
+      description: Resizes the specified HDInsight cluster to the specified size.
+      operationId: Clusters_Resize
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - description: The constant value for the roleName
+          in: path
+          name: roleName
+          required: true
+          x-ms-enum:
+            modelAsString: true
+            name: RoleName
+          schema:
+            type: string
+            enum:
+              - workernode
+          examples:
+            Resize the worker nodes for a Hadoop on Linux cluster:
+              value: workernode
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClusterResizeParameters"
+        description: The parameters for the resize operation.
+        required: true
+      responses:
+        "200":
+          description: OK response definition.
+        "202":
+          description: Accepted response definition.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Clusters
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/rotatediskencryptionkey":
+    post:
+      description: Rotate disk encryption key of the specified HDInsight cluster.
+      operationId: Clusters_RotateDiskEncryptionKey
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClusterDiskEncryptionParameters"
+        description: The parameters for the disk encryption operation.
+        required: true
+      responses:
+        "200":
+          description: OK response definition.
+        "202":
+          description: Accepted response definition.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Clusters
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/updateGatewaySettings":
+    post:
+      description: Configures the gateway settings on the specified cluster.
+      operationId: Clusters_UpdateGatewaySettings
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGatewaySettingsParameters"
+        description: The cluster configurations.
+        required: true
+      responses:
+        "200":
+          description: OK response definition.
+        "202":
+          description: Accepted response definition
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Describes the format of Error response.
+                properties:
+                  code:
+                    description: Error code
+                    type: string
+                  message:
+                    description: Error message indicating why the operation failed.
+                    type: string
+                type: object
+      tags:
+        - Clusters
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_All_Hadoop_on_Linux_clusters:
+      value:
+        value:
+          - etag: f0212a39-b827-45e0-9ffa-4f5232e58851
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HDInsight/clusters/cluster1
+            location: West US
+            name: cluster1
+            properties:
+              clusterDefinition:
+                blueprint: https://blueprints.azurehdinsight.net/hadoop-3.5.1000.0.9243893.json
+                kind: hadoop
+              clusterState: Running
+              clusterVersion: 3.5.1000.0
+              computeProfile:
+                roles:
+                  - hardwareProfile:
+                      vmSize: Standard_D3_V2
+                    name: headnode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 2
+                  - hardwareProfile:
+                      vmSize: Standard_D3_V2
+                    name: workernode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 4
+                  - hardwareProfile:
+                      vmSize: Medium
+                    name: zookeepernode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 3
+              connectivityEndpoints:
+                - location: cluster1-ssh.azurehdinsight.net
+                  name: SSH
+                  port: 22
+                  protocol: TCP
+                - location: cluster1.azurehdinsight.net
+                  name: HTTPS
+                  port: 443
+                  protocol: TCP
+              createdDate: 2017-01-11T18:58:26.187
+              osType: Linux
+              provisioningState: Succeeded
+              quotaInfo:
+                coresUsed: 24
+              tier: Standard
+            tags:
+              key1: val1
+            type: Microsoft.HDInsight/clusters
+          - etag: f0212a39-b827-45e0-9ffa-4f5232e58851
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HDInsight/clusters/cluster2
+            location: West US
+            name: cluster2
+            properties:
+              clusterDefinition:
+                blueprint: https://blueprints.azurehdinsight.net/hadoop-3.5.1000.0.9243893.json
+                kind: hadoop
+              clusterState: Running
+              clusterVersion: 3.5.1000.0
+              computeProfile:
+                roles:
+                  - hardwareProfile:
+                      vmSize: Standard_D3_V2
+                    name: headnode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 2
+                  - hardwareProfile:
+                      vmSize: Standard_D3_V2
+                    name: workernode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 4
+                  - hardwareProfile:
+                      vmSize: Medium
+                    name: zookeepernode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 3
+              connectivityEndpoints:
+                - location: cluster2-ssh.azurehdinsight.net
+                  name: SSH
+                  port: 22
+                  protocol: TCP
+                - location: cluster2.azurehdinsight.net
+                  name: HTTPS
+                  port: 443
+                  protocol: TCP
+              createdDate: 2017-01-11T18:58:26.187
+              osType: Linux
+              provisioningState: Succeeded
+              quotaInfo:
+                coresUsed: 24
+              tier: Standard
+            tags:
+              key1: val1
+            type: Microsoft.HDInsight/clusters
+    Get_All_Hadoop_on_Linux_clusters_in_a_resource_group:
+      value:
+        value:
+          - etag: f0212a39-b827-45e0-9ffa-4f5232e58851
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HDInsight/clusters/cluster1
+            location: West US
+            name: cluster1
+            properties:
+              clusterDefinition:
+                blueprint: https://blueprints.azurehdinsight.net/hadoop-3.5.1000.0.9243893.json
+                kind: hadoop
+              clusterState: Running
+              clusterVersion: 3.5.1000.0
+              computeProfile:
+                roles:
+                  - hardwareProfile:
+                      vmSize: Standard_D3_V2
+                    name: headnode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 2
+                  - hardwareProfile:
+                      vmSize: Standard_D3_V2
+                    name: workernode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 4
+                  - hardwareProfile:
+                      vmSize: Medium
+                    name: zookeepernode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 3
+              connectivityEndpoints:
+                - location: cluster1-ssh.azurehdinsight.net
+                  name: SSH
+                  port: 22
+                  protocol: TCP
+                - location: cluster1.azurehdinsight.net
+                  name: HTTPS
+                  port: 443
+                  protocol: TCP
+              createdDate: 2017-01-11T18:58:26.187
+              osType: Linux
+              provisioningState: Succeeded
+              quotaInfo:
+                coresUsed: 24
+              tier: Standard
+            tags:
+              key1: val1
+            type: Microsoft.HDInsight/clusters
+          - etag: f0212a39-b827-45e0-9ffa-4f5232e58851
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HDInsight/clusters/cluster2
+            location: West US
+            name: cluster2
+            properties:
+              clusterDefinition:
+                blueprint: https://blueprints.azurehdinsight.net/hadoop-3.5.1000.0.9243893.json
+                kind: hadoop
+              clusterState: Running
+              clusterVersion: 3.5.1000.0
+              computeProfile:
+                roles:
+                  - hardwareProfile:
+                      vmSize: Standard_D3_V2
+                    name: headnode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 2
+                  - hardwareProfile:
+                      vmSize: Standard_D3_V2
+                    name: workernode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 4
+                  - hardwareProfile:
+                      vmSize: Medium
+                    name: zookeepernode
+                    osProfile:
+                      linuxOperatingSystemProfile:
+                        username: pulkitssh
+                    targetInstanceCount: 3
+              connectivityEndpoints:
+                - location: cluster2-ssh.azurehdinsight.net
+                  name: SSH
+                  port: 22
+                  protocol: TCP
+                - location: cluster2.azurehdinsight.net
+                  name: HTTPS
+                  port: 443
+                  protocol: TCP
+              createdDate: 2017-01-11T18:58:26.187
+              osType: Linux
+              provisioningState: Succeeded
+              quotaInfo:
+                coresUsed: 24
+              tier: Standard
+            tags:
+              key1: val1
+            type: Microsoft.HDInsight/clusters
+    Get_Hadoop_on_Linux_cluster:
+      value:
+        etag: f0212a39-b827-45e0-9ffa-4f5232e58851
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HDInsight/clusters/cluster1
+        location: West US
+        name: cluster1
+        properties:
+          clusterDefinition:
+            blueprint: https://blueprints.azurehdinsight.net/hadoop-3.5.1000.0.9243893.json
+            kind: hadoop
+          clusterState: Running
+          clusterVersion: 3.5.1000.0
+          computeProfile:
+            roles:
+              - hardwareProfile:
+                  vmSize: Standard_D3_V2
+                name: headnode
+                osProfile:
+                  linuxOperatingSystemProfile:
+                    username: sshuser
+                targetInstanceCount: 2
+              - hardwareProfile:
+                  vmSize: Standard_D3_V2
+                name: workernode
+                osProfile:
+                  linuxOperatingSystemProfile:
+                    username: sshuser
+                targetInstanceCount: 4
+              - hardwareProfile:
+                  vmSize: Medium
+                name: zookeepernode
+                osProfile:
+                  linuxOperatingSystemProfile:
+                    username: sshuser
+                targetInstanceCount: 3
+          connectivityEndpoints:
+            - location: cluster1-ssh.azurehdinsight.net
+              name: SSH
+              port: 22
+              protocol: TCP
+            - location: cluster1.azurehdinsight.net
+              name: HTTPS
+              port: 443
+              protocol: TCP
+          createdDate: 2017-01-11T18:58:26.187
+          osType: Linux
+          provisioningState: Succeeded
+          quotaInfo:
+            coresUsed: 24
+          tier: Standard
+        tags:
+          key1: val1
+        type: Microsoft.HDInsight/clusters
+    Get_Spark_on_Linux_cluster:
+      value:
+        etag: 4cd8b5a9-ca9c-4239-9e5b-3916032e994c
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HDInsight/clusters/cluster1
+        location: West US
+        name: cluster1
+        properties:
+          clusterDefinition:
+            blueprint: https://blueprints.azurehdinsight.net/spark-3.5.1000.0.9625065.json
+            componentVersion:
+              Spark: "2.0"
+            kind: SPARK
+          clusterState: Running
+          clusterVersion: 3.5.1000.0
+          computeProfile:
+            roles:
+              - hardwareProfile:
+                  vmSize: Standard_D12_V2
+                name: headnode
+                osProfile:
+                  linuxOperatingSystemProfile:
+                    username: sshuser
+                targetInstanceCount: 2
+              - hardwareProfile:
+                  vmSize: Standard_D4_V2
+                name: workernode
+                osProfile:
+                  linuxOperatingSystemProfile:
+                    username: sshuser
+                targetInstanceCount: 4
+              - hardwareProfile:
+                  vmSize: Medium
+                name: zookeepernode
+                osProfile:
+                  linuxOperatingSystemProfile:
+                    username: sshuser
+                targetInstanceCount: 3
+          connectivityEndpoints:
+            - location: cluster1-ssh.azurehdinsight.net
+              name: SSH
+              port: 22
+              protocol: TCP
+            - location: cluster1.azurehdinsight.net
+              name: HTTPS
+              port: 443
+              protocol: TCP
+          createdDate: 2017-03-03T08:35:07.323
+          osType: Linux
+          provisioningState: Succeeded
+          quotaInfo:
+            coresUsed: 40
+          tier: Standard
+        tags:
+          key1: val1
+        type: Microsoft.HDInsight/clusters
+    Patch_HDInsight_Linux_clusters:
+      value:
+        etag: f0212a39-b827-45e0-9ffa-4f5232e58851
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HDInsight/clusters/cluster1
+        location: West US
+        name: cluster1
+        properties:
+          clusterDefinition:
+            blueprint: https://blueprints.azurehdinsight.net/hadoop-3.5.1000.0.9243893.json
+            kind: hadoop
+          clusterState: Running
+          clusterVersion: 3.5.1000.0
+          computeProfile:
+            roles:
+              - hardwareProfile:
+                  vmSize: Standard_D3_V2
+                name: headnode
+                osProfile:
+                  linuxOperatingSystemProfile:
+                    username: sshuser
+                targetInstanceCount: 2
+              - hardwareProfile:
+                  vmSize: Standard_D3_V2
+                name: workernode
+                osProfile:
+                  linuxOperatingSystemProfile:
+                    username: sshuser
+                targetInstanceCount: 4
+              - hardwareProfile:
+                  vmSize: Medium
+                name: zookeepernode
+                osProfile:
+                  linuxOperatingSystemProfile:
+                    username: sshuser
+                targetInstanceCount: 3
+          connectivityEndpoints:
+            - location: cluster1-ssh.azurehdinsight.net
+              name: SSH
+              port: 22
+              protocol: TCP
+            - location: cluster1.azurehdinsight.net
+              name: HTTPS
+              port: 443
+              protocol: TCP
+          createdDate: 2017-01-11T18:58:26.187
+          osType: Linux
+          provisioningState: Succeeded
+          quotaInfo:
+            coresUsed: 24
+          tier: Standard
+        tags:
+          key1: val1
+          key2: val2
+        type: Microsoft.HDInsight/clusters
+    Get_HTTP_settings:
+      value:
+        restAuthCredential.isEnabled: "true"
+        restAuthCredential.password: "**********"
+        restAuthCredential.username: hadoop
+  parameters:
+    ApiVersionParameter:
+      description: The HDInsight client API Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Get All Hadoop on Linux clusters:
+          value: 2018-06-01-preview
+        Get All Hadoop on Linux clusters in a resource group:
+          value: 2018-06-01-preview
+        Delete Hadoop on Linux cluster:
+          value: 2018-06-01-preview
+        Get Hadoop on Linux cluster:
+          value: 2018-06-01-preview
+        Get Spark on Linux cluster:
+          value: 2018-06-01-preview
+        Patch HDInsight Linux clusters:
+          value: 2018-06-01-preview
+        Create HDInsight cluster with Autoscale configuration:
+          value: 2018-06-01-preview
+        Create Hadoop cluster with Azure Data Lake Storage Gen 2:
+          value: 2018-06-01-preview
+        Create Hadoop on Linux cluster with SSH password:
+          value: 2018-06-01-preview
+        Create Hadoop on Linux cluster with SSH public key:
+          value: 2018-06-01-preview
+        Create Secure Hadoop cluster:
+          value: 2018-06-01-preview
+        Create Spark on Linux Cluster with SSH password:
+          value: 2018-06-01-preview
+        Get HTTP settings:
+          value: 2018-06-01-preview
+        Resize the worker nodes for a Hadoop on Linux cluster:
+          value: 2018-06-01-preview
+        Rotate disk encryption key of the specified HDInsight cluster:
+          value: 2018-06-01-preview
+        Enable HTTP connectivity:
+          value: 2018-06-01-preview
+    ClusterNameParameter:
+      description: The name of the cluster.
+      in: path
+      name: clusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Delete Hadoop on Linux cluster:
+          value: cluster1
+        Get Hadoop on Linux cluster:
+          value: cluster1
+        Get Spark on Linux cluster:
+          value: cluster1
+        Patch HDInsight Linux clusters:
+          value: cluster1
+        Create HDInsight cluster with Autoscale configuration:
+          value: cluster1
+        Create Hadoop cluster with Azure Data Lake Storage Gen 2:
+          value: cluster1
+        Create Hadoop on Linux cluster with SSH password:
+          value: cluster1
+        Create Hadoop on Linux cluster with SSH public key:
+          value: cluster1
+        Create Secure Hadoop cluster:
+          value: cluster1
+        Create Spark on Linux Cluster with SSH password:
+          value: cluster1
+        Get HTTP settings:
+          value: cluster1
+        Resize the worker nodes for a Hadoop on Linux cluster:
+          value: cluster1
+        Rotate disk encryption key of the specified HDInsight cluster:
+          value: cluster1
+        Enable HTTP connectivity:
+          value: cluster1
+    ResourceGroupNameParameter:
+      description: The name of the resource group.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get All Hadoop on Linux clusters in a resource group:
+          value: rg1
+        Delete Hadoop on Linux cluster:
+          value: rg1
+        Get Hadoop on Linux cluster:
+          value: rg1
+        Get Spark on Linux cluster:
+          value: rg1
+        Patch HDInsight Linux clusters:
+          value: rg1
+        Create HDInsight cluster with Autoscale configuration:
+          value: rg1
+        Create Hadoop cluster with Azure Data Lake Storage Gen 2:
+          value: rg1
+        Create Hadoop on Linux cluster with SSH password:
+          value: rg1
+        Create Hadoop on Linux cluster with SSH public key:
+          value: rg1
+        Create Secure Hadoop cluster:
+          value: rg1
+        Create Spark on Linux Cluster with SSH password:
+          value: rg1
+        Get HTTP settings:
+          value: rg1
+        Resize the worker nodes for a Hadoop on Linux cluster:
+          value: rg1
+        Rotate disk encryption key of the specified HDInsight cluster:
+          value: rg1
+        Enable HTTP connectivity:
+          value: rg1
+    SubscriptionIdParameter:
+      description: The subscription credentials which uniquely identify Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Get All Hadoop on Linux clusters:
+          value: subid
+        Get All Hadoop on Linux clusters in a resource group:
+          value: subid
+        Delete Hadoop on Linux cluster:
+          value: subid
+        Get Hadoop on Linux cluster:
+          value: subid
+        Get Spark on Linux cluster:
+          value: subid
+        Patch HDInsight Linux clusters:
+          value: subid
+        Create HDInsight cluster with Autoscale configuration:
+          value: subid
+        Create Hadoop cluster with Azure Data Lake Storage Gen 2:
+          value: subid
+        Create Hadoop on Linux cluster with SSH password:
+          value: subid
+        Create Hadoop on Linux cluster with SSH public key:
+          value: subid
+        Create Secure Hadoop cluster:
+          value: subid
+        Create Spark on Linux Cluster with SSH password:
+          value: subid
+        Get HTTP settings:
+          value: subid
+        Resize the worker nodes for a Hadoop on Linux cluster:
+          value: subid
+        Rotate disk encryption key of the specified HDInsight cluster:
+          value: subid
+        Enable HTTP connectivity:
+          value: subid
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Autoscale:
+      description: The autoscale request parameters
+      properties:
+        capacity:
+          $ref: "#/components/schemas/AutoscaleCapacity"
+        recurrence:
+          $ref: "#/components/schemas/AutoscaleRecurrence"
+    AutoscaleCapacity:
+      description: The load-based autoscale request parameters
+      properties:
+        maxInstanceCount:
+          description: The maximum instance count of the cluster
+          format: int32
+          type: integer
+        minInstanceCount:
+          description: The minimum instance count of the cluster
+          format: int32
+          type: integer
+    AutoscaleRecurrence:
+      description: Schedule-based autoscale request parameters
+      properties:
+        schedule:
+          description: Array of schedule-based autoscale rules
+          items:
+            $ref: "#/components/schemas/AutoscaleSchedule"
+          type: array
+        timeZone:
+          description: The time zone for the autoscale schedule times
+          type: string
+    AutoscaleSchedule:
+      description: Parameters for a schedule-based autoscale rule, consisting of an array
+        of days + a time and capacity
+      properties:
+        days:
+          description: Days of the week for a schedule-based autoscale rule
+          items:
+            enum:
+              - Monday
+              - Tuesday
+              - Wednesday
+              - Thursday
+              - Friday
+              - Saturday
+              - Sunday
+            type: string
+            x-ms-enum:
+              modelAsString: false
+              name: DaysOfWeek
+          type: array
+        timeAndCapacity:
+          $ref: "#/components/schemas/AutoscaleTimeAndCapacity"
+    AutoscaleTimeAndCapacity:
+      description: Time and capacity request parameters
+      properties:
+        maxInstanceCount:
+          description: The maximum instance count of the cluster
+          format: int32
+          type: integer
+        minInstanceCount:
+          description: The minimum instance count of the cluster
+          format: int32
+          type: integer
+        time:
+          description: 24-hour time in the form xx:xx
+          type: string
+    Cluster:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      description: The HDInsight cluster.
+      properties:
+        etag:
+          description: The ETag for the resource
+          type: string
+        identity:
+          $ref: "#/components/schemas/ClusterIdentity"
+        properties:
+          $ref: "#/components/schemas/ClusterGetProperties"
+    ClusterCreateParametersExtended:
+      description: The CreateCluster request parameters.
+      properties:
+        identity:
+          $ref: "#/components/schemas/ClusterIdentity"
+        location:
+          description: The location of the cluster.
+          type: string
+        properties:
+          $ref: "#/components/schemas/ClusterCreateProperties"
+        tags:
+          additionalProperties:
+            type: string
+          description: The resource tags.
+          type: object
+    ClusterCreateProperties:
+      description: The cluster create parameters.
+      properties:
+        clusterDefinition:
+          $ref: "#/components/schemas/ClusterDefinition"
+        clusterVersion:
+          description: The version of the cluster.
+          type: string
+        computeProfile:
+          $ref: "#/components/schemas/ComputeProfile"
+        diskEncryptionProperties:
+          $ref: "#/components/schemas/DiskEncryptionProperties"
+        osType:
+          description: The type of operating system.
+          enum:
+            - Windows
+            - Linux
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: OSType
+        securityProfile:
+          $ref: "#/components/schemas/SecurityProfile"
+        storageProfile:
+          $ref: "#/components/schemas/StorageProfile"
+        tier:
+          description: The cluster tier.
+          enum:
+            - Standard
+            - Premium
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Tier
+    ClusterDefinition:
+      description: The cluster definition.
+      properties:
+        blueprint:
+          description: The link to the blueprint.
+          type: string
+        componentVersion:
+          additionalProperties:
+            type: string
+          description: The versions of different services in the cluster.
+          type: object
+        configurations:
+          description: The cluster configurations.
+          type: object
+        kind:
+          description: The type of cluster.
+          type: string
+    ClusterDiskEncryptionParameters:
+      description: The Disk Encryption Cluster request parameters.
+      properties:
+        keyName:
+          description: Key name that is used for enabling disk encryption.
+          type: string
+        keyVersion:
+          description: Specific key version that is used for enabling disk encryption.
+          type: string
+        vaultUri:
+          description: Base key vault URI where the customers key is located eg.
+            https://myvault.vault.azure.net
+          type: string
+    ClusterGetProperties:
+      description: The properties of cluster.
+      properties:
+        clusterDefinition:
+          $ref: "#/components/schemas/ClusterDefinition"
+        clusterState:
+          description: The state of the cluster.
+          type: string
+        clusterVersion:
+          description: The version of the cluster.
+          type: string
+        computeProfile:
+          $ref: "#/components/schemas/ComputeProfile"
+        connectivityEndpoints:
+          description: The list of connectivity endpoints.
+          items:
+            $ref: "#/components/schemas/ConnectivityEndpoint"
+          type: array
+        createdDate:
+          description: The date on which the cluster was created.
+          type: string
+        diskEncryptionProperties:
+          $ref: "#/components/schemas/DiskEncryptionProperties"
+        errors:
+          description: The list of errors.
+          items:
+            $ref: "#/components/schemas/Errors"
+          type: array
+        osType:
+          description: The type of operating system.
+          enum:
+            - Windows
+            - Linux
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: OSType
+        provisioningState:
+          description: The provisioning state, which only appears in the response.
+          enum:
+            - InProgress
+            - Failed
+            - Succeeded
+            - Canceled
+            - Deleting
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: HDInsightClusterProvisioningState
+        quotaInfo:
+          $ref: "#/components/schemas/QuotaInfo"
+        securityProfile:
+          $ref: "#/components/schemas/SecurityProfile"
+        tier:
+          description: The cluster tier.
+          enum:
+            - Standard
+            - Premium
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Tier
+      required:
+        - clusterDefinition
+    ClusterIdentity:
+      description: Identity for the cluster.
+      properties:
+        principalId:
+          description: The principal id of cluster identity. This property will only be
+            provided for a system assigned identity.
+          readOnly: true
+          type: string
+        tenantId:
+          description: The tenant id associated with the cluster. This property will only
+            be provided for a system assigned identity.
+          readOnly: true
+          type: string
+        type:
+          description: The type of identity used for the cluster. The type 'SystemAssigned,
+            UserAssigned' includes both an implicitly created identity and a set
+            of user assigned identities.
+          enum:
+            - SystemAssigned
+            - UserAssigned
+            - SystemAssigned, UserAssigned
+            - None
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: ResourceIdentityType
+        userAssignedIdentities:
+          additionalProperties:
+            properties:
+              clientId:
+                description: The client id of user assigned identity.
+                readOnly: true
+                type: string
+              principalId:
+                description: The principal id of user assigned identity.
+                readOnly: true
+                type: string
+            type: object
+          description: "The list of user identities associated with the cluster. The user
+            identity dictionary key references will be ARM resource ids in the
+            form:
+            '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}\
+            /providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identi\
+            tyName}'."
+          type: object
+    ClusterListPersistedScriptActionsResult:
+      description: The ListPersistedScriptActions operation response.
+      properties:
+        nextLink:
+          description: The link (url) to the next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: The list of Persisted Script Actions.
+          items:
+            $ref: "#/components/schemas/RuntimeScriptAction"
+          type: array
+    ClusterListResult:
+      description: The List Cluster operation response.
+      properties:
+        nextLink:
+          description: The link (url) to the next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: The list of Clusters.
+          items:
+            $ref: "#/components/schemas/Cluster"
+          type: array
+    ClusterListRuntimeScriptActionDetailResult:
+      description: The list runtime script action detail response.
+      properties:
+        nextLink:
+          description: The link (url) to the next page of results.
+          readOnly: true
+          type: string
+        value:
+          items:
+            $ref: "#/components/schemas/RuntimeScriptActionDetail"
+          readOnly: true
+          type: array
+    ClusterPatchParameters:
+      description: The PatchCluster request parameters
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: The resource tags.
+          type: object
+          nullable: true
+    ClusterResizeParameters:
+      description: The Resize Cluster request parameters.
+      properties:
+        targetInstanceCount:
+          description: The target instance count for the operation.
+          format: int32
+          type: integer
+    ComputeProfile:
+      description: Describes the compute profile.
+      properties:
+        roles:
+          description: The list of roles in the cluster.
+          items:
+            $ref: "#/components/schemas/Role"
+          type: array
+    ConnectivityEndpoint:
+      description: The connectivity properties
+      properties:
+        location:
+          description: The location of the endpoint.
+          type: string
+        name:
+          description: The name of the endpoint.
+          type: string
+        port:
+          description: The port to connect to.
+          format: int32
+          type: integer
+        protocol:
+          description: The protocol of the endpoint.
+          type: string
+    DataDisksGroups:
+      description: The data disks groups for the role.
+      properties:
+        diskSizeGB:
+          description: ReadOnly. The DiskSize in GB. Do not set this value.
+          readOnly: true
+          type: integer
+        disksPerNode:
+          description: The number of disks per node.
+          format: int32
+          type: integer
+        storageAccountType:
+          description: ReadOnly. The storage account type. Do not set this value.
+          readOnly: true
+          type: string
+    DiskEncryptionProperties:
+      description: The disk encryption properties
+      properties:
+        encryptionAlgorithm:
+          description: Algorithm identifier for encryption, default RSA-OAEP.
+          enum:
+            - RSA-OAEP
+            - RSA-OAEP-256
+            - RSA1_5
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: JsonWebKeyEncryptionAlgorithm
+        keyName:
+          description: Key name that is used for enabling disk encryption.
+          type: string
+        keyVersion:
+          description: Specific key version that is used for enabling disk encryption.
+          type: string
+        msiResourceId:
+          description: Resource ID of Managed Identity that is used to access the key vault.
+          type: string
+        vaultUri:
+          description: Base key vault URI where the customers key is located eg.
+            https://myvault.vault.azure.net
+          type: string
+    Errors:
+      description: The error message associated with the cluster creation.
+      properties:
+        code:
+          description: The error code.
+          type: string
+        message:
+          description: The error message.
+          type: string
+    ExecuteScriptActionParameters:
+      description: The parameters for the script actions to execute on a running cluster.
+      properties:
+        persistOnSuccess:
+          description: Gets or sets if the scripts needs to be persisted.
+          type: boolean
+        scriptActions:
+          description: The list of run time script actions.
+          items:
+            $ref: "#/components/schemas/RuntimeScriptAction"
+          type: array
+      required:
+        - persistOnSuccess
+    GatewaySettings:
+      description: Gateway settings.
+      properties:
+        restAuthCredential.isEnabled:
+          description: Indicates whether or not the gateway settings based authorization is
+            enabled.
+          readOnly: true
+          type: string
+          x-ms-client-name: isCredentialEnabled
+        restAuthCredential.password:
+          description: The gateway settings user password.
+          readOnly: true
+          type: string
+          x-ms-client-name: password
+        restAuthCredential.username:
+          description: The gateway settings user name.
+          readOnly: true
+          type: string
+          x-ms-client-name: userName
+    HardwareProfile:
+      description: The hardware profile.
+      properties:
+        vmSize:
+          description: The size of the VM
+          type: string
+    LinuxOperatingSystemProfile:
+      description: The ssh username, password, and ssh public key.
+      properties:
+        password:
+          description: The password.
+          type: string
+        sshProfile:
+          $ref: "#/components/schemas/SshProfile"
+        username:
+          description: The username.
+          type: string
+    OperationResource:
+      description: The azure async operation response.
+      properties:
+        error:
+          $ref: "#/components/schemas/Errors"
+        status:
+          description: The async operation state.
+          enum:
+            - InProgress
+            - Succeeded
+            - Failed
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: AsyncOperationState
+    OsProfile:
+      description: The Linux operation systems profile.
+      properties:
+        linuxOperatingSystemProfile:
+          $ref: "#/components/schemas/LinuxOperatingSystemProfile"
+    ProxyResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The resource model definition for a ARM proxy resource. It will have
+        everything other than required location and tags
+    QuotaInfo:
+      description: The quota properties for the cluster.
+      properties:
+        coresUsed:
+          description: The cores used by the cluster.
+          format: int32
+          type: integer
+    Resource:
+      description: The core properties of ARM resources
+      properties:
+        id:
+          description: Fully qualified resource Id for the resource.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the resource
+          readOnly: true
+          type: string
+        type:
+          description: The type of the resource.
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    Role:
+      description: Describes a role on the cluster.
+      properties:
+        autoscale:
+          $ref: "#/components/schemas/Autoscale"
+        dataDisksGroups:
+          description: The data disks groups for the role.
+          items:
+            $ref: "#/components/schemas/DataDisksGroups"
+          type: array
+        hardwareProfile:
+          $ref: "#/components/schemas/HardwareProfile"
+        minInstanceCount:
+          description: The minimum instance count of the cluster.
+          format: int32
+          type: integer
+        name:
+          description: The name of the role.
+          type: string
+        osProfile:
+          $ref: "#/components/schemas/OsProfile"
+        scriptActions:
+          description: The list of script actions on the role.
+          items:
+            description: Describes a script action on role on the cluster.
+            properties:
+              name:
+                description: The name of the script action.
+                type: string
+              parameters:
+                description: The parameters for the script provided.
+                type: string
+              uri:
+                description: The URI to the script.
+                type: string
+            required:
+              - name
+              - uri
+              - parameters
+          type: array
+        targetInstanceCount:
+          description: The instance count of the cluster.
+          format: int32
+          type: integer
+        virtualNetworkProfile:
+          $ref: "#/components/schemas/VirtualNetworkProfile"
+    RuntimeScriptAction:
+      description: Describes a script action on a running cluster.
+      properties:
+        applicationName:
+          description: The application name of the script action, if any.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the script action.
+          type: string
+        parameters:
+          description: The parameters for the script
+          type: string
+        roles:
+          description: The list of roles where script will be executed.
+          items:
+            type: string
+          type: array
+        uri:
+          description: The URI to the script.
+          type: string
+      required:
+        - name
+        - uri
+        - roles
+    RuntimeScriptActionDetail:
+      allOf:
+        - $ref: "#/components/schemas/RuntimeScriptAction"
+        - properties:
+            debugInformation:
+              description: The script action execution debug information.
+              readOnly: true
+              type: string
+            endTime:
+              description: The end time of script action execution.
+              readOnly: true
+              type: string
+            executionSummary:
+              description: The summary of script action execution result.
+              items:
+                $ref: "#/components/schemas/ScriptActionExecutionSummary"
+              readOnly: true
+              type: array
+            operation:
+              description: The reason why the script action was executed.
+              readOnly: true
+              type: string
+            scriptExecutionId:
+              description: The execution id of the script action.
+              format: int64
+              readOnly: true
+              type: integer
+            startTime:
+              description: The start time of script action execution.
+              readOnly: true
+              type: string
+            status:
+              description: The current execution status of the script action.
+              readOnly: true
+              type: string
+      description: The execution details of a script action.
+    ScriptActionExecutionSummary:
+      description: The execution summary of a script action.
+      properties:
+        instanceCount:
+          description: The instance count for a given script action execution status.
+          format: int32
+          readOnly: true
+          type: integer
+        status:
+          description: The status of script action execution.
+          readOnly: true
+          type: string
+    SecurityProfile:
+      description: The security profile which contains Ssh public key for the HDInsight
+        cluster.
+      properties:
+        aaddsResourceId:
+          description: The resource ID of the user's Azure Active Directory Domain Service.
+          type: string
+        clusterUsersGroupDNs:
+          description: Optional. The Distinguished Names for cluster user groups
+          items:
+            type: string
+          type: array
+        directoryType:
+          description: The directory type.
+          enum:
+            - ActiveDirectory
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: DirectoryType
+        domain:
+          description: The organization's active directory domain.
+          type: string
+        domainUserPassword:
+          description: The domain admin password.
+          format: password
+          type: string
+        domainUsername:
+          description: The domain user account that will have admin privileges on the
+            cluster.
+          type: string
+        ldapsUrls:
+          description: The LDAPS protocol URLs to communicate with the Active Directory.
+          items:
+            type: string
+          type: array
+        msiResourceId:
+          description: User assigned identity that has permissions to read and create
+            cluster-related artifacts in the user's AADDS.
+          type: string
+        organizationalUnitDN:
+          description: The organizational unit within the Active Directory to place the
+            cluster and service accounts.
+          type: string
+    SshProfile:
+      description: The list of SSH public keys.
+      properties:
+        publicKeys:
+          description: The list of SSH public keys.
+          items:
+            $ref: "#/components/schemas/SshPublicKey"
+          type: array
+    SshPublicKey:
+      description: The SSH public key for the cluster nodes.
+      properties:
+        certificateData:
+          description: The certificate for SSH.
+          type: string
+    StorageAccount:
+      description: The storage Account.
+      properties:
+        container:
+          description: The container in the storage account, only to be specified for WASB
+            storage accounts.
+          type: string
+        fileSystem:
+          description: The filesystem, only to be specified for Azure Data Lake Storage
+            type Gen 2.
+          type: string
+        isDefault:
+          description: Whether or not the storage account is the default storage account.
+          type: boolean
+        key:
+          description: The storage account access key.
+          type: string
+        msiResourceId:
+          description: The managed identity (MSI) that is allowed to access the storage
+            account, only to be specified for Azure Data Lake Storage Gen 2.
+          type: string
+        name:
+          description: The name of the storage account.
+          type: string
+        resourceId:
+          description: The resource ID of storage account, only to be specified for Azure
+            Data Lake Storage Gen 2.
+          type: string
+    StorageProfile:
+      description: The storage profile.
+      properties:
+        storageaccounts:
+          description: The list of storage accounts in the cluster.
+          items:
+            $ref: "#/components/schemas/StorageAccount"
+          type: array
+    TrackedResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The resource model definition for a ARM tracked top level resource
+      properties:
+        location:
+          description: The Azure Region where the resource lives
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+          x-ms-mutability:
+            - read
+            - create
+            - update
+    UpdateGatewaySettingsParameters:
+      description: The update gateway settings request parameters.
+      properties:
+        restAuthCredential.isEnabled:
+          default: true
+          description: Indicates whether or not the gateway settings based authorization is
+            enabled.
+          type: boolean
+          x-ms-client-name: isCredentialEnabled
+        restAuthCredential.password:
+          description: The gateway settings user password.
+          type: string
+          x-ms-client-name: password
+        restAuthCredential.username:
+          description: The gateway settings user name.
+          type: string
+          x-ms-client-name: userName
+    VirtualNetworkProfile:
+      description: The virtual network properties.
+      properties:
+        id:
+          description: The ID of the virtual network.
+          type: string
+        subnet:
+          description: The name of the subnet.
+          type: string

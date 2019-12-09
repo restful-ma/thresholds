@@ -1,0 +1,2945 @@
+openapi: 3.0.0
+info:
+  description: The DNS Management Client.
+  title: DnsManagementClient
+  version: 2018-03-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/dns/resource-manager/Microsoft.Network/preview/2018-03-01-preview/dns.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: dns
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones":
+    get:
+      description: Lists the DNS zones in all resource groups in a subscription.
+      operationId: Zones_List
+      parameters:
+        - description: The maximum number of DNS zones to return. If not specified, returns
+            up to 100 zones.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            List zones by subscription:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            List zones by subscription:
+              value: subid
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ZoneListResult"
+              examples:
+                List zones by subscription:
+                  $ref: "#/components/examples/List_zones_by_subscription"
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Zones
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones":
+    get:
+      description: Lists the DNS zones within a resource group.
+      operationId: Zones_ListByResourceGroup
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            List zones by resource group:
+              value: rg1
+        - description: The maximum number of record sets to return. If not specified,
+            returns up to 100 record sets.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            List zones by resource group:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            List zones by resource group:
+              value: subid
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ZoneListResult"
+              examples:
+                List zones by resource group:
+                  $ref: "#/components/examples/List_zones_by_resource_group"
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Zones
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}":
+    delete:
+      description: "Deletes a DNS zone. WARNING: All DNS records in the zone will also be
+        deleted. This operation cannot be undone."
+      operationId: Zones_Delete
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            Delete zone:
+              value: rg1
+        - description: The name of the DNS zone (without a terminating dot).
+          in: path
+          name: zoneName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete zone:
+              value: zone1
+        - description: The etag of the DNS zone. Omit this value to always delete the
+            current zone. Specify the last-seen etag value to prevent
+            accidentally deleting any concurrent changes.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-client-name: IfMatch
+          schema:
+            type: string
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Delete zone:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Delete zone:
+              value: subid
+      responses:
+        "200":
+          description: The DNS zone has been deleted.
+        "202":
+          description: The DNS zone delete operation has been accepted and will complete
+            asynchronously.
+        "204":
+          description: The DNS zone was not found.
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Zones
+      x-ms-long-running-operation: true
+    get:
+      description: Gets a DNS zone. Retrieves the zone properties, but not the record sets
+        within the zone.
+      operationId: Zones_Get
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            Get zone:
+              value: rg1
+        - description: The name of the DNS zone (without a terminating dot).
+          in: path
+          name: zoneName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get zone:
+              value: zone1
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Get zone:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Get zone:
+              value: subid
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Zone"
+              examples:
+                Get zone:
+                  $ref: "#/components/examples/Get_zone"
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Zones
+    patch:
+      description: Updates a DNS zone. Does not modify DNS records within the zone.
+      operationId: Zones_Update
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            Patch zone:
+              value: rg1
+        - description: The name of the DNS zone (without a terminating dot).
+          in: path
+          name: zoneName
+          required: true
+          schema:
+            type: string
+          examples:
+            Patch zone:
+              value: zone1
+        - description: The etag of the DNS zone. Omit this value to always overwrite the
+            current zone. Specify the last-seen etag value to prevent
+            accidentally overwriting any concurrent changes.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-client-name: IfMatch
+          schema:
+            type: string
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Patch zone:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Patch zone:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneUpdate"
+        description: Parameters supplied to the Update operation.
+        required: true
+      responses:
+        "200":
+          description: The DNS zone has been updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Zone"
+              examples:
+                Patch zone:
+                  $ref: "#/components/examples/Patch_zone"
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Zones
+    put:
+      description: Creates or updates a DNS zone. Does not modify DNS records within the
+        zone.
+      operationId: Zones_CreateOrUpdate
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            Create private zone:
+              value: rg1
+            Create zone:
+              value: rg1
+        - description: The name of the DNS zone (without a terminating dot).
+          in: path
+          name: zoneName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create private zone:
+              value: zone1
+            Create zone:
+              value: zone1
+        - description: The etag of the DNS zone. Omit this value to always overwrite the
+            current zone. Specify the last-seen etag value to prevent
+            accidentally overwriting any concurrent changes.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-client-name: IfMatch
+          schema:
+            type: string
+        - description: Set to '*' to allow a new DNS zone to be created, but to prevent
+            updating an existing zone. Other values will be ignored.
+          in: header
+          name: If-None-Match
+          required: false
+          x-ms-client-name: IfNoneMatch
+          schema:
+            type: string
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Create private zone:
+              value: 2018-03-01-preview
+            Create zone:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Create private zone:
+              value: subid
+            Create zone:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Zone"
+        description: Parameters supplied to the CreateOrUpdate operation.
+        required: true
+      responses:
+        "200":
+          description: The DNS zone has been updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Zone"
+              examples:
+                Create private zone:
+                  $ref: "#/components/examples/Create_private_zone"
+                Create zone:
+                  $ref: "#/components/examples/Create_zone"
+        "201":
+          description: The DNS zone has been created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Zone"
+              examples:
+                Create private zone:
+                  $ref: "#/components/examples/Create_private_zone"
+                Create zone:
+                  $ref: "#/components/examples/Create_zone"
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Zones
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/all":
+    get:
+      description: Lists all record sets in a DNS zone.
+      operationId: RecordSets_ListAllByDnsZone
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            List recordsets by zone:
+              value: rg1
+        - description: The name of the DNS zone (without a terminating dot).
+          in: path
+          name: zoneName
+          required: true
+          schema:
+            type: string
+          examples:
+            List recordsets by zone:
+              value: zone1
+        - description: The maximum number of record sets to return. If not specified,
+            returns up to 100 record sets.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: The suffix label of the record set name that has to be used to
+            filter the record set enumerations. If this parameter is specified,
+            Enumeration will return only records that end with
+            .<recordSetNameSuffix>
+          in: query
+          name: $recordsetnamesuffix
+          required: false
+          x-ms-client-name: recordSetNameSuffix
+          schema:
+            type: string
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            List recordsets by zone:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            List recordsets by zone:
+              value: subid
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordSetListResult"
+              examples:
+                List recordsets by zone:
+                  $ref: "#/components/examples/List_recordsets_by_zone"
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - RecordSets
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/recordsets":
+    get:
+      description: Lists all record sets in a DNS zone.
+      operationId: RecordSets_ListByDnsZone
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            List recordsets by zone:
+              value: rg1
+        - description: The name of the DNS zone (without a terminating dot).
+          in: path
+          name: zoneName
+          required: true
+          schema:
+            type: string
+          examples:
+            List recordsets by zone:
+              value: zone1
+        - description: The maximum number of record sets to return. If not specified,
+            returns up to 100 record sets.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: The suffix label of the record set name that has to be used to
+            filter the record set enumerations. If this parameter is specified,
+            Enumeration will return only records that end with
+            .<recordSetNameSuffix>
+          in: query
+          name: $recordsetnamesuffix
+          required: false
+          schema:
+            type: string
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            List recordsets by zone:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            List recordsets by zone:
+              value: subid
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordSetListResult"
+              examples:
+                List recordsets by zone:
+                  $ref: "#/components/examples/List_recordsets_by_zone"
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - RecordSets
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}":
+    get:
+      description: Lists the record sets of a specified type in a DNS zone.
+      operationId: RecordSets_ListByType
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            List A recordsets:
+              value: rg1
+            List AAAA recordsets:
+              value: rg1
+            List CAA recordsets:
+              value: rg1
+            List CNAME recordsets:
+              value: rg1
+            List MX recordsets:
+              value: rg1
+            List NS recordsets:
+              value: rg1
+            List PTR recordsets:
+              value: rg1
+            List SOA recordsets:
+              value: rg1
+            List SRV recordsets:
+              value: rg1
+            List TXT recordsets:
+              value: rg1
+        - description: The name of the DNS zone (without a terminating dot).
+          in: path
+          name: zoneName
+          required: true
+          schema:
+            type: string
+          examples:
+            List A recordsets:
+              value: zone1
+            List AAAA recordsets:
+              value: zone1
+            List CAA recordsets:
+              value: zone1
+            List CNAME recordsets:
+              value: zone1
+            List MX recordsets:
+              value: zone1
+            List NS recordsets:
+              value: zone1
+            List PTR recordsets:
+              value: 0.0.127.in-addr.arpa
+            List SOA recordsets:
+              value: zone1
+            List SRV recordsets:
+              value: zone1
+            List TXT recordsets:
+              value: zone1
+        - description: The type of record sets to enumerate.
+          in: path
+          name: recordType
+          required: true
+          x-ms-enum:
+            modelAsString: false
+            name: RecordType
+          schema:
+            type: string
+            enum:
+              - A
+              - AAAA
+              - CAA
+              - CNAME
+              - MX
+              - NS
+              - PTR
+              - SOA
+              - SRV
+              - TXT
+          examples:
+            List A recordsets:
+              value: A
+            List AAAA recordsets:
+              value: AAAA
+            List CAA recordsets:
+              value: CAA
+            List CNAME recordsets:
+              value: CNAME
+            List MX recordsets:
+              value: MX
+            List NS recordsets:
+              value: NS
+            List PTR recordsets:
+              value: PTR
+            List SOA recordsets:
+              value: SOA
+            List SRV recordsets:
+              value: SRV
+            List TXT recordsets:
+              value: TXT
+        - description: The maximum number of record sets to return. If not specified,
+            returns up to 100 record sets.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: The suffix label of the record set name that has to be used to
+            filter the record set enumerations. If this parameter is specified,
+            Enumeration will return only records that end with
+            .<recordSetNameSuffix>
+          in: query
+          name: $recordsetnamesuffix
+          required: false
+          schema:
+            type: string
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            List A recordsets:
+              value: 2018-03-01-preview
+            List AAAA recordsets:
+              value: 2018-03-01-preview
+            List CAA recordsets:
+              value: 2018-03-01-preview
+            List CNAME recordsets:
+              value: 2018-03-01-preview
+            List MX recordsets:
+              value: 2018-03-01-preview
+            List NS recordsets:
+              value: 2018-03-01-preview
+            List PTR recordsets:
+              value: 2018-03-01-preview
+            List SOA recordsets:
+              value: 2018-03-01-preview
+            List SRV recordsets:
+              value: 2018-03-01-preview
+            List TXT recordsets:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            List A recordsets:
+              value: subid
+            List AAAA recordsets:
+              value: subid
+            List CAA recordsets:
+              value: subid
+            List CNAME recordsets:
+              value: subid
+            List MX recordsets:
+              value: subid
+            List NS recordsets:
+              value: subid
+            List PTR recordsets:
+              value: subid
+            List SOA recordsets:
+              value: subid
+            List SRV recordsets:
+              value: subid
+            List TXT recordsets:
+              value: subid
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordSetListResult"
+              examples:
+                List A recordsets:
+                  $ref: "#/components/examples/List_A_recordsets"
+                List AAAA recordsets:
+                  $ref: "#/components/examples/List_AAAA_recordsets"
+                List CAA recordsets:
+                  $ref: "#/components/examples/List_CAA_recordsets"
+                List CNAME recordsets:
+                  $ref: "#/components/examples/List_CNAME_recordsets"
+                List MX recordsets:
+                  $ref: "#/components/examples/List_MX_recordsets"
+                List NS recordsets:
+                  $ref: "#/components/examples/List_NS_recordsets"
+                List PTR recordsets:
+                  $ref: "#/components/examples/List_PTR_recordsets"
+                List SOA recordsets:
+                  $ref: "#/components/examples/List_SOA_recordsets"
+                List SRV recordsets:
+                  $ref: "#/components/examples/List_SRV_recordsets"
+                List TXT recordsets:
+                  $ref: "#/components/examples/List_TXT_recordsets"
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - RecordSets
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}":
+    delete:
+      description: Deletes a record set from a DNS zone. This operation cannot be undone.
+      operationId: RecordSets_Delete
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            Delete A recordset:
+              value: rg1
+            Delete AAAA recordset:
+              value: rg1
+            Delete CAA recordset:
+              value: rg1
+            Delete CNAME recordset:
+              value: rg1
+            Delete MX recordset:
+              value: rg1
+            Delete NS recordset:
+              value: rg1
+            Delete PTR recordset:
+              value: rg1
+            Delete SRV recordset:
+              value: rg1
+            Delete TXT recordset:
+              value: rg1
+        - description: The name of the DNS zone (without a terminating dot).
+          in: path
+          name: zoneName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete A recordset:
+              value: zone1
+            Delete AAAA recordset:
+              value: zone1
+            Delete CAA recordset:
+              value: zone1
+            Delete CNAME recordset:
+              value: zone1
+            Delete MX recordset:
+              value: zone1
+            Delete NS recordset:
+              value: zone1
+            Delete PTR recordset:
+              value: 0.0.127.in-addr.arpa
+            Delete SRV recordset:
+              value: zone1
+            Delete TXT recordset:
+              value: zone1
+        - description: The name of the record set, relative to the name of the zone.
+          in: path
+          name: relativeRecordSetName
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+          examples:
+            Delete A recordset:
+              value: record1
+            Delete AAAA recordset:
+              value: record1
+            Delete CAA recordset:
+              value: record1
+            Delete CNAME recordset:
+              value: record1
+            Delete MX recordset:
+              value: record1
+            Delete NS recordset:
+              value: record1
+            Delete PTR recordset:
+              value: "1"
+            Delete SRV recordset:
+              value: record1
+            Delete TXT recordset:
+              value: record1
+        - description: The type of DNS record in this record set. Record sets of type SOA
+            cannot be deleted (they are deleted when the DNS zone is deleted).
+          in: path
+          name: recordType
+          required: true
+          x-ms-enum:
+            modelAsString: false
+            name: RecordType
+          schema:
+            type: string
+            enum:
+              - A
+              - AAAA
+              - CAA
+              - CNAME
+              - MX
+              - NS
+              - PTR
+              - SOA
+              - SRV
+              - TXT
+          examples:
+            Delete A recordset:
+              value: A
+            Delete AAAA recordset:
+              value: AAAA
+            Delete CAA recordset:
+              value: CAA
+            Delete CNAME recordset:
+              value: A
+            Delete MX recordset:
+              value: A
+            Delete NS recordset:
+              value: A
+            Delete PTR recordset:
+              value: PTR
+            Delete SRV recordset:
+              value: SRV
+            Delete TXT recordset:
+              value: TXT
+        - description: The etag of the record set. Omit this value to always delete the
+            current record set. Specify the last-seen etag value to prevent
+            accidentally deleting any concurrent changes.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-client-name: IfMatch
+          schema:
+            type: string
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Delete A recordset:
+              value: 2018-03-01-preview
+            Delete AAAA recordset:
+              value: 2018-03-01-preview
+            Delete CAA recordset:
+              value: 2018-03-01-preview
+            Delete CNAME recordset:
+              value: 2018-03-01-preview
+            Delete MX recordset:
+              value: 2018-03-01-preview
+            Delete NS recordset:
+              value: 2018-03-01-preview
+            Delete PTR recordset:
+              value: 2018-03-01-preview
+            Delete SRV recordset:
+              value: 2018-03-01-preview
+            Delete TXT recordset:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Delete A recordset:
+              value: subid
+            Delete AAAA recordset:
+              value: subid
+            Delete CAA recordset:
+              value: subid
+            Delete CNAME recordset:
+              value: subid
+            Delete MX recordset:
+              value: subid
+            Delete NS recordset:
+              value: subid
+            Delete PTR recordset:
+              value: subid
+            Delete SRV recordset:
+              value: subid
+            Delete TXT recordset:
+              value: subid
+      responses:
+        "200":
+          description: The record set has been deleted.
+        "204":
+          description: The record set was not found.
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - RecordSets
+    get:
+      description: Gets a record set.
+      operationId: RecordSets_Get
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            Get A recordset:
+              value: rg1
+            Get AAAA recordset:
+              value: rg1
+            Get CAA recordset:
+              value: rg1
+            Get CNAME recordset:
+              value: rg1
+            Get MX recordset:
+              value: rg1
+            Get NS recordset:
+              value: rg1
+            Get PTR recordset:
+              value: rg1
+            Get SOA recordset:
+              value: rg1
+            Get SRV recordset:
+              value: rg1
+            Get TXT recordset:
+              value: rg1
+        - description: The name of the DNS zone (without a terminating dot).
+          in: path
+          name: zoneName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get A recordset:
+              value: zone1
+            Get AAAA recordset:
+              value: zone1
+            Get CAA recordset:
+              value: zone1
+            Get CNAME recordset:
+              value: zone1
+            Get MX recordset:
+              value: zone1
+            Get NS recordset:
+              value: zone1
+            Get PTR recordset:
+              value: 0.0.127.in-addr.arpa
+            Get SOA recordset:
+              value: zone1
+            Get SRV recordset:
+              value: zone1
+            Get TXT recordset:
+              value: zone1
+        - description: The name of the record set, relative to the name of the zone.
+          in: path
+          name: relativeRecordSetName
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+          examples:
+            Get A recordset:
+              value: record1
+            Get AAAA recordset:
+              value: record1
+            Get CAA recordset:
+              value: record1
+            Get CNAME recordset:
+              value: record1
+            Get MX recordset:
+              value: record1
+            Get NS recordset:
+              value: record1
+            Get PTR recordset:
+              value: "1"
+            Get SOA recordset:
+              value: "@"
+            Get SRV recordset:
+              value: record1
+            Get TXT recordset:
+              value: record1
+        - description: The type of DNS record in this record set.
+          in: path
+          name: recordType
+          required: true
+          x-ms-enum:
+            modelAsString: false
+            name: RecordType
+          schema:
+            type: string
+            enum:
+              - A
+              - AAAA
+              - CAA
+              - CNAME
+              - MX
+              - NS
+              - PTR
+              - SOA
+              - SRV
+              - TXT
+          examples:
+            Get A recordset:
+              value: A
+            Get AAAA recordset:
+              value: AAAA
+            Get CAA recordset:
+              value: CAA
+            Get CNAME recordset:
+              value: CNAME
+            Get MX recordset:
+              value: MX
+            Get NS recordset:
+              value: NS
+            Get PTR recordset:
+              value: PTR
+            Get SOA recordset:
+              value: SOA
+            Get SRV recordset:
+              value: SRV
+            Get TXT recordset:
+              value: TXT
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Get A recordset:
+              value: 2018-03-01-preview
+            Get AAAA recordset:
+              value: 2018-03-01-preview
+            Get CAA recordset:
+              value: 2018-03-01-preview
+            Get CNAME recordset:
+              value: 2018-03-01-preview
+            Get MX recordset:
+              value: 2018-03-01-preview
+            Get NS recordset:
+              value: 2018-03-01-preview
+            Get PTR recordset:
+              value: 2018-03-01-preview
+            Get SOA recordset:
+              value: 2018-03-01-preview
+            Get SRV recordset:
+              value: 2018-03-01-preview
+            Get TXT recordset:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Get A recordset:
+              value: subid
+            Get AAAA recordset:
+              value: subid
+            Get CAA recordset:
+              value: subid
+            Get CNAME recordset:
+              value: subid
+            Get MX recordset:
+              value: subid
+            Get NS recordset:
+              value: subid
+            Get PTR recordset:
+              value: subid
+            Get SOA recordset:
+              value: subid
+            Get SRV recordset:
+              value: subid
+            Get TXT recordset:
+              value: subid
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordSet"
+              examples:
+                Get A recordset:
+                  $ref: "#/components/examples/Get_A_recordset"
+                Get AAAA recordset:
+                  $ref: "#/components/examples/Get_AAAA_recordset"
+                Get CAA recordset:
+                  $ref: "#/components/examples/Get_CAA_recordset"
+                Get CNAME recordset:
+                  $ref: "#/components/examples/Get_CNAME_recordset"
+                Get MX recordset:
+                  $ref: "#/components/examples/Get_MX_recordset"
+                Get NS recordset:
+                  $ref: "#/components/examples/Get_NS_recordset"
+                Get PTR recordset:
+                  $ref: "#/components/examples/Get_PTR_recordset"
+                Get SOA recordset:
+                  $ref: "#/components/examples/Get_SOA_recordset"
+                Get SRV recordset:
+                  $ref: "#/components/examples/Get_SRV_recordset"
+                Get TXT recordset:
+                  $ref: "#/components/examples/Get_TXT_recordset"
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - RecordSets
+    patch:
+      description: Updates a record set within a DNS zone.
+      operationId: RecordSets_Update
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            Patch A recordset:
+              value: rg1
+            Patch AAAA recordset:
+              value: rg1
+            Patch CAA recordset:
+              value: rg1
+            Patch CNAME recordset:
+              value: rg1
+            Patch MX recordset:
+              value: rg1
+            Patch NS recordset:
+              value: rg1
+            Patch PTR recordset:
+              value: rg1
+            Patch SOA recordset:
+              value: rg1
+            Patch SRV recordset:
+              value: rg1
+            Patch TXT recordset:
+              value: rg1
+        - description: The name of the DNS zone (without a terminating dot).
+          in: path
+          name: zoneName
+          required: true
+          schema:
+            type: string
+          examples:
+            Patch A recordset:
+              value: zone1
+            Patch AAAA recordset:
+              value: zone1
+            Patch CAA recordset:
+              value: zone1
+            Patch CNAME recordset:
+              value: zone1
+            Patch MX recordset:
+              value: zone1
+            Patch NS recordset:
+              value: zone1
+            Patch PTR recordset:
+              value: 0.0.127.in-addr.arpa
+            Patch SOA recordset:
+              value: zone1
+            Patch SRV recordset:
+              value: zone1
+            Patch TXT recordset:
+              value: zone1
+        - description: The name of the record set, relative to the name of the zone.
+          in: path
+          name: relativeRecordSetName
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+          examples:
+            Patch A recordset:
+              value: record1
+            Patch AAAA recordset:
+              value: record1
+            Patch CAA recordset:
+              value: record1
+            Patch CNAME recordset:
+              value: record1
+            Patch MX recordset:
+              value: record1
+            Patch NS recordset:
+              value: record1
+            Patch PTR recordset:
+              value: "1"
+            Patch SOA recordset:
+              value: "@"
+            Patch SRV recordset:
+              value: record1
+            Patch TXT recordset:
+              value: record1
+        - description: The type of DNS record in this record set.
+          in: path
+          name: recordType
+          required: true
+          x-ms-enum:
+            modelAsString: false
+            name: RecordType
+          schema:
+            type: string
+            enum:
+              - A
+              - AAAA
+              - CAA
+              - CNAME
+              - MX
+              - NS
+              - PTR
+              - SOA
+              - SRV
+              - TXT
+          examples:
+            Patch A recordset:
+              value: A
+            Patch AAAA recordset:
+              value: AAAA
+            Patch CAA recordset:
+              value: CAA
+            Patch CNAME recordset:
+              value: CNAME
+            Patch MX recordset:
+              value: MX
+            Patch NS recordset:
+              value: NS
+            Patch PTR recordset:
+              value: PTR
+            Patch SOA recordset:
+              value: SOA
+            Patch SRV recordset:
+              value: SRV
+            Patch TXT recordset:
+              value: TXT
+        - description: The etag of the record set. Omit this value to always overwrite the
+            current record set. Specify the last-seen etag value to prevent
+            accidentally overwriting concurrent changes.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-client-name: IfMatch
+          schema:
+            type: string
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Patch A recordset:
+              value: 2018-03-01-preview
+            Patch AAAA recordset:
+              value: 2018-03-01-preview
+            Patch CAA recordset:
+              value: 2018-03-01-preview
+            Patch CNAME recordset:
+              value: 2018-03-01-preview
+            Patch MX recordset:
+              value: 2018-03-01-preview
+            Patch NS recordset:
+              value: 2018-03-01-preview
+            Patch PTR recordset:
+              value: 2018-03-01-preview
+            Patch SOA recordset:
+              value: 2018-03-01-preview
+            Patch SRV recordset:
+              value: 2018-03-01-preview
+            Patch TXT recordset:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Patch A recordset:
+              value: subid
+            Patch AAAA recordset:
+              value: subid
+            Patch CAA recordset:
+              value: subid
+            Patch CNAME recordset:
+              value: subid
+            Patch MX recordset:
+              value: subid
+            Patch NS recordset:
+              value: subid
+            Patch PTR recordset:
+              value: subid
+            Patch SOA recordset:
+              value: subid
+            Patch SRV recordset:
+              value: subid
+            Patch TXT recordset:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecordSet"
+        description: Parameters supplied to the Update operation.
+        required: true
+      responses:
+        "200":
+          description: The record set has been updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordSet"
+              examples:
+                Patch A recordset:
+                  $ref: "#/components/examples/Patch_A_recordset"
+                Patch AAAA recordset:
+                  $ref: "#/components/examples/Patch_AAAA_recordset"
+                Patch CAA recordset:
+                  $ref: "#/components/examples/Patch_CAA_recordset"
+                Patch CNAME recordset:
+                  $ref: "#/components/examples/Patch_CNAME_recordset"
+                Patch MX recordset:
+                  $ref: "#/components/examples/Patch_MX_recordset"
+                Patch NS recordset:
+                  $ref: "#/components/examples/Patch_NS_recordset"
+                Patch PTR recordset:
+                  $ref: "#/components/examples/Patch_PTR_recordset"
+                Patch SOA recordset:
+                  $ref: "#/components/examples/Patch_SOA_recordset"
+                Patch SRV recordset:
+                  $ref: "#/components/examples/Patch_SRV_recordset"
+                Patch TXT recordset:
+                  $ref: "#/components/examples/Patch_TXT_recordset"
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - RecordSets
+    put:
+      description: Creates or updates a record set within a DNS zone.
+      operationId: RecordSets_CreateOrUpdate
+      parameters:
+        - description: The name of the resource group. The name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            Create A recordset:
+              value: rg1
+            Create AAAA recordset:
+              value: rg1
+            Create CAA recordset:
+              value: rg1
+            Create CNAME recordset:
+              value: rg1
+            Create MX recordset:
+              value: rg1
+            Create NS recordset:
+              value: rg1
+            Create PTR recordset:
+              value: rg1
+            Create SOA recordset:
+              value: rg1
+            Create SRV recordset:
+              value: rg1
+            Create TXT recordset:
+              value: rg1
+        - description: The name of the DNS zone (without a terminating dot).
+          in: path
+          name: zoneName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create A recordset:
+              value: zone1
+            Create AAAA recordset:
+              value: zone1
+            Create CAA recordset:
+              value: zone1
+            Create CNAME recordset:
+              value: zone1
+            Create MX recordset:
+              value: zone1
+            Create NS recordset:
+              value: zone1
+            Create PTR recordset:
+              value: 0.0.127.in-addr.arpa
+            Create SOA recordset:
+              value: zone1
+            Create SRV recordset:
+              value: zone1
+            Create TXT recordset:
+              value: zone1
+        - description: The name of the record set, relative to the name of the zone.
+          in: path
+          name: relativeRecordSetName
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+          examples:
+            Create A recordset:
+              value: record1
+            Create AAAA recordset:
+              value: record1
+            Create CAA recordset:
+              value: record1
+            Create CNAME recordset:
+              value: record1
+            Create MX recordset:
+              value: record1
+            Create NS recordset:
+              value: record1
+            Create PTR recordset:
+              value: "1"
+            Create SOA recordset:
+              value: "@"
+            Create SRV recordset:
+              value: record1
+            Create TXT recordset:
+              value: record1
+        - description: The type of DNS record in this record set. Record sets of type SOA
+            can be updated but not created (they are created when the DNS zone
+            is created).
+          in: path
+          name: recordType
+          required: true
+          x-ms-enum:
+            modelAsString: false
+            name: RecordType
+          schema:
+            type: string
+            enum:
+              - A
+              - AAAA
+              - CAA
+              - CNAME
+              - MX
+              - NS
+              - PTR
+              - SOA
+              - SRV
+              - TXT
+          examples:
+            Create A recordset:
+              value: A
+            Create AAAA recordset:
+              value: AAAA
+            Create CAA recordset:
+              value: CAA
+            Create CNAME recordset:
+              value: CNAME
+            Create MX recordset:
+              value: MX
+            Create NS recordset:
+              value: NS
+            Create PTR recordset:
+              value: PTR
+            Create SOA recordset:
+              value: SOA
+            Create SRV recordset:
+              value: SRV
+            Create TXT recordset:
+              value: TXT
+        - description: The etag of the record set. Omit this value to always overwrite the
+            current record set. Specify the last-seen etag value to prevent
+            accidentally overwriting any concurrent changes.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-client-name: IfMatch
+          schema:
+            type: string
+        - description: Set to '*' to allow a new record set to be created, but to prevent
+            updating an existing record set. Other values will be ignored.
+          in: header
+          name: If-None-Match
+          required: false
+          x-ms-client-name: IfNoneMatch
+          schema:
+            type: string
+        - description: The API version to use for this operation.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Create A recordset:
+              value: 2018-03-01-preview
+            Create AAAA recordset:
+              value: 2018-03-01-preview
+            Create CAA recordset:
+              value: 2018-03-01-preview
+            Create CNAME recordset:
+              value: 2018-03-01-preview
+            Create MX recordset:
+              value: 2018-03-01-preview
+            Create NS recordset:
+              value: 2018-03-01-preview
+            Create PTR recordset:
+              value: 2018-03-01-preview
+            Create SOA recordset:
+              value: 2018-03-01-preview
+            Create SRV recordset:
+              value: 2018-03-01-preview
+            Create TXT recordset:
+              value: 2018-03-01-preview
+        - description: The ID of the target subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          examples:
+            Create A recordset:
+              value: subid
+            Create AAAA recordset:
+              value: subid
+            Create CAA recordset:
+              value: subid
+            Create CNAME recordset:
+              value: subid
+            Create MX recordset:
+              value: subid
+            Create NS recordset:
+              value: subid
+            Create PTR recordset:
+              value: subid
+            Create SOA recordset:
+              value: subid
+            Create SRV recordset:
+              value: subid
+            Create TXT recordset:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecordSet"
+        description: Parameters supplied to the CreateOrUpdate operation.
+        required: true
+      responses:
+        "200":
+          description: The record set has been updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordSet"
+              examples:
+                Create A recordset:
+                  $ref: "#/components/examples/Create_A_recordset"
+                Create AAAA recordset:
+                  $ref: "#/components/examples/Create_AAAA_recordset"
+                Create CAA recordset:
+                  $ref: "#/components/examples/Create_CAA_recordset"
+                Create CNAME recordset:
+                  $ref: "#/components/examples/Create_CNAME_recordset"
+                Create MX recordset:
+                  $ref: "#/components/examples/Create_MX_recordset"
+                Create NS recordset:
+                  $ref: "#/components/examples/Create_NS_recordset"
+                Create PTR recordset:
+                  $ref: "#/components/examples/Create_PTR_recordset"
+                Create SOA recordset:
+                  $ref: "#/components/examples/Create_SOA_recordset"
+                Create SRV recordset:
+                  $ref: "#/components/examples/Create_SRV_recordset"
+                Create TXT recordset:
+                  $ref: "#/components/examples/Create_TXT_recordset"
+        "201":
+          description: The record set has been created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecordSet"
+              examples:
+                Create A recordset:
+                  $ref: "#/components/examples/Create_A_recordset"
+                Create AAAA recordset:
+                  $ref: "#/components/examples/Create_AAAA_recordset"
+                Create CAA recordset:
+                  $ref: "#/components/examples/Create_CAA_recordset"
+                Create CNAME recordset:
+                  $ref: "#/components/examples/Create_CNAME_recordset"
+                Create MX recordset:
+                  $ref: "#/components/examples/Create_MX_recordset"
+                Create NS recordset:
+                  $ref: "#/components/examples/Create_NS_recordset"
+                Create PTR recordset:
+                  $ref: "#/components/examples/Create_PTR_recordset"
+                Create SOA recordset:
+                  $ref: "#/components/examples/Create_SOA_recordset"
+                Create SRV recordset:
+                  $ref: "#/components/examples/Create_SRV_recordset"
+                Create TXT recordset:
+                  $ref: "#/components/examples/Create_TXT_recordset"
+        default:
+          description: Default response. It will be deserialized as per the Error
+            definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - RecordSets
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    List_zones_by_subscription:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/providers/Microsoft.Network/dnsZones?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1
+            location: global
+            name: zone1
+            properties:
+              maxNumberOfRecordSets: 5000
+              nameServers:
+                - ns1-01.azure-dns.com
+                - ns2-01.azure-dns.net
+                - ns3-01.azure-dns.org
+                - ns4-01.azure-dns.info
+              numberOfRecordSets: 2
+            tags:
+              key1: value1
+            type: Microsoft.Network/dnsZones
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/dnsZones/zone2
+            location: global
+            name: zone2
+            properties:
+              maxNumberOfRecordSets: 5000
+              nameServers:
+                - ns1-02.azure-dns.com
+                - ns2-02.azure-dns.net
+                - ns3-02.azure-dns.org
+                - ns4-02.azure-dns.info
+              numberOfRecordSets: 300
+            type: Microsoft.Network/dnsZones
+    List_zones_by_resource_group:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1
+            location: global
+            name: zone1
+            properties:
+              maxNumberOfRecordSets: 5000
+              nameServers:
+                - ns1-01.azure-dns.com
+                - ns2-01.azure-dns.net
+                - ns3-01.azure-dns.org
+                - ns4-01.azure-dns.info
+              numberOfRecordSets: 2
+            tags:
+              key1: value1
+            type: Microsoft.Network/dnsZones
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone2
+            location: global
+            name: zone2
+            properties:
+              maxNumberOfRecordSets: 5000
+              nameServers:
+                - ns1-02.azure-dns.com
+                - ns2-02.azure-dns.net
+                - ns3-02.azure-dns.org
+                - ns4-02.azure-dns.info
+              numberOfRecordSets: 300
+            type: Microsoft.Network/dnsZones
+    Get_zone:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1
+        location: global
+        name: zone1
+        properties:
+          maxNumberOfRecordSets: 5000
+          nameServers:
+            - ns1-01.azure-dns.com
+            - ns2-01.azure-dns.net
+            - ns3-01.azure-dns.org
+            - ns4-01.azure-dns.info
+          numberOfRecordSets: 2
+        tags:
+          key1: value1
+        type: Microsoft.Network/dnsZones
+    Patch_zone:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1
+        location: global
+        name: zone1
+        properties:
+          maxNumberOfRecordSets: 5000
+          nameServers:
+            - ns1-01.azure-dns.com
+            - ns2-01.azure-dns.net
+            - ns3-01.azure-dns.org
+            - ns4-01.azure-dns.info
+          numberOfRecordSets: 2
+        tags:
+          key2: value2
+        type: Microsoft.Network/dnsZones
+    Create_private_zone:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1
+        location: global
+        name: zone1
+        properties:
+          maxNumberOfRecordSets: 5000
+          nameServers: []
+          numberOfRecordSets: 1
+          registrationVirtualNetworks:
+            - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1
+          resolutionVirtualNetworks:
+            - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2
+          zoneType: Private
+        tags:
+          key1: value1
+        type: Microsoft.Network/dnsZones
+    Create_zone:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1
+        location: global
+        name: zone1
+        properties:
+          maxNumberOfRecordSets: 5000
+          nameServers:
+            - ns1-01.azure-dns.com
+            - ns2-01.azure-dns.net
+            - ns3-01.azure-dns.org
+            - ns4-01.azure-dns.info
+          numberOfRecordSets: 2
+          zoneType: Public
+        tags:
+          key1: value1
+        type: Microsoft.Network/dnsZones
+    List_recordsets_by_zone:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CAA?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CAA/record1
+            name: record1
+            properties:
+              TTL: 3600
+              caaRecords:
+                - flags: 0
+                  tag: issue
+                  value: ca.contoso.com
+              fqdn: record1.zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/CAA
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/A/record1
+            name: record1
+            properties:
+              ARecords:
+                - ipv4Address: 127.0.0.1
+              TTL: 3600
+              fqdn: record1.zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/A
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CNAME/record2
+            name: record2
+            properties:
+              CNAMERecord:
+                cname: contoso.com
+              TTL: 3600
+              fqdn: record2.zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/CNAME
+    List_A_recordsets:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/A?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/A/record1
+            name: record1
+            properties:
+              ARecords:
+                - ipv4Address: 127.0.0.1
+              TTL: 3600
+              fqdn: record1.zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/A
+    List_AAAA_recordsets:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/AAAA?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/AAAA/record1
+            name: record1
+            properties:
+              AAAARecords:
+                - ipv6Address: ::1
+              TTL: 3600
+              fqdn: record1.zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/AAAA
+    List_CAA_recordsets:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CAA?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CAA/record1
+            name: record1
+            properties:
+              TTL: 3600
+              caaRecords:
+                - flags: 0
+                  tag: issue
+                  value: ca.contoso.com
+              fqdn: record1.zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/CAA
+    List_CNAME_recordsets:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CNAME?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CNAME/record1
+            name: record1
+            properties:
+              CNAMERecord:
+                cname: contoso.com
+              TTL: 3600
+              fqdn: record1.zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/CNAME
+    List_MX_recordsets:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/MX?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/MX/record1
+            name: record1
+            properties:
+              MXRecords:
+                - exchange: mail.contoso.com
+                  preference: 0
+              TTL: 3600
+              fqdn: record1.zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/MX
+    List_NS_recordsets:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/NS?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/NS/record1
+            name: record1
+            properties:
+              NSRecords:
+                - nsdname: ns1.contoso.com
+              TTL: 3600
+              fqdn: record1.zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/NS
+    List_PTR_recordsets:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/0.0.127.in-addr.arpa/PTR?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/0.0.127.in-addr.arpa/PTR/1
+            name: "1"
+            properties:
+              PTRRecords:
+                - ptrdname: localhost
+              TTL: 3600
+              fqdn: 1.0.0.127.in-addr.arpa
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/PTR
+    List_SOA_recordsets:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/SOA?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/SOA/@
+            name: "@"
+            properties:
+              SOARecord:
+                email: hostmaster.contoso.com
+                expireTime: 2419200
+                host: ns1.contoso.com
+                minimumTTL: 300
+                refreshTime: 3600
+                retryTime: 300
+                serialNumber: 1
+              TTL: 3600
+              fqdn: zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/SOA
+    List_SRV_recordsets:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/SRV?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/SRV/record1
+            name: record1
+            properties:
+              SRVRecords:
+                - port: 80
+                  priority: 0
+                  target: contoso.com
+                  weight: 10
+              TTL: 3600
+              fqdn: record1.zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/SRV
+    List_TXT_recordsets:
+      value:
+        nextLink: https://servicehost/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/TXT?api-version=2018-03-01-preview&$skipToken=skipToken
+        value:
+          - etag: 00000000-0000-0000-0000-000000000000
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/TXT/record1
+            name: record1
+            properties:
+              TTL: 3600
+              TXTRecords:
+                - value:
+                    - string1
+                    - string2
+              fqdn: record1.zone1
+              metadata:
+                key1: value1
+            type: Microsoft.Network/dnsZones/TXT
+    Get_A_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/A/record1
+        name: record1
+        properties:
+          ARecords:
+            - ipv4Address: 127.0.0.1
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/A
+    Get_AAAA_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/AAAA/record1
+        name: record1
+        properties:
+          AAAARecords:
+            - ipv6Address: ::1
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/AAAA
+    Get_CAA_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CAA/record1
+        name: record1
+        properties:
+          TTL: 3600
+          caaRecords:
+            - flags: 0
+              tag: issue
+              value: ca.contoso.com
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/CAA
+    Get_CNAME_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CNAME/record1
+        name: record1
+        properties:
+          CNAMERecord:
+            cname: contoso.com
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/CNAME
+    Get_MX_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/MX/record1
+        name: record1
+        properties:
+          MXRecords:
+            - exchange: mail.contoso.com
+              preference: 0
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/MX
+    Get_NS_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/NS/record1
+        name: record1
+        properties:
+          NSRecords:
+            - nsdname: ns1.contoso.com
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/NS
+    Get_PTR_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/0.0.127.in-addr.arpa/PTR/1
+        name: "1"
+        properties:
+          PTRRecords:
+            - ptrdname: localhost
+          TTL: 3600
+          fqdn: 1.0.0.127.in-addr.arpa
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/PTR
+    Get_SOA_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/SOA/@
+        name: "@"
+        properties:
+          SOARecord:
+            email: hostmaster.contoso.com
+            expireTime: 2419200
+            host: ns1.contoso.com
+            minimumTTL: 300
+            refreshTime: 3600
+            retryTime: 300
+            serialNumber: 1
+          TTL: 3600
+          fqdn: zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/SOA
+    Get_SRV_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/SRV/record1
+        name: record1
+        properties:
+          SRVRecords:
+            - port: 80
+              priority: 0
+              target: contoso.com
+              weight: 10
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/SRV
+    Get_TXT_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/TXT/record1
+        name: record1
+        properties:
+          TTL: 3600
+          TXTRecords:
+            - value:
+                - string1
+                - string2
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/TXT
+    Patch_A_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/A/record1
+        name: record1
+        properties:
+          ARecords:
+            - ipv4Address: 127.0.0.1
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key2: value2
+        type: Microsoft.Network/dnsZones/A
+    Patch_AAAA_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/AAAA/record1
+        name: record1
+        properties:
+          AAAARecords:
+            - ipv6Address: ::1
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key2: value2
+        type: Microsoft.Network/dnsZones/AAAA
+    Patch_CAA_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CAA/record1
+        name: record1
+        properties:
+          TTL: 3600
+          caaRecords:
+            - flags: 0
+              tag: issue
+              value: ca.contoso.com
+          fqdn: record1.zone1
+          metadata:
+            key2: value2
+        type: Microsoft.Network/dnsZones/CAA
+    Patch_CNAME_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CNAME/record1
+        name: record1
+        properties:
+          CNAMERecord:
+            cname: contoso.com
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key2: value2
+        type: Microsoft.Network/dnsZones/CNAME
+    Patch_MX_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/MX/record1
+        name: record1
+        properties:
+          MXRecords:
+            - exchange: mail.contoso.com
+              preference: 0
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key2: value2
+        type: Microsoft.Network/dnsZones/MX
+    Patch_NS_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/NS/record1
+        name: record1
+        properties:
+          NSRecords:
+            - nsdname: ns1.contoso.com
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key2: value2
+        type: Microsoft.Network/dnsZones/NS
+    Patch_PTR_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/0.0.127.in-addr.arpa/PTR/1
+        name: "1"
+        properties:
+          PTRRecords:
+            - ptrdname: localhost
+          TTL: 3600
+          fqdn: 1.0.0.127.in-addr.arpa
+          metadata:
+            key2: value2
+        type: Microsoft.Network/dnsZones/PTR
+    Patch_SOA_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/SOA/@
+        name: "@"
+        properties:
+          SOARecord:
+            email: hostmaster.contoso.com
+            expireTime: 2419200
+            host: ns1.contoso.com
+            minimumTTL: 300
+            refreshTime: 3600
+            retryTime: 300
+            serialNumber: 1
+          TTL: 3600
+          fqdn: zone1
+          metadata:
+            key2: value2
+        type: Microsoft.Network/dnsZones/SOA
+    Patch_SRV_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/SRV/record1
+        name: record1
+        properties:
+          SRVRecords:
+            - port: 80
+              priority: 0
+              target: contoso.com
+              weight: 10
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key2: value2
+        type: Microsoft.Network/dnsZones/SRV
+    Patch_TXT_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/TXT/record1
+        name: record1
+        properties:
+          TTL: 3600
+          TXTRecords:
+            - value:
+                - string1
+                - string2
+          fqdn: record1.zone1
+          metadata:
+            key2: value2
+        type: Microsoft.Network/dnsZones/TXT
+    Create_A_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/A/record1
+        name: record1
+        properties:
+          ARecords:
+            - ipv4Address: 127.0.0.1
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/A
+    Create_AAAA_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/AAAA/record1
+        name: record1
+        properties:
+          AAAARecords:
+            - ipv6Address: ::1
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/AAAA
+    Create_CAA_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CAA/record1
+        name: record1
+        properties:
+          TTL: 3600
+          caaRecords:
+            - flags: 0
+              tag: issue
+              value: ca.contoso.com
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/CAA
+    Create_CNAME_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/CNAME/record1
+        name: record1
+        properties:
+          CNAMERecord:
+            cname: contoso.com
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/CNAME
+    Create_MX_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/MX/record1
+        name: record1
+        properties:
+          MXRecords:
+            - exchange: mail.contoso.com
+              preference: 0
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/MX
+    Create_NS_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/NS/record1
+        name: record1
+        properties:
+          NSRecords:
+            - nsdname: ns1.contoso.com
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/NS
+    Create_PTR_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/0.0.127.in-addr.arpa/PTR/1
+        name: "1"
+        properties:
+          PTRRecords:
+            - ptrdname: localhost
+          TTL: 3600
+          fqdn: 1.0.0.127.in-addr.arpa
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/PTR
+    Create_SOA_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/SOA/@
+        name: "@"
+        properties:
+          SOARecord:
+            email: hostmaster.contoso.com
+            expireTime: 2419200
+            host: ns1.contoso.com
+            minimumTTL: 300
+            refreshTime: 3600
+            retryTime: 300
+            serialNumber: 1
+          TTL: 3600
+          fqdn: zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/SOA
+    Create_SRV_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/SRV/record1
+        name: record1
+        properties:
+          SRVRecords:
+            - port: 80
+              priority: 0
+              target: contoso.com
+              weight: 10
+          TTL: 3600
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/SRV
+    Create_TXT_recordset:
+      value:
+        etag: 00000000-0000-0000-0000-000000000000
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/dnsZones/zone1/TXT/record1
+        name: record1
+        properties:
+          TTL: 3600
+          TXTRecords:
+            - value:
+                - string1
+                - string2
+          fqdn: record1.zone1
+          metadata:
+            key1: value1
+        type: Microsoft.Network/dnsZones/TXT
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ARecord:
+      description: An A record.
+      properties:
+        ipv4Address:
+          description: The IPv4 address of this A record.
+          type: string
+    AaaaRecord:
+      description: An AAAA record.
+      properties:
+        ipv6Address:
+          description: The IPv6 address of this AAAA record.
+          type: string
+    CaaRecord:
+      description: A CAA record.
+      properties:
+        flags:
+          description: The flags for this CAA record as an integer between 0 and 255.
+          format: int32
+          type: integer
+        tag:
+          description: The tag for this CAA record.
+          type: string
+        value:
+          description: The value for this CAA record.
+          type: string
+    CloudError:
+      description: An error message
+      properties:
+        error:
+          $ref: "#/components/schemas/CloudErrorBody"
+      type: object
+      x-ms-external: true
+    CloudErrorBody:
+      description: The body of an error message
+      properties:
+        code:
+          description: The error code
+          type: string
+        details:
+          description: Extra error information
+          items:
+            $ref: "#/components/schemas/CloudErrorBody"
+          type: array
+        message:
+          description: A description of what caused the error
+          type: string
+        target:
+          description: The target resource of the error message
+          type: string
+      type: object
+      x-ms-external: true
+    CnameRecord:
+      description: A CNAME record.
+      properties:
+        cname:
+          description: The canonical name for this CNAME record.
+          type: string
+    MxRecord:
+      description: An MX record.
+      properties:
+        exchange:
+          description: The domain name of the mail host for this MX record.
+          type: string
+        preference:
+          description: The preference value for this MX record.
+          format: int32
+          type: integer
+    NsRecord:
+      description: An NS record.
+      properties:
+        nsdname:
+          description: The name server name for this NS record.
+          type: string
+    PtrRecord:
+      description: A PTR record.
+      properties:
+        ptrdname:
+          description: The PTR target domain name for this PTR record.
+          type: string
+    RecordSet:
+      description: Describes a DNS record set (a collection of DNS records with the same
+        name and type).
+      properties:
+        etag:
+          description: The etag of the record set.
+          type: string
+        id:
+          description: The ID of the record set.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the record set.
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/RecordSetProperties"
+        type:
+          description: The type of the record set.
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    RecordSetListResult:
+      description: The response to a record set List operation.
+      properties:
+        nextLink:
+          description: The continuation token for the next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Information about the record sets in the response.
+          items:
+            $ref: "#/components/schemas/RecordSet"
+          type: array
+    RecordSetProperties:
+      description: Represents the properties of the records in the record set.
+      properties:
+        AAAARecords:
+          description: The list of AAAA records in the record set.
+          items:
+            $ref: "#/components/schemas/AaaaRecord"
+          type: array
+          x-ms-client-name: AaaaRecords
+        ARecords:
+          description: The list of A records in the record set.
+          items:
+            $ref: "#/components/schemas/ARecord"
+          type: array
+        CNAMERecord:
+          $ref: "#/components/schemas/CnameRecord"
+        MXRecords:
+          description: The list of MX records in the record set.
+          items:
+            $ref: "#/components/schemas/MxRecord"
+          type: array
+          x-ms-client-name: MxRecords
+        NSRecords:
+          description: The list of NS records in the record set.
+          items:
+            $ref: "#/components/schemas/NsRecord"
+          type: array
+          x-ms-client-name: NsRecords
+        PTRRecords:
+          description: The list of PTR records in the record set.
+          items:
+            $ref: "#/components/schemas/PtrRecord"
+          type: array
+          x-ms-client-name: PtrRecords
+        SOARecord:
+          $ref: "#/components/schemas/SoaRecord"
+        SRVRecords:
+          description: The list of SRV records in the record set.
+          items:
+            $ref: "#/components/schemas/SrvRecord"
+          type: array
+          x-ms-client-name: SrvRecords
+        TTL:
+          description: The TTL (time-to-live) of the records in the record set.
+          format: int64
+          type: integer
+        TXTRecords:
+          description: The list of TXT records in the record set.
+          items:
+            $ref: "#/components/schemas/TxtRecord"
+          type: array
+          x-ms-client-name: TxtRecords
+        caaRecords:
+          description: The list of CAA records in the record set.
+          items:
+            $ref: "#/components/schemas/CaaRecord"
+          type: array
+          x-ms-client-name: CaaRecords
+        fqdn:
+          description: Fully qualified domain name of the record set.
+          readOnly: true
+          type: string
+        metadata:
+          additionalProperties:
+            type: string
+          description: The metadata attached to the record set.
+          type: object
+    RecordSetUpdateParameters:
+      description: Parameters supplied to update a record set.
+      properties:
+        RecordSet:
+          $ref: "#/components/schemas/RecordSet"
+    SoaRecord:
+      description: An SOA record.
+      properties:
+        email:
+          description: The email contact for this SOA record.
+          type: string
+        expireTime:
+          description: The expire time for this SOA record.
+          format: int64
+          type: integer
+        host:
+          description: The domain name of the authoritative name server for this SOA record.
+          type: string
+        minimumTTL:
+          description: The minimum value for this SOA record. By convention this is used to
+            determine the negative caching duration.
+          format: int64
+          type: integer
+          x-ms-client-name: minimumTtl
+        refreshTime:
+          description: The refresh value for this SOA record.
+          format: int64
+          type: integer
+        retryTime:
+          description: The retry time for this SOA record.
+          format: int64
+          type: integer
+        serialNumber:
+          description: The serial number for this SOA record.
+          format: int64
+          type: integer
+    SrvRecord:
+      description: An SRV record.
+      properties:
+        port:
+          description: The port value for this SRV record.
+          format: int32
+          type: integer
+        priority:
+          description: The priority value for this SRV record.
+          format: int32
+          type: integer
+        target:
+          description: The target domain name for this SRV record.
+          type: string
+        weight:
+          description: The weight value for this SRV record.
+          format: int32
+          type: integer
+    SubResource:
+      description: A reference to a another resource
+      properties:
+        id:
+          description: Resource Id.
+          type: string
+    TxtRecord:
+      description: A TXT record.
+      properties:
+        value:
+          description: The text value of this TXT record.
+          items:
+            type: string
+          type: array
+    Zone:
+      allOf:
+        - allOf:
+            - properties:
+                id:
+                  description: Fully qualified resource Id for the resource. Ex -
+                    /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+                  readOnly: true
+                  type: string
+                name:
+                  description: The name of the resource
+                  readOnly: true
+                  type: string
+                type:
+                  description: The type of the resource. Ex-
+                    Microsoft.Compute/virtualMachines or
+                    Microsoft.Storage/storageAccounts.
+                  readOnly: true
+                  type: string
+              x-ms-azure-resource: true
+          description: The resource model definition for a ARM tracked top level resource
+          properties:
+            location:
+              description: The geo-location where the resource lives
+              type: string
+              x-ms-mutability:
+                - read
+                - create
+            tags:
+              additionalProperties:
+                type: string
+              description: Resource tags.
+              type: object
+              x-ms-mutability:
+                - read
+                - create
+                - update
+          required:
+            - location
+      description: Describes a DNS zone.
+      properties:
+        etag:
+          description: The etag of the zone.
+          type: string
+        properties:
+          $ref: "#/components/schemas/ZoneProperties"
+    ZoneListResult:
+      description: The response to a Zone List or ListAll operation.
+      properties:
+        nextLink:
+          description: The continuation token for the next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Information about the DNS zones.
+          items:
+            $ref: "#/components/schemas/Zone"
+          type: array
+    ZoneProperties:
+      description: Represents the properties of the zone.
+      properties:
+        maxNumberOfRecordSets:
+          description: The maximum number of record sets that can be created in this DNS
+            zone.  This is a read-only property and any attempt to set this
+            value will be ignored.
+          format: int64
+          readOnly: true
+          type: integer
+        nameServers:
+          description: The name servers for this DNS zone. This is a read-only property and
+            any attempt to set this value will be ignored.
+          items:
+            type: string
+          readOnly: true
+          type: array
+        numberOfRecordSets:
+          description: The current number of record sets in this DNS zone.  This is a
+            read-only property and any attempt to set this value will be
+            ignored.
+          format: int64
+          readOnly: true
+          type: integer
+        registrationVirtualNetworks:
+          description: A list of references to virtual networks that register hostnames in
+            this DNS zone. This is a only when ZoneType is Private.
+          items:
+            $ref: "#/components/schemas/SubResource"
+          type: array
+        resolutionVirtualNetworks:
+          description: A list of references to virtual networks that resolve records in
+            this DNS zone. This is a only when ZoneType is Private.
+          items:
+            $ref: "#/components/schemas/SubResource"
+          type: array
+        zoneType:
+          default: Public
+          description: The type of this DNS zone (Public or Private).
+          enum:
+            - Public
+            - Private
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: ZoneType
+    ZoneUpdate:
+      description: Describes a request to update a DNS zone.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object

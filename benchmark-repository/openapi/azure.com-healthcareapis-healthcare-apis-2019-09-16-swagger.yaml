@@ -1,0 +1,1029 @@
+openapi: 3.0.0
+info:
+  description: Use this API to manage Microsoft HealthcareApis services in your Azure
+    subscription.
+  title: HealthcareApisClient
+  version: 2019-09-16
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: healthcareapis-healthcare-apis
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.HealthcareApis/operations:
+    get:
+      deprecated: false
+      description: Lists all of the available Healthcare service REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+              examples:
+                List operations:
+                  $ref: "#/components/examples/List_operations"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - Proxy
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/checkNameAvailability":
+    post:
+      deprecated: false
+      description: Check if a service instance name is available.
+      operationId: Services_CheckNameAvailability
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckNameAvailabilityParameters"
+        description: Set the name parameter in the CheckNameAvailabilityParameters
+          structure to the name of the service instance to check.
+        required: true
+      responses:
+        "200":
+          description: This is a synchronous operation. The body contains a JSON-serialized
+            response that specifies whether the service name is available. If
+            the name is not available, the body contains the reason.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesNameAvailabilityInfo"
+              examples:
+                Check name availability:
+                  $ref: "#/components/examples/Check_name_availability"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - Proxy
+  "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/locations/{locationName}/operationresults/{operationResultId}":
+    get:
+      deprecated: false
+      description: Get the operation result for a long running operation.
+      operationId: OperationResults_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionId"
+        - $ref: "#/components/parameters/locationName"
+        - $ref: "#/components/parameters/operationResultId"
+      responses:
+        "200":
+          description: The body contains all of the properties of the operation result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationResultsDescription"
+              examples:
+                Get operation result:
+                  $ref: "#/components/examples/Get_operation_result"
+        "404":
+          description: No operation result was found matching operationResultId.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+              examples:
+                Get operation result:
+                  $ref: "#/components/examples/Get_operation_result"
+        default:
+          description: Default error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - Resource
+  "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services":
+    get:
+      deprecated: false
+      description: Get all the service instances in a subscription.
+      operationId: Services_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionId"
+      responses:
+        "200":
+          description: This is a synchronous operation. The body contains a JSON-serialized
+            array of the metadata from all the service instances in the
+            subscription.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesDescriptionListResult"
+              examples:
+                List all services in subscription:
+                  $ref: "#/components/examples/List_all_services_in_subscription"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - Collection
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services":
+    get:
+      deprecated: false
+      description: Get all the service instances in a resource group.
+      operationId: Services_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionId"
+        - $ref: "#/components/parameters/resourceGroupName"
+      responses:
+        "200":
+          description: This is a synchronous operation. The body contains a JSON-serialized
+            array of the metadata from all the service instances in the resource
+            group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesDescriptionListResult"
+              examples:
+                List all services in resource group:
+                  $ref: "#/components/examples/List_all_services_in_resource_group"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - Collection
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}":
+    delete:
+      description: Delete a service instance.
+      operationId: Services_Delete
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionId"
+        - $ref: "#/components/parameters/resourceGroupName"
+        - $ref: "#/components/parameters/resourceName"
+      responses:
+        "202":
+          description: Accepted - Delete request accepted; the operation will complete
+            asynchronously.
+        "204":
+          description: The resource does not exist.
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - Resource
+      x-ms-long-running-operation: true
+    get:
+      deprecated: false
+      description: Get the metadata of a service instance.
+      operationId: Services_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionId"
+        - $ref: "#/components/parameters/resourceGroupName"
+        - $ref: "#/components/parameters/resourceName"
+      responses:
+        "200":
+          description: The body contains all of the properties of the service instance.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesDescription"
+              examples:
+                Get metadata:
+                  $ref: "#/components/examples/Get_metadata"
+        default:
+          description: Default error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - Resource
+    patch:
+      deprecated: false
+      description: Update the metadata of a service instance.
+      operationId: Services_Update
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionId"
+        - $ref: "#/components/parameters/resourceGroupName"
+        - $ref: "#/components/parameters/resourceName"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServicesPatchDescription"
+        description: The service instance metadata and security metadata.
+        required: true
+      responses:
+        "200":
+          description: The tags for the resource were updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesDescription"
+              examples:
+                Patch service:
+                  $ref: "#/components/examples/Patch_service"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - Resource
+      x-ms-long-running-operation: true
+    put:
+      deprecated: false
+      description: Create or update the metadata of a service instance.
+      operationId: Services_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionId"
+        - $ref: "#/components/parameters/resourceGroupName"
+        - $ref: "#/components/parameters/resourceName"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServicesDescription"
+        description: The service instance metadata.
+        required: true
+      responses:
+        "200":
+          description: Updated - Put request accepted and an existing resource is being
+            updated; the operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesDescription"
+              examples:
+                Create or Update a service with all parameters:
+                  $ref: "#/components/examples/Create_or_Update_a_service_with_all_\
+                    parameters"
+                Create or Update a service with minimum parameters:
+                  $ref: "#/components/examples/Create_or_Update_a_service_with_mini\
+                    mum_parameters"
+        "201":
+          description: Created - Put request accepted and a new resource was created; the
+            operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesDescription"
+              examples:
+                Create or Update a service with all parameters:
+                  $ref: "#/components/examples/Create_or_Update_a_service_with_all_\
+                    parameters"
+                Create or Update a service with minimum parameters:
+                  $ref: "#/components/examples/Create_or_Update_a_service_with_mini\
+                    mum_parameters"
+        default:
+          description: DefaultErrorResponse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - Resource
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    List_operations:
+      value:
+        value:
+          - display: {}
+            name: Microsoft.HealthcareApis/services/read
+            origin: user,system
+          - display: {}
+            name: Microsoft.HealthcareApis/services/write
+            origin: user,system
+          - display: {}
+            name: Microsoft.HealthcareApis/services/delete
+            origin: user,system
+          - display:
+              description: Get the status of an asynchronous operation
+              operation: read
+              provider: Microsoft.HealthcareApis
+              resource: operationresults
+            name: Microsoft.HealthcareApis/locations/operationresults/read
+            origin: user,system
+          - display: {}
+            name: Microsoft.HealthcareApis/checkNameAvailability/post
+            origin: user
+          - display:
+              description: Get the list of operations supported by this Resource Provider.
+              operation: read
+              provider: Microsoft.HealthcareApis
+              resource: operations
+            name: Microsoft.HealthcareApis/Operations/read
+            origin: user,system
+    Check_name_availability:
+      value:
+        message: Service name is not available.
+        nameAvailable: false
+        reason: AlreadyExists
+    Get_operation_result:
+      value:
+        error:
+          code: OperationResultNotFound
+          message: The operation result was not found.
+    List_all_services_in_subscription:
+      value:
+        nextLink: https://host/subscriptions/subid/providers/Microsoft.HealthcareApis/services?api-version=2018-08-20-preview&%24skipToken=e30%3d
+        value:
+          - etag: etag
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HealthcareApis/services/service1
+            kind: fhir-R4
+            location: West US
+            name: service1
+            properties:
+              accessPolicies:
+                - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+                - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+              authenticationConfiguration:
+                audience: https://azurehealthcareapis.com
+                authority: https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+                smartProxyEnabled: true
+              corsConfiguration:
+                allowCredentials: false
+                headers:
+                  - "*"
+                maxAge: 1440
+                methods:
+                  - DELETE
+                  - GET
+                  - OPTIONS
+                  - PATCH
+                  - POST
+                  - PUT
+                origins:
+                  - "*"
+              cosmosDbConfiguration:
+                offerThroughput: 1000
+              provisioningState: Creating
+            tags: {}
+            type: Microsoft.HealthcareApis/services
+    List_all_services_in_resource_group:
+      value:
+        nextLink: https://host/subscriptions/subid/resourceGroups/rgname/providers/Microsoft.HealthcareApis/services?api-version=2018-08-20-preview&%24skipToken=e30%3d
+        value:
+          - etag: etagvalue
+            id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HealthcareApis/services/dddb8dcb-effb-4290-bb47-ce1e8440c729
+            kind: fhir-R4
+            location: westus
+            name: service1
+            properties:
+              accessPolicies:
+                - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+                - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+              authenticationConfiguration:
+                audience: https://azurehealthcareapis.com
+                authority: https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+                smartProxyEnabled: true
+              corsConfiguration:
+                allowCredentials: false
+                headers:
+                  - "*"
+                maxAge: 1440
+                methods:
+                  - DELETE
+                  - GET
+                  - OPTIONS
+                  - PATCH
+                  - POST
+                  - PUT
+                origins:
+                  - "*"
+              cosmosDbConfiguration:
+                offerThroughput: 1000
+              provisioningState: Creating
+            tags: {}
+            type: Microsoft.HealthcareApis/services
+    Get_metadata:
+      value:
+        etag: etagvalue
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HealthcareApis/services/service1
+        kind: fhir-R4
+        location: West US
+        name: service1
+        properties:
+          accessPolicies:
+            - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+            - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+          authenticationConfiguration:
+            audience: https://azurehealthcareapis.com
+            authority: https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+            smartProxyEnabled: true
+          corsConfiguration:
+            allowCredentials: false
+            headers:
+              - "*"
+            maxAge: 1440
+            methods:
+              - DELETE
+              - GET
+              - OPTIONS
+              - PATCH
+              - POST
+              - PUT
+            origins:
+              - "*"
+          cosmosDbConfiguration:
+            offerThroughput: 1000
+          provisioningState: Creating
+        tags: {}
+        type: Microsoft.HealthcareApis/services
+    Patch_service:
+      value:
+        etag: etagvalue
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HealthcareApis/services/service1
+        kind: fhir-R4
+        location: West US
+        name: service1
+        properties:
+          accessPolicies:
+            - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+            - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+          authenticationConfiguration:
+            audience: https://azurehealthcareapis.com
+            authority: https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+            smartProxyEnabled: true
+          corsConfiguration:
+            allowCredentials: false
+            headers:
+              - "*"
+            maxAge: 1440
+            methods:
+              - DELETE
+              - GET
+              - OPTIONS
+              - PATCH
+              - POST
+              - PUT
+            origins:
+              - "*"
+          cosmosDbConfiguration:
+            offerThroughput: 1000
+          provisioningState: Creating
+        tags:
+          tag1: value1
+          tag2: value2
+        type: Microsoft.HealthcareApis/services
+    Create_or_Update_a_service_with_all_parameters:
+      value:
+        etag: etagvalue
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HealthcareApis/services/service1
+        kind: fhir-R4
+        location: West US 2
+        name: service1
+        properties:
+          accessPolicies:
+            - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+            - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+          authenticationConfiguration:
+            audience: https://azurehealthcareapis.com
+            authority: https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+            smartProxyEnabled: true
+          corsConfiguration:
+            allowCredentials: false
+            headers:
+              - "*"
+            maxAge: 1440
+            methods:
+              - DELETE
+              - GET
+              - OPTIONS
+              - PATCH
+              - POST
+              - PUT
+            origins:
+              - "*"
+          cosmosDbConfiguration:
+            offerThroughput: 1000
+          provisioningState: Creating
+        tags: {}
+        type: Microsoft.HealthcareApis/services
+    Create_or_Update_a_service_with_minimum_parameters:
+      value:
+        etag: etagvalue
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.HealthcareApis/services/service2
+        kind: fhir-R4
+        location: westus2
+        name: service2
+        properties:
+          accessPolicies:
+            - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+          authenticationConfiguration:
+            audience: https://azurehealthcareapis.com
+            authority: https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+            smartProxyEnabled: false
+          corsConfiguration:
+            allowCredentials: false
+            headers: []
+            methods: []
+            origins: []
+          cosmosDbConfiguration:
+            offerThroughput: 1000
+          provisioningState: Creating
+        tags: {}
+        type: Microsoft.HealthcareApis/services
+  parameters:
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        List operations:
+          value: 2019-09-16
+        Check name availability:
+          value: 2019-09-16
+        Get operation result:
+          value: 2019-09-16
+        List all services in subscription:
+          value: 2019-09-16
+        List all services in resource group:
+          value: 2019-09-16
+        Delete service:
+          value: 2019-09-16
+        Get metadata:
+          value: 2019-09-16
+        Patch service:
+          value: 2019-09-16
+        Create or Update a service with all parameters:
+          value: 2019-09-16
+        Create or Update a service with minimum parameters:
+          value: 2019-09-16
+    locationName:
+      description: The location of the operation.
+      in: path
+      name: locationName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get operation result:
+          value: westus
+    operationResultId:
+      description: The ID of the operation result to get.
+      in: path
+      name: operationResultId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get operation result:
+          value: exampleid
+    resourceGroupName:
+      description: The name of the resource group that contains the service instance.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\._\(\)]+$
+      examples:
+        List all services in resource group:
+          value: rgname
+        Delete service:
+          value: rg1
+        Get metadata:
+          value: rg1
+        Patch service:
+          value: rg1
+        Create or Update a service with all parameters:
+          value: rg1
+        Create or Update a service with minimum parameters:
+          value: rg1
+    resourceName:
+      description: The name of the service instance.
+      in: path
+      name: resourceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 24
+      examples:
+        Delete service:
+          value: service1
+        Get metadata:
+          value: service1
+        Patch service:
+          value: service1
+        Create or Update a service with all parameters:
+          value: service1
+        Create or Update a service with minimum parameters:
+          value: service2
+    subscriptionId:
+      description: The subscription identifier.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Check name availability:
+          value: subid
+        Get operation result:
+          value: subid
+        List all services in subscription:
+          value: subid
+        List all services in resource group:
+          value: subid
+        Delete service:
+          value: subid
+        Get metadata:
+          value: subid
+        Patch service:
+          value: subid
+        Create or Update a service with all parameters:
+          value: subid
+        Create or Update a service with minimum parameters:
+          value: subid
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    CheckNameAvailabilityParameters:
+      description: Input values.
+      properties:
+        name:
+          description: The name of the service instance to check.
+          type: string
+        type:
+          description: The fully qualified resource type which includes provider namespace.
+          type: string
+      required:
+        - name
+        - type
+      type: object
+    ErrorDetails:
+      description: Error details.
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorDetailsInternal"
+      type: object
+    ErrorDetailsInternal:
+      description: Error details.
+      properties:
+        code:
+          description: The error code.
+          readOnly: true
+          type: string
+        message:
+          description: The error message.
+          readOnly: true
+          type: string
+        target:
+          description: The target of the particular error.
+          readOnly: true
+          type: string
+      type: object
+    Operation:
+      description: Service REST API operation.
+      properties:
+        display:
+          $ref: "#/components/schemas/OperationDisplay"
+        name:
+          description: "Operation name: {provider}/{resource}/{read | write | action |
+            delete}"
+          readOnly: true
+          type: string
+        origin:
+          description: Default value is 'user,system'.
+          readOnly: true
+          type: string
+      type: object
+    OperationDisplay:
+      description: The object that represents the operation.
+      properties:
+        description:
+          description: Friendly description for the operation,
+          readOnly: true
+          type: string
+        operation:
+          description: Name of the operation
+          readOnly: true
+          type: string
+        provider:
+          description: "Service provider: Microsoft.HealthcareApis"
+          readOnly: true
+          type: string
+        resource:
+          description: "Resource Type: Services"
+          readOnly: true
+          type: string
+      type: object
+    OperationListResult:
+      description: A list of service operations. It contains a list of operations and a URL
+        link to get the next set of results.
+      properties:
+        nextLink:
+          description: The link used to get the next page of service description objects.
+          type: string
+        value:
+          description: A list of service operations supported by the
+            Microsoft.HealthcareApis resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          readOnly: true
+          type: array
+      type: object
+    OperationResultsDescription:
+      description: The properties indicating the operation result of an operation on a
+        service.
+      properties:
+        id:
+          description: The ID of the operation returned.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the operation result.
+          readOnly: true
+          type: string
+        properties:
+          description: Additional properties of the operation result.
+          x-ms-client-flatten: false
+        startTime:
+          description: The time that the operation was started.
+          readOnly: true
+          type: string
+        status:
+          description: The status of the operation being performed.
+          enum:
+            - Canceled
+            - Succeeded
+            - Failed
+            - Requested
+            - Running
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: OperationResultStatus
+      type: object
+    Resource:
+      description: The common properties of a service.
+      properties:
+        etag:
+          description: An etag associated with the resource, used for optimistic
+            concurrency when editing it.
+          type: string
+        id:
+          description: The resource identifier.
+          readOnly: true
+          type: string
+        kind:
+          description: The kind of the service.
+          enum:
+            - fhir
+            - fhir-Stu3
+            - fhir-R4
+          readOnly: false
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: kind
+        location:
+          description: The resource location.
+          type: string
+          x-ms-mutability:
+            - create
+            - read
+        name:
+          description: The resource name.
+          pattern: ^[a-z0-9][a-z0-9-]{1,21}[a-z0-9]$
+          readOnly: true
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: The resource tags.
+          type: object
+        type:
+          description: The resource type.
+          readOnly: true
+          type: string
+      required:
+        - location
+        - kind
+      x-ms-azure-resource: true
+    ServiceAccessPoliciesInfo:
+      description: The access policies of the service instance.
+      items:
+        $ref: "#/components/schemas/ServiceAccessPolicyEntry"
+      minItems: 1
+      type: array
+    ServiceAccessPolicyEntry:
+      description: An access policy entry.
+      properties:
+        objectId:
+          description: An Azure AD object ID (User or Apps) that is allowed access to the
+            FHIR service.
+          pattern: ^(([0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}){1})+$
+          type: string
+      required:
+        - objectId
+    ServiceAuthenticationConfigurationInfo:
+      description: Authentication configuration information
+      properties:
+        audience:
+          description: The audience url for the service
+          readOnly: false
+          type: string
+        authority:
+          description: The authority url for the service
+          readOnly: false
+          type: string
+        smartProxyEnabled:
+          description: If the SMART on FHIR proxy is enabled
+          readOnly: false
+          type: boolean
+      type: object
+    ServiceCorsConfigurationHeaderEntry:
+      description: A header for CORS.
+      type: string
+    ServiceCorsConfigurationInfo:
+      description: The settings for the CORS configuration of the service instance.
+      properties:
+        allowCredentials:
+          description: If credentials are allowed via CORS.
+          readOnly: false
+          type: boolean
+        headers:
+          description: The headers to be allowed via CORS.
+          items:
+            $ref: "#/components/schemas/ServiceCorsConfigurationHeaderEntry"
+          readOnly: false
+          type: array
+        maxAge:
+          description: The max age to be allowed via CORS.
+          maximum: 99999
+          minimum: 0
+          readOnly: false
+          type: integer
+        methods:
+          description: The methods to be allowed via CORS.
+          items:
+            $ref: "#/components/schemas/ServiceCorsConfigurationMethodEntry"
+          readOnly: false
+          type: array
+        origins:
+          description: The origins to be allowed via CORS.
+          items:
+            $ref: "#/components/schemas/ServiceCorsConfigurationOriginEntry"
+          readOnly: false
+          type: array
+      type: object
+    ServiceCorsConfigurationMethodEntry:
+      description: A method for CORS.
+      type: string
+    ServiceCorsConfigurationOriginEntry:
+      description: An origin for CORS.
+      pattern: ^(?:(?:(?:[hH][tT][tT][pP](?:[sS]|))\:\/\/(?:[a-zA-Z0-9-]+[.]?)+(?:\:[0-9]{1,5})?|[*]))$
+      type: string
+    ServiceCosmosDbConfigurationInfo:
+      description: The settings for the Cosmos DB database backing the service.
+      properties:
+        offerThroughput:
+          description: The provisioned throughput for the backing database.
+          maximum: 10000
+          minimum: 400
+          readOnly: false
+          type: integer
+      type: object
+    ServicesDescription:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The description of the service.
+      properties:
+        properties:
+          $ref: "#/components/schemas/ServicesProperties"
+      type: object
+    ServicesDescriptionListResult:
+      description: A list of service description objects with a next link.
+      properties:
+        nextLink:
+          description: The link used to get the next page of service description objects.
+          type: string
+        value:
+          description: A list of service description objects.
+          items:
+            $ref: "#/components/schemas/ServicesDescription"
+          type: array
+      type: object
+    ServicesNameAvailabilityInfo:
+      description: The properties indicating whether a given service name is available.
+      properties:
+        message:
+          description: The detailed reason message.
+          type: string
+        nameAvailable:
+          description: The value which indicates whether the provided name is available.
+          readOnly: true
+          type: boolean
+        reason:
+          description: The reason for unavailability.
+          enum:
+            - Invalid
+            - AlreadyExists
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: ServiceNameUnavailabilityReason
+      type: object
+    ServicesPatchDescription:
+      description: The description of the service.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Instance tags
+          type: object
+      type: object
+    ServicesProperties:
+      description: The properties of a service instance.
+      properties:
+        accessPolicies:
+          $ref: "#/components/schemas/ServiceAccessPoliciesInfo"
+        authenticationConfiguration:
+          $ref: "#/components/schemas/ServiceAuthenticationConfigurationInfo"
+        corsConfiguration:
+          $ref: "#/components/schemas/ServiceCorsConfigurationInfo"
+        cosmosDbConfiguration:
+          $ref: "#/components/schemas/ServiceCosmosDbConfigurationInfo"
+        provisioningState:
+          description: The provisioning state.
+          enum:
+            - Deleting
+            - Succeeded
+            - Creating
+            - Accepted
+            - Verifying
+            - Updating
+            - Failed
+            - Canceled
+            - Deprovisioned
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: provisioningState
+      required:
+        - accessPolicies
+      type: object

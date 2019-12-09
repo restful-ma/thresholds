@@ -1,0 +1,221 @@
+#%RAML 1.0 Library
+
+types:
+  nameAndLabel:
+    displayName: Name And Label
+    type: object
+    additionalProperties: false
+    properties:
+      name:
+        type: string
+        maxLength: 20
+        minLength: 3
+        required: true
+      label:
+        type: string
+        maxLength: 50
+        minLength: 3
+        required: false
+        description: The label to use in the UI for the final user, e.g. 'Access Management'. In the context of Actions, the label to use in the UI for the final user. E.g. 'Update' or 'Delete'
+
+  objectTypeResponse:
+    displayName: Object Types Response
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          type: nameAndLabel
+          properties:
+            platforms:
+              type: array
+              minItems: 1
+              items:
+                type: string
+                minLength: 3
+                maxLength: 20
+                required: true
+              description: The Anypoint platform service that generated the log entry
+      total:
+        type: number
+        description: Total amount of objects types
+
+  platforms:
+    displayName: Platforms Type
+    type: object
+    properties:
+      data:
+        displayName: Platforms Array
+        type: nameAndLabel[]
+      total:
+        type: number
+        description:  Total amount of platforms
+
+  objects:
+    displayName: Objects Query Response
+    type: object
+    properties:
+      data:
+        displayName: Object Entry Array
+        type: array
+        items:
+          displayName: Object Entry
+          type: object
+          additionalProperties: false
+          properties:
+            objectId:
+              type: string
+              maxLength: 36
+              minLength: 1
+              required: true
+              description: Unique id of the object in its system of record
+            objectName:
+              type: string
+              minLength: 1
+              maxLength: 255
+              description: User-visible name of the object, e.g. 'Shipping API'
+      total:
+        type: number
+        description: Total amount of objects that match the criteria
+
+
+  actionResponse:
+    displayName: Actions Response
+    type: object
+    properties:
+      data:
+        description: Actions Entry Array
+        type: array
+        items:
+          displayName: Action Entry
+          type: nameAndLabel
+          properties:
+            objectTypes:
+              type: array
+              minItems: 1
+              items:
+                type: string
+                maxLength: 25
+                minLength: 3
+                required: true
+                description: Type of the object, e.g. 'api' or 'api version'
+      total:
+        type: number
+        description: Total amount of actions
+
+
+  logQueryResult:
+    type: object
+    displayName: Audit Log Query Response
+    properties:
+      data:
+        type: array
+        minItems: 0
+        items:
+          type : object
+        description: Log entry - note that we cannot reference logEntry from here - see https://github.com/raml-org/raml-spec/issues/109
+      total:
+        type: number
+        description: Total amount of entries that the query matches
+
+  logQuery:
+    displayName: Audit Log Query
+    description: Audit Log Query datatype. Queries for log entries. Note that all filters below will be ANDed to each other.
+    type: object
+    properties:
+      startDate:
+        type: [string | integer]
+          #"faker": "date.past",
+        description: Starting time, expressed in Unix milliseconds or ISO 8601 date, e.g. '2011-10-10T14:48:00', inclusive of passed-in value.
+
+      endDate?:
+        type: [string | integer]
+          #"faker": "date.past",
+        description: Ending time, expressed in Unix milliseconds or ISO 8601 date, e.g. '2011-1-1', inclusive of passed-in value.
+
+      userIds?:
+        type: string[]
+        uniqueItems: true
+        description: Limits results to only log entries belonging to the given users
+
+      objectIds?:
+        type: string[]
+        uniqueItems: true
+        description: Limits results to only log entries containing at least one of the given object ids
+
+      parentIds?:
+        type: string[]
+        uniqueItems: true
+        description: Limits results to only log entries whose objects are children of the given parent ids
+
+      platforms?:
+        type: string[]
+        uniqueItems: true
+        description: Limits results to only log entries belonging to the platforms
+
+      objectTypes?:
+        type: string[]
+        uniqueItems: true
+        description: Limits results to only log entries for objects of the given types
+
+      actions?:
+        type: string[]
+        uniqueItems: true
+        description: Limits results to only log entries describing one of the given set of actions
+
+      limit?:
+        type: integer
+        minimum: 1
+        maximum: 200
+        description: Limits the number of log entries returned. Note that no more than 200 entries will ever be returned from this service
+
+      failed?:
+        type: boolean
+        description: Limits results to only log entries with the given 'failed' status
+
+      ascending?:
+        type: boolean
+        description: Indicates if the result query should be sorted in ascending or descending timestamp order
+        default: true
+
+  xmlLogQuery:
+    displayName: LogQuery for urlencoded
+    type: object
+    properties:
+      accessToken:
+        type: string
+        required: true
+      startDate:
+        type: string
+        required: true
+      endDate:
+        type: string
+        required: false
+      userIds:
+        type: string[]
+        required: false
+      objectIds:
+        type: string[]
+        required: false
+      parentIds:
+        type: string[]
+        required: false
+      platforms:
+        type: string[]
+        required: false
+      objectTypes:
+        type: string[]
+        required: false
+      actions:
+        type: string[]
+        required: false
+      failed:
+        type: boolean
+        required: false
+      full:
+        type: boolean
+        default: true
+      ascending:
+        type: boolean
+        default: true
+

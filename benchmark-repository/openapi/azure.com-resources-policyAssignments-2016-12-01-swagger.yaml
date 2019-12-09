@@ -1,0 +1,439 @@
+openapi: 3.0.0
+info:
+  description: To manage and control access to your resources, you can define customized
+    policies and assign them at a scope.
+  title: PolicyClient
+  version: 2016-12-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/resources/resource-manager/Microsoft.Authorization/stable/2016-12-01/policyAssignments.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: resources-policyAssignments
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments":
+    get:
+      description: Gets all the policy assignments for a subscription.
+      operationId: PolicyAssignments_List
+      parameters:
+        - description: The filter to apply on the operation.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK - Returns an array of policy assignments.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignmentListResult"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignmentListResult"
+      tags:
+        - PolicyAssignments
+      x-ms-odata: "#/components/schemas/PolicyAssignment"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/policyAssignments":
+    get:
+      description: Gets policy assignments for the resource group.
+      operationId: PolicyAssignments_ListForResourceGroup
+      parameters:
+        - description: The name of the resource group that contains policy assignments.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+        - description: The filter to apply on the operation.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+          allowReserved: true
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK - Returns an array of policy assignments.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignmentListResult"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignmentListResult"
+      tags:
+        - PolicyAssignments
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/policyAssignments":
+    get:
+      deprecated: true
+      description: Gets policy assignments for a resource.
+      operationId: PolicyAssignments_ListForResource
+      parameters:
+        - description: The name of the resource group containing the resource. The name is
+            case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+        - description: The namespace of the resource provider.
+          in: path
+          name: resourceProviderNamespace
+          required: true
+          schema:
+            type: string
+        - description: The parent resource path.
+          in: path
+          name: parentResourcePath
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+        - description: The resource type.
+          in: path
+          name: resourceType
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+        - description: The name of the resource with policy assignments.
+          in: path
+          name: resourceName
+          required: true
+          schema:
+            type: string
+        - description: The filter to apply on the operation.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK - Returns an array of policy assignments.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignmentListResult"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignmentListResult"
+      tags:
+        - PolicyAssignments
+      x-ms-odata: "#/components/schemas/PolicyAssignment"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/{policyAssignmentId}":
+    delete:
+      description: When providing a scope for the assignment, use
+        '/subscriptions/{subscription-id}/' for subscriptions,
+        '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}'
+        for resource groups, and
+        '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+        for resources.
+      operationId: PolicyAssignments_DeleteById
+      parameters:
+        - description: The ID of the policy assignment to delete. Use the format
+            '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+          in: path
+          name: policyAssignmentId
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK - Returns information about the policy assignment.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+      summary: Deletes a policy assignment by ID.
+      tags:
+        - PolicyAssignments
+    get:
+      description: When providing a scope for the assignment, use
+        '/subscriptions/{subscription-id}/' for subscriptions,
+        '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}'
+        for resource groups, and
+        '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+        for resources.
+      operationId: PolicyAssignments_GetById
+      parameters:
+        - description: The ID of the policy assignment to get. Use the format
+            '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+          in: path
+          name: policyAssignmentId
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK - Returns information about the policy assignment.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+      summary: Gets a policy assignment by ID.
+      tags:
+        - PolicyAssignments
+    put:
+      description: Policy assignments are inherited by child resources. For example, when
+        you apply a policy to a resource group that policy is assigned to all
+        resources in the group. When providing a scope for the assignment, use
+        '/subscriptions/{subscription-id}/' for subscriptions,
+        '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}'
+        for resource groups, and
+        '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+        for resources.
+      operationId: PolicyAssignments_CreateById
+      parameters:
+        - description: The ID of the policy assignment to create. Use the format
+            '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+          in: path
+          name: policyAssignmentId
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PolicyAssignment"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/PolicyAssignment"
+        description: Parameters for policy assignment.
+        required: true
+      responses:
+        "201":
+          description: Created - Returns information about the policy assignment.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+      summary: Creates a policy assignment by ID.
+      tags:
+        - PolicyAssignments
+  "/{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}":
+    delete:
+      description: Deletes a policy assignment.
+      operationId: PolicyAssignments_Delete
+      parameters:
+        - description: The scope of the policy assignment.
+          in: path
+          name: scope
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+        - description: The name of the policy assignment to delete.
+          in: path
+          name: policyAssignmentName
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK - Returns information about the deleted assignment.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+        "204":
+          description: No Content
+      tags:
+        - PolicyAssignments
+    get:
+      description: Gets a policy assignment.
+      operationId: PolicyAssignments_Get
+      parameters:
+        - description: The scope of the policy assignment.
+          in: path
+          name: scope
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+        - description: The name of the policy assignment to get.
+          in: path
+          name: policyAssignmentName
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK - Returns information about the policy assignment.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+      tags:
+        - PolicyAssignments
+    put:
+      description: Policy assignments are inherited by child resources. For example, when
+        you apply a policy to a resource group that policy is assigned to all
+        resources in the group.
+      operationId: PolicyAssignments_Create
+      parameters:
+        - description: The scope of the policy assignment.
+          in: path
+          name: scope
+          required: true
+          x-ms-skip-url-encoding: true
+          schema:
+            type: string
+        - description: The name of the policy assignment.
+          in: path
+          name: policyAssignmentName
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PolicyAssignment"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/PolicyAssignment"
+        description: Parameters for the policy assignment.
+        required: true
+      responses:
+        "201":
+          description: Created - Returns information about the new policy assignment.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/PolicyAssignment"
+      summary: Creates a policy assignment.
+      tags:
+        - PolicyAssignments
+servers:
+  - url: https://management.azure.com
+components:
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the operation.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The ID of the target subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    PolicyAssignment:
+      description: The policy assignment.
+      properties:
+        id:
+          description: The ID of the policy assignment.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the policy assignment.
+          type: string
+        properties:
+          $ref: "#/components/schemas/PolicyAssignmentProperties"
+        type:
+          description: The type of the policy assignment.
+          type: string
+      x-ms-azure-resource: true
+    PolicyAssignmentListResult:
+      description: List of policy assignments.
+      properties:
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          type: string
+        value:
+          description: An array of policy assignments.
+          items:
+            $ref: "#/components/schemas/PolicyAssignment"
+          type: array
+    PolicyAssignmentProperties:
+      description: The policy assignment properties.
+      properties:
+        description:
+          description: This message will be part of response in case of policy violation.
+          type: string
+        displayName:
+          description: The display name of the policy assignment.
+          type: string
+        parameters:
+          description: Required if a parameter is used in policy rule.
+          type: object
+        policyDefinitionId:
+          description: The ID of the policy definition.
+          type: string
+        scope:
+          description: The scope for the policy assignment.
+          type: string

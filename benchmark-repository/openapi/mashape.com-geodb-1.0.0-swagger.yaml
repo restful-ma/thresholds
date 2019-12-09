@@ -1,0 +1,2491 @@
+openapi: 3.0.0
+info:
+  description: The GeoDB API focuses on getting global city and region data. Easily obtain
+    country, region, and city data for use in your apps! <ul><li>Filter cities
+    by name prefix, country, location, time-zone, and even minimum
+    population.</li><li>Sort cities by name, country code, elevation, and
+    population - or any combination of these.</li> <li>Get all country
+    regions.</li> <li>Get all cities in a given region.</li><li>Display results
+    in multiple languages.</li> <li>RESTful API adheres to industry
+    best-practices, including HATEOAS-style links to facilitate paging
+    results.</li> <li>Backed by cloud-based load-balanced infrastructure for
+    resiliency and performance!</li> <li>Data is periodically refreshed from
+    GeoNames and WikiData.</li></ul><p>Notes:<ul><li>Since the database is
+    periodically updated, this may <strong>very rarely</strong> result in
+    certain cities being marked deleted (e.g., duplicates removed). By default,
+    endpoints returning city data will exclude cities marked deleted. However,
+    in the unlikely event that this occurs while your app is paging through a
+    set of affected results - and you care about the paged results suddenly
+    changing underneath - specify <tt>includeDeleted=SINCE_YESTERDAY</tt> (or
+    <tt>SINCE_LAST_WEEK</tt> if you're really
+    paranoid!).</li></ul><hr/><h3>Useful Resources</h3><ul><li>SDKs<ul><li><a
+    href='https://www.npmjs.com/package/wft-geodb-angular-client'>Angular</a>,
+    <a href='https://github.com/wirefreethought/geodb-sample-angular-app'>Sample
+    App</a></li><li><a
+    href='https://github.com/wirefreethought/geodb-java-client'>Java</a></li><li><a
+    href='https://www.npmjs.com/package/wft-geodb-js-client'>JavaScript</a></li></ul><li><a
+    href='swagger.json'>Swagger Docs</a></li><li><a
+    href='http://creativecommons.org/licenses/by/3.0/'>Usage
+    License</a></i></li></ul>
+  license:
+    name: Creative Commons Attribution 3.0
+    url: http://creativecommons.org/licenses/by/3.0/
+  title: GeoDB Cities
+  version: 1.0.0
+  x-apisguru-categories:
+    - developer_tools
+    - location
+  x-logo:
+    backgroundColor: "#FFFFFF"
+    url: https://wirefreethought.github.io/geodb-cities-api-docs/images/logo.png
+  x-origin:
+    - format: swagger
+      url: https://wirefreethought.github.io/geodb-cities-api-docs/swagger.json
+      version: "2.0"
+  x-providerName: mashape.com
+  x-serviceName: geodb
+security:
+  - UserSecurity: []
+tags:
+  - description: Geo Endpoints
+    name: Geo
+  - description: Locale Endpoints
+    name: Locale
+paths:
+  /v1/geo/adminDivisions:
+    get:
+      description: Find administrative divisions, filtering by optional criteria. If no
+        criteria are set, you will get back all known divisions.
+      operationId: findAdminDivisionsUsingGET
+      parameters:
+        - description: "Only divisions near this location. Latitude/longitude in ISO-6709
+            format: ±DD.DDDD±DDD.DDDD"
+          in: query
+          name: location
+          required: false
+          schema:
+            type: string
+        - description: The location radius within which to find divisions
+          in: query
+          name: radius
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: "The unit of distance: MI | KM"
+          in: query
+          name: distanceUnit
+          required: false
+          schema:
+            type: string
+            default: MI
+        - description: Only divisions in these countries (comma-delimited country codes or
+            WikiData ids)
+          in: query
+          name: countryIds
+          required: false
+          schema:
+            type: string
+        - description: Only divisions NOT in these countries (comma-delimited country codes
+            or WikiData ids)
+          in: query
+          name: excludedCountryIds
+          required: false
+          schema:
+            type: string
+        - description: Only divisions having at least this population
+          in: query
+          name: minPopulation
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: Only divisions whose names start with this prefix. If languageCode
+            is set, the prefix will be matched on the name as it appears in that
+            language.
+          in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - description: Only divisions in these time-zones (comma-delimited)
+          in: query
+          name: timeZoneIds
+          required: false
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - description: "How to sort the results. Format: ±SORT_FIELD,±SORT_FIELD where
+            SORT_FIELD = countryCode | elevation | name | population"
+          in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+        - description: "Whether to include any divisions marked deleted: ALL |
+            SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE"
+          in: query
+          name: includeDeleted
+          required: false
+          schema:
+            type: string
+            default: NONE
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopulatedPlacesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find administrative divisions
+      tags:
+        - Geo
+  "/v1/geo/adminDivisions/{divisionId}":
+    get:
+      description: Get the details for a specific administrative division, including
+        location coordinates, population, and elevation above sea-level (if
+        available).
+      operationId: getAdminDivisionUsingGET
+      parameters:
+        - description: The division id (either native 'id' or 'wikiDataId')
+          in: path
+          name: divisionId
+          required: true
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopulatedPlaceResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get administrative division details
+      tags:
+        - Geo
+  "/v1/geo/adminDivisions/{divisionId}/nearbyCities":
+    get:
+      description: Find cities near the given administrative division, filtering by
+        optional criteria. If no criteria are set, you will get back all known
+        cities.
+      operationId: findCitiesNearAdminDivisionUsingGET
+      parameters:
+        - description: The division id (either native 'id' or 'wikiDataId')
+          in: path
+          name: divisionId
+          required: true
+          schema:
+            type: string
+        - description: The location radius within which to find cities
+          in: query
+          name: radius
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: "The unit of distance: MI | KM"
+          in: query
+          name: distanceUnit
+          required: false
+          schema:
+            type: string
+            default: MI
+        - description: Only divisions in these countries (comma-delimited country codes or
+            WikiData ids)
+          in: query
+          name: countryIds
+          required: false
+          schema:
+            type: string
+        - description: Only divisions NOT in these countries (comma-delimited country codes
+            or WikiData ids)
+          in: query
+          name: excludedCountryIds
+          required: false
+          schema:
+            type: string
+        - description: Only cities having at least this population
+          in: query
+          name: minPopulation
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: Only cities whose names start with this prefix. If languageCode is
+            set, the prefix will be matched on the name as it appears in that
+            language.
+          in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - description: Only cities in these time-zones (comma-delimited)
+          in: query
+          name: timeZoneIds
+          required: false
+          schema:
+            type: string
+        - description: "Only cities for these types (comma-delimited): CITY | ADM2"
+          in: query
+          name: types
+          required: false
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - description: "How to sort the results. Format: ±SORT_FIELD,±SORT_FIELD where
+            SORT_FIELD = countryCode | elevation | name | population"
+          in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+        - description: "Whether to include any cities marked deleted: ALL | SINCE_YESTERDAY
+            | SINCE_LAST_WEEK | NONE"
+          in: query
+          name: includeDeleted
+          required: false
+          schema:
+            type: string
+            default: NONE
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopulatedPlacesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find cities near division
+      tags:
+        - Geo
+  "/v1/geo/adminDivisions/{divisionId}/nearbyDivisions":
+    get:
+      description: Find administrative divisions near the given origin division, filtering
+        by optional criteria. If no criteria are set, you will get back all
+        known divisions.
+      operationId: findDivisionsNearAdminDivisionUsingGET
+      parameters:
+        - description: The division id (either native 'id' or 'wikiDataId')
+          in: path
+          name: divisionId
+          required: true
+          schema:
+            type: string
+        - description: The location radius within which to find divisions
+          in: query
+          name: radius
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: "The unit of distance: MI | KM"
+          in: query
+          name: distanceUnit
+          required: false
+          schema:
+            type: string
+            default: MI
+        - description: Only divisions in these countries (comma-delimited country codes or
+            WikiData ids)
+          in: query
+          name: countryIds
+          required: false
+          schema:
+            type: string
+        - description: Only divisions NOT in these countries (comma-delimited country codes
+            or WikiData ids)
+          in: query
+          name: excludedCountryIds
+          required: false
+          schema:
+            type: string
+        - description: Only divisions having at least this population
+          in: query
+          name: minPopulation
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: Only divisions whose names start with this prefix. If languageCode
+            is set, the prefix will be matched on the name as it appears in that
+            language.
+          in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - description: Only divisions in these time-zones (comma-delimited)
+          in: query
+          name: timeZoneIds
+          required: false
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - description: "How to sort the results. Format: ±SORT_FIELD,±SORT_FIELD where
+            SORT_FIELD = countryCode | elevation | name | population"
+          in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+        - description: "Whether to include any divisions marked deleted: ALL |
+            SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE"
+          in: query
+          name: includeDeleted
+          required: false
+          schema:
+            type: string
+            default: NONE
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopulatedPlacesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find divisions near division
+      tags:
+        - Geo
+  /v1/geo/cities:
+    get:
+      description: Find cities, filtering by optional criteria. If no criteria are set, you
+        will get back all known cities.
+      operationId: findCitiesUsingGET
+      parameters:
+        - description: "Only cities near this location. Latitude/longitude in ISO-6709
+            format: ±DD.DDDD±DDD.DDDD"
+          in: query
+          name: location
+          required: false
+          schema:
+            type: string
+        - description: The location radius within which to find cities
+          in: query
+          name: radius
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: "The unit of distance: MI | KM"
+          in: query
+          name: distanceUnit
+          required: false
+          schema:
+            type: string
+            default: MI
+        - description: Only cities in these countries (comma-delimited country codes or
+            WikiData ids)
+          in: query
+          name: countryIds
+          required: false
+          schema:
+            type: string
+        - description: Only cities NOT in these countries (comma-delimited country codes or
+            WikiData ids)
+          in: query
+          name: excludedCountryIds
+          required: false
+          schema:
+            type: string
+        - description: Only cities whose names start with this prefix. If languageCode is
+            set, the prefix will be matched on the name as it appears in that
+            language.
+          in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - description: Only cities having at least this population
+          in: query
+          name: minPopulation
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: Only cities in these time-zones (comma-delimited)
+          in: query
+          name: timeZoneIds
+          required: false
+          schema:
+            type: string
+        - description: "Only cities for these types (comma-delimited): CITY | ADM2"
+          in: query
+          name: types
+          required: false
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - description: "How to sort the results. Format: ±SORT_FIELD,±SORT_FIELD where
+            SORT_FIELD = countryCode | elevation | name | population"
+          in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+        - description: "Whether to include any cities marked deleted: ALL | SINCE_YESTERDAY
+            | SINCE_LAST_WEEK | NONE"
+          in: query
+          name: includeDeleted
+          required: false
+          schema:
+            type: string
+            default: NONE
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopulatedPlacesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find cities
+      tags:
+        - Geo
+  "/v1/geo/cities/{cityId}":
+    get:
+      description: Get the details for a specific city, including location coordinates,
+        population, and elevation above sea-level (if available).
+      operationId: getCityUsingGET
+      parameters:
+        - description: The city id (either native 'id' or 'wikiDataId')
+          in: path
+          name: cityId
+          required: true
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopulatedPlaceResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get city details
+      tags:
+        - Geo
+  "/v1/geo/cities/{cityId}/dateTime":
+    get:
+      description: Get city date-time
+      operationId: getCityDateTimeUsingGET
+      parameters:
+        - description: The city id (either native 'id' or 'wikiDataId')
+          in: path
+          name: cityId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DateTimeResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get city date-time
+      tags:
+        - Geo
+  "/v1/geo/cities/{cityId}/distance":
+    get:
+      description: Get distance to the given city
+      operationId: getCityDistanceUsingGET
+      parameters:
+        - description: The city id (either native 'id' or 'wikiDataId')
+          in: path
+          name: cityId
+          required: true
+          schema:
+            type: string
+        - description: Distance from this city
+          in: query
+          name: fromCityId
+          required: true
+          schema:
+            type: string
+        - description: "The unit of distance: MI | KM"
+          in: query
+          name: distanceUnit
+          required: false
+          schema:
+            type: string
+            default: MI
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DistanceResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get city distance
+      tags:
+        - Geo
+  "/v1/geo/cities/{cityId}/nearbyCities":
+    get:
+      description: Find cities near the given origin city, filtering by optional criteria.
+        If no criteria are set, you will get back all known cities.
+      operationId: findCitiesNearCityUsingGET
+      parameters:
+        - description: The location radius within which to find cities
+          in: query
+          name: radius
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: "The unit of distance: MI | KM"
+          in: query
+          name: distanceUnit
+          required: false
+          schema:
+            type: string
+            default: MI
+        - description: The city id (either native 'id' or 'wikiDataId')
+          in: path
+          name: cityId
+          required: true
+          schema:
+            type: string
+        - description: Only divisions in these countries (comma-delimited country codes or
+            WikiData ids)
+          in: query
+          name: countryIds
+          required: false
+          schema:
+            type: string
+        - description: Only divisions NOT in these countries (comma-delimited country codes
+            or WikiData ids)
+          in: query
+          name: excludedCountryIds
+          required: false
+          schema:
+            type: string
+        - description: Only cities having at least this population
+          in: query
+          name: minPopulation
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: Only cities whose names start with this prefix. If languageCode is
+            set, the prefix will be matched on the name as it appears in that
+            language.
+          in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - description: Only cities in these time-zones (comma-delimited)
+          in: query
+          name: timeZoneIds
+          required: false
+          schema:
+            type: string
+        - description: "Only cities for these types (comma-delimited): CITY | ADM2"
+          in: query
+          name: types
+          required: false
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - description: "How to sort the results. Format: ±SORT_FIELD,±SORT_FIELD where
+            SORT_FIELD = countryCode | elevation | name | population"
+          in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+        - description: "Whether to include any cities marked deleted: ALL | SINCE_YESTERDAY
+            | SINCE_LAST_WEEK | NONE"
+          in: query
+          name: includeDeleted
+          required: false
+          schema:
+            type: string
+            default: NONE
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopulatedPlacesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find cities near city
+      tags:
+        - Geo
+  "/v1/geo/cities/{cityId}/time":
+    get:
+      description: Get city time
+      operationId: getCityTimeUsingGET
+      parameters:
+        - description: The city id (either native 'id' or 'wikiDataId')
+          in: path
+          name: cityId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TimeResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get city time
+      tags:
+        - Geo
+  /v1/geo/countries:
+    get:
+      description: Find countries, filtering by optional criteria. If no criteria are set,
+        you will get back all known countries.
+      operationId: getCountriesUsingGET
+      parameters:
+        - description: Only countries supporting this currency
+          in: query
+          name: currencyCode
+          required: false
+          schema:
+            type: string
+        - description: Only countries whose names start with this prefix. If languageCode
+            is set, the prefix will be matched on the name as it appears in that
+            language.
+          in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountriesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find countries
+      tags:
+        - Geo
+  "/v1/geo/countries/{countryId}":
+    get:
+      description: Get the details for a specific country, including number of regions.
+      operationId: getCountryUsingGET
+      parameters:
+        - description: An ISO-3166 country code or WikiData id
+          in: path
+          name: countryId
+          required: true
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountryResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get country details
+      tags:
+        - Geo
+  "/v1/geo/countries/{countryId}/regions":
+    get:
+      description: Get all regions in a specific country. These could be states, provinces,
+        districts, or otherwise major political divisions.
+      operationId: getRegionsUsingGET
+      parameters:
+        - description: An ISO-3166 country code or WikiData id
+          in: path
+          name: countryId
+          required: true
+          schema:
+            type: string
+        - description: Only regions whose names start with this prefix. If languageCode is
+            set, the prefix will be matched on the name as it appears in that
+            language.
+          in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegionsResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find country regions
+      tags:
+        - Geo
+  "/v1/geo/countries/{countryId}/regions/{regionCode}":
+    get:
+      description: Get the details of a specific country region, including number of cities.
+      operationId: getRegionUsingGET
+      parameters:
+        - description: An ISO-3166 country code or WikiData id
+          in: path
+          name: countryId
+          required: true
+          schema:
+            type: string
+        - description: An ISO-3166 or FIPS region code
+          in: path
+          name: regionCode
+          required: true
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegionResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get region details
+      tags:
+        - Geo
+  "/v1/geo/countries/{countryId}/regions/{regionCode}/adminDivisions":
+    get:
+      description: Get the administrative divisions in a specific country region. The
+        country and region info is omitted in the response.
+      operationId: findRegionDivisionsUsingGET
+      parameters:
+        - description: An ISO-3166 country code or WikiData id
+          in: path
+          name: countryId
+          required: true
+          schema:
+            type: string
+        - description: An ISO-3166 or FIPS region code
+          in: path
+          name: regionCode
+          required: true
+          schema:
+            type: string
+        - description: Only divisions having at least this population
+          in: query
+          name: minPopulation
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: Only divisions whose names start with this prefix. If languageCode
+            is set, the prefix will be matched on the name as it appears in that
+            language.
+          in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - description: Only divisions in these time-zones (comma-delimited)
+          in: query
+          name: timeZoneIds
+          required: false
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - description: "How to sort the results. Format: ±SORT_FIELD,±SORT_FIELD where
+            SORT_FIELD = elevation | name | population"
+          in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+        - description: "Whether to include any divisions marked deleted: ALL |
+            SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE"
+          in: query
+          name: includeDeleted
+          required: false
+          schema:
+            type: string
+            default: NONE
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopulatedPlacesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find country region administrative divisions
+      tags:
+        - Geo
+  "/v1/geo/countries/{countryId}/regions/{regionCode}/cities":
+    get:
+      description: Get the cities in a specific country region. The country and region info
+        is omitted in the response.
+      operationId: findRegionCitiesUsingGET
+      parameters:
+        - description: An ISO-3166 country code or WikiData id
+          in: path
+          name: countryId
+          required: true
+          schema:
+            type: string
+        - description: An ISO-3166 or FIPS region code
+          in: path
+          name: regionCode
+          required: true
+          schema:
+            type: string
+        - description: Only cities having at least this population
+          in: query
+          name: minPopulation
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: Only cities whose names start with this prefix. If languageCode is
+            set, the prefix will be matched on the name as it appears in that
+            language.
+          in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - description: Only cities in these time-zones (comma-delimited)
+          in: query
+          name: timeZoneIds
+          required: false
+          schema:
+            type: string
+        - description: "Only cities for these types (comma-delimited): CITY | ADM2"
+          in: query
+          name: types
+          required: false
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - description: "How to sort the results. Format: ±SORT_FIELD,±SORT_FIELD where
+            SORT_FIELD = elevation | name | population"
+          in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+        - description: "Whether to include any cities marked deleted: ALL | SINCE_YESTERDAY
+            | SINCE_LAST_WEEK | NONE"
+          in: query
+          name: includeDeleted
+          required: false
+          schema:
+            type: string
+            default: NONE
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopulatedPlacesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find country region cities
+      tags:
+        - Geo
+  "/v1/geo/locations/{locationId}/nearbyCities":
+    get:
+      description: Find cities near the given location, filtering by optional criteria. If
+        no criteria are set, you will get back all known cities.
+      operationId: findCitiesNearLocationUsingGET
+      parameters:
+        - description: "Only cities near this location. Latitude/longitude in ISO-6709
+            format: ±DD.DDDD±DDD.DDDD"
+          in: path
+          name: locationId
+          required: true
+          schema:
+            type: string
+        - description: The location radius within which to find cities
+          in: query
+          name: radius
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: "The unit of distance: MI | KM"
+          in: query
+          name: distanceUnit
+          required: false
+          schema:
+            type: string
+            default: MI
+        - description: Only divisions in these countries (comma-delimited country codes or
+            WikiData ids)
+          in: query
+          name: countryIds
+          required: false
+          schema:
+            type: string
+        - description: Only divisions NOT in these countries (comma-delimited country codes
+            or WikiData ids)
+          in: query
+          name: excludedCountryIds
+          required: false
+          schema:
+            type: string
+        - description: Only cities having at least this population
+          in: query
+          name: minPopulation
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: Only cities whose names start with this prefix. If languageCode is
+            set, the prefix will be matched on the name as it appears in that
+            language.
+          in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - description: Only cities in these time-zones (comma-delimited)
+          in: query
+          name: timeZoneIds
+          required: false
+          schema:
+            type: string
+        - description: "Only cities for these types (comma-delimited): CITY | ADM2"
+          in: query
+          name: types
+          required: false
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 5
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - description: "How to sort the results. Format: ±SORT_FIELD,±SORT_FIELD where
+            SORT_FIELD = countryCode | elevation | name | population"
+          in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+        - description: "Whether to include any cities marked deleted: ALL | SINCE_YESTERDAY
+            | SINCE_LAST_WEEK | NONE"
+          in: query
+          name: includeDeleted
+          required: false
+          schema:
+            type: string
+            default: NONE
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopulatedPlacesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find cities near location
+      tags:
+        - Geo
+  "/v1/geo/locations/{locationId}/nearbyDivisions":
+    get:
+      description: Find administrative divisions near the given location, filtering by
+        optional criteria. If no criteria are set, you will get back all known
+        divisions.
+      operationId: findDivisionsNearLocationUsingGET
+      parameters:
+        - description: "Only divisions near this location. Latitude/longitude in ISO-6709
+            format: ±DD.DDDD±DDD.DDDD"
+          in: path
+          name: locationId
+          required: true
+          schema:
+            type: string
+        - description: The location radius within which to find divisions
+          in: query
+          name: radius
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: "The unit of distance: MI | KM"
+          in: query
+          name: distanceUnit
+          required: false
+          schema:
+            type: string
+            default: MI
+        - description: Only divisions in these countries (comma-delimited country codes or
+            WikiData ids)
+          in: query
+          name: countryIds
+          required: false
+          schema:
+            type: string
+        - description: Only divisions NOT in these countries (comma-delimited country codes
+            or WikiData ids)
+          in: query
+          name: excludedCountryIds
+          required: false
+          schema:
+            type: string
+        - description: Only divisions having at least this population
+          in: query
+          name: minPopulation
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - description: Only divisions whose names start with this prefix. If languageCode
+            is set, the prefix will be matched on the name as it appears in that
+            language.
+          in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - description: Only divisions in these time-zones (comma-delimited)
+          in: query
+          name: timeZoneIds
+          required: false
+          schema:
+            type: string
+        - description: Display results using ASCII characters
+          in: query
+          name: asciiMode
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: Display results in this language
+          in: query
+          name: languageCode
+          required: false
+          schema:
+            type: string
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 5
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - description: "How to sort the results. Format: ±SORT_FIELD,±SORT_FIELD where
+            SORT_FIELD = countryCode | elevation | name | population"
+          in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+        - description: "Whether to include any divisions marked deleted: ALL |
+            SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE"
+          in: query
+          name: includeDeleted
+          required: false
+          schema:
+            type: string
+            default: NONE
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopulatedPlacesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find divisions near location
+      tags:
+        - Geo
+  /v1/locale/currencies:
+    get:
+      description: Find currencies, filtering by optional criteria. If no criteria are set,
+        you will get back all known currencies.
+      operationId: getCurrenciesUsingGET
+      parameters:
+        - description: Only currencies supported by this country
+          in: query
+          name: countryId
+          required: false
+          schema:
+            type: string
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrenciesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Find currencies
+      tags:
+        - Locale
+  /v1/locale/languages:
+    get:
+      description: Get all supported languages
+      operationId: getLanguagesUsingGET
+      parameters:
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 5
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LanguagesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get languages
+      tags:
+        - Locale
+  /v1/locale/locales:
+    get:
+      description: Get all known locales
+      operationId: getLocalesUsingGET
+      parameters:
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocalesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get locales
+      tags:
+        - Locale
+  /v1/locale/timezones:
+    get:
+      description: Get all known time-zones
+      operationId: getTimezonesUsingGET
+      parameters:
+        - description: Include HATEOAS-style links in results
+          in: query
+          name: hateoasMode
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - description: The maximum number of results to retrieve
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - description: The zero-ary offset index into the results
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TimeZonesResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get time-zones
+      tags:
+        - Locale
+  "/v1/locale/timezones/{zoneId}/dateTime":
+    get:
+      description: Get time-zone date-time
+      operationId: getTimeZoneDateTimeUsingGET
+      parameters:
+        - description: The time-zone id
+          in: path
+          name: zoneId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DateTimeResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get time-zone date-time
+      tags:
+        - Locale
+  "/v1/locale/timezones/{zoneId}/time":
+    get:
+      description: Get time-zone time
+      operationId: getTimeZoneTimeUsingGET
+      parameters:
+        - description: The time-zone id
+          in: path
+          name: zoneId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TimeResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Get time-zone time
+      tags:
+        - Locale
+servers:
+  - url: https://wft-geo-db.p.mashape.com/
+components:
+  securitySchemes:
+    UserSecurity:
+      in: header
+      name: X-Mashape-Key
+      type: apiKey
+  schemas:
+    CountriesResponse:
+      properties:
+        data:
+          description: A list of CountrySummarys
+          items:
+            $ref: "#/components/schemas/CountrySummary"
+          type: array
+        errors:
+          description: A list of WftErrors
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+        links:
+          description: A list of Links
+          items:
+            $ref: "#/components/schemas/Link"
+          type: array
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+      type: object
+    CountryDetails:
+      properties:
+        code:
+          description: The ISO-3166 country code
+          type: string
+        currencyCodes:
+          description: A list of supported ISO-4217 currency codes
+          items:
+            type: string
+          type: array
+        flagImageUri:
+          description: The country flag image
+          type: string
+        name:
+          description: The country name (varies by languageCode)
+          type: string
+        numRegions:
+          description: The number of regions in this country
+          format: int32
+          type: integer
+        wikiDataId:
+          description: The country WikiData id
+          type: string
+      type: object
+    CountryResponse:
+      properties:
+        data:
+          $ref: "#/components/schemas/CountryDetails"
+        errors:
+          description: A list of WftErrors
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+      type: object
+    CountrySummary:
+      properties:
+        code:
+          description: The ISO-3166 country code
+          type: string
+        currencyCodes:
+          description: A list of supported ISO-4217 currency codes
+          items:
+            type: string
+          type: array
+        name:
+          description: The country name (varies by languageCode)
+          type: string
+        wikiDataId:
+          description: The country WikiData id
+          type: string
+      type: object
+    CurrenciesResponse:
+      properties:
+        data:
+          description: A list of CurrencyDescriptors
+          items:
+            $ref: "#/components/schemas/CurrencyDescriptor"
+          type: array
+        errors:
+          description: A list of WftErrors
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+        links:
+          description: A list of Links
+          items:
+            $ref: "#/components/schemas/Link"
+          type: array
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+      type: object
+    CurrencyDescriptor:
+      properties:
+        code:
+          description: A ISO-4217 currency code
+          type: string
+        countryCodes:
+          description: A list of ISO-3166 country codes
+          items:
+            type: string
+          type: array
+      type: object
+    DateTimeResponse:
+      properties:
+        data:
+          description: "The date-time in ISO-6801 format: yyyyMMdd'T'HHmmssZ"
+          format: date-time
+          type: string
+        errors:
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+      type: object
+    DistanceResponse:
+      properties:
+        data:
+          description: The distance in units as set by the distanceUnit param (defaults to
+            miles)
+          format: double
+          type: number
+        errors:
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+      type: object
+    LanguageDescriptor:
+      properties:
+        code:
+          enum:
+            - undefined
+            - aa
+            - ab
+            - ae
+            - af
+            - ak
+            - am
+            - an
+            - ar
+            - as
+            - av
+            - ay
+            - az
+            - ba
+            - be
+            - bg
+            - bh
+            - bi
+            - bm
+            - bn
+            - bo
+            - br
+            - bs
+            - ca
+            - ce
+            - ch
+            - co
+            - cr
+            - cs
+            - cu
+            - cv
+            - cy
+            - da
+            - de
+            - dv
+            - dz
+            - ee
+            - el
+            - en
+            - eo
+            - es
+            - et
+            - eu
+            - fa
+            - ff
+            - fi
+            - fj
+            - fo
+            - fr
+            - fy
+            - ga
+            - gd
+            - gl
+            - gn
+            - gu
+            - gv
+            - ha
+            - he
+            - hi
+            - ho
+            - hr
+            - ht
+            - hu
+            - hy
+            - hz
+            - ia
+            - id
+            - ie
+            - ig
+            - ii
+            - ik
+            - io
+            - is
+            - it
+            - iu
+            - ja
+            - jv
+            - ka
+            - kg
+            - ki
+            - kj
+            - kk
+            - kl
+            - km
+            - kn
+            - ko
+            - kr
+            - ks
+            - ku
+            - kv
+            - kw
+            - ky
+            - la
+            - lb
+            - lg
+            - li
+            - ln
+            - lo
+            - lt
+            - lu
+            - lv
+            - mg
+            - mh
+            - mi
+            - mk
+            - ml
+            - mn
+            - mr
+            - ms
+            - mt
+            - my
+            - na
+            - nb
+            - nd
+            - ne
+            - ng
+            - nl
+            - nn
+            - no
+            - nr
+            - nv
+            - ny
+            - oc
+            - oj
+            - om
+            - or
+            - os
+            - pa
+            - pi
+            - pl
+            - ps
+            - pt
+            - qu
+            - rm
+            - rn
+            - ro
+            - ru
+            - rw
+            - sa
+            - sc
+            - sd
+            - se
+            - sg
+            - si
+            - sk
+            - sl
+            - sm
+            - sn
+            - so
+            - sq
+            - sr
+            - ss
+            - st
+            - su
+            - sv
+            - sw
+            - ta
+            - te
+            - tg
+            - th
+            - ti
+            - tk
+            - tl
+            - tn
+            - to
+            - tr
+            - ts
+            - tt
+            - tw
+            - ty
+            - ug
+            - uk
+            - ur
+            - uz
+            - ve
+            - vi
+            - vo
+            - wa
+            - wo
+            - xh
+            - yi
+            - yo
+            - za
+            - zh
+            - zu
+          type: string
+        name:
+          type: string
+      title: LanguageDescriptor
+      type: object
+    LanguagesResponse:
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/LanguageDescriptor"
+          type: array
+        errors:
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+        links:
+          items:
+            $ref: "#/components/schemas/Link"
+          type: array
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+      title: LanguagesResponse
+      type: object
+    Link:
+      properties:
+        href:
+          type: string
+        rel:
+          type: string
+      type: object
+    LocaleDescriptor:
+      properties:
+        code:
+          description: The locale code
+          type: string
+      type: object
+    LocalesResponse:
+      properties:
+        data:
+          description: A list of LocalDescriptors
+          items:
+            $ref: "#/components/schemas/LocaleDescriptor"
+          type: array
+        errors:
+          description: A list of WftErrors
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+        links:
+          description: A list of Links
+          items:
+            $ref: "#/components/schemas/Link"
+          type: array
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+      type: object
+    Metadata:
+      properties:
+        currentOffset:
+          description: The zero-ary offset into the results (0 is the first result)
+          format: int64
+          type: integer
+        totalCount:
+          description: The total number of results across pages
+          format: int64
+          type: integer
+      type: object
+    PopulatedPlaceDetails:
+      properties:
+        city:
+          description: The city name (varies by languageCode)
+          type: string
+        country:
+          description: The country name (varies by languageCode)
+          type: string
+        countryCode:
+          description: The ISO-3166 country code
+          type: string
+        deleted:
+          description: If this place has been soft-deleted
+          type: boolean
+        elevationMeters:
+          description: The place elevation (meters) above sea level
+          format: int32
+          type: integer
+        id:
+          description: The place GeoDB native id
+          format: int32
+          type: integer
+        latitude:
+          description: The place latittude (-90.0 to 90.0)
+          format: double
+          type: number
+        longitude:
+          description: The place longitude (-180.0 to 180.0)
+          format: double
+          type: number
+        name:
+          description: The place name (varies by languageCode)
+          type: string
+        population:
+          description: The place population
+          format: int32
+          type: integer
+        region:
+          description: The region name (varies by languageCode)
+          type: string
+        regionCode:
+          description: The ISO or FIPS region code
+          type: string
+        timezone:
+          description: The place timezone id
+          type: string
+        type:
+          $ref: "#/components/schemas/PopulatedPlaceType"
+        wikiDataId:
+          description: The place WikiData id
+          type: string
+      type: object
+    PopulatedPlaceResponse:
+      properties:
+        data:
+          $ref: "#/components/schemas/PopulatedPlaceDetails"
+        errors:
+          description: A list of WftErrors
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+      type: object
+    PopulatedPlaceSummary:
+      properties:
+        city:
+          description: The city name (varies by languageCode)
+          type: string
+        country:
+          description: The country name (varies by languageCode)
+          type: string
+        countryCode:
+          description: The ISO-3166 country code
+          type: string
+        distance:
+          description: Included if this is the result of a distance query
+          format: double
+          type: number
+        id:
+          description: The place GeoDB native id
+          format: int32
+          type: integer
+        latitude:
+          description: The place latittude (-90.0 to 90.0)
+          format: double
+          type: number
+        longitude:
+          description: The place longitude (-180.0 to 180.0)
+          format: double
+          type: number
+        name:
+          description: The place name (varies by languageCode)
+          type: string
+        region:
+          description: The region name (varies by languageCode)
+          type: string
+        regionCode:
+          description: The ISO or FIPS region code
+          type: string
+        type:
+          $ref: "#/components/schemas/PopulatedPlaceType"
+        wikiDataId:
+          description: The place WikiData id
+          type: string
+      type: object
+    PopulatedPlaceType:
+      enum:
+        - ADM2
+        - CITY
+      type: string
+    PopulatedPlacesResponse:
+      properties:
+        data:
+          description: A list of PopulatedPlaceSummaries
+          items:
+            $ref: "#/components/schemas/PopulatedPlaceSummary"
+          type: array
+        errors:
+          description: A list of WftErrors
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+        links:
+          description: A list of Links
+          items:
+            $ref: "#/components/schemas/Link"
+          type: array
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+      type: object
+    RegionDetails:
+      properties:
+        capital:
+          description: The region's capital city (varies by languageCode)
+          type: string
+        countryCode:
+          description: An ISO-3166 country code
+          type: string
+        fipsCode:
+          description: The FIPS 10-4 region code
+          type: string
+        isoCode:
+          description: The ISO region code
+          type: string
+        name:
+          description: The region name (varies by languageCode)
+          type: string
+        numCities:
+          description: The number of cities in this region
+          format: int32
+          type: integer
+        wikiDataId:
+          description: The region WikiData id
+          type: string
+      type: object
+    RegionResponse:
+      properties:
+        data:
+          $ref: "#/components/schemas/RegionDetails"
+        errors:
+          description: A list of WftErrors
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+      type: object
+    RegionSummary:
+      properties:
+        countryCode:
+          description: An ISO-3166 country code
+          type: string
+        fipsCode:
+          description: The FIPS 10-4 region code
+          type: string
+        isoCode:
+          description: The ISO region code
+          type: string
+        name:
+          description: The region name (varies by languageCode)
+          type: string
+        wikiDataId:
+          description: The region WikiData id
+          type: string
+      type: object
+    RegionsResponse:
+      properties:
+        data:
+          description: A list of RegionSummaries
+          items:
+            $ref: "#/components/schemas/RegionSummary"
+          type: array
+        errors:
+          description: A list of WftErrors
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+        links:
+          description: A list of Links
+          items:
+            $ref: "#/components/schemas/Link"
+          type: array
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+      type: object
+    TimeResponse:
+      properties:
+        data:
+          description: "The time in ISO-8601 format: HHmmss.SSSZ"
+          type: string
+        errors:
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+      type: object
+    TimeZoneDescriptor:
+      properties:
+        id:
+          description: The time-zone id
+          type: string
+        name:
+          description: The time-zone name
+          type: string
+        rawUtcOffsetHours:
+          description: The number of hours this time-zone is offset from UTC
+          format: int32
+          type: integer
+      type: object
+    TimeZonesResponse:
+      properties:
+        data:
+          items:
+            $ref: "#/components/schemas/TimeZoneDescriptor"
+          type: array
+        errors:
+          items:
+            $ref: "#/components/schemas/WftError"
+          type: array
+        links:
+          items:
+            $ref: "#/components/schemas/Link"
+          type: array
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+      type: object
+    WftError:
+      properties:
+        code:
+          $ref: "#/components/schemas/WftErrorCode"
+        message:
+          type: string
+      type: object
+    WftErrorCode:
+      enum:
+        - ACCESS_DENIED
+        - ENTITY_NOT_FOUND
+        - INCOMPATIBLE
+        - PARAM_INVALID
+        - PARAMS_MUTUALLY_EXCLUSIVE
+        - REQUEST_UNPROCESSABLE
+      type: string

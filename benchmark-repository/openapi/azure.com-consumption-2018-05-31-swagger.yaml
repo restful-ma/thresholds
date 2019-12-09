@@ -1,0 +1,1711 @@
+openapi: 3.0.0
+info:
+  description: Consumption management client provides access to consumption resources for
+    Azure Enterprise Subscriptions.
+  title: ConsumptionManagementClient
+  version: 2018-05-31
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/consumption/resource-manager/Microsoft.Consumption/stable/2018-05-31/consumption.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: consumption
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/usageDetails":
+    get:
+      description: Lists the usage details based on billingAccountId for a scope by billing
+        period. Usage details are available via this API only for May 1, 2014 or
+        later.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: UsageDetails_ListForBillingPeriodByBillingAccount
+      parameters:
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+        - $ref: "#/components/parameters/billingPeriodNameParameter"
+        - description: May be used to expand the properties/additionalProperties or
+            properties/meterDetails within a list of usage details. By default,
+            these fields are not included when listing usage details.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+        - description: May be used to filter usageDetails by properties/usageEnd (Utc
+            time), properties/usageStart (Utc time), properties/resourceGroup,
+            properties/instanceName or properties/instanceId. The filter
+            supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not
+            currently support 'ne', 'or', or 'not'. Tag filter is a key value
+            pair string where key and value is separated by a colon (:).
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: OData apply expression to aggregate usageDetails by tags or (tags
+            and properties/usageStart) for specified billing period
+          in: query
+          name: $apply
+          required: false
+          x-ms-client-name: Apply
+          x-ms-parameter-grouping:
+            name: QueryOptions
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            usageDetails.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageDetailsListResult"
+              examples:
+                UsageDetailsListForBillingPeriod:
+                  $ref: "#/components/examples/UsageDetailsListForBillingPeriod"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - UsageDetails
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/usageDetails":
+    get:
+      description: Lists the usage details by billingAccountId for a scope by current
+        billing period. Usage details are available via this API only for May 1,
+        2014 or later.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: UsageDetails_ListByBillingAccount
+      parameters:
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+        - description: May be used to expand the properties/additionalProperties or
+            properties/meterDetails within a list of usage details. By default,
+            these fields are not included when listing usage details.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+        - description: May be used to filter usageDetails by properties/usageEnd (Utc
+            time), properties/usageStart (Utc time), properties/resourceGroup,
+            properties/instanceName, properties/instanceId or tags. The filter
+            supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not
+            currently support 'ne', 'or', or 'not'. Tag filter is a key value
+            pair string where key and value is separated by a colon (:).
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            usageDetails.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - description: OData apply expression to aggregate usageDetails by tags or (tags
+            and properties/usageStart)
+          in: query
+          name: $apply
+          required: false
+          x-ms-client-name: Apply
+          x-ms-parameter-grouping:
+            name: QueryOptions
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageDetailsListResult"
+              examples:
+                UsageDetailsList:
+                  $ref: "#/components/examples/UsageDetailsList"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - UsageDetails
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/usageDetails":
+    get:
+      description: Lists the usage details based on departmentId for a scope by billing
+        period. Usage details are available via this API only for May 1, 2014 or
+        later.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: UsageDetails_ListForBillingPeriodByDepartment
+      parameters:
+        - $ref: "#/components/parameters/departmentIdParameter"
+        - $ref: "#/components/parameters/billingPeriodNameParameter"
+        - description: May be used to expand the properties/additionalProperties or
+            properties/meterDetails within a list of usage details. By default,
+            these fields are not included when listing usage details.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+        - description: May be used to filter usageDetails by properties/usageEnd (Utc
+            time), properties/usageStart (Utc time), properties/resourceGroup,
+            properties/instanceName or properties/instanceId. The filter
+            supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not
+            currently support 'ne', 'or', or 'not'. Tag filter is a key value
+            pair string where key and value is separated by a colon (:).
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: OData apply expression to aggregate usageDetails by tags or (tags
+            and properties/usageStart) for specified billing period
+          in: query
+          name: $apply
+          required: false
+          x-ms-client-name: Apply
+          x-ms-parameter-grouping:
+            name: QueryOptions
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            usageDetails.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageDetailsListResult"
+              examples:
+                UsageDetailsListForBillingPeriod:
+                  $ref: "#/components/examples/UsageDetailsListForBillingPeriod"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - UsageDetails
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Consumption/usageDetails":
+    get:
+      description: Lists the usage details by departmentId for a scope by current billing
+        period. Usage details are available via this API only for May 1, 2014 or
+        later.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: UsageDetails_ListByDepartment
+      parameters:
+        - $ref: "#/components/parameters/departmentIdParameter"
+        - description: May be used to expand the properties/additionalProperties or
+            properties/meterDetails within a list of usage details. By default,
+            these fields are not included when listing usage details.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+        - description: May be used to filter usageDetails by properties/usageEnd (Utc
+            time), properties/usageStart (Utc time), properties/resourceGroup,
+            properties/instanceName, properties/instanceId or tags. The filter
+            supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not
+            currently support 'ne', 'or', or 'not'. Tag filter is a key value
+            pair string where key and value is separated by a colon (:).
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            usageDetails.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - description: OData apply expression to aggregate usageDetails by tags or (tags
+            and properties/usageStart)
+          in: query
+          name: $apply
+          required: false
+          x-ms-client-name: Apply
+          x-ms-parameter-grouping:
+            name: QueryOptions
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageDetailsListResult"
+              examples:
+                UsageDetailsList:
+                  $ref: "#/components/examples/UsageDetailsList"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - UsageDetails
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/usageDetails":
+    get:
+      description: Lists the usage details based on enrollmentAccountId for a scope by
+        billing period. Usage details are available via this API only for May 1,
+        2014 or later.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: UsageDetails_ListForBillingPeriodByEnrollmentAccount
+      parameters:
+        - $ref: "#/components/parameters/enrollmentAccountIdParameter"
+        - $ref: "#/components/parameters/billingPeriodNameParameter"
+        - description: May be used to expand the properties/additionalProperties or
+            properties/meterDetails within a list of usage details. By default,
+            these fields are not included when listing usage details.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+        - description: May be used to filter usageDetails by properties/usageEnd (Utc
+            time), properties/usageStart (Utc time), properties/resourceGroup,
+            properties/instanceName or properties/instanceId. The filter
+            supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not
+            currently support 'ne', 'or', or 'not'. Tag filter is a key value
+            pair string where key and value is separated by a colon (:).
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: OData apply expression to aggregate usageDetails by tags or (tags
+            and properties/usageStart) for specified billing period
+          in: query
+          name: $apply
+          required: false
+          x-ms-client-name: Apply
+          x-ms-parameter-grouping:
+            name: QueryOptions
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            usageDetails.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageDetailsListResult"
+              examples:
+                UsageDetailsListForBillingPeriod:
+                  $ref: "#/components/examples/UsageDetailsListForBillingPeriod"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - UsageDetails
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}/providers/Microsoft.Consumption/usageDetails":
+    get:
+      description: Lists the usage details by enrollmentAccountId for a scope by current
+        billing period. Usage details are available via this API only for May 1,
+        2014 or later.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: UsageDetails_ListByEnrollmentAccount
+      parameters:
+        - $ref: "#/components/parameters/enrollmentAccountIdParameter"
+        - description: May be used to expand the properties/additionalProperties or
+            properties/meterDetails within a list of usage details. By default,
+            these fields are not included when listing usage details.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+        - description: May be used to filter usageDetails by properties/usageEnd (Utc
+            time), properties/usageStart (Utc time), properties/resourceGroup,
+            properties/instanceName, properties/instanceId or tags. The filter
+            supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not
+            currently support 'ne', 'or', or 'not'. Tag filter is a key value
+            pair string where key and value is separated by a colon (:).
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            usageDetails.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - description: OData apply expression to aggregate usageDetails by tags or (tags
+            and properties/usageStart)
+          in: query
+          name: $apply
+          required: false
+          x-ms-client-name: Apply
+          x-ms-parameter-grouping:
+            name: QueryOptions
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageDetailsListResult"
+              examples:
+                UsageDetailsList:
+                  $ref: "#/components/examples/UsageDetailsList"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - UsageDetails
+      x-ms-pageable:
+        nextLinkName: nextLink
+  /providers/Microsoft.Consumption/operations:
+    get:
+      description: Lists all of the available consumption REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/pricesheets/default":
+    get:
+      description: Get the price sheet for a scope by subscriptionId and billing period.
+        Price sheet is available via this API only for May 1, 2014 or later.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: PriceSheet_GetByBillingPeriod
+      parameters:
+        - description: May be used to expand the properties/meterDetails within a price
+            sheet. By default, these fields are not included when returning
+            price sheet.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+          examples:
+            PriceSheetExpand:
+              value: meterDetails
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the top N results.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingPeriodNameParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PriceSheetResult"
+              examples:
+                PriceSheetExpand:
+                  $ref: "#/components/examples/PriceSheetExpand"
+                PriceSheetForBillingPeriod:
+                  $ref: "#/components/examples/PriceSheetForBillingPeriod"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PriceSheet
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/usageDetails":
+    get:
+      description: Lists the usage details for a scope by billing period. Usage details are
+        available via this API only for May 1, 2014 or later.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: UsageDetails_ListByBillingPeriod
+      parameters:
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/billingPeriodNameParameter"
+        - description: May be used to expand the properties/additionalProperties or
+            properties/meterDetails within a list of usage details. By default,
+            these fields are not included when listing usage details.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+          examples:
+            UsageDetailsExpand:
+              value: meterDetails,additionalProperties
+        - description: May be used to filter usageDetails by properties/usageEnd (Utc
+            time), properties/usageStart (Utc time), properties/resourceGroup,
+            properties/instanceName or properties/instanceId. The filter
+            supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not
+            currently support 'ne', 'or', or 'not'. Tag filter is a key value
+            pair string where key and value is separated by a colon (:).
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+          examples:
+            UsageDetailsExpand:
+              value: properties/usageEnd ge '2018-01-14' AND properties/usageEnd le
+                '2018-02-14' AND tags eq 'dev:tools'
+        - description: OData apply expression to aggregate usageDetails by tags or (tags
+            and properties/usageStart) for specified billing period
+          in: query
+          name: $apply
+          required: false
+          x-ms-client-name: Apply
+          x-ms-parameter-grouping:
+            name: QueryOptions
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            UsageDetailsListForBillingPeriodGroupByTag:
+              value: groupby((tags))
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            usageDetails.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+          examples:
+            UsageDetailsExpand:
+              value: 1
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageDetailsListResult"
+              examples:
+                UsageDetailsExpand:
+                  $ref: "#/components/examples/UsageDetailsExpand"
+                UsageDetailsListForBillingPeriod:
+                  $ref: "#/components/examples/UsageDetailsListForBillingPeriod"
+                UsageDetailsListForBillingPeriodGroupByTag:
+                  $ref: "#/components/examples/UsageDetailsListForBillingPeriodGrou\
+                    pByTag"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - UsageDetails
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Consumption/forecasts":
+    get:
+      description: Lists the forecast charges by subscriptionId.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: Forecasts_List
+      parameters:
+        - description: May be used to filter forecasts by properties/usageDate (Utc time),
+            properties/chargeType or properties/grain. The filter supports 'eq',
+            'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support
+            'ne', 'or', or 'not'.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+          examples:
+            ForecastsListFilterByDates:
+              value: usagedate ge '2018-04-01' AND usagedate le '2018-04-02'
+            ForecastsListFilterByGrain:
+              value: Grain eq 'Monthly'
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForecastsListResult"
+              examples:
+                ForecastsList:
+                  $ref: "#/components/examples/ForecastsList"
+                ForecastsListFilterByDates:
+                  $ref: "#/components/examples/ForecastsListFilterByDates"
+                ForecastsListFilterByGrain:
+                  $ref: "#/components/examples/ForecastsListFilterByGrain"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Forecasts
+      x-ms-odata: "#/components/schemas/Forecast"
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Consumption/pricesheets/default":
+    get:
+      description: Gets the price sheet for a scope by subscriptionId. Price sheet is
+        available via this API only for May 1, 2014 or later.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: PriceSheet_Get
+      parameters:
+        - description: May be used to expand the properties/meterDetails within a price
+            sheet. By default, these fields are not included when returning
+            price sheet.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the top N results.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PriceSheetResult"
+              examples:
+                PriceSheet:
+                  $ref: "#/components/examples/PriceSheet"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PriceSheet
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Consumption/usageDetails":
+    get:
+      description: Lists the usage details for a scope by current billing period. Usage
+        details are available via this API only for May 1, 2014 or later.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/consumption/
+      operationId: UsageDetails_List
+      parameters:
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - description: May be used to expand the properties/additionalProperties or
+            properties/meterDetails within a list of usage details. By default,
+            these fields are not included when listing usage details.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+        - description: May be used to filter usageDetails by properties/usageEnd (Utc
+            time), properties/usageStart (Utc time), properties/resourceGroup,
+            properties/instanceName, properties/instanceId or tags. The filter
+            supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not
+            currently support 'ne', 'or', or 'not'. Tag filter is a key value
+            pair string where key and value is separated by a colon (:).
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+          examples:
+            UsageDetailsListFilterByTag:
+              value: tags eq 'dev:tools'
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            usageDetails.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - description: OData apply expression to aggregate usageDetails by tags or (tags
+            and properties/usageStart)
+          in: query
+          name: $apply
+          required: false
+          x-ms-client-name: Apply
+          x-ms-parameter-grouping:
+            name: QueryOptions
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            UsageDetailsListGroupByTagDate:
+              value: groupby((tags,properties/usageStart))
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageDetailsListResult"
+              examples:
+                UsageDetailsList:
+                  $ref: "#/components/examples/UsageDetailsList"
+                UsageDetailsListFilterByTag:
+                  $ref: "#/components/examples/UsageDetailsListFilterByTag"
+                UsageDetailsListGroupByTagDate:
+                  $ref: "#/components/examples/UsageDetailsListGroupByTagDate"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - UsageDetails
+      x-ms-pageable:
+        nextLinkName: nextLink
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    UsageDetailsListForBillingPeriod:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702/providers/Microsoft.Consumption/usageDetails/usageDetailsId1
+            name: usageDetailsId1
+            properties:
+              billableQuantity: 0.00328
+              billingPeriodId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702
+              chargesBilledSeparately: true
+              currency: USD
+              instanceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Web-eastasia/providers/Microsoft.Web/sites/shared1
+              instanceLocation: eastasia
+              instanceName: shared1
+              invoiceId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/invoices/201703-123456789
+              isEstimated: false
+              meterId: 00000000-0000-0000-0000-000000000000
+              offerId: Offer Id 1
+              partNumber: Part Number 1
+              pretaxCost: 0.67
+              resourceGuid: 00000000-0000-0000-0000-000000000000
+              usageEnd: 2017-02-13T23:59:59Z
+              usageQuantity: 0.00328
+              usageStart: 2017-02-13T00:00:00Z
+            tags:
+              dev: tools
+              env: newcrp
+            type: Microsoft.Consumption/usageDetails
+    UsageDetailsList:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/usageDetails/usageDetailsId1
+            name: usageDetailsId1
+            properties:
+              billableQuantity: 0.00328
+              billingPeriodId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702
+              chargesBilledSeparately: true
+              currency: USD
+              instanceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Web-eastasia/providers/Microsoft.Web/sites/shared1
+              instanceLocation: eastasia
+              instanceName: shared1
+              invoiceId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/invoices/201703-123456789
+              isEstimated: false
+              meterId: 00000000-0000-0000-0000-000000000000
+              offerId: Offer Id 1
+              partNumber: Part Number 1
+              pretaxCost: 0.67
+              resourceGuid: 00000000-0000-0000-0000-000000000000
+              usageEnd: 2017-02-13T23:59:59Z
+              usageQuantity: 0.00328
+              usageStart: 2017-02-13T00:00:00Z
+            tags:
+              dev: tools
+              env: newcrp
+            type: Microsoft.Consumption/usageDetails
+    PriceSheetExpand:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702/providers/Microsoft.Consumption/pricesheets/default
+        name: default
+        properties:
+          nextLink: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.consumption/pricesheets/default?api-version=2018-01-31&$skiptoken=AQAAAA%3D%3D&$expand=properties/pricesheets/meterDetails
+          pricesheets:
+            - billingPeriodId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702
+              currencyCode: EUR
+              includedQuantity: 100
+              meterDetails:
+                meterCategory: Networking
+                meterLocation: Zone 2
+                meterName: Data Transfer Out (GB)
+                pretaxStandardRate: 0.138
+                totalIncludedQuantity: 0
+                unit: GB
+              meterId: 00000000-0000-0000-0000-000000000000
+              offerId: OfferId 1
+              partNumber: XX-11110
+              unitOfMeasure: 100 Hours
+              unitPrice: 0.00328
+        type: Microsoft.Consumption/pricesheets
+    PriceSheetForBillingPeriod:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702/providers/Microsoft.Consumption/pricesheets/default
+        name: default
+        properties:
+          nextLink: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702/providers/microsoft.consumption/pricesheets/default?api-version=2018-01-31
+          pricesheets:
+            - billingPeriodId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702
+              currencyCode: EUR
+              includedQuantity: 100
+              meterId: 00000000-0000-0000-0000-000000000000
+              offerId: OfferId 1
+              partNumber: XX-11110
+              unitOfMeasure: 100 Hours
+              unitPrice: 0.00328
+        type: Microsoft.Consumption/pricesheets
+    UsageDetailsExpand:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702/providers/Microsoft.Consumption/usageDetails/usageDetailsId1
+            name: usageDetailsId1
+            properties:
+              accountName: My account name
+              additionalProperties: '{"MyType":"","ServiceType":"","VMName":"","UsageType":"MyUsage"}'
+              billableQuantity: 0.00328
+              billingPeriodId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702
+              chargesBilledSeparately: true
+              consumedService: My consumed service
+              costCenter: Cost center 1
+              currency: USD
+              departmentName: My department name
+              instanceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Web-eastasia/providers/Microsoft.Web/sites/shared1
+              instanceLocation: eastasia
+              instanceName: shared1
+              invoiceId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/invoices/201703-123456789
+              isEstimated: false
+              meterDetails:
+                meterCategory: Networking
+                meterLocation: Zone 2
+                meterName: Data Transfer Out (GB)
+                pretaxStandardRate: 0.138
+                totalIncludedQuantity: 0
+                unit: GB
+              meterId: 00000000-0000-0000-0000-000000000000
+              offerId: Offer Id 1
+              partNumber: Part Number 1
+              pretaxCost: 0.67
+              product: My product name
+              resourceGuid: 00000000-0000-0000-0000-000000000000
+              subscriptionGuid: 00000000-0000-0000-0000-000000000000
+              subscriptionName: Dummy subscription
+              usageEnd: 2017-02-13T23:59:59Z
+              usageQuantity: 0.00328
+              usageStart: 2017-02-13T00:00:00Z
+            tags:
+              dev: tools
+              env: newcrp
+            type: Microsoft.Consumption/usageDetails
+    UsageDetailsListForBillingPeriodGroupByTag:
+      value:
+        value:
+          - id: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/20180301/providers/Microsoft.Consumption/usageDetails/usageDetailsId1
+            name: usageDetailsId1
+            properties:
+              billingPeriodId: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/20180301
+              currency: USD
+              pretaxCost: 0
+              usageQuantity: 11.11111
+            tags:
+              description: Azure VCAP STA - RDS Server
+            type: Microsoft.Consumption/usageDetails
+          - id: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/20180301/providers/Microsoft.Consumption/usageDetails/usageDetailsId1
+            name: usageDetailsId1
+            properties:
+              billingPeriodId: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/20180301
+              currency: USD
+              pretaxCost: 0
+              usageQuantity: 111.11111111111
+            tags:
+              description: Domain controller - STA
+            type: Microsoft.Consumption/usageDetails
+    ForecastsList:
+      value:
+        value:
+          - id: /subscriptions/subid/providers/Microsoft.Consumption/forecasts/forecastId1
+            name: forecastId1
+            properties:
+              charge: 752
+              chargeType: Actual
+              currency: USD
+              grain: Daily
+              usageDate: 2018-04-01
+            type: Microsoft.Consumption/forecasts
+          - id: /subscriptions/subid/providers/Microsoft.Consumption/forecasts/forecastId2
+            name: forecastId2
+            properties:
+              charge: 753.809074
+              chargeType: Forecast
+              confidenceLevels:
+                - bound: Upper
+                  percentage: 95
+                  value: 1165.951737
+                - bound: Lower
+                  percentage: 95
+                  value: 340.753404
+              currency: USD
+              grain: Daily
+              usageDate: 2018-04-02
+            type: Microsoft.Consumption/forecasts
+    ForecastsListFilterByDates:
+      value:
+        value:
+          - id: /subscriptions/subid/providers/Microsoft.Consumption/forecasts/forecastId1
+            name: forecastId1
+            properties:
+              charge: 752
+              chargeType: Actual
+              currency: USD
+              grain: Daily
+              usageDate: 2018-04-01
+            type: Microsoft.Consumption/forecasts
+          - id: /subscriptions/subid/providers/Microsoft.Consumption/forecasts/forecastId2
+            name: forecastId2
+            properties:
+              charge: 753.809074
+              chargeType: Forecast
+              confidenceLevels:
+                - bound: Upper
+                  percentage: 95
+                  value: 1165.951737
+                - bound: Lower
+                  percentage: 95
+                  value: 340.753404
+              currency: USD
+              grain: Daily
+              usageDate: 2018-04-02
+            type: Microsoft.Consumption/forecasts
+    ForecastsListFilterByGrain:
+      value:
+        value:
+          - id: /subscriptions/subid/providers/Microsoft.Consumption/forecasts/forecastId1
+            name: forecastId1
+            properties:
+              charge: 752
+              chargeType: Actual
+              currency: USD
+              grain: Monthly
+              usageDate: 2018-04-01
+            type: Microsoft.Consumption/forecasts
+          - id: /subscriptions/subid/providers/Microsoft.Consumption/forecasts/forecastId2
+            name: forecastId2
+            properties:
+              charge: 753.809074
+              chargeType: Forecast
+              confidenceLevels:
+                - bound: Upper
+                  percentage: 95
+                  value: 1165.951737
+                - bound: Lower
+                  percentage: 95
+                  value: 340.753404
+              currency: USD
+              grain: Monthly
+              usageDate: 2018-05-01
+            type: Microsoft.Consumption/forecasts
+    PriceSheet:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/pricesheets/default
+        name: default
+        properties:
+          nextLink: https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.consumption/pricesheets/default?api-version=2018-01-31&$skiptoken=AQAAAA%3D%3D
+          pricesheets:
+            - billingPeriodId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702
+              currencyCode: EUR
+              includedQuantity: 100
+              meterId: 00000000-0000-0000-0000-000000000000
+              offerId: OfferId 1
+              partNumber: XX-11110
+              unitOfMeasure: 100 Hours
+              unitPrice: 0.00328
+        type: Microsoft.Consumption/pricesheets
+    UsageDetailsListFilterByTag:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/usageDetails/usageDetailsId1
+            name: usageDetailsId1
+            properties:
+              billableQuantity: 0.00328
+              billingPeriodId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/201702
+              chargesBilledSeparately: true
+              currency: USD
+              instanceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Default-Web-eastasia/providers/Microsoft.Web/sites/shared1
+              instanceLocation: eastasia
+              instanceName: shared1
+              invoiceId: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/invoices/201703-123456789
+              isEstimated: false
+              meterId: 00000000-0000-0000-0000-000000000000
+              offerId: Offer Id 1
+              partNumber: Part Number 1
+              pretaxCost: 0.67
+              resourceGuid: 00000000-0000-0000-0000-000000000000
+              usageEnd: 2017-02-13T23:59:59Z
+              usageQuantity: 0.00328
+              usageStart: 2017-02-13T00:00:00Z
+            tags:
+              dev: tools
+            type: Microsoft.Consumption/usageDetails
+    UsageDetailsListGroupByTagDate:
+      value:
+        value:
+          - id: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/20180301/providers/Microsoft.Consumption/usageDetails/usageDetailsId1
+            name: usageDetailsId1
+            properties:
+              billingPeriodId: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/20180301
+              currency: USD
+              pretaxCost: 0
+              usageEnd: 2018-03-01T23:59:59.0000000Z
+              usageQuantity: 11.11111
+              usageStart: 2018-03-01T00:00:00.0000000Z
+            tags:
+              description: Azure VCAP STA - RDS Server
+            type: Microsoft.Consumption/usageDetails
+          - id: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/20180301/providers/Microsoft.Consumption/usageDetails/usageDetailsId1
+            name: usageDetailsId1
+            properties:
+              billingPeriodId: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Billing/billingPeriods/20180301
+              currency: USD
+              pretaxCost: 0
+              usageEnd: 2018-03-02T23:59:59.0000000Z
+              usageQuantity: 1.11111111111
+              usageStart: 2018-03-02T00:00:00.0000000Z
+            tags:
+              description: Azure VCAP STA - RDS Server
+            type: Microsoft.Consumption/usageDetails
+  parameters:
+    apiVersionParameter:
+      description: Version of the API to be used with the client request. The current
+        version is 2018-05-31.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        UsageDetailsListForBillingPeriod:
+          value: 2018-05-31
+        UsageDetailsList:
+          value: 2018-05-31
+        PriceSheetExpand:
+          value: 2018-05-31
+        PriceSheetForBillingPeriod:
+          value: 2018-05-31
+        UsageDetailsExpand:
+          value: 2018-05-31
+        UsageDetailsListForBillingPeriodGroupByTag:
+          value: 2018-05-31
+        ForecastsList:
+          value: 2018-05-31
+        ForecastsListFilterByDates:
+          value: 2018-05-31
+        ForecastsListFilterByGrain:
+          value: 2018-05-31
+        PriceSheet:
+          value: 2018-05-31
+        UsageDetailsListFilterByTag:
+          value: 2018-05-31
+        UsageDetailsListGroupByTagDate:
+          value: 2018-05-31
+    billingAccountIdParameter:
+      description: BillingAccount ID
+      in: path
+      name: billingAccountId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        UsageDetailsListForBillingPeriod:
+          value: "1234"
+        UsageDetailsList:
+          value: "1234"
+    billingPeriodNameParameter:
+      description: Billing Period Name.
+      in: path
+      name: billingPeriodName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        UsageDetailsListForBillingPeriod:
+          value: "201702"
+        PriceSheetExpand:
+          value: "201801"
+        PriceSheetForBillingPeriod:
+          value: "201801"
+        UsageDetailsExpand:
+          value: "201702"
+        UsageDetailsListForBillingPeriodGroupByTag:
+          value: "201803"
+    departmentIdParameter:
+      description: Department ID
+      in: path
+      name: departmentId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        UsageDetailsListForBillingPeriod:
+          value: "1234"
+        UsageDetailsList:
+          value: "1234"
+    enrollmentAccountIdParameter:
+      description: EnrollmentAccount ID
+      in: path
+      name: enrollmentAccountId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        UsageDetailsListForBillingPeriod:
+          value: "1234"
+        UsageDetailsList:
+          value: "1234"
+    subscriptionIdParameter:
+      description: Azure Subscription ID.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        PriceSheetExpand:
+          value: 00000000-0000-0000-0000-000000000000
+        PriceSheetForBillingPeriod:
+          value: 00000000-0000-0000-0000-000000000000
+        UsageDetailsExpand:
+          value: 00000000-0000-0000-0000-000000000000
+        UsageDetailsListForBillingPeriod:
+          value: 00000000-0000-0000-0000-000000000000
+        UsageDetailsListForBillingPeriodGroupByTag:
+          value: 00000000-0000-0000-0000-000000000000
+        ForecastsList:
+          value: 00000000-0000-0000-0000-000000000000
+        ForecastsListFilterByDates:
+          value: 00000000-0000-0000-0000-000000000000
+        ForecastsListFilterByGrain:
+          value: 00000000-0000-0000-0000-000000000000
+        PriceSheet:
+          value: 00000000-0000-0000-0000-000000000000
+        UsageDetailsList:
+          value: 00000000-0000-0000-0000-000000000000
+        UsageDetailsListFilterByTag:
+          value: 00000000-0000-0000-0000-000000000000
+        UsageDetailsListGroupByTagDate:
+          value: 00000000-0000-0000-0000-000000000000
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ErrorDetails:
+      description: The details of the error.
+      properties:
+        code:
+          description: Error code.
+          readOnly: true
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          readOnly: true
+          type: string
+    ErrorResponse:
+      description: Error response indicates that the service is not able to process the
+        incoming request. The reason is provided in the error message.
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorDetails"
+      type: object
+    Forecast:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: A forecast resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/ForecastProperties"
+      type: object
+    ForecastProperties:
+      description: The properties of the forecast charge.
+      properties:
+        charge:
+          description: The amount of charge
+          format: decimal
+          readOnly: true
+          type: number
+        chargeType:
+          description: The type of the charge. Could be actual or forecast
+          enum:
+            - Actual
+            - Forecast
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ChargeType
+        confidenceLevels:
+          description: The details about the forecast confidence levels. This is populated
+            only when chargeType is Forecast.
+          items:
+            properties:
+              bound:
+                description: The boundary of the percentage, values could be 'Upper' or
+                  'Lower'
+                enum:
+                  - Upper
+                  - Lower
+                type: string
+                x-ms-enum:
+                  modelAsString: true
+                  name: Bound
+              percentage:
+                description: The percentage level of the confidence
+                format: decimal
+                readOnly: true
+                type: number
+              value:
+                description: The amount of forecast within the percentage level
+                format: decimal
+                readOnly: true
+                type: number
+            type: object
+          readOnly: true
+          type: array
+        currency:
+          description: The ISO currency in which the meter is charged, for example, USD.
+          readOnly: true
+          type: string
+        grain:
+          description: The granularity of forecast.
+          enum:
+            - Daily
+            - Monthly
+            - Yearly
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: Grain
+        usageDate:
+          description: The usage date of the forecast.
+          readOnly: true
+          type: string
+      type: object
+    ForecastsListResult:
+      description: Result of listing forecasts. It contains a list of available forecasts.
+      properties:
+        value:
+          description: The list of forecasts.
+          items:
+            $ref: "#/components/schemas/Forecast"
+          readOnly: true
+          type: array
+      type: object
+    MeterDetails:
+      description: The properties of the meter detail.
+      properties:
+        meterCategory:
+          description: The category of the meter, for example, 'Cloud services',
+            'Networking', etc..
+          readOnly: true
+          type: string
+        meterLocation:
+          description: The location in which the Azure service is available.
+          readOnly: true
+          type: string
+        meterName:
+          description: The name of the meter, within the given meter category
+          readOnly: true
+          type: string
+        meterSubCategory:
+          description: The subcategory of the meter, for example, 'A6 Cloud services',
+            'ExpressRoute (IXP)', etc..
+          readOnly: true
+          type: string
+        pretaxStandardRate:
+          description: The pretax listing price.
+          format: decimal
+          readOnly: true
+          type: number
+        totalIncludedQuantity:
+          description: The total included quantity associated with the offer.
+          format: decimal
+          readOnly: true
+          type: number
+        unit:
+          description: The unit in which the meter consumption is charged, for example,
+            'Hours', 'GB', etc.
+          readOnly: true
+          type: string
+    Operation:
+      description: A Consumption REST API operation.
+      properties:
+        display:
+          description: The object that represents the operation.
+          properties:
+            operation:
+              description: "Operation type: Read, write, delete, etc."
+              readOnly: true
+              type: string
+            provider:
+              description: "Service provider: Microsoft.Consumption."
+              readOnly: true
+              type: string
+            resource:
+              description: "Resource on which the operation is performed: UsageDetail, etc."
+              readOnly: true
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}."
+          readOnly: true
+          type: string
+      type: object
+    OperationListResult:
+      description: Result of listing consumption operations. It contains a list of
+        operations and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          readOnly: true
+          type: string
+        value:
+          description: List of consumption operations supported by the
+            Microsoft.Consumption resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          readOnly: true
+          type: array
+    PriceSheetModel:
+      description: price sheet result. It contains the pricesheet associated with billing
+        period
+      properties:
+        nextLink:
+          description: The link (url) to the next page of results.
+          readOnly: true
+          type: string
+        pricesheets:
+          description: Price sheet
+          items:
+            $ref: "#/components/schemas/PriceSheetProperties"
+          readOnly: true
+          type: array
+    PriceSheetProperties:
+      description: The properties of the price sheet.
+      properties:
+        billingPeriodId:
+          description: The id of the billing period resource that the usage belongs to.
+          readOnly: true
+          type: string
+        currencyCode:
+          description: Currency Code
+          readOnly: true
+          type: string
+        includedQuantity:
+          description: Included quality for an offer
+          format: decimal
+          readOnly: true
+          type: number
+        meterDetails:
+          $ref: "#/components/schemas/MeterDetails"
+        meterId:
+          description: The meter id (GUID)
+          format: uuid
+          readOnly: true
+          type: string
+        offerId:
+          description: Offer Id
+          readOnly: true
+          type: string
+        partNumber:
+          description: Part Number
+          readOnly: true
+          type: string
+        unitOfMeasure:
+          description: Unit of measure
+          readOnly: true
+          type: string
+        unitPrice:
+          description: Unit Price
+          format: decimal
+          readOnly: true
+          type: number
+    PriceSheetResult:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: An pricesheet resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/PriceSheetModel"
+      type: object
+    Resource:
+      description: The Resource model definition.
+      properties:
+        id:
+          description: Resource Id.
+          readOnly: true
+          type: string
+        name:
+          description: Resource name.
+          readOnly: true
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          readOnly: true
+          type: object
+        type:
+          description: Resource type.
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    UsageDetail:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: An usage detail resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/UsageDetailProperties"
+      type: object
+    UsageDetailProperties:
+      description: The properties of the usage detail.
+      properties:
+        accountName:
+          description: Account name.
+          readOnly: true
+          type: string
+        additionalProperties:
+          description: Additional details of this usage item. By default this is not
+            populated, unless it's specified in $expand.
+          readOnly: true
+          type: string
+        billableQuantity:
+          description: The billable usage quantity.
+          format: decimal
+          readOnly: true
+          type: number
+        billingPeriodId:
+          description: The id of the billing period resource that the usage belongs to.
+          readOnly: true
+          type: string
+        chargesBilledSeparately:
+          description: Charges billed separately
+          readOnly: true
+          type: boolean
+        consumedService:
+          description: Consumed service name.
+          readOnly: true
+          type: string
+        costCenter:
+          description: The cost center of this department if it is a department and a
+            costcenter exists
+          readOnly: true
+          type: string
+        currency:
+          description: The ISO currency in which the meter is charged, for example, USD.
+          readOnly: true
+          type: string
+        departmentName:
+          description: Department name.
+          readOnly: true
+          type: string
+        instanceId:
+          description: The uri of the resource instance that the usage is about.
+          readOnly: true
+          type: string
+        instanceLocation:
+          description: The location of the resource instance that the usage is about.
+          readOnly: true
+          type: string
+        instanceName:
+          description: The name of the resource instance that the usage is about.
+          readOnly: true
+          type: string
+        invoiceId:
+          description: The id of the invoice resource that the usage belongs to.
+          readOnly: true
+          type: string
+        isEstimated:
+          description: The estimated usage is subject to change.
+          readOnly: true
+          type: boolean
+        meterDetails:
+          $ref: "#/components/schemas/MeterDetails"
+        meterId:
+          description: The meter id (GUID).
+          format: uuid
+          readOnly: true
+          type: string
+        offerId:
+          description: Offer Id
+          readOnly: true
+          type: string
+        partNumber:
+          description: Part Number
+          readOnly: true
+          type: string
+        pretaxCost:
+          description: The amount of cost before tax.
+          format: decimal
+          readOnly: true
+          type: number
+        product:
+          description: Product name.
+          readOnly: true
+          type: string
+        resourceGuid:
+          description: Resource Guid
+          readOnly: true
+          type: string
+        subscriptionGuid:
+          description: Subscription guid.
+          format: uuid
+          readOnly: true
+          type: string
+        subscriptionName:
+          description: Subscription name.
+          readOnly: true
+          type: string
+        usageEnd:
+          description: The end of the date time range covered by the usage detail.
+          format: date-time
+          readOnly: true
+          type: string
+        usageQuantity:
+          description: The quantity of usage.
+          format: decimal
+          readOnly: true
+          type: number
+        usageStart:
+          description: The start of the date time range covered by the usage detail.
+          format: date-time
+          readOnly: true
+          type: string
+    UsageDetailsListResult:
+      description: Result of listing usage details. It contains a list of available usage
+        details in reverse chronological order by billing period.
+      properties:
+        nextLink:
+          description: The link (url) to the next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: The list of usage details.
+          items:
+            $ref: "#/components/schemas/UsageDetail"
+          readOnly: true
+          type: array

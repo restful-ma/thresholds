@@ -1,0 +1,2743 @@
+openapi: 3.0.0
+info:
+  description: APIs to manage Peering resources through the Azure Resource Manager.
+  title: PeeringManagementClient
+  version: 2019-08-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/peering.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: peering
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.Peering/operations:
+    get:
+      description: Lists all of the available API operations for peering resources.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+              examples:
+                List peering operations:
+                  $ref: "#/components/examples/List_peering_operations"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/CheckServiceProviderAvailability":
+    post:
+      description: Checks if the peering service provider is present within 1000 miles of
+        customer's location
+      operationId: CheckServiceProviderAvailability
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckServiceProviderAvailabilityInput"
+        description: The CheckServiceProviderAvailabilityInput indicating customer location
+          and service provider.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                enum:
+                  - Available
+                  - UnAvailable
+                type: string
+              examples:
+                Check if peering service provider is available in customer location:
+                  $ref: "#/components/examples/Check_if_peering_service_provider_is\
+                    _available_in_customer_location"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CheckServiceProviderAvailability
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings":
+    get:
+      description: Lists all of the legacy peerings under the given subscription matching
+        the specified kind and location.
+      operationId: LegacyPeerings_List
+      parameters:
+        - description: The location of the peering.
+          in: query
+          name: peeringLocation
+          required: true
+          schema:
+            type: string
+          examples:
+            List legacy peerings:
+              value: peeringLocation0
+        - description: The kind of the peering.
+          in: query
+          name: kind
+          required: true
+          schema:
+            type: string
+            enum:
+              - Direct
+              - Exchange
+          examples:
+            List legacy peerings:
+              value: Exchange
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringListResult"
+              examples:
+                List legacy peerings:
+                  $ref: "#/components/examples/List_legacy_peerings"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - LegacyPeerings
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns":
+    get:
+      description: Lists all of the peer ASNs under the given subscription.
+      operationId: PeerAsns_ListBySubscription
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeerAsnListResult"
+              examples:
+                List peer ASNs in a subscription:
+                  $ref: "#/components/examples/List_peer_ASNs_in_a_subscription"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeerAsns
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}":
+    delete:
+      description: Deletes an existing peer ASN with the specified name under the given
+        subscription.
+      operationId: PeerAsns_Delete
+      parameters:
+        - description: The peer ASN name.
+          in: path
+          name: peerAsnName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a peer ASN:
+              value: peerAsnName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+        "204":
+          description: No Content
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeerAsns
+    get:
+      description: Gets the peer ASN with the specified name under the given subscription.
+      operationId: PeerAsns_Get
+      parameters:
+        - description: The peer ASN name.
+          in: path
+          name: peerAsnName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a peer ASN:
+              value: peerAsnName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeerAsn"
+              examples:
+                Get a peer ASN:
+                  $ref: "#/components/examples/Get_a_peer_ASN"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeerAsns
+    put:
+      description: Creates a new peer ASN or updates an existing peer ASN with the
+        specified name under the given subscription.
+      operationId: PeerAsns_CreateOrUpdate
+      parameters:
+        - description: The peer ASN name.
+          in: path
+          name: peerAsnName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create a peer ASN:
+              value: peerAsnName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PeerAsn"
+        description: The peer ASN.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeerAsn"
+              examples:
+                Create a peer ASN:
+                  $ref: "#/components/examples/Create_a_peer_ASN"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeerAsn"
+              examples:
+                Create a peer ASN:
+                  $ref: "#/components/examples/Create_a_peer_ASN"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeerAsns
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringLocations":
+    get:
+      description: Lists all of the available peering locations for the specified kind of
+        peering.
+      operationId: PeeringLocations_List
+      parameters:
+        - description: The kind of the peering.
+          in: query
+          name: kind
+          required: true
+          schema:
+            type: string
+            enum:
+              - Direct
+              - Exchange
+          examples:
+            List direct peering locations:
+              value: Direct
+            List exchange peering locations:
+              value: Exchange
+        - description: The type of direct peering.
+          in: query
+          name: directPeeringType
+          required: false
+          schema:
+            type: string
+            enum:
+              - Edge
+              - Transit
+              - Cdn
+              - Internal
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringLocationListResult"
+              examples:
+                List direct peering locations:
+                  $ref: "#/components/examples/List_direct_peering_locations"
+                List exchange peering locations:
+                  $ref: "#/components/examples/List_exchange_peering_locations"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringLocations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceLocations":
+    get:
+      description: Lists all of the available peering service locations for the specified
+        kind of peering.
+      operationId: PeeringServiceLocations_List
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringServiceLocationListResult"
+              examples:
+                List peering service locations:
+                  $ref: "#/components/examples/List_peering_service_locations"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServiceLocations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceProviders":
+    get:
+      description: Lists all of the available peering service locations for the specified
+        kind of peering.
+      operationId: PeeringServiceProviders_List
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringServiceProviderListResult"
+              examples:
+                List peering service providers:
+                  $ref: "#/components/examples/List_peering_service_providers"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServiceProviders
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServices":
+    get:
+      description: Lists all of the peerings under the given subscription.
+      operationId: PeeringServices_ListBySubscription
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringServiceListResult"
+              examples:
+                List peering services in a subscription:
+                  $ref: "#/components/examples/List_peering_services_in_a_subscript\
+                    ion"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServices
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerings":
+    get:
+      description: Lists all of the peerings under the given subscription.
+      operationId: Peerings_ListBySubscription
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringListResult"
+              examples:
+                List peerings in a subscription:
+                  $ref: "#/components/examples/List_peerings_in_a_subscription"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Peerings
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices":
+    get:
+      description: Lists all of the peering services under the given subscription and
+        resource group.
+      operationId: PeeringServices_ListByResourceGroup
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            List peering services in a resource group:
+              value: rgName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringServiceListResult"
+              examples:
+                List peering services in a resource group:
+                  $ref: "#/components/examples/List_peering_services_in_a_resource_\
+                    group"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServices
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}":
+    delete:
+      description: Deletes an existing peering service with the specified name under the
+        given subscription and resource group.
+      operationId: PeeringServices_Delete
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a peering service:
+              value: rgName
+        - description: The name of the peering service.
+          in: path
+          name: peeringServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a peering service:
+              value: peeringServiceName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+        "204":
+          description: NoContent
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServices
+    get:
+      description: Gets an existing peering service with the specified name under the given
+        subscription and resource group.
+      operationId: PeeringServices_Get
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a peering service:
+              value: rgName
+        - description: The name of the peering.
+          in: path
+          name: peeringServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a peering service:
+              value: peeringServiceName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringService"
+              examples:
+                Get a peering service:
+                  $ref: "#/components/examples/Get_a_peering_service"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServices
+    patch:
+      description: Updates tags for a peering service with the specified name under the
+        given subscription and resource group.
+      operationId: PeeringServices_Update
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Update peering service tags:
+              value: rgName
+        - description: The name of the peering service.
+          in: path
+          name: peeringServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            Update peering service tags:
+              value: peeringServiceName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ResourceTags"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringService"
+              examples:
+                Update peering service tags:
+                  $ref: "#/components/examples/Update_peering_service_tags"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServices
+    put:
+      description: Creates a new peering service or updates an existing peering with the
+        specified name under the given subscription and resource group.
+      operationId: PeeringServices_CreateOrUpdate
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create a  peering service:
+              value: rgName
+        - description: The name of the peering service.
+          in: path
+          name: peeringServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create a  peering service:
+              value: peeringServiceName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PeeringService"
+        description: The properties needed to create or update a peering service.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringService"
+              examples:
+                Create a  peering service:
+                  $ref: "#/components/examples/Create_a_peering_service"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringService"
+              examples:
+                Create a  peering service:
+                  $ref: "#/components/examples/Create_a_peering_service"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServices
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes":
+    get:
+      description: Lists the peerings prefix in the resource group.
+      operationId: Prefixes_ListByPeeringService
+      parameters:
+        - description: The resource group name.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            List all the prefixes associated with the peering service:
+              value: rgName
+        - description: The peering service name.
+          in: path
+          name: peeringServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            List all the prefixes associated with the peering service:
+              value: peeringServiceName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringServicePrefixListResult"
+              examples:
+                List all the prefixes associated with the peering service:
+                  $ref: "#/components/examples/List_all_the_prefixes_associated_wit\
+                    h_the_peering_service"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServicePrefixes
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}":
+    delete:
+      description: removes the peering prefix.
+      operationId: PeeringServicePrefixes_Delete
+      parameters:
+        - description: The resource group name.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a prefix associated with the peering service:
+              value: rgName
+        - description: The peering service name.
+          in: path
+          name: peeringServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a prefix associated with the peering service:
+              value: peeringServiceName
+        - description: The prefix name
+          in: path
+          name: prefixName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a prefix associated with the peering service:
+              value: peeringServicePrefixName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+        "204":
+          description: NoContent
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServicePrefixes
+    get:
+      description: Gets the peering service prefix.
+      operationId: PeeringServicePrefixes_Get
+      parameters:
+        - description: The resource group name.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a prefix associated with the peering service:
+              value: rgName
+        - description: The peering service name.
+          in: path
+          name: peeringServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a prefix associated with the peering service:
+              value: peeringServiceName
+        - description: The prefix name.
+          in: path
+          name: prefixName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a prefix associated with the peering service:
+              value: peeringServicePrefixName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringServicePrefix"
+              examples:
+                Get a prefix associated with the peering service:
+                  $ref: "#/components/examples/Get_a_prefix_associated_with_the_pee\
+                    ring_service"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServicePrefixes
+    put:
+      description: Creates or updates the peering prefix.
+      operationId: PeeringServicePrefixes_CreateOrUpdate
+      parameters:
+        - description: The resource group name.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a prefix for the peering service:
+              value: rgName
+        - description: The peering service name.
+          in: path
+          name: peeringServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a prefix for the peering service:
+              value: peeringServiceName
+        - description: The prefix name
+          in: path
+          name: prefixName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create or update a prefix for the peering service:
+              value: peeringServicePrefixName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PeeringServicePrefix"
+        description: The IP prefix for an peering
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringServicePrefix"
+              examples:
+                Create or update a prefix for the peering service:
+                  $ref: "#/components/examples/Create_or_update_a_prefix_for_the_pe\
+                    ering_service"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringServicePrefix"
+              examples:
+                Create or update a prefix for the peering service:
+                  $ref: "#/components/examples/Create_or_update_a_prefix_for_the_pe\
+                    ering_service"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - PeeringServicePrefixes
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings":
+    get:
+      description: Lists all of the peerings under the given subscription and resource
+        group.
+      operationId: Peerings_ListByResourceGroup
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            List peerings in a resource group:
+              value: rgName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeeringListResult"
+              examples:
+                List peerings in a resource group:
+                  $ref: "#/components/examples/List_peerings_in_a_resource_group"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Peerings
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}":
+    delete:
+      description: Deletes an existing peering with the specified name under the given
+        subscription and resource group.
+      operationId: Peerings_Delete
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a peering:
+              value: rgName
+        - description: The name of the peering.
+          in: path
+          name: peeringName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a peering:
+              value: peeringName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+        "204":
+          description: NoContent
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Peerings
+    get:
+      description: Gets an existing peering with the specified name under the given
+        subscription and resource group.
+      operationId: Peerings_Get
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a peering:
+              value: rgName
+        - description: The name of the peering.
+          in: path
+          name: peeringName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a peering:
+              value: peeringName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Peering"
+              examples:
+                Get a peering:
+                  $ref: "#/components/examples/Get_a_peering"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Peerings
+    patch:
+      description: Updates tags for a peering with the specified name under the given
+        subscription and resource group.
+      operationId: Peerings_Update
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Update peering tags:
+              value: rgName
+        - description: The name of the peering.
+          in: path
+          name: peeringName
+          required: true
+          schema:
+            type: string
+          examples:
+            Update peering tags:
+              value: peeringName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ResourceTags"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Peering"
+              examples:
+                Update peering tags:
+                  $ref: "#/components/examples/Update_peering_tags"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Peerings
+    put:
+      description: Creates a new peering or updates an existing peering with the specified
+        name under the given subscription and resource group.
+      operationId: Peerings_CreateOrUpdate
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create a direct peering:
+              value: rgName
+            Create an exchange peering:
+              value: rgName
+        - description: The name of the peering.
+          in: path
+          name: peeringName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create a direct peering:
+              value: peeringName
+            Create an exchange peering:
+              value: peeringName
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Peering"
+        description: The properties needed to create or update a peering.
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Peering"
+              examples:
+                Create a direct peering:
+                  $ref: "#/components/examples/Create_a_direct_peering"
+                Create an exchange peering:
+                  $ref: "#/components/examples/Create_an_exchange_peering"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Peering"
+              examples:
+                Create a direct peering:
+                  $ref: "#/components/examples/Create_a_direct_peering"
+                Create an exchange peering:
+                  $ref: "#/components/examples/Create_an_exchange_peering"
+        default:
+          description: Error response describing why the operation has failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Peerings
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    List_peering_operations:
+      value:
+        value:
+          - display:
+              description: Registers the subscription for the Peering Resource Provider and
+                enables the creation of peerings
+              operation: Registers the Peering Resource Provider
+              provider: Microsoft.Peering
+              resource: Peering Resource Provider
+            isDataAction: false
+            name: Microsoft.Peering/register/action
+          - display:
+              description: Write any peerAsns
+              operation: Write PeerAsn
+              provider: Microsoft.Peering
+              resource: peerAsns
+            isDataAction: false
+            name: Microsoft.Peering/peerAsns/write
+          - display:
+              description: Read any peerAsns
+              operation: Read PeerAsn
+              provider: Microsoft.Peering
+              resource: peerAsns
+            isDataAction: false
+            name: Microsoft.Peering/peerAsns/read
+          - display:
+              description: Delete any peerAsns
+              operation: Delete PeerAsn
+              provider: Microsoft.Peering
+              resource: peerAsns
+            isDataAction: false
+            name: Microsoft.Peering/peerAsns/delete
+          - display:
+              description: Read any peeringLocations
+              operation: Read PeeringLocation
+              provider: Microsoft.Peering
+              resource: peeringLocations
+            isDataAction: false
+            name: Microsoft.Peering/peeringLocations/read
+          - display:
+              description: Read any legacyPeerings
+              operation: Read LegacyPeering
+              provider: Microsoft.Peering
+              resource: legacyPeerings
+            isDataAction: false
+            name: Microsoft.Peering/legacyPeerings/read
+          - display:
+              description: Write any peerings
+              operation: Write Peering
+              provider: Microsoft.Peering
+              resource: peerings
+            isDataAction: false
+            name: Microsoft.Peering/peerings/write
+          - display:
+              description: Read any peerings
+              operation: Read Peering
+              provider: Microsoft.Peering
+              resource: peerings
+            isDataAction: false
+            name: Microsoft.Peering/peerings/read
+          - display:
+              description: Delete any peerings
+              operation: Delete Peering
+              provider: Microsoft.Peering
+              resource: peerings
+            isDataAction: false
+            name: Microsoft.Peering/peerings/delete
+          - display:
+              description: Read any peeringServiceLocations
+              operation: Read PeeringServiceLocations
+              provider: Microsoft.Peering
+              resource: peeringServiceLocations
+            isDataAction: false
+            name: Microsoft.Peering/peeringServiceLocations/read
+          - display:
+              description: Read any peeringServiceProviders
+              operation: Read PeeringServiceProviders
+              provider: Microsoft.Peering
+              resource: peeringServiceProviders
+            isDataAction: false
+            name: Microsoft.Peering/peeringServiceProviders/read
+          - display:
+              description: Read any peeringServices
+              operation: Read PeeringServices
+              provider: Microsoft.Peering
+              resource: peeringServices
+            isDataAction: false
+            name: Microsoft.Peering/peeringServices/read
+          - display:
+              description: Write any peeringServices
+              operation: Write PeeringService
+              provider: Microsoft.Peering
+              resource: peeringServices
+            isDataAction: false
+            name: Microsoft.Peering/peeringServices/write
+          - display:
+              description: Delete any peeringServices
+              operation: Delete PeeringServices
+              provider: Microsoft.Peering
+              resource: peeringServices
+            isDataAction: false
+            name: Microsoft.Peering/peeringServices/delete
+          - display:
+              description: Read any prefixes
+              operation: Read PeeringServicePrefixes
+              provider: Microsoft.Peering
+              resource: prefixes
+            isDataAction: false
+            name: Microsoft.Peering/peeringServices/prefixes/read
+          - display:
+              description: Write any prefixes
+              operation: Write PeeringServicePrefixes
+              provider: Microsoft.Peering
+              resource: prefixes
+            isDataAction: false
+            name: Microsoft.Peering/peeringServices/prefixes/write
+          - display:
+              description: Delete any prefixes
+              operation: Delete PeeringServicePrefixes
+              provider: Microsoft.Peering
+              resource: prefixes
+            isDataAction: false
+            name: Microsoft.Peering/peeringServices/prefixes/delete
+    Check_if_peering_service_provider_is_available_in_customer_location:
+      value: Available
+    List_legacy_peerings:
+      value:
+        value:
+          - id: /subscriptions/subId/providers/Microsoft.Peering/peerings/peeringName
+            kind: Exchange
+            location: centralus
+            name: peeringName
+            properties:
+              exchange:
+                connections:
+                  - bgpSession:
+                      maxPrefixesAdvertisedV4: 1000
+                      maxPrefixesAdvertisedV6: 100
+                      md5AuthenticationKey: test-md5-auth-key
+                      microsoftSessionIPv4Address: 192.168.3.1
+                      microsoftSessionIPv6Address: fd00::1:1
+                      peerSessionIPv4Address: 192.168.2.1
+                      peerSessionIPv6Address: fd00::1
+                      sessionStateV4: Established
+                      sessionStateV6: Established
+                    connectionIdentifier: CE495334-0E94-4E51-8164-8116D6CD284D
+                    connectionState: Active
+                    peeringDBFacilityId: 99999
+                  - bgpSession:
+                      maxPrefixesAdvertisedV4: 1000
+                      maxPrefixesAdvertisedV6: 100
+                      md5AuthenticationKey: test-md5-auth-key
+                      microsoftSessionIPv4Address: 192.168.3.2
+                      microsoftSessionIPv6Address: fd00::1:2
+                      peerSessionIPv4Address: 192.168.2.2
+                      peerSessionIPv6Address: fd00::2
+                      sessionStateV4: Established
+                      sessionStateV6: Established
+                    connectionIdentifier: CDD8E673-CB07-47E6-84DE-3739F778762B
+                    connectionState: Active
+                    peeringDBFacilityId: 99999
+                peerAsn:
+                  id: /subscriptions/subId/providers/Microsoft.Peering/peerAsns/myAsn1
+              peeringLocation: peeringLocation0
+              provisioningState: Succeeded
+            sku:
+              family: Exchange
+              name: Basic_Exchange_Free
+              size: Free
+              tier: Basic
+            type: Microsoft.Peering/peerings
+    List_peer_ASNs_in_a_subscription:
+      value:
+        value:
+          - id: /subscriptions/subId/providers/Microsoft.Peering/peerAsns/peerAsnName
+            name: peerAsnName
+            properties:
+              peerAsn: 65000
+              peerContactInfo:
+                emails:
+                  - abc@contoso.com
+                  - xyz@contoso.com
+                phone:
+                  - +1 (234) 567-8900
+              peerName: Contoso
+              validationState: Approved
+            type: Microsoft.Peering/peerAsns
+    Get_a_peer_ASN:
+      value:
+        id: /subscriptions/subId/providers/Microsoft.Peering/peerAsns/peerAsnName
+        name: peerAsnName
+        properties:
+          peerAsn: 65000
+          peerContactInfo:
+            emails:
+              - abc@contoso.com
+              - xyz@contoso.com
+            phone:
+              - +1 (234) 567-8900
+          peerName: Contoso
+          validationState: Approved
+        type: Microsoft.Peering/peerAsns
+    Create_a_peer_ASN:
+      value:
+        id: /subscriptions/subId/providers/Microsoft.Peering/peerAsns/peerAsnName
+        name: peerAsnName
+        properties:
+          peerAsn: 65000
+          peerContactInfo:
+            emails:
+              - abc@contoso.com
+              - xyz@contoso.com
+            phone:
+              - +1 (234) 567-8900
+          peerName: Contoso
+          validationState: Pending
+        type: Microsoft.Peering/peerAsns
+    List_direct_peering_locations:
+      value:
+        value:
+          - id: /subscriptions/subId/providers/Microsoft.Peering/peeringLocations/peeringLocation1
+            kind: Direct
+            name: peeringLocation1
+            properties:
+              country: country1
+              direct:
+                bandwidthOffers:
+                  - offerName: 10Gbps
+                    valueInMbps: 10000
+                  - offerName: 100Gbps
+                    valueInMbps: 100000
+                peeringFacilities:
+                  - address: address1
+                    directPeeringType: Edge
+                    peeringDBFacilityId: 99999
+                    peeringDBFacilityLink: https://www.peeringdb.com/fac/99999
+                  - address: address3
+                    directPeeringType: Cdn
+                    peeringDBFacilityId: 99999
+                    peeringDBFacilityLink: https://www.peeringdb.com/fac/99999
+              peeringLocation: peeringLocation1
+            type: Microsoft.Peering/peeringLocations
+          - id: /subscriptions/subId/providers/Microsoft.Peering/peeringLocations/peeringLocation2
+            kind: Direct
+            name: peeringLocation2
+            properties:
+              country: country2
+              direct:
+                bandwidthOffers:
+                  - offerName: 10Gbps
+                    valueInMbps: 10000
+                  - offerName: 100Gbps
+                    valueInMbps: 100000
+                peeringFacilities:
+                  - address: address2
+                    directPeeringType: Edge
+                    peeringDBFacilityId: 99999
+                    peeringDBFacilityLink: https://www.peeringdb.com/fac/99999
+              peeringLocation: peeringLocation2
+            type: Microsoft.Peering/peeringLocations
+    List_exchange_peering_locations:
+      value:
+        value:
+          - id: /subscriptions/subId/providers/Microsoft.Peering/peeringLocations/peeringLocation1
+            kind: Exchange
+            name: peeringLocation1
+            properties:
+              country: country1
+              exchange:
+                peeringFacilities:
+                  - bandwidthInMbps: 10000
+                    exchangeName: name1
+                    facilityIPv4Prefix: 192.168.128.0/17
+                    facilityIPv6Prefix: fd00::1000:0/98
+                    microsoftIPv4Address: 192.168.131.1
+                    microsoftIPv6Address: fd00::1:1
+                    peeringDBFacilityId: 99999
+                    peeringDBFacilityLink: https://www.peeringdb.com/ix/99999
+                  - bandwidthInMbps: 10000
+                    exchangeName: name3
+                    facilityIPv4Prefix: 192.168.0.0/17
+                    facilityIPv6Prefix: fd00::0/98
+                    microsoftIPv4Address: 192.168.2.2
+                    microsoftIPv6Address: fd00::2
+                    peeringDBFacilityId: 99999
+                    peeringDBFacilityLink: https://www.peeringdb.com/ix/99999
+              peeringLocation: peeringLocation1
+            type: Microsoft.Peering/peeringLocations
+          - id: /subscriptions/subId/providers/Microsoft.Peering/peeringLocations/peeringLocation2
+            kind: Exchange
+            name: peeringLocation2
+            properties:
+              country: country2
+              exchange:
+                peeringFacilities:
+                  - bandwidthInMbps: 10000
+                    exchangeName: name2
+                    facilityIPv4Prefix: 192.168.0.0/16
+                    facilityIPv6Prefix: fd00::0/98
+                    microsoftIPv4Address: 192.168.2.1
+                    microsoftIPv6Address: fd00::2
+                    peeringDBFacilityId: 99999
+                    peeringDBFacilityLink: https://www.peeringdb.com/ix/99999
+              peeringLocation: peeringLocation2
+            type: Microsoft.Peering/peeringLocations
+    List_peering_service_locations:
+      value:
+        value:
+          - id: /subscriptions/subId/providers/Microsoft.Peering/peeringServiceLocations/peeringServiceLocation1
+            name: peeringServiceLocation1
+            properties:
+              country: country1
+              state: state1
+            type: Microsoft.Peering/peeringServiceLocations
+          - id: /subscriptions/subId/providers/Microsoft.Peering/peeringServiceLocations/peeringServiceLocation2
+            name: peeringServiceLocation2
+            properties:
+              country: country2
+              state: state2
+            type: Microsoft.Peering/peeringServiceLocations
+    List_peering_service_providers:
+      value:
+        value:
+          - id: /subscriptions/subId/providers/Microsoft.Peering/peeringServiceProviders/peeringServiceProvider1
+            name: peeringServiceProvider1
+            properties:
+              serviceProviderName: peeringServiceProvider1
+            type: Microsoft.Peering/peeringServiceProviders
+          - id: /subscriptions/subId/providers/Microsoft.Peering/peeringServiceProviders/peeringServiceProvider2
+            name: peeringServiceProvider2
+            properties:
+              serviceProviderName: peeringServiceProvider2
+            type: Microsoft.Peering/peeringServiceProviders
+    List_peering_services_in_a_subscription:
+      value:
+        value:
+          - id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peeringServices/peeringServiceName
+            location: eastus
+            name: peeringServiceName
+            properties:
+              peeringServiceLocation: state1
+              peeringServiceProvider: serviceProvider1
+              provisioningState: Succeeded
+            type: Microsoft.Peering/peeringServices
+    List_peerings_in_a_subscription:
+      value:
+        value:
+          - id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName
+            kind: Exchange
+            location: eastus
+            name: peeringName
+            properties:
+              exchange:
+                connections:
+                  - bgpSession:
+                      maxPrefixesAdvertisedV4: 1000
+                      maxPrefixesAdvertisedV6: 100
+                      md5AuthenticationKey: test-md5-auth-key
+                      microsoftSessionIPv4Address: 192.168.3.1
+                      microsoftSessionIPv6Address: fd00::1:1
+                      peerSessionIPv4Address: 192.168.2.1
+                      peerSessionIPv6Address: fd00::1
+                      sessionStateV4: Established
+                      sessionStateV6: Established
+                    connectionIdentifier: CE495334-0E94-4E51-8164-8116D6CD284D
+                    connectionState: Active
+                    peeringDBFacilityId: 99999
+                  - bgpSession:
+                      maxPrefixesAdvertisedV4: 1000
+                      maxPrefixesAdvertisedV6: 100
+                      md5AuthenticationKey: test-md5-auth-key
+                      microsoftSessionIPv4Address: 192.168.3.2
+                      microsoftSessionIPv6Address: fd00::1:2
+                      peerSessionIPv4Address: 192.168.2.2
+                      peerSessionIPv6Address: fd00::2
+                      sessionStateV4: Established
+                      sessionStateV6: Established
+                    connectionIdentifier: CDD8E673-CB07-47E6-84DE-3739F778762B
+                    connectionState: Active
+                    peeringDBFacilityId: 99999
+                peerAsn:
+                  id: /subscriptions/subId/providers/Microsoft.Peering/peerAsns/myAsn1
+              peeringLocation: peeringLocation0
+              provisioningState: Succeeded
+            sku:
+              family: Exchange
+              name: Basic_Exchange_Free
+              size: Free
+              tier: Basic
+            type: Microsoft.Peering/peerings
+    List_peering_services_in_a_resource_group:
+      value:
+        value:
+          - id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peeringServices/peeringServiceName
+            location: eastus
+            name: peeringServiceName
+            properties:
+              peeringServiceLocation: state1
+              peeringServiceProvider: serviceProvider1
+              provisioningState: Succeeded
+            type: Microsoft.Peering/peeringServices
+    Get_a_peering_service:
+      value:
+        id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peeringServices/peeringServiceName
+        location: eastus
+        name: peeringServiceName
+        properties:
+          peeringServiceLocation: state1
+          peeringServiceProvider: serviceProvider1
+          provisioningState: Succeeded
+        type: Microsoft.Peering/peeringServices
+    Update_peering_service_tags:
+      value:
+        id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peeringServices/peeringServiceName
+        location: eastus
+        name: peeringServiceName
+        properties:
+          peeringServiceLocation: state1
+          peeringServiceProvider: serviceProvider1
+          provisioningState: Succeeded
+        tags:
+          tag0: value0
+          tag1: value1
+        type: Microsoft.Peering/peeringServices
+    Create_a_peering_service:
+      value:
+        id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peeringServices/peeringServiceName
+        location: eastus
+        name: peeringServiceName
+        properties:
+          peeringServiceLocation: state1
+          peeringServiceProvider: serviceProvider1
+          provisioningState: Succeeded
+        type: Microsoft.Peering/peeringServices
+    List_all_the_prefixes_associated_with_the_peering_service:
+      value:
+        value:
+          - id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peeringServices/peeringServiceName/prefixes/peeringServicePrefixName1
+            name: peeringServicePrefixName1
+            properties:
+              learnedType: None
+              prefix: 192.168.1.0/24
+              prefixValidationState: Verified
+              provisioningState: Succeeded
+          - id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peeringServices/peeringServiceName/prefixes/peeringServicePrefixName2
+            name: peeringServicePrefixName2
+            properties:
+              learnedType: None
+              prefix: 192.168.2.0/24
+              prefixValidationState: Verified
+              provisioningState: Succeeded
+    Get_a_prefix_associated_with_the_peering_service:
+      value:
+        id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peeringServices/peeringServiceName/prefixes/peeringServicePrefixName
+        name: peeringServicePrefixName
+        properties:
+          learnedType: None
+          prefix: 192.168.1.0/24
+          prefixValidationState: Verified
+          provisioningState: Succeeded
+    Create_or_update_a_prefix_for_the_peering_service:
+      value:
+        id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peeringServices/peeringServiceName/prefixes/peeringServicePrefixName
+        name: peeringServicePrefixName
+        properties:
+          learnedType: None
+          prefix: 192.168.1.0/24
+          prefixValidationState: Pending
+          provisioningState: Succeeded
+    List_peerings_in_a_resource_group:
+      value:
+        value:
+          - id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName
+            kind: Exchange
+            location: eastus
+            name: peeringName
+            properties:
+              exchange:
+                connections:
+                  - bgpSession:
+                      maxPrefixesAdvertisedV4: 1000
+                      maxPrefixesAdvertisedV6: 100
+                      md5AuthenticationKey: test-md5-auth-key
+                      microsoftSessionIPv4Address: 192.168.3.1
+                      microsoftSessionIPv6Address: fd00::1:1
+                      peerSessionIPv4Address: 192.168.2.1
+                      peerSessionIPv6Address: fd00::1
+                      sessionStateV4: Established
+                      sessionStateV6: Established
+                    connectionIdentifier: CE495334-0E94-4E51-8164-8116D6CD284D
+                    connectionState: Active
+                    peeringDBFacilityId: 99999
+                  - bgpSession:
+                      maxPrefixesAdvertisedV4: 1000
+                      maxPrefixesAdvertisedV6: 100
+                      md5AuthenticationKey: test-md5-auth-key
+                      microsoftSessionIPv4Address: 192.168.3.2
+                      microsoftSessionIPv6Address: fd00::1:2
+                      peerSessionIPv4Address: 192.168.2.2
+                      peerSessionIPv6Address: fd00::2
+                      sessionStateV4: Established
+                      sessionStateV6: Established
+                    connectionIdentifier: CDD8E673-CB07-47E6-84DE-3739F778762B
+                    connectionState: Active
+                    peeringDBFacilityId: 99999
+                peerAsn:
+                  id: /subscriptions/subId/providers/Microsoft.Peering/peerAsns/myAsn1
+              peeringLocation: peeringLocation0
+              provisioningState: Succeeded
+            sku:
+              family: Exchange
+              name: Basic_Exchange_Free
+              size: Free
+              tier: Basic
+            type: Microsoft.Peering/peerings
+    Get_a_peering:
+      value:
+        id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName
+        kind: Exchange
+        location: eastus
+        name: peeringName
+        properties:
+          exchange:
+            connections:
+              - bgpSession:
+                  maxPrefixesAdvertisedV4: 1000
+                  maxPrefixesAdvertisedV6: 100
+                  md5AuthenticationKey: test-md5-auth-key
+                  microsoftSessionIPv4Address: 192.168.3.1
+                  microsoftSessionIPv6Address: fd00::1:1
+                  peerSessionIPv4Address: 192.168.2.1
+                  peerSessionIPv6Address: fd00::1
+                  sessionStateV4: Established
+                  sessionStateV6: Established
+                connectionIdentifier: CE495334-0E94-4E51-8164-8116D6CD284D
+                connectionState: Active
+                peeringDBFacilityId: 99999
+              - bgpSession:
+                  maxPrefixesAdvertisedV4: 1000
+                  maxPrefixesAdvertisedV6: 100
+                  md5AuthenticationKey: test-md5-auth-key
+                  microsoftSessionIPv4Address: 192.168.3.2
+                  microsoftSessionIPv6Address: fd00::1:2
+                  peerSessionIPv4Address: 192.168.2.2
+                  peerSessionIPv6Address: fd00::2
+                  sessionStateV4: Established
+                  sessionStateV6: Established
+                connectionIdentifier: CDD8E673-CB07-47E6-84DE-3739F778762B
+                connectionState: Active
+                peeringDBFacilityId: 99999
+            peerAsn:
+              id: /subscriptions/subId/providers/Microsoft.Peering/peerAsns/myAsn1
+          peeringLocation: peeringLocation0
+          provisioningState: Succeeded
+        sku:
+          family: Exchange
+          name: Basic_Exchange_Free
+          size: Free
+          tier: Basic
+        type: Microsoft.Peering/peerings
+    Update_peering_tags:
+      value:
+        id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName
+        kind: Exchange
+        location: eastus
+        name: peeringName
+        properties:
+          exchange:
+            connections:
+              - bgpSession:
+                  maxPrefixesAdvertisedV4: 1000
+                  maxPrefixesAdvertisedV6: 100
+                  md5AuthenticationKey: test-md5-auth-key
+                  microsoftSessionIPv4Address: 192.168.3.1
+                  microsoftSessionIPv6Address: fd00::1:1
+                  peerSessionIPv4Address: 192.168.2.1
+                  peerSessionIPv6Address: fd00::1
+                  sessionStateV4: Established
+                  sessionStateV6: Established
+                connectionIdentifier: CE495334-0E94-4E51-8164-8116D6CD284D
+                connectionState: Active
+                peeringDBFacilityId: 99999
+              - bgpSession:
+                  maxPrefixesAdvertisedV4: 1000
+                  maxPrefixesAdvertisedV6: 100
+                  md5AuthenticationKey: test-md5-auth-key
+                  microsoftSessionIPv4Address: 192.168.3.2
+                  microsoftSessionIPv6Address: fd00::1:2
+                  peerSessionIPv4Address: 192.168.2.2
+                  peerSessionIPv6Address: fd00::2
+                  sessionStateV4: Established
+                  sessionStateV6: Established
+                connectionIdentifier: CDD8E673-CB07-47E6-84DE-3739F778762B
+                connectionState: Active
+                peeringDBFacilityId: 99999
+            peerAsn:
+              id: /subscriptions/subId/providers/Microsoft.Peering/peerAsns/myAsn1
+          peeringLocation: peeringLocation0
+          provisioningState: Succeeded
+        sku:
+          family: Exchange
+          name: Basic_Exchange_Free
+          size: Free
+          tier: Basic
+        tags:
+          tag0: value0
+          tag1: value1
+        type: Microsoft.Peering/peerings
+    Create_a_direct_peering:
+      value:
+        id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName
+        kind: Direct
+        location: eastus
+        name: peeringName
+        properties:
+          direct:
+            connections:
+              - bandwidthInMbps: 10000
+                bgpSession:
+                  maxPrefixesAdvertisedV4: 1000
+                  maxPrefixesAdvertisedV6: 100
+                  md5AuthenticationKey: test-md5-auth-key
+                  sessionPrefixV4: 192.168.0.0/31
+                  sessionPrefixV6: fd00::0/127
+                  sessionStateV4: PendingAdd
+                  sessionStateV6: PendingAdd
+                connectionIdentifier: 5F4CB5C7-6B43-4444-9338-9ABC72606C16
+                connectionState: PendingApproval
+                peeringDBFacilityId: 99999
+                provisionedBandwidthInMbps: 0
+                sessionAddressProvider: Peer
+                useForPeeringService: false
+              - bandwidthInMbps: 10000
+                bgpSession:
+                  maxPrefixesAdvertisedV4: 1000
+                  maxPrefixesAdvertisedV6: 100
+                  md5AuthenticationKey: test-md5-auth-key
+                  sessionPrefixV4: 192.168.1.0/31
+                  sessionPrefixV6: fd00::2/127
+                  sessionStateV4: PendingAdd
+                  sessionStateV6: PendingAdd
+                connectionIdentifier: 8AB00818-D533-4504-A25A-03A17F61201C
+                connectionState: PendingApproval
+                peeringDBFacilityId: 99999
+                provisionedBandwidthInMbps: 0
+                sessionAddressProvider: Microsoft
+                useForPeeringService: true
+            directPeeringType: Edge
+            peerAsn:
+              id: /subscriptions/subId/providers/Microsoft.Peering/peerAsns/myAsn1
+            useForPeeringService: false
+          peeringLocation: peeringLocation0
+          provisioningState: Succeeded
+        sku:
+          family: Direct
+          name: Basic_Direct_Free
+          size: Free
+          tier: Basic
+        type: Microsoft.Peering/peerings
+    Create_an_exchange_peering:
+      value:
+        id: /subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName
+        kind: Exchange
+        location: eastus
+        name: peeringName
+        properties:
+          exchange:
+            connections:
+              - bgpSession:
+                  maxPrefixesAdvertisedV4: 1000
+                  maxPrefixesAdvertisedV6: 100
+                  md5AuthenticationKey: test-md5-auth-key
+                  microsoftSessionIPv4Address: 192.168.3.1
+                  microsoftSessionIPv6Address: fd00::1:1
+                  peerSessionIPv4Address: 192.168.2.1
+                  peerSessionIPv6Address: fd00::1
+                  sessionStateV4: PendingAdd
+                  sessionStateV6: PendingAdd
+                connectionIdentifier: CE495334-0E94-4E51-8164-8116D6CD284D
+                connectionState: PendingApproval
+                peeringDBFacilityId: 99999
+              - bgpSession:
+                  maxPrefixesAdvertisedV4: 1000
+                  maxPrefixesAdvertisedV6: 100
+                  md5AuthenticationKey: test-md5-auth-key
+                  microsoftSessionIPv4Address: 192.168.3.2
+                  microsoftSessionIPv6Address: fd00::1:2
+                  peerSessionIPv4Address: 192.168.2.2
+                  peerSessionIPv6Address: fd00::2
+                  sessionStateV4: PendingAdd
+                  sessionStateV6: PendingAdd
+                connectionIdentifier: CDD8E673-CB07-47E6-84DE-3739F778762B
+                connectionState: PendingApproval
+                peeringDBFacilityId: 99999
+            peerAsn:
+              id: /subscriptions/subId/providers/Microsoft.Peering/peerAsns/myAsn1
+          peeringLocation: peeringLocation0
+          provisioningState: Succeeded
+        sku:
+          family: Exchange
+          name: Basic_Exchange_Free
+          size: Free
+          tier: Basic
+        type: Microsoft.Peering/peerings
+  parameters:
+    ApiVersionParameter:
+      description: The client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        List peering operations:
+          value: 2019-08-01-preview
+        Check if peering service provider is available in customer location:
+          value: 2019-08-01-preview
+        List legacy peerings:
+          value: 2019-08-01-preview
+        List peer ASNs in a subscription:
+          value: 2019-08-01-preview
+        Delete a peer ASN:
+          value: 2019-08-01-preview
+        Get a peer ASN:
+          value: 2019-08-01-preview
+        Create a peer ASN:
+          value: 2019-08-01-preview
+        List direct peering locations:
+          value: 2019-08-01-preview
+        List exchange peering locations:
+          value: 2019-08-01-preview
+        List peering service locations:
+          value: 2019-08-01-preview
+        List peering service providers:
+          value: 2019-08-01-preview
+        List peering services in a subscription:
+          value: 2019-08-01-preview
+        List peerings in a subscription:
+          value: 2019-08-01-preview
+        List peering services in a resource group:
+          value: 2019-08-01-preview
+        Delete a peering service:
+          value: 2019-08-01-preview
+        Get a peering service:
+          value: 2019-08-01-preview
+        Update peering service tags:
+          value: 2019-08-01-preview
+        Create a  peering service:
+          value: 2019-08-01-preview
+        List all the prefixes associated with the peering service:
+          value: 2019-08-01-preview
+        Delete a prefix associated with the peering service:
+          value: 2019-08-01-preview
+        Get a prefix associated with the peering service:
+          value: 2019-08-01-preview
+        Create or update a prefix for the peering service:
+          value: 2019-08-01-preview
+        List peerings in a resource group:
+          value: 2019-08-01-preview
+        Delete a peering:
+          value: 2019-08-01-preview
+        Get a peering:
+          value: 2019-08-01-preview
+        Update peering tags:
+          value: 2019-08-01-preview
+        Create a direct peering:
+          value: 2019-08-01-preview
+        Create an exchange peering:
+          value: 2019-08-01-preview
+    SubscriptionIdParameter:
+      description: The Azure subscription ID.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Check if peering service provider is available in customer location:
+          value: subId
+        List legacy peerings:
+          value: subId
+        List peer ASNs in a subscription:
+          value: subId
+        Delete a peer ASN:
+          value: subId
+        Get a peer ASN:
+          value: subId
+        Create a peer ASN:
+          value: subId
+        List direct peering locations:
+          value: subId
+        List exchange peering locations:
+          value: subId
+        List peering service locations:
+          value: subId
+        List peering service providers:
+          value: subId
+        List peering services in a subscription:
+          value: subId
+        List peerings in a subscription:
+          value: subId
+        List peering services in a resource group:
+          value: subId
+        Delete a peering service:
+          value: subId
+        Get a peering service:
+          value: subId
+        Update peering service tags:
+          value: subId
+        Create a  peering service:
+          value: subId
+        List all the prefixes associated with the peering service:
+          value: subId
+        Delete a prefix associated with the peering service:
+          value: subId
+        Get a prefix associated with the peering service:
+          value: subId
+        Create or update a prefix for the peering service:
+          value: subId
+        List peerings in a resource group:
+          value: subId
+        Delete a peering:
+          value: subId
+        Get a peering:
+          value: subId
+        Update peering tags:
+          value: subId
+        Create a direct peering:
+          value: subId
+        Create an exchange peering:
+          value: subId
+  requestBodies:
+    ResourceTags:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ResourceTags"
+      description: The resource tags.
+      required: true
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    BgpSession:
+      description: The properties that define a BGP session.
+      properties:
+        maxPrefixesAdvertisedV4:
+          description: The maximum number of prefixes advertised over the IPv4 session.
+          format: int32
+          type: integer
+        maxPrefixesAdvertisedV6:
+          description: The maximum number of prefixes advertised over the IPv6 session.
+          format: int32
+          type: integer
+        md5AuthenticationKey:
+          description: The MD5 authentication key of the session.
+          type: string
+        microsoftSessionIPv4Address:
+          description: The IPv4 session address on Microsoft's end.
+          readOnly: true
+          type: string
+        microsoftSessionIPv6Address:
+          description: The IPv6 session address on Microsoft's end.
+          readOnly: true
+          type: string
+        peerSessionIPv4Address:
+          description: The IPv4 session address on peer's end.
+          type: string
+        peerSessionIPv6Address:
+          description: The IPv6 session address on peer's end.
+          type: string
+        sessionPrefixV4:
+          description: The IPv4 prefix that contains both ends' IPv4 addresses.
+          type: string
+        sessionPrefixV6:
+          description: The IPv6 prefix that contains both ends' IPv6 addresses.
+          type: string
+        sessionStateV4:
+          description: The state of the IPv4 session.
+          enum:
+            - None
+            - Idle
+            - Connect
+            - Active
+            - OpenSent
+            - OpenConfirm
+            - OpenReceived
+            - Established
+            - PendingAdd
+            - PendingUpdate
+            - PendingRemove
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: sessionStateV4
+        sessionStateV6:
+          description: The state of the IPv6 session.
+          enum:
+            - None
+            - Idle
+            - Connect
+            - Active
+            - OpenSent
+            - OpenConfirm
+            - OpenReceived
+            - Established
+            - PendingAdd
+            - PendingUpdate
+            - PendingRemove
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: sessionStateV6
+      type: object
+    CheckServiceProviderAvailabilityInput:
+      description: Class for CheckServiceProviderAvailabilityInput
+      properties:
+        peeringServiceLocation:
+          description: Gets or sets the PeeringServiceLocation
+          type: string
+        peeringServiceProvider:
+          description: Gets or sets the PeeringServiceProvider
+          type: string
+      type: object
+    ContactInfo:
+      description: The contact information of the peer.
+      properties:
+        emails:
+          description: The list of email addresses.
+          items:
+            type: string
+          type: array
+        phone:
+          description: The list of contact numbers.
+          items:
+            type: string
+          type: array
+      type: object
+    DirectConnection:
+      description: The properties that define a direct connection.
+      properties:
+        bandwidthInMbps:
+          description: The bandwidth of the connection.
+          format: int32
+          type: integer
+        bgpSession:
+          $ref: "#/components/schemas/BgpSession"
+        connectionIdentifier:
+          description: The unique identifier (GUID) for the connection.
+          type: string
+        connectionState:
+          description: The state of the connection.
+          enum:
+            - None
+            - PendingApproval
+            - Approved
+            - ProvisioningStarted
+            - ProvisioningFailed
+            - ProvisioningCompleted
+            - Validating
+            - Active
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: connectionState
+        peeringDBFacilityId:
+          description: The PeeringDB.com ID of the facility at which the connection has to
+            be set up.
+          format: int32
+          type: integer
+        provisionedBandwidthInMbps:
+          description: The bandwidth that is actually provisioned.
+          format: int32
+          type: integer
+        sessionAddressProvider:
+          description: The field indicating if Microsoft provides session ip addresses.
+          enum:
+            - Microsoft
+            - Peer
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: sessionAddressProvider
+        useForPeeringService:
+          description: The flag that indicates whether or not the connection is used for
+            peering service.
+          type: boolean
+      type: object
+    DirectPeeringFacility:
+      description: The properties that define a direct peering facility.
+      properties:
+        address:
+          description: The address of the direct peering facility.
+          type: string
+        directPeeringType:
+          description: The type of the direct peering.
+          enum:
+            - Edge
+            - Transit
+            - Cdn
+            - Internal
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: directPeeringType
+        peeringDBFacilityId:
+          description: The PeeringDB.com ID of the facility.
+          format: int32
+          type: integer
+        peeringDBFacilityLink:
+          description: The PeeringDB.com URL of the facility.
+          type: string
+      type: object
+    ErrorResponse:
+      description: The error response that indicates why an operation has failed.
+      properties:
+        code:
+          description: The error code.
+          readOnly: true
+          type: string
+        message:
+          description: The error message.
+          readOnly: true
+          type: string
+      type: object
+    ExchangeConnection:
+      description: The properties that define an exchange connection.
+      properties:
+        bgpSession:
+          $ref: "#/components/schemas/BgpSession"
+        connectionIdentifier:
+          description: The unique identifier (GUID) for the connection.
+          type: string
+        connectionState:
+          description: The state of the connection.
+          enum:
+            - None
+            - PendingApproval
+            - Approved
+            - ProvisioningStarted
+            - ProvisioningFailed
+            - ProvisioningCompleted
+            - Validating
+            - Active
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: connectionState
+        peeringDBFacilityId:
+          description: The PeeringDB.com ID of the facility at which the connection has to
+            be set up.
+          format: int32
+          type: integer
+      type: object
+    ExchangePeeringFacility:
+      description: The properties that define an exchange peering facility.
+      properties:
+        bandwidthInMbps:
+          description: The bandwidth of the connection between Microsoft and the exchange
+            peering facility.
+          format: int32
+          type: integer
+        exchangeName:
+          description: The name of the exchange peering facility.
+          type: string
+        facilityIPv4Prefix:
+          description: The IPv4 prefixes associated with the exchange peering facility.
+          type: string
+        facilityIPv6Prefix:
+          description: The IPv6 prefixes associated with the exchange peering facility.
+          type: string
+        microsoftIPv4Address:
+          description: The IPv4 address of Microsoft at the exchange peering facility.
+          type: string
+        microsoftIPv6Address:
+          description: The IPv6 address of Microsoft at the exchange peering facility.
+          type: string
+        peeringDBFacilityId:
+          description: The PeeringDB.com ID of the facility.
+          format: int32
+          type: integer
+        peeringDBFacilityLink:
+          description: The PeeringDB.com URL of the facility.
+          type: string
+      type: object
+    Operation:
+      description: The peering API operation.
+      properties:
+        display:
+          $ref: "#/components/schemas/OperationDisplayInfo"
+        isDataAction:
+          description: The flag that indicates whether the operation applies to data plane.
+          readOnly: true
+          type: boolean
+        name:
+          description: The name of the operation.
+          readOnly: true
+          type: string
+      type: object
+    OperationDisplayInfo:
+      description: The information related to the operation.
+      properties:
+        description:
+          description: The description of the operation.
+          readOnly: true
+          type: string
+        operation:
+          description: The name of the operation.
+          readOnly: true
+          type: string
+        provider:
+          description: The name of the resource provider.
+          readOnly: true
+          type: string
+        resource:
+          description: The type of the resource.
+          readOnly: true
+          type: string
+      type: object
+    OperationListResult:
+      description: The paginated list of peering API operations.
+      properties:
+        nextLink:
+          description: The link to fetch the next page of peering API operations.
+          type: string
+        value:
+          description: The list of peering API operations.
+          items:
+            $ref: "#/components/schemas/Operation"
+          type: array
+      type: object
+    PeerAsn:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The essential information related to the peer's ASN.
+      properties:
+        properties:
+          $ref: "#/components/schemas/PeerAsnProperties"
+      type: object
+    PeerAsnListResult:
+      description: The paginated list of peer ASNs.
+      properties:
+        nextLink:
+          description: The link to fetch the next page of peer ASNs.
+          type: string
+        value:
+          description: The list of peer ASNs.
+          items:
+            $ref: "#/components/schemas/PeerAsn"
+          type: array
+      type: object
+    PeerAsnProperties:
+      description: The properties that define a peer's ASN.
+      properties:
+        peerAsn:
+          description: The Autonomous System Number (ASN) of the peer.
+          format: int32
+          type: integer
+        peerContactInfo:
+          $ref: "#/components/schemas/ContactInfo"
+        peerName:
+          description: The name of the peer.
+          type: string
+        validationState:
+          description: The validation state of the ASN associated with the peer.
+          enum:
+            - None
+            - Pending
+            - Approved
+            - Failed
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: validationState
+      type: object
+    Peering:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Peering is a logical representation of a set of connections to the
+        Microsoft Cloud Edge at a location.
+      properties:
+        kind:
+          description: The kind of the peering.
+          enum:
+            - Direct
+            - Exchange
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: kind
+        location:
+          description: The location of the resource.
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        properties:
+          $ref: "#/components/schemas/PeeringProperties"
+        sku:
+          $ref: "#/components/schemas/PeeringSku"
+        tags:
+          additionalProperties:
+            type: string
+          description: The resource tags.
+          type: object
+      required:
+        - sku
+        - kind
+        - location
+      type: object
+    PeeringBandwidthOffer:
+      description: The properties that define a peering bandwidth offer.
+      properties:
+        offerName:
+          description: The name of the bandwidth offer.
+          type: string
+        valueInMbps:
+          description: The value of the bandwidth offer in Mbps.
+          format: int32
+          type: integer
+      type: object
+    PeeringListResult:
+      description: The paginated list of peerings.
+      properties:
+        nextLink:
+          description: The link to fetch the next page of peerings.
+          type: string
+        value:
+          description: The list of peerings.
+          items:
+            $ref: "#/components/schemas/Peering"
+          type: array
+      type: object
+    PeeringLocation:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Peering location is where connectivity could be established to the
+        Microsoft Cloud Edge.
+      properties:
+        kind:
+          description: The kind of peering that the peering location supports.
+          enum:
+            - Direct
+            - Exchange
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: kind
+        properties:
+          $ref: "#/components/schemas/PeeringLocationProperties"
+      type: object
+    PeeringLocationListResult:
+      description: The paginated list of peering locations.
+      properties:
+        nextLink:
+          description: The link to fetch the next page of peering locations.
+          type: string
+        value:
+          description: The list of peering locations.
+          items:
+            $ref: "#/components/schemas/PeeringLocation"
+          type: array
+      type: object
+    PeeringLocationProperties:
+      description: The properties that define a peering location.
+      properties:
+        azureRegion:
+          description: The Azure region associated with the peering location.
+          type: string
+        country:
+          description: The country in which the peering location exists.
+          type: string
+        direct:
+          $ref: "#/components/schemas/PeeringLocationPropertiesDirect"
+        exchange:
+          $ref: "#/components/schemas/PeeringLocationPropertiesExchange"
+        peeringLocation:
+          description: The name of the peering location.
+          type: string
+      type: object
+    PeeringLocationPropertiesDirect:
+      description: The properties that define a direct peering location.
+      properties:
+        bandwidthOffers:
+          description: The list of bandwidth offers available at the peering location.
+          items:
+            $ref: "#/components/schemas/PeeringBandwidthOffer"
+          type: array
+        peeringFacilities:
+          description: The list of direct peering facilities at the peering location.
+          items:
+            $ref: "#/components/schemas/DirectPeeringFacility"
+          type: array
+      type: object
+    PeeringLocationPropertiesExchange:
+      description: The properties that define an exchange peering location.
+      properties:
+        peeringFacilities:
+          description: The list of exchange peering facilities at the peering location.
+          items:
+            $ref: "#/components/schemas/ExchangePeeringFacility"
+          type: array
+      type: object
+    PeeringProperties:
+      description: The properties that define connectivity to the Microsoft Cloud Edge.
+      properties:
+        direct:
+          $ref: "#/components/schemas/PeeringPropertiesDirect"
+        exchange:
+          $ref: "#/components/schemas/PeeringPropertiesExchange"
+        peeringLocation:
+          description: The location of the peering.
+          type: string
+        provisioningState:
+          description: The provisioning state of the resource.
+          enum:
+            - Succeeded
+            - Updating
+            - Deleting
+            - Failed
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: provisioningState
+      type: object
+    PeeringPropertiesDirect:
+      description: The properties that define a direct peering.
+      properties:
+        connections:
+          description: The set of connections that constitute a direct peering.
+          items:
+            $ref: "#/components/schemas/DirectConnection"
+          type: array
+        directPeeringType:
+          description: The type of direct peering.
+          enum:
+            - Edge
+            - Transit
+            - Cdn
+            - Internal
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: directPeeringType
+        peerAsn:
+          $ref: "#/components/schemas/SubResource"
+        useForPeeringService:
+          description: The flag that indicates whether or not the peering is used for
+            peering service.
+          type: boolean
+      type: object
+    PeeringPropertiesExchange:
+      description: The properties that define an exchange peering.
+      properties:
+        connections:
+          description: The set of connections that constitute an exchange peering.
+          items:
+            $ref: "#/components/schemas/ExchangeConnection"
+          type: array
+        peerAsn:
+          $ref: "#/components/schemas/SubResource"
+      type: object
+    PeeringService:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Peering Service
+      properties:
+        location:
+          description: The location of the resource.
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        properties:
+          $ref: "#/components/schemas/PeeringServiceProperties"
+        tags:
+          additionalProperties:
+            type: string
+          description: The resource tags.
+          type: object
+      required:
+        - location
+      type: object
+    PeeringServiceListResult:
+      description: The paginated list of peering services.
+      properties:
+        nextLink:
+          description: The link to fetch the next page of peering services.
+          type: string
+        value:
+          description: The list of peering services.
+          items:
+            $ref: "#/components/schemas/PeeringService"
+          type: array
+      type: object
+    PeeringServiceLocation:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: PeeringService location
+      properties:
+        properties:
+          $ref: "#/components/schemas/PeeringServiceLocationProperties"
+      type: object
+    PeeringServiceLocationListResult:
+      description: The paginated list of peering service locations.
+      properties:
+        nextLink:
+          description: The link to fetch the next page of peering service locations.
+          type: string
+        value:
+          description: The list of peering service locations.
+          items:
+            $ref: "#/components/schemas/PeeringServiceLocation"
+          type: array
+      type: object
+    PeeringServiceLocationProperties:
+      description: The properties that define connectivity to the Peering Service Location.
+      properties:
+        azureRegion:
+          description: Azure region for the location
+          type: string
+        country:
+          description: Country of the customer
+          type: string
+        state:
+          description: State of the customer
+          type: string
+      type: object
+    PeeringServicePrefix:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The peering service prefix class.
+      properties:
+        properties:
+          $ref: "#/components/schemas/PeeringServicePrefixProperties"
+      type: object
+    PeeringServicePrefixListResult:
+      description: The paginated list of [T].
+      properties:
+        nextLink:
+          description: The link to fetch the next page of [T].
+          type: string
+        value:
+          description: The list of [T].
+          items:
+            $ref: "#/components/schemas/PeeringServicePrefix"
+          type: array
+      type: object
+    PeeringServicePrefixProperties:
+      description: The peering service prefix properties class.
+      properties:
+        learnedType:
+          description: The prefix learned type
+          enum:
+            - None
+            - ViaPartner
+            - ViaSession
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: learnedType
+        prefix:
+          description: Valid route prefix
+          type: string
+        prefixValidationState:
+          description: The prefix validation state
+          enum:
+            - None
+            - Invalid
+            - Verified
+            - Failed
+            - Pending
+            - Unknown
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: prefixValidationState
+        provisioningState:
+          description: The provisioning state of the resource.
+          enum:
+            - Succeeded
+            - Updating
+            - Deleting
+            - Failed
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: provisioningState
+      type: object
+    PeeringServiceProperties:
+      description: The properties that define connectivity to the Peering Service.
+      properties:
+        peeringServiceLocation:
+          description: The PeeringServiceLocation of the Customer.
+          type: string
+        peeringServiceProvider:
+          description: The MAPS Provider Name.
+          type: string
+        provisioningState:
+          description: The provisioning state of the resource.
+          enum:
+            - Succeeded
+            - Updating
+            - Deleting
+            - Failed
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: provisioningState
+      type: object
+    PeeringServiceProvider:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: PeeringService provider
+      properties:
+        properties:
+          $ref: "#/components/schemas/PeeringServiceProviderProperties"
+      type: object
+    PeeringServiceProviderListResult:
+      description: The paginated list of peering service providers.
+      properties:
+        nextLink:
+          description: The link to fetch the next page of peering service providers.
+          type: string
+        value:
+          description: The list of peering service providers.
+          items:
+            $ref: "#/components/schemas/PeeringServiceProvider"
+          type: array
+      type: object
+    PeeringServiceProviderProperties:
+      description: The properties that define connectivity to the Peering Service Provider.
+      properties:
+        serviceProviderName:
+          description: The name of the service provider.
+          type: string
+      type: object
+    PeeringSku:
+      description: The SKU that defines the tier and kind of the peering.
+      properties:
+        family:
+          description: The family of the peering SKU.
+          enum:
+            - Direct
+            - Exchange
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: family
+        name:
+          description: The name of the peering SKU.
+          enum:
+            - Basic_Exchange_Free
+            - Basic_Direct_Free
+            - Premium_Direct_Free
+            - Premium_Exchange_Metered
+            - Premium_Direct_Metered
+            - Premium_Direct_Unlimited
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: name
+        size:
+          description: The size of the peering SKU.
+          enum:
+            - Free
+            - Metered
+            - Unlimited
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: size
+        tier:
+          description: The tier of the peering SKU.
+          enum:
+            - Basic
+            - Premium
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: tier
+      type: object
+    Resource:
+      description: The ARM resource class.
+      properties:
+        id:
+          description: The ID of the resource.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the resource.
+          readOnly: true
+          type: string
+        type:
+          description: The type of the resource.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    ResourceTags:
+      description: The resource tags.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Gets or sets the tags, a dictionary of descriptors arm object
+          type: object
+      type: object
+    SubResource:
+      description: The sub resource.
+      properties:
+        id:
+          description: The identifier of the referenced resource.
+          type: string
+      type: object

@@ -1,0 +1,520 @@
+openapi: 3.0.0
+info:
+  description: Azure Resource Graph Query API Reference
+  title: Azure Resource Graph Query
+  version: 2018-09-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/preview/2018-09-01-preview/graphquery.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: resourcegraph-graphquery
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.ResourceGraph/operations:
+    get:
+      description: Lists all of the available REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                description: Result of the request to list Resource Graph operations. It
+                  contains a list of operations and a URL link to get the next
+                  set of results.
+                properties:
+                  nextLink:
+                    description: The link used to get the next page of results.
+                    type: string
+                  value:
+                    description: List of Resource Graph operations supported by the
+                      Resource Graph resource provider.
+                    items:
+                      description: Resource Graph REST API operation definition.
+                      properties:
+                        display:
+                          description: Display metadata associated with the operation.
+                          properties:
+                            description:
+                              description: Description for the operation.
+                              type: string
+                            operation:
+                              description: "Type of operation: get, read, delete, etc."
+                              type: string
+                            provider:
+                              description: "Service provider: Microsoft Resource Graph."
+                              type: string
+                            resource:
+                              description: Resource on which the operation is performed etc.
+                              type: string
+                        name:
+                          description: "Operation name: {provider}/{resource}/{operation}"
+                          type: string
+                        origin:
+                          description: The origin of operations.
+                          type: string
+                    type: array
+              examples:
+                OperationsList:
+                  $ref: "#/components/examples/OperationsList"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroup/{resourceGroupName}/providers/Microsoft.ResourceGraph/queries":
+    get:
+      description: Get all graph queries defined within a specified subscription and
+        resource group.
+      operationId: GraphQuery_List
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: A list containing 0 or more graph queries.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphQueryListResult"
+              examples:
+                Get a list of Graph Queries:
+                  $ref: "#/components/examples/Get_a_list_of_Graph_Queries"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphQueryError"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroup/{resourceGroupName}/providers/Microsoft.ResourceGraph/queries/{resourceName}":
+    delete:
+      description: Delete a graph query.
+      operationId: GraphQuery_Delete
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/GraphQueryResourceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The graph query has been successfully deleted.
+        "204":
+          description: The resource doesn't exist.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphQueryError"
+    get:
+      description: Get a single graph query by its resourceName.
+      operationId: GraphQuery_Get
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/GraphQueryResourceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: A graph query definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphQueryResource"
+              examples:
+                Get Graph Query:
+                  $ref: "#/components/examples/Get_Graph_Query"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphQueryError"
+    patch:
+      description: Updates a graph query that has already been added.
+      operationId: GraphQuery_Update
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/GraphQueryResourceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GraphQueryUpdateParameters"
+        description: Properties that need to be specified to create a new graph query.
+        required: true
+      responses:
+        "200":
+          description: The graph query definition updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphQueryResource"
+              examples:
+                Update Graph Query:
+                  $ref: "#/components/examples/Update_Graph_Query"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphQueryError"
+    put:
+      description: Create a new graph query.
+      operationId: GraphQuery_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/GraphQueryResourceNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GraphQueryResource"
+        description: Properties that need to be specified to create a new graph query.
+        required: true
+      responses:
+        "200":
+          description: The newly created graph query.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphQueryResource"
+              examples:
+                Create Graph Query:
+                  $ref: "#/components/examples/Create_Graph_Query"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GraphQueryError"
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    OperationsList:
+      value:
+        value:
+          - display:
+              description: Submits a query on resources within specified subscriptions
+              operation: Query resources
+              provider: Microsoft Resource Graph
+              resource: Resources
+            name: Microsoft.ResourceGraph/resources/action
+          - display:
+              description: Create/Update/Retrieve a query within specified subscription and
+                resource group.
+              operation: CRUD operations of graph queries
+              provider: Microsoft Resource Graph
+              resource: Queries
+            name: Microsoft.ResourceGraph/queries/action
+    Get_a_list_of_Graph_Queries:
+      value:
+        nextLink: https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.ResourceGraph/queries?api-version=2019-09-01-preview&$top=10&$skiptoken=skiptoken
+        value:
+          - eTag: 5d64408e-4ca3-41f7-b725-6914f3012afa
+            id: /subscriptions/87f4f8b0-83c1-4aa9-b318-5237aeb15264/resources/rid1/providers/Microsoft.ResourceGraph/queries/MyDockerVMs
+            name: MyDockerVMs
+            properties:
+              description: Docker VMs in PROD
+              query: where isnotnull(tags['Prod']) and properties.extensions[0].Name
+                == 'docker'
+              resultKind: basic
+              timeModified: 2019-03-12T13:51:13-07:00
+            tags: {}
+            type: Microsoft.ResourceGraph/queries
+          - eTag: b0809832-ca62-4133-8f13-0c46580f9db1
+            id: /subscriptions/6abb2f31-3e6a-4134-9968-219a596012a0/resources/rid2/providers/Microsoft.ResourceGraph/queries/MyTestVMs
+            name: MyTestVMs
+            properties:
+              description: Test VMs in PROD
+              query: where isnotnull(tags['Prod']) and properties.extensions[0].Name
+                == 'test'
+              resultKind: basic
+              timeModified: 2019-03-13T13:51:13-07:00
+            tags: {}
+            type: Microsoft.ResourceGraph/queries
+    Get_Graph_Query:
+      value:
+        eTag: 5d64408e-4ca3-41f7-b725-6914f3012afa
+        id: "
+          /subscriptions/024e2271-06fa-46b6-9079-f1ed3c7b070e/resources/my-reso\
+          urce-group/providers/Microsoft.ResourceGraph/queries/MyDockerVMs"
+        name: MyDockerVMs
+        properties:
+          description: Docker VMs in PROD
+          query: where isnotnull(tags['Prod']) and properties.extensions[0].Name ==
+            'docker'
+          resultKind: basic
+          timeModified: 2019-03-12T13:51:13-07:00
+        type: Microsoft.ResourceGraph/queries
+    Update_Graph_Query:
+      value:
+        eTag: 73811091-6188-4523-97b7-b5e7134e7fd9
+        id: "
+          /subscriptions/024e2271-06fa-46b6-9079-f1ed3c7b070e/resources/my-reso\
+          urce-group/providers/Microsoft.ResourceGraph/queries/MyDockerVMs"
+        name: MyDockerVMs
+        properties:
+          description: Modified description
+          query: where isnotnull(tags['Prod']) and properties.extensions[0].Name ==
+            'docker'
+          resultKind: basic
+          timeModified: 2019-03-14T13:51:13-07:00
+        type: Microsoft.ResourceGraph/queries
+    Create_Graph_Query:
+      value:
+        eTag: 5d64408e-4ca3-41f7-b725-6914f3012afa
+        id: "
+          /subscriptions/024e2271-06fa-46b6-9079-f1ed3c7b070e/resources/my-reso\
+          urce-group/providers/Microsoft.ResourceGraph/queries/MyDockerVMs"
+        name: MyDockerVMs
+        properties:
+          description: Docker VMs in PROD
+          query: where isnotnull(tags['Prod']) and properties.extensions[0].Name ==
+            'docker'
+          resultKind: basic
+          timeModified: 2019-03-12T13:51:13-07:00
+        tags: {}
+        type: Microsoft.ResourceGraph/queries
+  parameters:
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        OperationsList:
+          value: 2018-09-01-preview
+        Get a list of Graph Queries:
+          value: 2018-09-01-preview
+        Delete Graph Query:
+          value: 2018-09-01-preview
+        Get Graph Query:
+          value: 2018-09-01-preview
+        Update Graph Query:
+          value: 2018-09-01-preview
+        Create Graph Query:
+          value: 2018-09-01-preview
+    GraphQueryResourceNameParameter:
+      description: The name of the Graph Query resource.
+      in: path
+      name: resourceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Delete Graph Query:
+          value: MyDockerVM
+        Get Graph Query:
+          value: MyDockerVMs
+        Update Graph Query:
+          value: MyDockerVMs
+        Create Graph Query:
+          value: MyDockerVMs
+    ResourceGroupNameParameter:
+      description: The name of the resource group.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get a list of Graph Queries:
+          value: my-resource-group
+        Delete Graph Query:
+          value: my-resource-group
+        Get Graph Query:
+          value: my-resource-group
+        Update Graph Query:
+          value: my-resource-group
+        Create Graph Query:
+          value: my-resource-group
+    SubscriptionIdParameter:
+      description: The Azure subscription Id.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Get a list of Graph Queries:
+          value: 024e2271-06fa-46b6-9079-f1ed3c7b070e
+        Delete Graph Query:
+          value: 024e2271-06fa-46b6-9079-f1ed3c7b070e
+        Get Graph Query:
+          value: 024e2271-06fa-46b6-9079-f1ed3c7b070e
+        Update Graph Query:
+          value: 024e2271-06fa-46b6-9079-f1ed3c7b070e
+        Create Graph Query:
+          value: 024e2271-06fa-46b6-9079-f1ed3c7b070e
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ErrorFieldContract:
+      description: Error Field contract.
+      properties:
+        code:
+          description: Property level error code.
+          type: string
+        message:
+          description: Human-readable representation of property-level error.
+          type: string
+        target:
+          description: Property name.
+          type: string
+    GraphQueryError:
+      description: Error message body that will indicate why the operation failed.
+      properties:
+        code:
+          description: Service-defined error code. This code serves as a sub-status for the
+            HTTP error code specified in the response.
+          type: string
+        details:
+          description: The list of invalid fields send in request, in case of validation
+            error.
+          items:
+            $ref: "#/components/schemas/ErrorFieldContract"
+          type: array
+        message:
+          description: Human-readable representation of the error.
+          type: string
+    GraphQueryListResult:
+      description: Graph query list result.
+      properties:
+        nextLink:
+          description: URL to fetch the next set of queries.
+          type: string
+        value:
+          description: An array of graph queries.
+          items:
+            $ref: "#/components/schemas/GraphQueryResource"
+          readOnly: true
+          type: array
+    GraphQueryProperties:
+      description: Properties that contain a graph query.
+      properties:
+        description:
+          description: The description of a graph query.
+          type: string
+        query:
+          description: KQL query that will be graph.
+          type: string
+        resultKind:
+          default: basic
+          description: Enum indicating a type of graph query.
+          enum:
+            - basic
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ResultKind
+        timeModified:
+          description: Date and time in UTC of the last modification that was made to this
+            graph query definition.
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+        - query
+    GraphQueryPropertiesUpdateParameters:
+      description: Properties that contain a workbook for PATCH operation.
+      properties:
+        description:
+          description: The description of a graph query.
+          type: string
+        query:
+          description: KQL query that will be graph.
+          type: string
+        resultKind:
+          default: basic
+          description: Enum indicating a type of graph query.
+          enum:
+            - basic
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ResultKind
+    GraphQueryResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Graph Query entity definition.
+      properties:
+        properties:
+          $ref: "#/components/schemas/GraphQueryProperties"
+    GraphQueryUpdateParameters:
+      description: The parameters that can be provided when updating workbook properties
+        properties.
+      properties:
+        eTag:
+          description: This will be used to handle Optimistic Concurrency. If not present,
+            it will always overwrite the existing resource without checking
+            conflict.
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/GraphQueryPropertiesUpdateParameters"
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags
+          type: object
+    Resource:
+      description: An azure resource object
+      properties:
+        eTag:
+          description: This will be used to handle Optimistic Concurrency. If not present,
+            it will always overwrite the existing resource without checking
+            conflict.
+          readOnly: true
+          type: string
+        id:
+          description: Azure resource Id
+          readOnly: true
+          type: string
+        name:
+          description: Azure resource name. This is GUID value. The display name should be
+            assigned within properties field.
+          readOnly: true
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags
+          type: object
+        type:
+          description: Azure resource type
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true

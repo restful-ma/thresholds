@@ -1,0 +1,2205 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: The open API platform by Mercedes-Benz
+    x-twitter: MercedesBenz
+  description: The Car Configurator API offers access to the Mercedes-Benz car
+    configuration functions. It provides required reference data such as the
+    masterdata of all Mercedes-Benz vehicles as well as functions to retrieve
+    initial and changed configurations. In addition to that is is possible to
+    save a newly created configuration so that it can be easily restored or
+    shared with others.
+  title: Car Configurator
+  version: "1.0"
+  x-apisguru-categories:
+    - transport
+  x-logo:
+    url: https://twitter.com/MercedesBenz/profile_image?size=original
+  x-origin:
+    - format: swagger
+      url: https://developer.mercedes-benz.com/content/sites/default/files/2018-08/swagger_car_configurator_api.json
+      version: "2.0"
+  x-providerName: mercedes-benz.com
+  x-serviceName: configurator
+tags:
+  - description: Provide static reference data about cars like markets, bodies, classes,
+      etc.
+    name: References
+  - description: Select equipment and configure a car
+    name: Configurations
+  - description: Get images for the vehicle configuration and its components
+    name: Images
+  - description: Store and load configurations with an onlinecode
+    name: Saved configurations
+paths:
+  /markets:
+    get:
+      description: Get all available `Markets`. Optional query params **language** or
+        **country** may be used to filter the result.
+      operationId: marketsGET
+      parameters:
+        - $ref: "#/components/parameters/languageParam"
+        - $ref: "#/components/parameters/countryParam"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Market"
+                title: Markets
+                type: array
+        "204":
+          description: No content found for requested parameters language and/or country
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * Language parameter is not valid
+             * Country parameter is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get all available markets.
+      tags:
+        - References
+    x-swagger-router-controller: References
+  "/markets/{marketId}":
+    get:
+      description: Gets the `Market` for the given **marketId**. There are no query
+        parameters to filter the result.
+      operationId: marketGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Market"
+        "400":
+          description: MarketId is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market not found for requested marketId
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get the market with the given marketId.
+      tags:
+        - References
+    x-swagger-router-controller: References
+  "/markets/{marketId}/bodies":
+    get:
+      description: Get all available `VehicleBodies` for the given **marketId**. Optional
+        query params **classId** **bodyId** or **productGroups** may be used to
+        filter the result and must conform to the pattern [0-9A-Z_-]+.
+      operationId: bodiesGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/classIdParam"
+        - $ref: "#/components/parameters/bodyIdParam"
+        - $ref: "#/components/parameters/productGroups"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/VehicleBody"
+                title: VehicleBodies
+                type: array
+        "204":
+          description: No content found for requested parameters classId, bodyId and/or
+            productGroups
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * ClassId is not valid
+             * BodyId is not valid
+             * ProductGroups is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market not found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get all available bodies for the given marketId.
+      tags:
+        - References
+    x-swagger-router-controller: References
+  "/markets/{marketId}/bodies/{bodyId}":
+    get:
+      description: Get the `VehicleBody` for the given **marketId** and **bodyId**.
+      operationId: bodyGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/bodyId"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleBody"
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * BodyId is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market or VehicleBody not found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get the body for the given marketId and bodyId.
+      tags:
+        - References
+    x-swagger-router-controller: References
+  "/markets/{marketId}/classes":
+    get:
+      description: Get all available `VehicleClasses` objects for the given **marketId**.
+        Optional query params **classId**, **bodyId** or **productGroups** may
+        be used to filter the result and must conform to the pattern
+        [0-9A-Z_-]+.
+      operationId: classesGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/classIdParam"
+        - $ref: "#/components/parameters/bodyIdParam"
+        - $ref: "#/components/parameters/productGroups"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/VehicleClass"
+                title: VehicleClasses
+                type: array
+        "204":
+          description: No content found for requested parameters classId, bodyId and/or
+            productGroups
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * ClassId is not valid
+             * BodyId is not valid
+             * Product group is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market has not been found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get all available classes for the given marketId.
+      tags:
+        - References
+    x-swagger-router-controller: References
+  "/markets/{marketId}/classes/{classId}":
+    get:
+      description: Get the `VehicleClass` for the given **marketId** and **classId**.
+      operationId: classGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/classId"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleClass"
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * ClassId is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market or VehicleClass not found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get the class for the given marketId and classId.
+      tags:
+        - References
+    x-swagger-router-controller: References
+  "/markets/{marketId}/models":
+    get:
+      description: Get the available `VehicleModels` for the given **marketId**. Optional
+        query params **classId**, **bodyId**, **baumuster4prefix**,
+        **baumuster**, **nationalSalesType** or **productGroups** maybe used to
+        filter the result. The baumuster4prefix must conform to the pattern
+        [0-9]{4}.
+      operationId: modelsGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/classIdParam"
+        - $ref: "#/components/parameters/bodyIdParam"
+        - $ref: "#/components/parameters/baumuster4prefixParam"
+        - $ref: "#/components/parameters/baumusterParam"
+        - $ref: "#/components/parameters/nationalSalesTypeParam"
+        - $ref: "#/components/parameters/productGroups"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/VehicleModel"
+                title: VehicleModels
+                type: array
+        "204":
+          description: No content found for requested parameters classId, bodyId,
+            baumuster4prefix, baumuster, nationalSalesType and/or productGroups
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * ClassId is not valid
+             * BodyId is not valid
+             * Product group is not valid
+             * baumuster4prefix is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market not found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get all available models for the given marketId.
+      tags:
+        - References
+    x-swagger-router-controller: References
+  "/markets/{marketId}/models/{modelId}":
+    get:
+      description: Get the `VehicleModel` object for the given **marketId** and **modelId**.
+      operationId: modelGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleModel"
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * ModelId is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market or Model not found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get the model for the given marketId and modelId.
+      tags:
+        - References
+    x-swagger-router-controller: References
+  "/markets/{marketId}/models/{modelId}/configurations/initial":
+    get:
+      description: Get the initial `VehicleConfiguration` for the given **marketId** and
+        **modelId**.
+      operationId: modelConfigurationsGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleConfiguration"
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * ModelId is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market or Model not found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get the initial configuration for the given marketId and modelId.
+      tags:
+        - Configurations
+    x-swagger-router-controller: Configurations
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}":
+    get:
+      description: Get the `VehicleConfiguration` for the given **marketId**, **modelId**
+        and **configurationId**.
+      operationId: modelConfigurationGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleConfiguration"
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * ModelId is not valid
+             * ConfigurationId is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market, Model or Configuration not found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get the configuration for the given marketId, modelId and
+        configurationId.
+      tags:
+        - Configurations
+    x-swagger-router-controller: Configurations
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}/alternatives/{componentList}":
+    get:
+      description: Get the `VehicleAlternatives` for the given **marketId**, **modelId**
+        and **configurationId** and the given **componentList** of changes.
+      operationId: modelConfigurationAlternativesGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+        - $ref: "#/components/parameters/componentList"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/VehicleAlternative"
+                title: VehicleAlternatives
+                type: array
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * ModelId is not valid
+             * ConfigurationId is not valid
+             * ComponentList is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market, Model or Configuration not found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get the alternatives for the given marketId, modelId, configurationId
+        and componentList.
+      tags:
+        - Configurations
+    x-swagger-router-controller: configurations176042_002
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}/images/components":
+    get:
+      description: >-
+        Returns URLs pointing to images in JPG format in the highest available
+        resolution (depending on the component) of the vehicle's:
+          * engine (1024x576 px),
+          * rim (710x710 px),
+          * trim (800x600 px),
+          * paints (800x600 px),
+          * upholstery (800x600 px) and
+          * equipments (740x416 px).
+      operationId: imageComponentsGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            cache-control:
+              description: Specifies the maximum amount of time (in seconds) an image is
+                considered to be up-to-date
+              schema:
+                type: string
+                default: max-age=86400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ComponentsImagesResponse"
+        "204":
+          description: No content could be found for your request.
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: The requested marketId, modelId and/or configurationId not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: The server encountered an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+      tags:
+        - Images
+    x-swagger-router-controller: images_components
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}/images/components/engine":
+    get:
+      description: Returns a URL pointing to an image of the vehicles engine.  These images
+        are available in the resolution 1024x576 px.
+      operationId: imageComponentsEngineGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            cache-control:
+              description: Specifies the maximum amount of time (in seconds) an image is
+                considered to be up-to-date
+              schema:
+                type: string
+                default: max-age=86400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EngineImageResponse"
+        "204":
+          description: No content could be found for your request.
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: The requested marketId, modelId and/or configurationId not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: The server encountered an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+      tags:
+        - Images
+    x-swagger-router-controller: images_components
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}/images/components/equipments":
+    get:
+      description: Returns URLs pointing to images of this vehicle's equipments. The images
+        are available in the highest possible resolution (usually 740x416 px).
+      operationId: imageComponentsEquipmentsGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            cache-control:
+              description: Specifies the maximum amount of time (in seconds) an image is
+                considered to be up-to-date
+              schema:
+                type: string
+                default: max-age=86400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllEquipmentImagesResponse"
+        "204":
+          description: No content could be found for your request.
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: The requested marketId, modelId and/or configurationId not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: The server encountered an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+      tags:
+        - Images
+    x-swagger-router-controller: images_components
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}/images/components/equipments/{componentCode}":
+    get:
+      description: Returns URLs pointing to images of this vehicle's equipments. The images
+        are available in the highest possible resolution (usually 740x416 px).
+      operationId: imageComponentsEquipmentsByCodeGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+        - $ref: "#/components/parameters/componentCode"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            cache-control:
+              description: Specifies the maximum amount of time (in seconds) an image is
+                considered to be up-to-date
+              schema:
+                type: string
+                default: max-age=86400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EquipmentImageResponse"
+        "204":
+          description: No content could be found for your request.
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: The requested marketId, modelId and/or configurationId not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: The server encountered an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+      tags:
+        - Images
+    x-swagger-router-controller: images_components
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}/images/components/paint":
+    get:
+      description: Returns URLs pointing to images of this vehicles paint.  These images
+        are available in resolution 800x600 px.  Note there might be two paints
+        (e.g. Smart, 'paint' for body panel and 'paint2' for the tridion cell)
+      operationId: imageComponentsPaintGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            cache-control:
+              description: Specifies the maximum amount of time (in seconds) an image is
+                considered to be up-to-date
+              schema:
+                type: string
+                default: max-age=86400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaintImageResponse"
+        "204":
+          description: No content could be found for your request.
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: The requested marketId, modelId and/or configurationId not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: The server encountered an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+      tags:
+        - Images
+    x-swagger-router-controller: images_components
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}/images/components/rim":
+    get:
+      description: Returns a URL pointing to an image of the vehicles rim.  These images
+        are available in the resolution 710x710 px.
+      operationId: imageComponentsRimGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            cache-control:
+              description: Specifies the maximum amount of time (in seconds) an image is
+                considered to be up-to-date
+              schema:
+                type: string
+                default: max-age=86400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RimImageResponse"
+        "204":
+          description: No content could be found for your request.
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: The requested marketId, modelId and/or configurationId not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: The server encountered an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+      tags:
+        - Images
+    x-swagger-router-controller: images_components
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}/images/components/trim":
+    get:
+      description: Returns a URL pointing to an image of this vehicles trim.  These images
+        are available in resolution 800x600 px.
+      operationId: imageComponentsTrimGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            cache-control:
+              description: Specifies the maximum amount of time (in seconds) an image is
+                considered to be up-to-date
+              schema:
+                type: string
+                default: max-age=86400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrimImageResponse"
+        "204":
+          description: No content could be found for your request.
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: The requested marketId, modelId and/or configurationId not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: The server encountered an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+      tags:
+        - Images
+    x-swagger-router-controller: images_components
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}/images/components/upholstery":
+    get:
+      description: Returns URLs pointing to images of the vehicle's upholsteries. Tge
+        images are available in the highest possible resolution (usually 800x600
+        px).
+      operationId: imageComponentsUpholsteryGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            cache-control:
+              description: Specifies the maximum amount of time (in seconds) an image is
+                considered to be up-to-date
+              schema:
+                type: string
+                default: max-age=86400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpholsteryImageResponse"
+        "204":
+          description: No content could be found for your request.
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: The requested marketId, modelId and/or configurationId not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: The server encountered an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+      tags:
+        - Images
+    x-swagger-router-controller: images_components
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}/images/vehicle":
+    get:
+      description: Returns URLs pointing to PNG images of a vehicle with a white background.
+      operationId: imageVehicleGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+        - $ref: "#/components/parameters/perspectives"
+        - $ref: "#/components/parameters/roofOpen"
+        - $ref: "#/components/parameters/night"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            cache-control:
+              description: Specifies the maximum amount of time (in seconds) an image is
+                considered to be up-to-date.
+              schema:
+                type: string
+                default: max-age=86400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleImageResponse"
+        "204":
+          description: No content could be found for your request.
+        "400":
+          description: One of the provided parameters was invalid. Verify your query and
+            inspect the global error object in the response for further
+            information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: The requested marketId, modelId and/or configurationId not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: The server encountered an internal error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageError"
+      tags:
+        - Images
+    x-swagger-router-controller: images_vehicle_configuration
+  "/markets/{marketId}/models/{modelId}/configurations/{configurationId}/selectables":
+    get:
+      description: Get the selectable `VehicleComponents` and the `ComponentCategories` of
+        the `VehicleConfiguration` for the given **marketId**, **modelId** and
+        **configurationId**. Optional query param **componentType** may be used
+        to filter the result.
+      operationId: modelConfigurationSelectablesGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/modelId"
+        - $ref: "#/components/parameters/configurationId"
+        - $ref: "#/components/parameters/componentTypes"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleComponentTree"
+        "204":
+          description: No content found for requested componentTypes
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * ModelId is not valid
+             * ConfigurationId is not valid
+             * ComponentTypes is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market, Model or Configuration not found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get the selectable components for the given marketId, modelId and
+        configurationId.
+      tags:
+        - Configurations
+    x-swagger-router-controller: Configurations
+  "/markets/{marketId}/onlinecode":
+    post:
+      description: Stores the configuration of the given **configurationId** and **modelId**
+      operationId: onlineCodePOST
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OnlineCodeRequestBody"
+        description: JSON object containing the modelId and the configurationId. ModelId is
+          a minimal string that identifies a model e.g. '176042_002'.
+          ConfigurationId is a minimal string that identifies a configuration
+          e.g. 'E-D15-D18-...-R43-U60'
+        required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OnlineCodeResponseBody"
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * ModelId is not valid
+             * ConfigurationId is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Configuration has not been found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Stores the configuration of the given configurationId and modelId
+      tags:
+        - Saved configurations
+    x-swagger-router-controller: Saved_configurations
+  "/markets/{marketId}/onlinecode/{onlineCode}":
+    get:
+      description: Gets the configuration for the given marketId and onlineCode.
+      operationId: onlineCodeGET
+      parameters:
+        - $ref: "#/components/parameters/onlineCode"
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VehicleConfiguration"
+        "400":
+          description: |-
+            Invalid parameter was specified:
+             * MarketId is not valid
+             * OnlineCode is not valid
+             * Fields is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Configuration or Market has not been found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get the configuration of the given onlineCode and marketId.
+      tags:
+        - Saved configurations
+    x-swagger-router-controller: Saved_configurations
+  "/markets/{marketId}/productgroups":
+    get:
+      description: Get all configured active product groups for the given **marketId**.
+      operationId: productGroupsGET
+      parameters:
+        - $ref: "#/components/parameters/marketId"
+        - $ref: "#/components/parameters/fieldsFilter"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductGroupsPerMarket"
+        "400":
+          description: MarketId is not valid
+        "401":
+          description: |-
+            Unauthorized:
+              * Failed to resolve API Key query parameter
+              * Invalid API Key
+        "404":
+          description: Market not found
+        "429":
+          description: Quota limit is exceeded
+        "500":
+          description: An Error occurred on the server side
+      summary: Get all configured active product groups for the given marketId.
+      tags:
+        - References
+    x-swagger-router-controller: References
+x-default-apikey: Tyt82ndiKG0AdH8TCqe001ROh7RsGOKB
+servers:
+  - url: https://api.mercedes-benz.com/configurator_tryout/v1
+components:
+  parameters:
+    baumuster4prefixParam:
+      description: The first four digits of a baumuster are called baumuster4prefix e.g.
+        '1760' for 'Berline' in France.
+      in: query
+      name: baumuster4prefix
+      required: false
+      schema:
+        type: string
+    baumusterParam:
+      description: This is a baumuster e.g. '176042' for 'A 180 Limousine' in Germany.
+      in: query
+      name: baumuster
+      required: false
+      schema:
+        type: string
+    bodyId:
+      description: This is a body id e.g. '1' for 'Limousine' in Germany.
+      in: path
+      name: bodyId
+      required: true
+      schema:
+        type: string
+        default: "2"
+    bodyIdParam:
+      description: This is a body id e.g. '1' for 'Limousine' in Germany.
+      in: query
+      name: bodyId
+      required: false
+      schema:
+        type: string
+        default: "2"
+    classId:
+      description: This is a class id e.g. '176' for 'A-Klasse' in Germany.
+      in: path
+      name: classId
+      required: true
+      schema:
+        type: string
+        default: "222"
+    classIdParam:
+      description: This is a class id e.g. '176' for 'A-Class' in Germany.
+      in: query
+      name: classId
+      required: false
+      schema:
+        type: string
+        default: "222"
+    componentCode:
+      description: The value of the requested component group, e.g. '245'.
+      in: path
+      name: componentCode
+      required: true
+      schema:
+        type: string
+        default: "223"
+    componentList:
+      description: A string representing the changes, in other words a list of components
+        that will be added and removed. The following syntax is used for the
+        components to be added and the components to be removed. The added
+        components e.g. '+I-950_L-890' and the removed components e.g.
+        '-I-953_L-696' and the delimiter between the added and removed
+        components is ','. In one components string '+I-950_L-890,-I-953_L-696'.
+      in: path
+      name: componentList
+      required: true
+      schema:
+        type: string
+        default: +L-197_P-518,-L-040_P-501
+    componentTypes:
+      description: >-
+        A list of component types separated by a comma case insensitive. If
+        nothing is defined all component types are returned. Allowed values are:
+          - WHEELS
+          - PAINTS
+          - UPHOLSTERIES
+          - TRIMS
+          - PACKAGES
+          - LINES
+          - SPECIAL_EDITION
+          - SPECIAL_EQUIPMENT
+      in: query
+      name: componentTypes
+      required: false
+      schema:
+        type: array
+        items:
+          enum:
+            - WHEELS
+            - PAINTS
+            - UPHOLSTERIES
+            - TRIMS
+            - PACKAGES
+            - LINES
+            - SPECIAL_EDITION
+            - SPECIAL_EQUIPMENT
+          type: string
+    configurationId:
+      description: Minimal string that identifies a configuration e.g.
+        'E-D15-D18-D41-D46-D49-D52-D53-D54-D59-D60-D71-F32-F36-F88-F98-G03-G05-G36-G56-I61-J53-J67-L08-M23-M70-N18-N62-N92-O76-Q29-Q56-Q79-Q92-S01-S05-S08-S63-S92-T05-T07-T62-T84-T88_I-953_L-696_P-001_S-152-160-161-171-258-290-292-294-351-360-411-440-442-470-472-475-485-520-533-538-560-570-573-580-584-58U-591-620-70B-808-888-893-B03-B16-K11-L18-R43-U60'.
+        A codeType is only once within the configurationId e.g 'S-152-160-161'
+        stands for the components with the componentId 'S-152', 'S-160' and
+        'S-161'. A new codeType is divided from the codes with a underscore e.g
+        'S-152-160-161_I-953_L-696'.
+      in: path
+      name: configurationId
+      required: true
+      schema:
+        type: string
+        default: E-AB5-D09-D14-D53-D71-D80-L06-L19-M69-M70-M88-M94-N63-O16-O92-Q31-Q56-S09-S16_L-040_P-501_S-08U-09U-11R-12U-14U-160-16U-17U-223-231-233-235-23P-249-266-275-276-290-293-297-299-351-360-401-402-413-427-432-436-439-441-443-448-452-453-463-470-471-475-487-503-518-531-538-540-551-581-582-596-61U-628-642-70B-735-808-810-840-871-874-877-881-882-883-889-897-8U0-902-B59-H29-L2B-P07-P09-P17-P21-P34-P35-P47-P54-P64-R66-SZ4-U10-U12-U25
+    countryParam:
+      description: This is a ISO country string e.g. Germany 'DE' or Swiss 'CH'.
+      in: query
+      name: country
+      required: false
+      schema:
+        type: string
+    fieldsFilter:
+      description: Specifies which fields should be included in the result. If this filter
+        is not used, per default all fields are returned.
+      in: query
+      name: fieldsFilter
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+    languageParam:
+      description: This is a ISO language string e.g. 'de' and is spoken in Austria 'AT',
+        Germany 'DE' and Swiss 'CH'.
+      in: query
+      name: language
+      required: false
+      schema:
+        type: string
+        default: de
+    marketId:
+      description: This is a ISO 3166 language country string e.g. 'de_DE' or 'en_GB'.
+      in: path
+      name: marketId
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-z]{2}_[A-Z]{2}$
+        default: de_DE
+    modelId:
+      description: Minimal string that identifies a model e.g. '176042_002'. If no
+        nationalSalesType is available, the modelId only consists of the
+        baumuster e.g. '176042'.
+      in: path
+      name: modelId
+      required: true
+      schema:
+        type: string
+        default: 222980_000
+    nationalSalesTypeParam:
+      description: This is the national sales type (NST) of a distinct baumuster. There is
+        no predefined pattern for the NST, each market defines its NST. e.g.
+        'E07' in France, 0001 in Germany and ZA1 in South Africa Using the NST
+        markets can define market specific conditions. e.g. different initial
+        configuration, etc.
+      in: query
+      name: nationalSalesType
+      required: false
+      schema:
+        type: string
+    night:
+      description: Set 'true', if you are looking for images with a darker background and
+        the vehicle's headlights turned on. Default is 'false'.
+      in: query
+      name: night
+      required: false
+      schema:
+        type: boolean
+        default: false
+    onlineCode:
+      description: OnlineCode string that identifies a vehicle configuration e.g.
+        'M6882554'.
+      in: path
+      name: onlineCode
+      required: true
+      schema:
+        type: string
+        default: MQKCIHRI
+    perspectives:
+      description: >-
+        One or more perspectives as a comma separated String list e.g.
+        'EXT000,EXT010,INT1'.  The following perspectives are available:
+          * EXT000-EXT350: EXT000 defines the front view, EXT010 defines a rotation of 10 degress and so forth.
+          * INT1-INT4: These are the 4 available interior perspectives.
+
+        The default value is EXT020,INT1 if no value is provided.
+      in: query
+      name: perspectives
+      required: false
+      schema:
+        type: string
+        default: EXT020,INT1
+    productGroups:
+      description: >-
+        Specifies to which product groups the vehicles belong which should be
+        returned. The product groups are separated from each other by a comma
+        and are case sensitive. Allowed values are:
+          * PKW
+          * VAN
+          * SMART
+      in: query
+      name: productGroups
+      required: false
+      schema:
+        type: array
+        items:
+          enum:
+            - PKW
+            - VAN
+            - SMART
+          type: string
+    roofOpen:
+      description: Set 'true', if you are looking for images with the roof open. This
+        option is only valid for cabrios. Default is 'false'.
+      in: query
+      name: roofOpen
+      required: false
+      schema:
+        type: boolean
+        default: false
+  schemas:
+    AllEquipmentImagesResponse:
+      description: The response object holds either an error object, in case that the
+        request was malformed, or an equipments object containing a map with all
+        equipment urls for the requested vehicle with the equipment codes as map
+        keys.
+      properties:
+        equipments:
+          $ref: "#/components/schemas/EquipmentImageMap"
+      required:
+        - equipments
+    Amount:
+      description: Holds a value and unit.
+      properties:
+        unit:
+          type: string
+        value:
+          type: number
+      required:
+        - value
+    CodeImage:
+      description: The code image contains an equipment code with a corresponding image URL.
+      properties:
+        code:
+          description: The equipment code for the corresponding image.
+          type: string
+        url:
+          description: An URL pointing to an image of an equipment.
+          type: string
+      required:
+        - code
+        - url
+      type: object
+    ComponentsImages:
+      description: A set of URLs pointing to images of the vehicle in low resolution.
+      properties:
+        engine:
+          $ref: "#/components/schemas/ImageUrl"
+        equipments:
+          $ref: "#/components/schemas/EquipmentImageMap"
+        paint:
+          $ref: "#/components/schemas/PaintsImages"
+        rim:
+          $ref: "#/components/schemas/CodeImage"
+        trim:
+          $ref: "#/components/schemas/CodeImage"
+        upholstery:
+          $ref: "#/components/schemas/CodeImage"
+      type: object
+    ComponentsImagesResponse:
+      description: Components images object
+      properties:
+        components:
+          $ref: "#/components/schemas/ComponentsImages"
+      type: object
+    DriveConcept:
+      description: The kind of drive concept of a vehicle. Where UNDEFINED is used as the
+        default and/or error case.
+      enum:
+        - COMBUSTOR
+        - HYBRID
+        - ELECTRIC
+        - FUELCELL
+        - UNDEFINED
+      type: string
+    Engine:
+      description: All technical information about a specific engine.
+      properties:
+        alternativeFuelType:
+          $ref: "#/components/schemas/FuelType"
+        capacity:
+          $ref: "#/components/schemas/Amount"
+        cylinder:
+          type: string
+        driveConcept:
+          $ref: "#/components/schemas/DriveConcept"
+        emissionStandard:
+          type: string
+        engineConcept:
+          $ref: "#/components/schemas/EngineConcept"
+        fuelEconomy:
+          $ref: "#/components/schemas/FuelEconomy"
+        fuelType:
+          $ref: "#/components/schemas/FuelType"
+        powerHp:
+          $ref: "#/components/schemas/Amount"
+        powerHybridExtensionHp:
+          $ref: "#/components/schemas/Amount"
+        powerHybridExtensionKw:
+          $ref: "#/components/schemas/Amount"
+        powerKw:
+          $ref: "#/components/schemas/Amount"
+      required:
+        - fuelType
+    EngineConcept:
+      description: The kind of fuel used by an engine of a vehicle determines the engine
+        type. Where UNDEFINED is used as the default and/or error case.
+      enum:
+        - MONO_REGULAR
+        - MONO_DIESEL
+        - MONO_GAS
+        - MONO_ELECTRIC
+        - MONO_FUELCELL
+        - BI_NGT
+        - BI_NGD
+        - BI_MILD
+        - BI_PLUGIN
+        - MONO_UNDEFINED
+        - BI_UNDEFINED
+        - BI_HYBRID_UNDEFINED
+        - BI_COMBUSTION_UNDEFINED
+        - UNDEFINED
+      type: string
+    EngineImageResponse:
+      description: An engine image object
+      properties:
+        engine:
+          $ref: "#/components/schemas/ImageUrl"
+      type: object
+    EquipmentImageMap:
+      additionalProperties:
+        $ref: "#/components/schemas/ImageUrl"
+      description: The map holds either an error object, in case that the request was
+        malformed, or an equipments object containing a map with all equipment
+        image urls for the requested vehicle with the equipment codes as map
+        keys.
+      type: object
+    EquipmentImageResponse:
+      description: An equipment image object
+      properties:
+        equipment:
+          $ref: "#/components/schemas/ImageUrl"
+      type: object
+    FuelEconomy:
+      description: This is for the fuel consumption holding a value and unit.
+      properties:
+        consumptionOfElectricityMax:
+          $ref: "#/components/schemas/Amount"
+        consumptionOfElectricityMin:
+          $ref: "#/components/schemas/Amount"
+        emissionCO2Max:
+          $ref: "#/components/schemas/Amount"
+        emissionCO2Min:
+          $ref: "#/components/schemas/Amount"
+        fuelConsumptionCityMax:
+          $ref: "#/components/schemas/Amount"
+        fuelConsumptionCityMin:
+          $ref: "#/components/schemas/Amount"
+        fuelConsumptionCombinedMax:
+          $ref: "#/components/schemas/Amount"
+        fuelConsumptionCombinedMin:
+          $ref: "#/components/schemas/Amount"
+        fuelConsumptionElectricity:
+          $ref: "#/components/schemas/Amount"
+        fuelConsumptionOverlandMax:
+          $ref: "#/components/schemas/Amount"
+        fuelConsumptionOverlandMin:
+          $ref: "#/components/schemas/Amount"
+    FuelType:
+      description: The kind of fuel used by an engine of a vehicle. Where UNDEFINED is used
+        as the default and/or error case.
+      enum:
+        - NORMAL
+        - SUPER
+        - SUPERPLUS
+        - DIESEL
+        - HGAS
+        - GAS
+        - ELECTRIC
+        - FUELCELL
+        - UNDEFINED
+      type: string
+    HRef:
+      description: The URL to the specific resource.
+      properties:
+        href:
+          type: string
+      required:
+        - href
+      type: object
+    ImageComponentLink:
+      description: Link to VIM image API.
+      properties:
+        imageapi_component:
+          $ref: "#/components/schemas/HRef"
+      required:
+        - imageapi_component
+      type: object
+    ImageError:
+      description: The error object containing detailed information about the error.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        uuid:
+          type: string
+      type: object
+    ImageUrl:
+      description: An object describing an image URL that could be a vehicle image for
+        example. This includes the URL to the content.
+      properties:
+        url:
+          type: string
+    ImageUrlWithError:
+      description: An object describing an image URL that could be a vehicle image for
+        example. This includes the URL to the content. In case of an error that
+        is related to the requested image material (e.g. perspective), an error
+        object is present containing further information.
+      properties:
+        error:
+          $ref: "#/components/schemas/ImageError"
+        url:
+          type: string
+    Market:
+      description: Represent a market (aka country) with a specific country and a language.
+      properties:
+        _links:
+          $ref: "#/components/schemas/SelfReferencesLinks"
+        country:
+          type: string
+        language:
+          type: string
+        marketId:
+          type: string
+      required:
+        - marketId
+        - country
+        - language
+        - _links
+      type: object
+    Nedc:
+      description: Holds all relevant informations for the Nedc 'New European Drive Cycle'.
+      properties:
+        consumption:
+          $ref: "#/components/schemas/NedcConsumption"
+        electricRange:
+          $ref: "#/components/schemas/NedcAmount"
+        emission:
+          $ref: "#/components/schemas/NedcEmission"
+        weight:
+          $ref: "#/components/schemas/NedcAmount"
+    NedcAmount:
+      description: The Nedc 'New European Drive Cycle' specific amount holds the nedc
+        specific values.
+      properties:
+        individual:
+          $ref: "#/components/schemas/Amount"
+        max:
+          $ref: "#/components/schemas/Amount"
+        min:
+          $ref: "#/components/schemas/Amount"
+      required:
+        - individual
+        - min
+        - max
+      type: object
+    NedcConsumption:
+      description: The Nedc 'New European Drive Cycle' consumption.
+      properties:
+        city:
+          $ref: "#/components/schemas/NedcGear"
+        combined:
+          $ref: "#/components/schemas/NedcGear"
+        country:
+          $ref: "#/components/schemas/NedcGear"
+        electric:
+          $ref: "#/components/schemas/NedcAmount"
+        weighted:
+          $ref: "#/components/schemas/NedcGear"
+      type: object
+    NedcEmission:
+      description: The Nedc 'New European Drive Cycle' emission.
+      properties:
+        city:
+          $ref: "#/components/schemas/NedcGear"
+        combined:
+          $ref: "#/components/schemas/NedcGear"
+        country:
+          $ref: "#/components/schemas/NedcGear"
+        weighted:
+          $ref: "#/components/schemas/NedcAmount"
+      type: object
+    NedcGear:
+      description: The gear of a vehicle. A vehicle can have a primary and a secondary gear.
+      properties:
+        primaryGear:
+          $ref: "#/components/schemas/NedcAmount"
+        secondaryGear:
+          $ref: "#/components/schemas/NedcAmount"
+      type: object
+    OnlineCodeRequestBody:
+      description: JSON object containing the modelId and the configurationId
+      example:
+        configurationId: E-AB5-D09-D14-D53-D71-D80-L06-L19-M69-M70-M88-M94-N63-O16-O92-Q31-Q56-S09-S16_L-197_P-518_S-08U-09U-11R-12U-14U-160-16U-17U-223-231-233-235-23P-249-266-275-276-290-293-297-299-351-360-401-402-413-427-432-436-439-441-443-448-452-453-463-470-471-475-487-503-518-531-538-540-551-581-582-596-628-642-68U-70B-735-808-810-840-871-874-877-881-882-883-889-897-8U0-902-B59-H29-L2B-P07-P09-P17-P21-P34-P35-P47-P54-P64-R66-SZ4-U10-U12-U25
+        modelId: 222980_000
+      properties:
+        configurationId:
+          description: String that identifies a configuration. e.g.
+            E-D15-D18-D41-D46-D49-D52-D53-D54-D59-D60-D71-F32-F36-F88-F98-G03-G05-G36-G56-I61-J67-M23-M70-N18-N25-N62-N92-O76-Q29-Q56-Q79-Q92-S01-S05-S08-S63-S92-T05-T07-T62-T84-T88_I-953_L-696_P-001_S-152-160-161-171-258-290-292-294-411-442-470-472-475-485-516-533-538-560-570-573-580-584-58U-591-620-70B-807-888-B03-B16-B51-K11-L18-R43-U60
+          type: string
+        modelId:
+          description: String that identifies a model. e.g. '176042_002'
+          type: string
+      required:
+        - modelId
+        - configurationId
+    OnlineCodeResponseBody:
+      description: The onlinecode is a unique identifier for a stored vehicle configuration.
+      properties:
+        onlineCode:
+          description: String that identifies the online code
+          type: string
+      required:
+        - onlineCode
+    PaintImageResponse:
+      description: A paint image object
+      properties:
+        paint:
+          $ref: "#/components/schemas/PaintsImages"
+      type: object
+    PaintsImages:
+      description: The upper (paint2) and the lower (paint1) paint of the vehicle.
+      properties:
+        paint1:
+          $ref: "#/components/schemas/CodeImage"
+        paint2:
+          $ref: "#/components/schemas/CodeImage"
+      type: object
+    PriceInformation:
+      description: The prices, installment price, taxes and ISO currency of a vehicle.
+      properties:
+        currency:
+          type: string
+        instalmentPrice:
+          type: number
+        netPrice:
+          type: number
+        price:
+          type: number
+        taxes:
+          items:
+            $ref: "#/components/schemas/Tax"
+          type: array
+      required:
+        - price
+        - netPrice
+        - currency
+        - taxes
+      type: object
+    ProductGroup:
+      description: Represent a product group.
+      enum:
+        - PKW
+        - VAN
+        - SMART
+      properties:
+        name:
+          type: string
+      required:
+        - name
+      type: object
+    ProductGroupsPerMarket:
+      description: Represent the active product groups for a market.
+      properties:
+        _links:
+          $ref: "#/components/schemas/SelfModelLinks"
+        market:
+          $ref: "#/components/schemas/Market"
+        productGroups:
+          items:
+            $ref: "#/components/schemas/ProductGroup"
+          type: array
+      required:
+        - market
+        - productGroups
+        - _links
+      type: object
+    RimImageResponse:
+      description: A rim image object
+      properties:
+        rim:
+          $ref: "#/components/schemas/CodeImage"
+      type: object
+    SelfConfigurationLinks:
+      description: Links to self and configuration resources.
+      properties:
+        configuration:
+          $ref: "#/components/schemas/HRef"
+        self:
+          $ref: "#/components/schemas/HRef"
+      required:
+        - self
+        - configuration
+      type: object
+    SelfLink:
+      description: Links to self.
+      properties:
+        self:
+          $ref: "#/components/schemas/HRef"
+      required:
+        - self
+      type: object
+    SelfModelLinks:
+      description: Links to self and models resources.
+      properties:
+        models:
+          $ref: "#/components/schemas/HRef"
+        self:
+          $ref: "#/components/schemas/HRef"
+      required:
+        - self
+        - models
+      type: object
+    SelfReferencesLinks:
+      description: Market specific links to the specific resources. i.e. classes, bodies,
+        etc.
+      properties:
+        bodies:
+          $ref: "#/components/schemas/HRef"
+        classes:
+          $ref: "#/components/schemas/HRef"
+        models:
+          $ref: "#/components/schemas/HRef"
+        productgroups:
+          $ref: "#/components/schemas/HRef"
+        self:
+          $ref: "#/components/schemas/HRef"
+      required:
+        - self
+        - classes
+        - bodies
+        - models
+        - productgroups
+      type: object
+    SelfSelectablesImageVehicleLinks:
+      description: Links to self and image resources.
+      properties:
+        imageapi_vehicle:
+          $ref: "#/components/schemas/HRef"
+        selectables:
+          $ref: "#/components/schemas/HRef"
+        self:
+          $ref: "#/components/schemas/HRef"
+      required:
+        - self
+        - selectables
+        - imageapi_vehicle
+      type: object
+    Tax:
+      description: The country specific tax information.
+      properties:
+        amount:
+          type: number
+        baseAmount:
+          type: number
+        charge:
+          type: number
+        id:
+          type: string
+        rate:
+          type: number
+      required:
+        - id
+        - amount
+        - baseAmount
+        - charge
+        - rate
+      type: object
+    TechnicalInformation:
+      description: Contains all technical information calculated using BDAs.
+      properties:
+        acceleration:
+          $ref: "#/components/schemas/Amount"
+        doors:
+          type: number
+        energyEfficiencyClass:
+          type: string
+        engine:
+          $ref: "#/components/schemas/Engine"
+        nedc:
+          $ref: "#/components/schemas/Nedc"
+        seats:
+          type: number
+        topSpeed:
+          $ref: "#/components/schemas/Amount"
+        transmission:
+          $ref: "#/components/schemas/Transmission"
+        wltp:
+          $ref: "#/components/schemas/Wltp"
+      required:
+        - engine
+        - transmission
+    Transmission:
+      description: The transmission of the vehicle configuration.
+      properties:
+        code:
+          type: string
+        codeType:
+          type: string
+        name:
+          type: string
+      required:
+        - code
+        - codeType
+        - name
+    TrimImageResponse:
+      description: A trim image object
+      properties:
+        trim:
+          $ref: "#/components/schemas/CodeImage"
+      type: object
+    UpholsteryImageResponse:
+      description: An upholstery image object
+      properties:
+        upholstery:
+          $ref: "#/components/schemas/CodeImage"
+      type: object
+    VehicleAlternative:
+      description: A vehicle alternative.
+      properties:
+        _links:
+          $ref: "#/components/schemas/SelfSelectablesImageVehicleLinks"
+        addedComponents:
+          items:
+            $ref: "#/components/schemas/VehicleComponent"
+          type: array
+        configurationId:
+          type: string
+        marketId:
+          type: string
+        modelId:
+          type: string
+        priceInformation:
+          items:
+            $ref: "#/components/schemas/PriceInformation"
+          type: object
+        removedComponents:
+          items:
+            $ref: "#/components/schemas/VehicleComponent"
+          type: array
+        updatedComponents:
+          items:
+            $ref: "#/components/schemas/VehicleComponent"
+          type: array
+      required:
+        - marketId
+        - modelId
+        - configurationId
+        - addedComponents
+        - removedComponents
+        - updatedComponents
+        - priceInformation
+        - _links
+      type: object
+    VehicleBody:
+      description: The body of a Vehicle, e.g. 'Limousine'.
+      properties:
+        _links:
+          $ref: "#/components/schemas/SelfModelLinks"
+        bodyId:
+          type: string
+        bodyName:
+          type: string
+      required:
+        - bodyId
+        - bodyName
+        - _links
+      type: object
+    VehicleClass:
+      description: The class of a Vehicle, e.g. 'A-Class'.
+      properties:
+        _links:
+          $ref: "#/components/schemas/SelfModelLinks"
+        classId:
+          type: string
+        className:
+          type: string
+      required:
+        - classId
+        - className
+        - _links
+      type: object
+    VehicleComponent:
+      description: A vehicle component.
+      properties:
+        _links:
+          $ref: "#/components/schemas/ImageComponentLink"
+        code:
+          type: string
+        codeType:
+          type: string
+        componentSortId:
+          type: number
+        componentType:
+          $ref: "#/components/schemas/VehicleComponentType"
+        description:
+          description: HTML elements can be present
+          type: string
+        fixed:
+          description: Cannot changed by the customer
+          type: boolean
+        hidden:
+          description: Hidden, should not be displayed to the customer, not relevant for
+            the customer
+          type: boolean
+        id:
+          type: string
+        name:
+          type: string
+        priceInformation:
+          $ref: "#/components/schemas/PriceInformation"
+        pseudoCode:
+          description: Not relevant for the customer
+          type: boolean
+        selected:
+          description: Selected by the customer
+          type: boolean
+        standard:
+          description: Standard equipment
+          type: boolean
+      required:
+        - id
+        - componentSortId
+        - name
+        - description
+        - code
+        - codeType
+        - componentType
+        - priceInformation
+        - standard
+        - selected
+        - fixed
+        - hidden
+        - pseudoCode
+        - _links
+      type: object
+    VehicleComponentCategory:
+      description: The component category of a VehicleComponent.
+      properties:
+        cardinality:
+          $ref: "#/components/schemas/VehicleComponentCategoryCardinality"
+        categoryId:
+          type: string
+        categoryName:
+          type: string
+        categorySortId:
+          type: number
+        componentIds:
+          items:
+            $ref: "#/components/schemas/VehicleComponentId"
+          type: array
+        subcategories:
+          items:
+            $ref: "#/components/schemas/VehicleComponentCategory"
+          type: array
+      required:
+        - categoryId
+        - categorySortId
+        - categoryName
+        - cardinality
+        - subcategories
+        - componentIds
+    VehicleComponentCategoryCardinality:
+      description: The cardinality of the vehicle components belong to component category.
+      enum:
+        - NOT_DEFINED
+        - ONE_OR_NONE
+        - EXACTLY_ONE
+        - ARBITRARY
+      type: string
+    VehicleComponentId:
+      description: The component id of a VehicleComponent.
+      properties:
+        componentId:
+          type: string
+      required:
+        - componentId
+    VehicleComponentTree:
+      description: Contains the vehicle components and the structure with component
+        categories.
+      properties:
+        _links:
+          $ref: "#/components/schemas/SelfLink"
+        componentCategories:
+          items:
+            $ref: "#/components/schemas/VehicleComponentCategory"
+          type: array
+        vehicleComponents:
+          additionalProperties:
+            $ref: "#/components/schemas/VehicleComponent"
+          properties:
+            componentId:
+              $ref: "#/components/schemas/VehicleComponent"
+          type: object
+      required:
+        - vehicleComponents
+        - componentCategories
+        - _links
+    VehicleComponentType:
+      description: The component type of a vehicle component.
+      enum:
+        - ANY
+        - WHEELS
+        - PAINTS
+        - UPHOLSTERIES
+        - TRIMS
+        - PACKAGES
+        - LINES
+        - SPECIAL_EDITION
+        - SPECIAL_EQUIPMENT
+      type: string
+    VehicleConfiguration:
+      description: A vehicle configuration.
+      properties:
+        _links:
+          $ref: "#/components/schemas/SelfSelectablesImageVehicleLinks"
+        changeYear:
+          type: string
+        configurationId:
+          type: string
+        configurationPrice:
+          $ref: "#/components/schemas/PriceInformation"
+        initialPrice:
+          $ref: "#/components/schemas/PriceInformation"
+        marketId:
+          type: string
+        modelId:
+          type: string
+        modelYear:
+          type: string
+        technicalInformation:
+          $ref: "#/components/schemas/TechnicalInformation"
+        vehicleComponents:
+          items:
+            $ref: "#/components/schemas/VehicleComponent"
+          type: array
+        wltpConfiguration:
+          type: boolean
+      required:
+        - marketId
+        - modelId
+        - configurationId
+        - initialPrice
+        - configurationPrice
+        - modelYear
+        - changeYear
+        - vehicleComponents
+        - technicalInformation
+        - wltpConfiguration
+        - _links
+      type: object
+    VehicleImageResponse:
+      description: The response object holds either an error object, in case that the
+        request was malformed, or a vehicle object containing all urls for the
+        requested perspectives.
+      properties:
+        vehicle:
+          additionalProperties:
+            $ref: "#/components/schemas/ImageUrlWithError"
+          description: A map holding a vehicle image for each requested perspective, e.g.
+            EXT000.
+          type: object
+      required:
+        - vehicle
+    VehicleModel:
+      description: The model of a Vehicle, e.g. '176042_002'.
+      properties:
+        _links:
+          $ref: "#/components/schemas/SelfConfigurationLinks"
+        baumuster:
+          type: string
+        modelId:
+          type: string
+        name:
+          type: string
+        nationalSalesType:
+          type: string
+        priceInformation:
+          $ref: "#/components/schemas/PriceInformation"
+        productGroup:
+          $ref: "#/components/schemas/ProductGroup"
+        shortName:
+          type: string
+        vehicleBody:
+          $ref: "#/components/schemas/VehicleBody"
+        vehicleClass:
+          $ref: "#/components/schemas/VehicleClass"
+      required:
+        - modelId
+        - shortName
+        - name
+        - baumuster
+        - nationalSalesType
+        - vehicleClass
+        - vehicleBody
+        - productGroup
+        - priceInformation
+        - _links
+      type: object
+    Wltp:
+      description: Holds all relevant informations for the Wltp 'Worldwide harmonized Light
+        vehicles Test Procedure' drive cycle.
+      properties:
+        consumption:
+          $ref: "#/components/schemas/WltpConsumption"
+        emission:
+          $ref: "#/components/schemas/WltpEmission"
+    WltpAmount:
+      description: The Wltp 'Worldwide harmonized Light vehicles Test Procedure' drive
+        cycle specific amount holds the wltp specific values.
+      properties:
+        individual:
+          $ref: "#/components/schemas/Amount"
+        max:
+          $ref: "#/components/schemas/Amount"
+        min:
+          $ref: "#/components/schemas/Amount"
+      required:
+        - individual
+        - min
+        - max
+      type: object
+    WltpConsumption:
+      description: The Wltp 'Worldwide harmonized Light vehicles Test Procedure'
+        consumption.
+      properties:
+        chargeDeplete:
+          $ref: "#/components/schemas/WltpGear"
+        chargeDepleteCop:
+          $ref: "#/components/schemas/WltpGear"
+        extraHigh:
+          $ref: "#/components/schemas/WltpGear"
+        high:
+          $ref: "#/components/schemas/WltpGear"
+        low:
+          $ref: "#/components/schemas/WltpGear"
+        medium:
+          $ref: "#/components/schemas/WltpGear"
+        total:
+          $ref: "#/components/schemas/WltpGear"
+        weighted:
+          $ref: "#/components/schemas/WltpGear"
+      type: object
+    WltpElectricRange:
+      description: The allElectric and equivalentAllElectric range that a vehicle
+        (pure-electic or hybrid) can reach
+      properties:
+        all:
+          $ref: "#/components/schemas/WltpAmount"
+        equivalentAll:
+          $ref: "#/components/schemas/WltpAmount"
+      type: object
+    WltpEmission:
+      description: The Wltp 'Worldwide harmonized Light vehicles Test Procedure' emission.
+      properties:
+        chargeDeplete:
+          $ref: "#/components/schemas/WltpGear"
+        chargeDepleteCop:
+          $ref: "#/components/schemas/WltpGear"
+        chargeDepleteWeighted:
+          $ref: "#/components/schemas/WltpGear"
+        extraHigh:
+          $ref: "#/components/schemas/WltpGear"
+        high:
+          $ref: "#/components/schemas/WltpGear"
+        low:
+          $ref: "#/components/schemas/WltpGear"
+        lowMid:
+          $ref: "#/components/schemas/WltpGear"
+        medium:
+          $ref: "#/components/schemas/WltpGear"
+        total:
+          $ref: "#/components/schemas/WltpGear"
+        weighted:
+          $ref: "#/components/schemas/WltpGear"
+      type: object
+    WltpGear:
+      description: The gear of a vehicle. A vehicle can have a primary and a secondary gear.
+      properties:
+        primaryGear:
+          $ref: "#/components/schemas/WltpAmount"
+        secondaryGear:
+          $ref: "#/components/schemas/WltpAmount"
+      type: object
+    WltpRange:
+      description: The Wltp 'Worldwide harmonized Light vehicles Test Procedure' range.
+      properties:
+        high:
+          $ref: "#/components/schemas/WltpElectricRange"
+        low:
+          $ref: "#/components/schemas/WltpElectricRange"
+        lowMid:
+          $ref: "#/components/schemas/WltpElectricRange"
+        medium:
+          $ref: "#/components/schemas/WltpElectricRange"
+        total:
+          $ref: "#/components/schemas/WltpElectricRange"
+      type: object

@@ -1,0 +1,3558 @@
+openapi: 3.0.0
+info:
+  version: 2018-05-22
+  x-release: v4
+  title: Amazon Personalize
+  description: Amazon Personalize is a machine learning service that makes it easy to add
+    individualized recommendations to customers.
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: personalize
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/personalize-2018-05-22.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/personalize/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  /#X-Amz-Target=AmazonPersonalize.CreateCampaign:
+    post:
+      operationId: CreateCampaign
+      description: <p>Creates a campaign by deploying a solution version. When a client
+        calls the <a
+        href="https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetRecommendations.html">GetRecommendations</a>
+        and <a
+        href="https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetPersonalizedRanking.html">GetPersonalizedRanking</a>
+        APIs, a campaign is specified in the request.</p> <p> <b>Minimum
+        Provisioned TPS and Auto-Scaling</b> </p> <p>A transaction is a single
+        <code>GetRecommendations</code> or <code>GetPersonalizedRanking</code>
+        call. Transactions per second (TPS) is the throughput and unit of
+        billing for Amazon Personalize. The minimum provisioned TPS
+        (<code>minProvisionedTPS</code>) specifies the baseline throughput
+        provisioned by Amazon Personalize, and thus, the minimum billing charge.
+        If your TPS increases beyond <code>minProvisionedTPS</code>, Amazon
+        Personalize auto-scales the provisioned capacity up and down, but never
+        below <code>minProvisionedTPS</code>, to maintain a 70% utilization.
+        There's a short time delay while the capacity is increased that might
+        cause loss of transactions. It's recommended to start with a low
+        <code>minProvisionedTPS</code>, track your usage using Amazon CloudWatch
+        metrics, and then increase the <code>minProvisionedTPS</code> as
+        necessary.</p> <p> <b>Status</b> </p> <p>A campaign can be in one of the
+        following states:</p> <ul> <li> <p>CREATE PENDING &gt; CREATE
+        IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li> <li> <p>DELETE
+        PENDING &gt; DELETE IN_PROGRESS</p> </li> </ul> <p>To get the campaign
+        status, call <a>DescribeCampaign</a>.</p> <note> <p>Wait until the
+        <code>status</code> of the campaign is <code>ACTIVE</code> before asking
+        the campaign for recommendations.</p> </note> <p class="title">
+        <b>Related APIs</b> </p> <ul> <li> <p> <a>ListCampaigns</a> </p> </li>
+        <li> <p> <a>DescribeCampaign</a> </p> </li> <li> <p>
+        <a>UpdateCampaign</a> </p> </li> <li> <p> <a>DeleteCampaign</a> </p>
+        </li> </ul>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateCampaignResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.CreateCampaign
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCampaignRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.CreateDataset:
+    post:
+      operationId: CreateDataset
+      description: <p>Creates an empty dataset and adds it to the specified dataset group.
+        Use <a>CreateDatasetImportJob</a> to import your training data to a
+        dataset.</p> <p>There are three types of datasets:</p> <ul> <li>
+        <p>Interactions</p> </li> <li> <p>Items</p> </li> <li> <p>Users</p>
+        </li> </ul> <p>Each dataset type has an associated schema with required
+        field types. Only the <code>Interactions</code> dataset is required in
+        order to train a model (also referred to as creating a solution).</p>
+        <p>A dataset can be in one of the following states:</p> <ul> <li>
+        <p>CREATE PENDING &gt; CREATE IN_PROGRESS &gt; ACTIVE -or- CREATE
+        FAILED</p> </li> <li> <p>DELETE PENDING &gt; DELETE IN_PROGRESS</p>
+        </li> </ul> <p>To get the status of the dataset, call
+        <a>DescribeDataset</a>.</p> <p class="title"> <b>Related APIs</b> </p>
+        <ul> <li> <p> <a>CreateDatasetGroup</a> </p> </li> <li> <p>
+        <a>ListDatasets</a> </p> </li> <li> <p> <a>DescribeDataset</a> </p>
+        </li> <li> <p> <a>DeleteDataset</a> </p> </li> </ul>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateDatasetResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.CreateDataset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDatasetRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.CreateDatasetGroup:
+    post:
+      operationId: CreateDatasetGroup
+      description: <p>Creates an empty dataset group. A dataset group contains related
+        datasets that supply data for training a model. A dataset group can
+        contain at most three datasets, one for each type of dataset:</p> <ul>
+        <li> <p>Interactions</p> </li> <li> <p>Items</p> </li> <li> <p>Users</p>
+        </li> </ul> <p>To train a model (create a solution), a dataset group
+        that contains an <code>Interactions</code> dataset is required. Call
+        <a>CreateDataset</a> to add a dataset to the group.</p> <p>A dataset
+        group can be in one of the following states:</p> <ul> <li> <p>CREATE
+        PENDING &gt; CREATE IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li>
+        <li> <p>DELETE PENDING</p> </li> </ul> <p>To get the status of the
+        dataset group, call <a>DescribeDatasetGroup</a>. If the status shows as
+        CREATE FAILED, the response includes a <code>failureReason</code> key,
+        which describes why the creation failed.</p> <note> <p>You must wait
+        until the <code>status</code> of the dataset group is
+        <code>ACTIVE</code> before adding a dataset to the group.</p> </note>
+        <p>You can specify an AWS Key Management Service (KMS) key to encrypt
+        the datasets in the group. If you specify a KMS key, you must also
+        include an AWS Identity and Access Management (IAM) role that has
+        permission to access the key.</p> <p class="title"> <b>APIs that require
+        a dataset group ARN in the request</b> </p> <ul> <li> <p>
+        <a>CreateDataset</a> </p> </li> <li> <p> <a>CreateEventTracker</a> </p>
+        </li> <li> <p> <a>CreateSolution</a> </p> </li> </ul> <p class="title">
+        <b>Related APIs</b> </p> <ul> <li> <p> <a>ListDatasetGroups</a> </p>
+        </li> <li> <p> <a>DescribeDatasetGroup</a> </p> </li> <li> <p>
+        <a>DeleteDatasetGroup</a> </p> </li> </ul>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateDatasetGroupResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "482":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.CreateDatasetGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDatasetGroupRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.CreateDatasetImportJob:
+    post:
+      operationId: CreateDatasetImportJob
+      description: <p>Creates a job that imports training data from your data source (an
+        Amazon S3 bucket) to an Amazon Personalize dataset. To allow Amazon
+        Personalize to import the training data, you must specify an AWS
+        Identity and Access Management (IAM) role that has permission to read
+        from the data source.</p> <important> <p>The dataset import job replaces
+        any previous data in the dataset.</p> </important> <p> <b>Status</b>
+        </p> <p>A dataset import job can be in one of the following states:</p>
+        <ul> <li> <p>CREATE PENDING &gt; CREATE IN_PROGRESS &gt; ACTIVE -or-
+        CREATE FAILED</p> </li> </ul> <p>To get the status of the import job,
+        call <a>DescribeDatasetImportJob</a>, providing the Amazon Resource Name
+        (ARN) of the dataset import job. The dataset import is complete when the
+        status shows as ACTIVE. If the status shows as CREATE FAILED, the
+        response includes a <code>failureReason</code> key, which describes why
+        the job failed.</p> <note> <p>Importing takes time. You must wait until
+        the status shows as ACTIVE before training a model using the
+        dataset.</p> </note> <p class="title"> <b>Related APIs</b> </p> <ul>
+        <li> <p> <a>ListDatasetImportJobs</a> </p> </li> <li> <p>
+        <a>DescribeDatasetImportJob</a> </p> </li> </ul>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateDatasetImportJobResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.CreateDatasetImportJob
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDatasetImportJobRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.CreateEventTracker:
+    post:
+      operationId: CreateEventTracker
+      description: <p>Creates an event tracker that you use when sending event data to the
+        specified dataset group using the <a
+        href="https://docs.aws.amazon.com/personalize/latest/dg/API_UBS_PutEvents.html">PutEvents</a>
+        API.</p> <p>When Amazon Personalize creates an event tracker, it also
+        creates an <i>event-interactions</i> dataset in the dataset group
+        associated with the event tracker. The event-interactions dataset stores
+        the event data from the <code>PutEvents</code> call. The contents of
+        this dataset are not available to the user.</p> <note> <p>Only one event
+        tracker can be associated with a dataset group. You will get an error if
+        you call <code>CreateEventTracker</code> using the same dataset group as
+        an existing event tracker.</p> </note> <p>When you send event data you
+        include your tracking ID. The tracking ID identifies the customer and
+        authorizes the customer to send the data.</p> <p>The event tracker can
+        be in one of the following states:</p> <ul> <li> <p>CREATE PENDING &gt;
+        CREATE IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li> <li>
+        <p>DELETE PENDING &gt; DELETE IN_PROGRESS</p> </li> </ul> <p>To get the
+        status of the event tracker, call <a>DescribeEventTracker</a>.</p>
+        <note> <p>The event tracker must be in the ACTIVE state before using the
+        tracking ID.</p> </note> <p class="title"> <b>Related APIs</b> </p> <ul>
+        <li> <p> <a>ListEventTrackers</a> </p> </li> <li> <p>
+        <a>DescribeEventTracker</a> </p> </li> <li> <p>
+        <a>DeleteEventTracker</a> </p> </li> </ul>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateEventTrackerResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.CreateEventTracker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEventTrackerRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.CreateSchema:
+    post:
+      operationId: CreateSchema
+      description: <p>Creates an Amazon Personalize schema from the specified schema
+        string. The schema you create must be in Avro JSON format.</p> <p>Amazon
+        Personalize recognizes three schema variants. Each schema is associated
+        with a dataset type and has a set of required field and keywords. You
+        specify a schema when you call <a>CreateDataset</a>.</p> <p
+        class="title"> <b>Related APIs</b> </p> <ul> <li> <p> <a>ListSchemas</a>
+        </p> </li> <li> <p> <a>DescribeSchema</a> </p> </li> <li> <p>
+        <a>DeleteSchema</a> </p> </li> </ul>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateSchemaResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "482":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.CreateSchema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSchemaRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.CreateSolution:
+    post:
+      operationId: CreateSolution
+      description: <p>Creates the configuration for training a model. A trained model is
+        known as a solution. After the configuration is created, you train the
+        model (create a solution) by calling the <a>CreateSolutionVersion</a>
+        operation. Every time you call <code>CreateSolutionVersion</code>, a new
+        version of the solution is created.</p> <p>After creating a solution
+        version, you check its accuracy by calling <a>GetSolutionMetrics</a>.
+        When you are satisfied with the version, you deploy it using
+        <a>CreateCampaign</a>. The campaign provides recommendations to a client
+        through the <a
+        href="https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetRecommendations.html">GetRecommendations</a>
+        API.</p> <p>To train a model, Amazon Personalize requires training data
+        and a recipe. The training data comes from the dataset group that you
+        provide in the request. A recipe specifies the training algorithm and a
+        feature transformation. You can specify one of the predefined recipes
+        provided by Amazon Personalize. Alternatively, you can specify
+        <code>performAutoML</code> and Amazon Personalize will analyze your data
+        and select the optimum USER_PERSONALIZATION recipe for you.</p> <p>
+        <b>Status</b> </p> <p>A solution can be in one of the following
+        states:</p> <ul> <li> <p>CREATE PENDING &gt; CREATE IN_PROGRESS &gt;
+        ACTIVE -or- CREATE FAILED</p> </li> <li> <p>DELETE PENDING &gt; DELETE
+        IN_PROGRESS</p> </li> </ul> <p>To get the status of the solution, call
+        <a>DescribeSolution</a>. Wait until the status shows as ACTIVE before
+        calling <code>CreateSolutionVersion</code>.</p> <p class="title">
+        <b>Related APIs</b> </p> <ul> <li> <p> <a>ListSolutions</a> </p> </li>
+        <li> <p> <a>CreateSolutionVersion</a> </p> </li> <li> <p>
+        <a>DescribeSolution</a> </p> </li> <li> <p> <a>DeleteSolution</a> </p>
+        </li> </ul> <ul> <li> <p> <a>ListSolutionVersions</a> </p> </li> <li>
+        <p> <a>DescribeSolutionVersion</a> </p> </li> </ul>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateSolutionResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.CreateSolution
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSolutionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.CreateSolutionVersion:
+    post:
+      operationId: CreateSolutionVersion
+      description: <p>Trains or retrains an active solution. A solution is created using
+        the <a>CreateSolution</a> operation and must be in the ACTIVE state
+        before calling <code>CreateSolutionVersion</code>. A new version of the
+        solution is created every time you call this operation.</p> <p>
+        <b>Status</b> </p> <p>A solution version can be in one of the following
+        states:</p> <ul> <li> <p>CREATE PENDING &gt; CREATE IN_PROGRESS &gt;
+        ACTIVE -or- CREATE FAILED</p> </li> </ul> <p>To get the status of the
+        version, call <a>DescribeSolutionVersion</a>. Wait until the status
+        shows as ACTIVE before calling <code>CreateCampaign</code>.</p> <p>If
+        the status shows as CREATE FAILED, the response includes a
+        <code>failureReason</code> key, which describes why the job failed.</p>
+        <p class="title"> <b>Related APIs</b> </p> <ul> <li> <p>
+        <a>ListSolutionVersions</a> </p> </li> <li> <p>
+        <a>DescribeSolutionVersion</a> </p> </li> </ul> <ul> <li> <p>
+        <a>ListSolutions</a> </p> </li> <li> <p> <a>CreateSolution</a> </p>
+        </li> <li> <p> <a>DescribeSolution</a> </p> </li> <li> <p>
+        <a>DeleteSolution</a> </p> </li> </ul>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateSolutionVersionResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.CreateSolutionVersion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSolutionVersionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DeleteCampaign:
+    post:
+      operationId: DeleteCampaign
+      description: Removes a campaign by deleting the solution deployment. The solution
+        that the campaign is based on is not deleted and can be redeployed when
+        needed. A deleted campaign can no longer be specified in a <a
+        href="https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetRecommendations.html">GetRecommendations</a>
+        request. For more information on campaigns, see <a>CreateCampaign</a>.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DeleteCampaign
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteCampaignRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DeleteDataset:
+    post:
+      operationId: DeleteDataset
+      description: Deletes a dataset. You can't delete a dataset if an associated
+        <code>DatasetImportJob</code> or <code>SolutionVersion</code> is in the
+        CREATE PENDING or IN PROGRESS state. For more information on datasets,
+        see <a>CreateDataset</a>.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DeleteDataset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteDatasetRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DeleteDatasetGroup:
+    post:
+      operationId: DeleteDatasetGroup
+      description: <p>Deletes a dataset group. Before you delete a dataset group, you must
+        delete the following:</p> <ul> <li> <p>All associated event
+        trackers.</p> </li> <li> <p>All associated solutions.</p> </li> <li>
+        <p>All datasets in the dataset group.</p> </li> </ul>
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DeleteDatasetGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteDatasetGroupRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DeleteEventTracker:
+    post:
+      operationId: DeleteEventTracker
+      description: Deletes the event tracker. Does not delete the event-interactions
+        dataset from the associated dataset group. For more information on event
+        trackers, see <a>CreateEventTracker</a>.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DeleteEventTracker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteEventTrackerRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DeleteSchema:
+    post:
+      operationId: DeleteSchema
+      description: Deletes a schema. Before deleting a schema, you must delete all datasets
+        referencing the schema. For more information on schemas, see
+        <a>CreateSchema</a>.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DeleteSchema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteSchemaRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DeleteSolution:
+    post:
+      operationId: DeleteSolution
+      description: Deletes all versions of a solution and the <code>Solution</code> object
+        itself. Before deleting a solution, you must delete all campaigns based
+        on the solution. To determine what campaigns are using the solution,
+        call <a>ListCampaigns</a> and supply the Amazon Resource Name (ARN) of
+        the solution. You can't delete a solution if an associated
+        <code>SolutionVersion</code> is in the CREATE PENDING or IN PROGRESS
+        state. For more information on solutions, see <a>CreateSolution</a>.
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DeleteSolution
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteSolutionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DescribeAlgorithm:
+    post:
+      operationId: DescribeAlgorithm
+      description: Describes the given algorithm.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeAlgorithmResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DescribeAlgorithm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeAlgorithmRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DescribeCampaign:
+    post:
+      operationId: DescribeCampaign
+      description: <p>Describes the given campaign, including its status.</p> <p>A campaign
+        can be in one of the following states:</p> <ul> <li> <p>CREATE PENDING
+        &gt; CREATE IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li> <li>
+        <p>DELETE PENDING &gt; DELETE IN_PROGRESS</p> </li> </ul> <p>When the
+        <code>status</code> is <code>CREATE FAILED</code>, the response includes
+        the <code>failureReason</code> key, which describes why.</p> <p>For more
+        information on campaigns, see <a>CreateCampaign</a>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeCampaignResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DescribeCampaign
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeCampaignRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DescribeDataset:
+    post:
+      operationId: DescribeDataset
+      description: Describes the given dataset. For more information on datasets, see
+        <a>CreateDataset</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeDatasetResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DescribeDataset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeDatasetRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DescribeDatasetGroup:
+    post:
+      operationId: DescribeDatasetGroup
+      description: Describes the given dataset group. For more information on dataset
+        groups, see <a>CreateDatasetGroup</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeDatasetGroupResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DescribeDatasetGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeDatasetGroupRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DescribeDatasetImportJob:
+    post:
+      operationId: DescribeDatasetImportJob
+      description: Describes the dataset import job created by
+        <a>CreateDatasetImportJob</a>, including the import job status.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeDatasetImportJobResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DescribeDatasetImportJob
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeDatasetImportJobRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DescribeEventTracker:
+    post:
+      operationId: DescribeEventTracker
+      description: Describes an event tracker. The response includes the
+        <code>trackingId</code> and <code>status</code> of the event tracker.
+        For more information on event trackers, see <a>CreateEventTracker</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeEventTrackerResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DescribeEventTracker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeEventTrackerRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DescribeFeatureTransformation:
+    post:
+      operationId: DescribeFeatureTransformation
+      description: Describes the given feature transformation.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeFeatureTransformationResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DescribeFeatureTransformation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeFeatureTransformationRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DescribeRecipe:
+    post:
+      operationId: DescribeRecipe
+      description: <p>Describes a recipe.</p> <p>A recipe contains three items:</p> <ul>
+        <li> <p>An algorithm that trains a model.</p> </li> <li>
+        <p>Hyperparameters that govern the training.</p> </li> <li> <p>Feature
+        transformation information for modifying the input data before
+        training.</p> </li> </ul> <p>Amazon Personalize provides a set of
+        predefined recipes. You specify a recipe when you create a solution with
+        the <a>CreateSolution</a> API. <code>CreateSolution</code> trains a
+        model by using the algorithm in the specified recipe and a training
+        dataset. The solution, when deployed as a campaign, can provide
+        recommendations using the <a
+        href="https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetRecommendations.html">GetRecommendations</a>
+        API.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeRecipeResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DescribeRecipe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeRecipeRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DescribeSchema:
+    post:
+      operationId: DescribeSchema
+      description: Describes a schema. For more information on schemas, see
+        <a>CreateSchema</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeSchemaResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DescribeSchema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeSchemaRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DescribeSolution:
+    post:
+      operationId: DescribeSolution
+      description: Describes a solution. For more information on solutions, see
+        <a>CreateSolution</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeSolutionResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DescribeSolution
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeSolutionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.DescribeSolutionVersion:
+    post:
+      operationId: DescribeSolutionVersion
+      description: Describes a specific version of a solution. For more information on
+        solutions, see <a>CreateSolution</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeSolutionVersionResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.DescribeSolutionVersion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeSolutionVersionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.GetSolutionMetrics:
+    post:
+      operationId: GetSolutionMetrics
+      description: Gets the metrics for the specified solution version.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSolutionMetricsResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.GetSolutionMetrics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetSolutionMetricsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.ListCampaigns:
+    post:
+      operationId: ListCampaigns
+      description: Returns a list of campaigns that use the given solution. When a solution
+        is not specified, all the campaigns associated with the account are
+        listed. The response provides the properties for each campaign,
+        including the Amazon Resource Name (ARN). For more information on
+        campaigns, see <a>CreateCampaign</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListCampaignsResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.ListCampaigns
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListCampaignsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.ListDatasetGroups:
+    post:
+      operationId: ListDatasetGroups
+      description: Returns a list of dataset groups. The response provides the properties
+        for each dataset group, including the Amazon Resource Name (ARN). For
+        more information on dataset groups, see <a>CreateDatasetGroup</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListDatasetGroupsResponse"
+        "480":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.ListDatasetGroups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListDatasetGroupsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.ListDatasetImportJobs:
+    post:
+      operationId: ListDatasetImportJobs
+      description: Returns a list of dataset import jobs that use the given dataset. When a
+        dataset is not specified, all the dataset import jobs associated with
+        the account are listed. The response provides the properties for each
+        dataset import job, including the Amazon Resource Name (ARN). For more
+        information on dataset import jobs, see <a>CreateDatasetImportJob</a>.
+        For more information on datasets, see <a>CreateDataset</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListDatasetImportJobsResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.ListDatasetImportJobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListDatasetImportJobsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.ListDatasets:
+    post:
+      operationId: ListDatasets
+      description: Returns the list of datasets contained in the given dataset group. The
+        response provides the properties for each dataset, including the Amazon
+        Resource Name (ARN). For more information on datasets, see
+        <a>CreateDataset</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListDatasetsResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.ListDatasets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListDatasetsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.ListEventTrackers:
+    post:
+      operationId: ListEventTrackers
+      description: Returns the list of event trackers associated with the account. The
+        response provides the properties for each event tracker, including the
+        Amazon Resource Name (ARN) and tracking ID. For more information on
+        event trackers, see <a>CreateEventTracker</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListEventTrackersResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.ListEventTrackers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListEventTrackersRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.ListRecipes:
+    post:
+      operationId: ListRecipes
+      description: Returns a list of available recipes. The response provides the
+        properties for each recipe, including the recipe's Amazon Resource Name
+        (ARN).
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListRecipesResponse"
+        "480":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.ListRecipes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListRecipesRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.ListSchemas:
+    post:
+      operationId: ListSchemas
+      description: Returns the list of schemas associated with the account. The response
+        provides the properties for each schema, including the Amazon Resource
+        Name (ARN). For more information on schemas, see <a>CreateSchema</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSchemasResponse"
+        "480":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.ListSchemas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListSchemasRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.ListSolutionVersions:
+    post:
+      operationId: ListSolutionVersions
+      description: Returns a list of solution versions for the given solution. When a
+        solution is not specified, all the solution versions associated with the
+        account are listed. The response provides the properties for each
+        solution version, including the Amazon Resource Name (ARN). For more
+        information on solutions, see <a>CreateSolution</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSolutionVersionsResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.ListSolutionVersions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListSolutionVersionsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.ListSolutions:
+    post:
+      operationId: ListSolutions
+      description: Returns a list of solutions that use the given dataset group. When a
+        dataset group is not specified, all the solutions associated with the
+        account are listed. The response provides the properties for each
+        solution, including the Amazon Resource Name (ARN). For more information
+        on solutions, see <a>CreateSolution</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSolutionsResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: maxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: nextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.ListSolutions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListSolutionsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AmazonPersonalize.UpdateCampaign:
+    post:
+      operationId: UpdateCampaign
+      description: <p>Updates a campaign by either deploying a new solution or changing the
+        value of the campaign's <code>minProvisionedTPS</code> parameter.</p>
+        <p>To update a campaign, the campaign status must be ACTIVE or CREATE
+        FAILED. Check the campaign status using the <a>DescribeCampaign</a>
+        API.</p> <note> <p>You must wait until the <code>status</code> of the
+        updated campaign is <code>ACTIVE</code> before asking the campaign for
+        recommendations.</p> </note> <p>For more information on campaigns, see
+        <a>CreateCampaign</a>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateCampaignResponse"
+        "480":
+          description: InvalidInputException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidInputException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AmazonPersonalize.UpdateCampaign
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCampaignRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://personalize.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Amazon Personalize multi-region endpoint
+  - url: https://personalize.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Amazon Personalize multi-region endpoint
+  - url: http://personalize.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Amazon Personalize endpoint for China (Beijing) and China (Ningxia)
+  - url: https://personalize.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Amazon Personalize endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    CreateCampaignResponse:
+      type: object
+      properties:
+        campaignArn:
+          $ref: "#/components/schemas/Arn"
+    CreateCampaignRequest:
+      type: object
+      required:
+        - name
+        - solutionVersionArn
+        - minProvisionedTPS
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        solutionVersionArn:
+          $ref: "#/components/schemas/Arn"
+        minProvisionedTPS:
+          $ref: "#/components/schemas/TransactionsPerSecond"
+    InvalidInputException: {}
+    ResourceNotFoundException: {}
+    ResourceAlreadyExistsException: {}
+    LimitExceededException: {}
+    ResourceInUseException: {}
+    CreateDatasetResponse:
+      type: object
+      properties:
+        datasetArn:
+          $ref: "#/components/schemas/Arn"
+    CreateDatasetRequest:
+      type: object
+      required:
+        - name
+        - schemaArn
+        - datasetGroupArn
+        - datasetType
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        schemaArn:
+          $ref: "#/components/schemas/Arn"
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+        datasetType:
+          $ref: "#/components/schemas/DatasetType"
+    CreateDatasetGroupResponse:
+      type: object
+      properties:
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+    CreateDatasetGroupRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        roleArn:
+          $ref: "#/components/schemas/RoleArn"
+        kmsKeyArn:
+          $ref: "#/components/schemas/KmsKeyArn"
+    CreateDatasetImportJobResponse:
+      type: object
+      properties:
+        datasetImportJobArn:
+          $ref: "#/components/schemas/Arn"
+    CreateDatasetImportJobRequest:
+      type: object
+      required:
+        - jobName
+        - datasetArn
+        - dataSource
+        - roleArn
+      properties:
+        jobName:
+          $ref: "#/components/schemas/Name"
+        datasetArn:
+          $ref: "#/components/schemas/Arn"
+        dataSource:
+          $ref: "#/components/schemas/DataSource"
+        roleArn:
+          $ref: "#/components/schemas/RoleArn"
+    CreateEventTrackerResponse:
+      type: object
+      properties:
+        eventTrackerArn:
+          $ref: "#/components/schemas/Arn"
+        trackingId:
+          $ref: "#/components/schemas/TrackingId"
+    CreateEventTrackerRequest:
+      type: object
+      required:
+        - name
+        - datasetGroupArn
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+    CreateSchemaResponse:
+      type: object
+      properties:
+        schemaArn:
+          $ref: "#/components/schemas/Arn"
+    CreateSchemaRequest:
+      type: object
+      required:
+        - name
+        - schema
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        schema:
+          $ref: "#/components/schemas/AvroSchema"
+    CreateSolutionResponse:
+      type: object
+      properties:
+        solutionArn:
+          $ref: "#/components/schemas/Arn"
+    CreateSolutionRequest:
+      type: object
+      required:
+        - name
+        - datasetGroupArn
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        performHPO:
+          $ref: "#/components/schemas/Boolean"
+        performAutoML:
+          $ref: "#/components/schemas/PerformAutoML"
+        recipeArn:
+          $ref: "#/components/schemas/Arn"
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+        eventType:
+          $ref: "#/components/schemas/EventType"
+        solutionConfig:
+          $ref: "#/components/schemas/SolutionConfig"
+    CreateSolutionVersionResponse:
+      type: object
+      properties:
+        solutionVersionArn:
+          $ref: "#/components/schemas/Arn"
+    CreateSolutionVersionRequest:
+      type: object
+      required:
+        - solutionArn
+      properties:
+        solutionArn:
+          $ref: "#/components/schemas/Arn"
+    DeleteCampaignRequest:
+      type: object
+      required:
+        - campaignArn
+      properties:
+        campaignArn:
+          $ref: "#/components/schemas/Arn"
+    DeleteDatasetRequest:
+      type: object
+      required:
+        - datasetArn
+      properties:
+        datasetArn:
+          $ref: "#/components/schemas/Arn"
+    DeleteDatasetGroupRequest:
+      type: object
+      required:
+        - datasetGroupArn
+      properties:
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+    DeleteEventTrackerRequest:
+      type: object
+      required:
+        - eventTrackerArn
+      properties:
+        eventTrackerArn:
+          $ref: "#/components/schemas/Arn"
+    DeleteSchemaRequest:
+      type: object
+      required:
+        - schemaArn
+      properties:
+        schemaArn:
+          $ref: "#/components/schemas/Arn"
+    DeleteSolutionRequest:
+      type: object
+      required:
+        - solutionArn
+      properties:
+        solutionArn:
+          $ref: "#/components/schemas/Arn"
+    DescribeAlgorithmResponse:
+      type: object
+      properties:
+        algorithm:
+          $ref: "#/components/schemas/Algorithm"
+    DescribeAlgorithmRequest:
+      type: object
+      required:
+        - algorithmArn
+      properties:
+        algorithmArn:
+          $ref: "#/components/schemas/Arn"
+    DescribeCampaignResponse:
+      type: object
+      properties:
+        campaign:
+          $ref: "#/components/schemas/Campaign"
+    DescribeCampaignRequest:
+      type: object
+      required:
+        - campaignArn
+      properties:
+        campaignArn:
+          $ref: "#/components/schemas/Arn"
+    DescribeDatasetResponse:
+      type: object
+      properties:
+        dataset:
+          $ref: "#/components/schemas/Dataset"
+    DescribeDatasetRequest:
+      type: object
+      required:
+        - datasetArn
+      properties:
+        datasetArn:
+          $ref: "#/components/schemas/Arn"
+    DescribeDatasetGroupResponse:
+      type: object
+      properties:
+        datasetGroup:
+          $ref: "#/components/schemas/DatasetGroup"
+    DescribeDatasetGroupRequest:
+      type: object
+      required:
+        - datasetGroupArn
+      properties:
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+    DescribeDatasetImportJobResponse:
+      type: object
+      properties:
+        datasetImportJob:
+          $ref: "#/components/schemas/DatasetImportJob"
+    DescribeDatasetImportJobRequest:
+      type: object
+      required:
+        - datasetImportJobArn
+      properties:
+        datasetImportJobArn:
+          $ref: "#/components/schemas/Arn"
+    DescribeEventTrackerResponse:
+      type: object
+      properties:
+        eventTracker:
+          $ref: "#/components/schemas/EventTracker"
+    DescribeEventTrackerRequest:
+      type: object
+      required:
+        - eventTrackerArn
+      properties:
+        eventTrackerArn:
+          $ref: "#/components/schemas/Arn"
+    DescribeFeatureTransformationResponse:
+      type: object
+      properties:
+        featureTransformation:
+          $ref: "#/components/schemas/FeatureTransformation"
+    DescribeFeatureTransformationRequest:
+      type: object
+      required:
+        - featureTransformationArn
+      properties:
+        featureTransformationArn:
+          $ref: "#/components/schemas/Arn"
+    DescribeRecipeResponse:
+      type: object
+      properties:
+        recipe:
+          $ref: "#/components/schemas/Recipe"
+    DescribeRecipeRequest:
+      type: object
+      required:
+        - recipeArn
+      properties:
+        recipeArn:
+          $ref: "#/components/schemas/Arn"
+    DescribeSchemaResponse:
+      type: object
+      properties:
+        schema:
+          $ref: "#/components/schemas/DatasetSchema"
+    DescribeSchemaRequest:
+      type: object
+      required:
+        - schemaArn
+      properties:
+        schemaArn:
+          $ref: "#/components/schemas/Arn"
+    DescribeSolutionResponse:
+      type: object
+      properties:
+        solution:
+          $ref: "#/components/schemas/Solution"
+    DescribeSolutionRequest:
+      type: object
+      required:
+        - solutionArn
+      properties:
+        solutionArn:
+          $ref: "#/components/schemas/Arn"
+    DescribeSolutionVersionResponse:
+      type: object
+      properties:
+        solutionVersion:
+          $ref: "#/components/schemas/SolutionVersion"
+    DescribeSolutionVersionRequest:
+      type: object
+      required:
+        - solutionVersionArn
+      properties:
+        solutionVersionArn:
+          $ref: "#/components/schemas/Arn"
+    GetSolutionMetricsResponse:
+      type: object
+      properties:
+        solutionVersionArn:
+          $ref: "#/components/schemas/Arn"
+        metrics:
+          $ref: "#/components/schemas/Metrics"
+    GetSolutionMetricsRequest:
+      type: object
+      required:
+        - solutionVersionArn
+      properties:
+        solutionVersionArn:
+          $ref: "#/components/schemas/Arn"
+    ListCampaignsResponse:
+      type: object
+      properties:
+        campaigns:
+          $ref: "#/components/schemas/Campaigns"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListCampaignsRequest:
+      type: object
+      properties:
+        solutionArn:
+          $ref: "#/components/schemas/Arn"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+    InvalidNextTokenException: {}
+    ListDatasetGroupsResponse:
+      type: object
+      properties:
+        datasetGroups:
+          $ref: "#/components/schemas/DatasetGroups"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListDatasetGroupsRequest:
+      type: object
+      properties:
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+    ListDatasetImportJobsResponse:
+      type: object
+      properties:
+        datasetImportJobs:
+          $ref: "#/components/schemas/DatasetImportJobs"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListDatasetImportJobsRequest:
+      type: object
+      properties:
+        datasetArn:
+          $ref: "#/components/schemas/Arn"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+    ListDatasetsResponse:
+      type: object
+      properties:
+        datasets:
+          $ref: "#/components/schemas/Datasets"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListDatasetsRequest:
+      type: object
+      properties:
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+    ListEventTrackersResponse:
+      type: object
+      properties:
+        eventTrackers:
+          $ref: "#/components/schemas/EventTrackers"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListEventTrackersRequest:
+      type: object
+      properties:
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+    ListRecipesResponse:
+      type: object
+      properties:
+        recipes:
+          $ref: "#/components/schemas/Recipes"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListRecipesRequest:
+      type: object
+      properties:
+        recipeProvider:
+          $ref: "#/components/schemas/RecipeProvider"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+    ListSchemasResponse:
+      type: object
+      properties:
+        schemas:
+          $ref: "#/components/schemas/Schemas"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListSchemasRequest:
+      type: object
+      properties:
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+    ListSolutionVersionsResponse:
+      type: object
+      properties:
+        solutionVersions:
+          $ref: "#/components/schemas/SolutionVersions"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListSolutionVersionsRequest:
+      type: object
+      properties:
+        solutionArn:
+          $ref: "#/components/schemas/Arn"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+    ListSolutionsResponse:
+      type: object
+      properties:
+        solutions:
+          $ref: "#/components/schemas/Solutions"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListSolutionsRequest:
+      type: object
+      properties:
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+        maxResults:
+          $ref: "#/components/schemas/MaxResults"
+    UpdateCampaignResponse:
+      type: object
+      properties:
+        campaignArn:
+          $ref: "#/components/schemas/Arn"
+    UpdateCampaignRequest:
+      type: object
+      required:
+        - campaignArn
+      properties:
+        campaignArn:
+          $ref: "#/components/schemas/Arn"
+        solutionVersionArn:
+          $ref: "#/components/schemas/Arn"
+        minProvisionedTPS:
+          $ref: "#/components/schemas/TransactionsPerSecond"
+    AccountId:
+      type: string
+      maxLength: 256
+    Name:
+      type: string
+      pattern: ^[a-zA-Z0-9][a-zA-Z0-9\-_]*
+      minLength: 1
+      maxLength: 63
+    Arn:
+      type: string
+      pattern: arn:([a-z\d-]+):personalize:.*:.*:.+
+      maxLength: 256
+    AlgorithmImage:
+      type: object
+      required:
+        - dockerURI
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        dockerURI:
+          $ref: "#/components/schemas/DockerURI"
+      description: Describes an algorithm image.
+    HyperParameters:
+      type: object
+      maxProperties: 100
+      additionalProperties:
+        $ref: "#/components/schemas/ParameterValue"
+    DefaultHyperParameterRanges:
+      type: object
+      properties:
+        integerHyperParameterRanges:
+          $ref: "#/components/schemas/DefaultIntegerHyperParameterRanges"
+        continuousHyperParameterRanges:
+          $ref: "#/components/schemas/DefaultContinuousHyperParameterRanges"
+        categoricalHyperParameterRanges:
+          $ref: "#/components/schemas/DefaultCategoricalHyperParameterRanges"
+      description: Specifies the hyperparameters and their default ranges. Hyperparameters
+        can be categorical, continuous, or integer-valued.
+    ResourceConfig:
+      type: object
+      maxProperties: 100
+      additionalProperties:
+        $ref: "#/components/schemas/ParameterValue"
+    TrainingInputMode:
+      type: string
+      maxLength: 256
+    Date:
+      type: string
+      format: date-time
+    Algorithm:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        algorithmArn:
+          $ref: "#/components/schemas/Arn"
+        algorithmImage:
+          $ref: "#/components/schemas/AlgorithmImage"
+        defaultHyperParameters:
+          $ref: "#/components/schemas/HyperParameters"
+        defaultHyperParameterRanges:
+          $ref: "#/components/schemas/DefaultHyperParameterRanges"
+        defaultResourceConfig:
+          $ref: "#/components/schemas/ResourceConfig"
+        trainingInputMode:
+          $ref: "#/components/schemas/TrainingInputMode"
+        roleArn:
+          $ref: "#/components/schemas/Arn"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: Describes a custom algorithm.
+    DockerURI:
+      type: string
+      maxLength: 256
+    ArnList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Arn"
+      maxItems: 100
+    MetricName:
+      type: string
+      maxLength: 256
+    AutoMLConfig:
+      type: object
+      properties:
+        metricName:
+          $ref: "#/components/schemas/MetricName"
+        recipeList:
+          $ref: "#/components/schemas/ArnList"
+      description: When the solution performs AutoML (<code>performAutoML</code> is true in
+        <a>CreateSolution</a>), Amazon Personalize determines which recipe, from
+        the specified list, optimizes the given metric. Amazon Personalize then
+        uses that recipe for the solution.
+    AutoMLResult:
+      type: object
+      properties:
+        bestRecipeArn:
+          $ref: "#/components/schemas/Arn"
+      description: When the solution performs AutoML (<code>performAutoML</code> is true in
+        <a>CreateSolution</a>), specifies the recipe that best optimized the
+        specified metric.
+    AvroSchema:
+      type: string
+      maxLength: 10000
+    Boolean:
+      type: boolean
+    TransactionsPerSecond:
+      type: integer
+      minimum: 1
+    Status:
+      type: string
+      maxLength: 256
+    FailureReason:
+      type: string
+    CampaignUpdateSummary:
+      type: object
+      properties:
+        solutionVersionArn:
+          $ref: "#/components/schemas/Arn"
+        minProvisionedTPS:
+          $ref: "#/components/schemas/TransactionsPerSecond"
+        status:
+          $ref: "#/components/schemas/Status"
+        failureReason:
+          $ref: "#/components/schemas/FailureReason"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: Provides a summary of the properties of a campaign update. For a
+        complete listing, call the <a>DescribeCampaign</a> API.
+    Campaign:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        campaignArn:
+          $ref: "#/components/schemas/Arn"
+        solutionVersionArn:
+          $ref: "#/components/schemas/Arn"
+        minProvisionedTPS:
+          $ref: "#/components/schemas/TransactionsPerSecond"
+        status:
+          $ref: "#/components/schemas/Status"
+        failureReason:
+          $ref: "#/components/schemas/FailureReason"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+        latestCampaignUpdate:
+          $ref: "#/components/schemas/CampaignUpdateSummary"
+      description: Describes a deployed solution version, otherwise known as a campaign.
+        For more information on campaigns, see <a>CreateCampaign</a>.
+    CampaignSummary:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        campaignArn:
+          $ref: "#/components/schemas/Arn"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+        failureReason:
+          $ref: "#/components/schemas/FailureReason"
+      description: Provides a summary of the properties of a campaign. For a complete
+        listing, call the <a>DescribeCampaign</a> API.
+    Campaigns:
+      type: array
+      items:
+        $ref: "#/components/schemas/CampaignSummary"
+      maxItems: 100
+    ParameterName:
+      type: string
+      maxLength: 256
+    CategoricalValues:
+      type: array
+      items:
+        $ref: "#/components/schemas/CategoricalValue"
+      maxItems: 100
+    CategoricalHyperParameterRange:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ParameterName"
+        values:
+          $ref: "#/components/schemas/CategoricalValues"
+      description: Provides the name and range of a categorical hyperparameter.
+    CategoricalHyperParameterRanges:
+      type: array
+      items:
+        $ref: "#/components/schemas/CategoricalHyperParameterRange"
+      maxItems: 100
+    CategoricalValue:
+      type: string
+      maxLength: 1000
+    ContinuousMinValue:
+      type: number
+      format: double
+      minimum: -1000000
+    ContinuousMaxValue:
+      type: number
+      format: double
+      minimum: -1000000
+    ContinuousHyperParameterRange:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ParameterName"
+        minValue:
+          $ref: "#/components/schemas/ContinuousMinValue"
+        maxValue:
+          $ref: "#/components/schemas/ContinuousMaxValue"
+      description: Provides the name and range of a continuous hyperparameter.
+    ContinuousHyperParameterRanges:
+      type: array
+      items:
+        $ref: "#/components/schemas/ContinuousHyperParameterRange"
+      maxItems: 100
+    RoleArn:
+      type: string
+      pattern: arn:([a-z\d-]+):iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+
+      maxLength: 256
+    KmsKeyArn:
+      type: string
+    DataSource:
+      type: object
+      properties:
+        dataLocation:
+          $ref: "#/components/schemas/S3Location"
+      description: Describes the data source that contains the data to upload to a dataset.
+    DatasetType:
+      type: string
+      maxLength: 256
+    TrackingId:
+      type: string
+      maxLength: 256
+    PerformAutoML:
+      type: boolean
+    EventType:
+      type: string
+      maxLength: 256
+    SolutionConfig:
+      type: object
+      properties:
+        eventValueThreshold:
+          $ref: "#/components/schemas/EventValueThreshold"
+        hpoConfig:
+          $ref: "#/components/schemas/HPOConfig"
+        algorithmHyperParameters:
+          $ref: "#/components/schemas/HyperParameters"
+        featureTransformationParameters:
+          $ref: "#/components/schemas/FeatureTransformationParameters"
+        autoMLConfig:
+          $ref: "#/components/schemas/AutoMLConfig"
+      description: Describes the configuration properties for the solution.
+    S3Location:
+      type: string
+      maxLength: 256
+    Dataset:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        datasetArn:
+          $ref: "#/components/schemas/Arn"
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+        datasetType:
+          $ref: "#/components/schemas/DatasetType"
+        schemaArn:
+          $ref: "#/components/schemas/Arn"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: Provides metadata for a dataset.
+    DatasetGroup:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+        status:
+          $ref: "#/components/schemas/Status"
+        roleArn:
+          $ref: "#/components/schemas/RoleArn"
+        kmsKeyArn:
+          $ref: "#/components/schemas/KmsKeyArn"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+        failureReason:
+          $ref: "#/components/schemas/FailureReason"
+      description: <p>A dataset group is a collection of related datasets (Interactions,
+        User, and Item). You create a dataset group by calling
+        <a>CreateDatasetGroup</a>. You then create a dataset and add it to a
+        dataset group by calling <a>CreateDataset</a>. The dataset group is used
+        to create and train a solution by calling <a>CreateSolution</a>. A
+        dataset group can contain only one of each type of dataset.</p> <p>You
+        can specify an AWS Key Management Service (KMS) key to encrypt the
+        datasets in the group.</p>
+    DatasetGroupSummary:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+        failureReason:
+          $ref: "#/components/schemas/FailureReason"
+      description: Provides a summary of the properties of a dataset group. For a complete
+        listing, call the <a>DescribeDatasetGroup</a> API.
+    DatasetGroups:
+      type: array
+      items:
+        $ref: "#/components/schemas/DatasetGroupSummary"
+      maxItems: 100
+    DatasetImportJob:
+      type: object
+      properties:
+        jobName:
+          $ref: "#/components/schemas/Name"
+        datasetImportJobArn:
+          $ref: "#/components/schemas/Arn"
+        datasetArn:
+          $ref: "#/components/schemas/Arn"
+        dataSource:
+          $ref: "#/components/schemas/DataSource"
+        roleArn:
+          $ref: "#/components/schemas/Arn"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+        failureReason:
+          $ref: "#/components/schemas/FailureReason"
+      description: <p>Describes a job that imports training data from a data source (Amazon
+        S3 bucket) to an Amazon Personalize dataset. For more information, see
+        <a>CreateDatasetImportJob</a>.</p> <p>A dataset import job can be in one
+        of the following states:</p> <ul> <li> <p>CREATE PENDING &gt; CREATE
+        IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li> </ul>
+    DatasetImportJobSummary:
+      type: object
+      properties:
+        datasetImportJobArn:
+          $ref: "#/components/schemas/Arn"
+        jobName:
+          $ref: "#/components/schemas/Name"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+        failureReason:
+          $ref: "#/components/schemas/FailureReason"
+      description: Provides a summary of the properties of a dataset import job. For a
+        complete listing, call the <a>DescribeDatasetImportJob</a> API.
+    DatasetImportJobs:
+      type: array
+      items:
+        $ref: "#/components/schemas/DatasetImportJobSummary"
+      maxItems: 100
+    DatasetSchema:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        schemaArn:
+          $ref: "#/components/schemas/Arn"
+        schema:
+          $ref: "#/components/schemas/AvroSchema"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: Describes the schema for a dataset. For more information on schemas, see
+        <a>CreateSchema</a>.
+    DatasetSchemaSummary:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        schemaArn:
+          $ref: "#/components/schemas/Arn"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: Provides a summary of the properties of a dataset schema. For a complete
+        listing, call the <a>DescribeSchema</a> API.
+    DatasetSummary:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        datasetArn:
+          $ref: "#/components/schemas/Arn"
+        datasetType:
+          $ref: "#/components/schemas/DatasetType"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: Provides a summary of the properties of a dataset. For a complete
+        listing, call the <a>DescribeDataset</a> API.
+    Datasets:
+      type: array
+      items:
+        $ref: "#/components/schemas/DatasetSummary"
+      maxItems: 100
+    Tunable:
+      type: boolean
+    DefaultCategoricalHyperParameterRange:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ParameterName"
+        values:
+          $ref: "#/components/schemas/CategoricalValues"
+        isTunable:
+          $ref: "#/components/schemas/Tunable"
+      description: Provides the name and default range of a categorical hyperparameter and
+        whether the hyperparameter is tunable. A tunable hyperparameter can have
+        its value determined during hyperparameter optimization (HPO).
+    DefaultCategoricalHyperParameterRanges:
+      type: array
+      items:
+        $ref: "#/components/schemas/DefaultCategoricalHyperParameterRange"
+      maxItems: 100
+    DefaultContinuousHyperParameterRange:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ParameterName"
+        minValue:
+          $ref: "#/components/schemas/ContinuousMinValue"
+        maxValue:
+          $ref: "#/components/schemas/ContinuousMaxValue"
+        isTunable:
+          $ref: "#/components/schemas/Tunable"
+      description: Provides the name and default range of a continuous hyperparameter and
+        whether the hyperparameter is tunable. A tunable hyperparameter can have
+        its value determined during hyperparameter optimization (HPO).
+    DefaultContinuousHyperParameterRanges:
+      type: array
+      items:
+        $ref: "#/components/schemas/DefaultContinuousHyperParameterRange"
+      maxItems: 100
+    DefaultIntegerHyperParameterRanges:
+      type: array
+      items:
+        $ref: "#/components/schemas/DefaultIntegerHyperParameterRange"
+      maxItems: 100
+    IntegerMinValue:
+      type: integer
+      minimum: -1000000
+    IntegerMaxValue:
+      type: integer
+      maximum: 1000000
+    DefaultIntegerHyperParameterRange:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ParameterName"
+        minValue:
+          $ref: "#/components/schemas/IntegerMinValue"
+        maxValue:
+          $ref: "#/components/schemas/IntegerMaxValue"
+        isTunable:
+          $ref: "#/components/schemas/Tunable"
+      description: Provides the name and default range of a integer-valued hyperparameter
+        and whether the hyperparameter is tunable. A tunable hyperparameter can
+        have its value determined during hyperparameter optimization (HPO).
+    EventTracker:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        eventTrackerArn:
+          $ref: "#/components/schemas/Arn"
+        accountId:
+          $ref: "#/components/schemas/AccountId"
+        trackingId:
+          $ref: "#/components/schemas/TrackingId"
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: Provides information about an event tracker.
+    FeatureTransformation:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        featureTransformationArn:
+          $ref: "#/components/schemas/Arn"
+        defaultParameters:
+          $ref: "#/components/schemas/FeaturizationParameters"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+        status:
+          $ref: "#/components/schemas/Status"
+      description: Provides feature transformation information. Feature transformation is
+        the process of modifying raw input data into a form more suitable for
+        model training.
+    Recipe:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        recipeArn:
+          $ref: "#/components/schemas/Arn"
+        algorithmArn:
+          $ref: "#/components/schemas/Arn"
+        featureTransformationArn:
+          $ref: "#/components/schemas/Arn"
+        status:
+          $ref: "#/components/schemas/Status"
+        description:
+          $ref: "#/components/schemas/Description"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        recipeType:
+          $ref: "#/components/schemas/RecipeType"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: "Provides information about a recipe. Each recipe provides an algorithm
+        that Amazon Personalize uses in model training when you use the
+        <a>CreateSolution</a> operation. "
+    Solution:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        solutionArn:
+          $ref: "#/components/schemas/Arn"
+        performHPO:
+          $ref: "#/components/schemas/PerformHPO"
+        performAutoML:
+          $ref: "#/components/schemas/PerformAutoML"
+        recipeArn:
+          $ref: "#/components/schemas/Arn"
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+        eventType:
+          $ref: "#/components/schemas/EventType"
+        solutionConfig:
+          $ref: "#/components/schemas/SolutionConfig"
+        autoMLResult:
+          $ref: "#/components/schemas/AutoMLResult"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+        latestSolutionVersion:
+          $ref: "#/components/schemas/SolutionVersionSummary"
+      description: An object that provides information about a solution. A solution is a
+        trained model that can be deployed as a campaign.
+    SolutionVersion:
+      type: object
+      properties:
+        solutionVersionArn:
+          $ref: "#/components/schemas/Arn"
+        solutionArn:
+          $ref: "#/components/schemas/Arn"
+        performHPO:
+          $ref: "#/components/schemas/PerformHPO"
+        performAutoML:
+          $ref: "#/components/schemas/PerformAutoML"
+        recipeArn:
+          $ref: "#/components/schemas/Arn"
+        eventType:
+          $ref: "#/components/schemas/EventType"
+        datasetGroupArn:
+          $ref: "#/components/schemas/Arn"
+        solutionConfig:
+          $ref: "#/components/schemas/SolutionConfig"
+        trainingHours:
+          $ref: "#/components/schemas/TrainingHours"
+        status:
+          $ref: "#/components/schemas/Status"
+        failureReason:
+          $ref: "#/components/schemas/FailureReason"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: An object that provides information about a specific version of a
+        <a>Solution</a>.
+    Description:
+      type: string
+    EventTrackerSummary:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        eventTrackerArn:
+          $ref: "#/components/schemas/Arn"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: Provides a summary of the properties of an event tracker. For a complete
+        listing, call the <a>DescribeEventTracker</a> API.
+    EventTrackers:
+      type: array
+      items:
+        $ref: "#/components/schemas/EventTrackerSummary"
+      maxItems: 100
+    EventValueThreshold:
+      type: string
+      maxLength: 256
+    FeaturizationParameters:
+      type: object
+      maxProperties: 100
+      additionalProperties:
+        $ref: "#/components/schemas/ParameterValue"
+    ParameterValue:
+      type: string
+      maxLength: 1000
+    FeatureTransformationParameters:
+      type: object
+      maxProperties: 100
+      additionalProperties:
+        $ref: "#/components/schemas/ParameterValue"
+    Metrics:
+      type: object
+      maxProperties: 100
+      additionalProperties:
+        $ref: "#/components/schemas/MetricValue"
+    HPOObjective:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/HPOObjectiveType"
+        metricName:
+          $ref: "#/components/schemas/MetricName"
+        metricRegex:
+          $ref: "#/components/schemas/MetricRegex"
+      description: The metric to optimize during hyperparameter optimization (HPO).
+    HPOResourceConfig:
+      type: object
+      properties:
+        maxNumberOfTrainingJobs:
+          $ref: "#/components/schemas/HPOResource"
+        maxParallelTrainingJobs:
+          $ref: "#/components/schemas/HPOResource"
+      description: Describes the resource configuration for hyperparameter optimization
+        (HPO).
+    HyperParameterRanges:
+      type: object
+      properties:
+        integerHyperParameterRanges:
+          $ref: "#/components/schemas/IntegerHyperParameterRanges"
+        continuousHyperParameterRanges:
+          $ref: "#/components/schemas/ContinuousHyperParameterRanges"
+        categoricalHyperParameterRanges:
+          $ref: "#/components/schemas/CategoricalHyperParameterRanges"
+      description: Specifies the hyperparameters and their ranges. Hyperparameters can be
+        categorical, continuous, or integer-valued.
+    HPOConfig:
+      type: object
+      properties:
+        hpoObjective:
+          $ref: "#/components/schemas/HPOObjective"
+        hpoResourceConfig:
+          $ref: "#/components/schemas/HPOResourceConfig"
+        algorithmHyperParameterRanges:
+          $ref: "#/components/schemas/HyperParameterRanges"
+      description: Describes the properties for hyperparameter optimization (HPO). For use
+        with the bring-your-own-recipe feature. Do not use for Amazon
+        Personalize native recipes.
+    HPOObjectiveType:
+      type: string
+      maxLength: 256
+    MetricRegex:
+      type: string
+      maxLength: 256
+    HPOResource:
+      type: string
+      maxLength: 256
+    IntegerHyperParameterRanges:
+      type: array
+      items:
+        $ref: "#/components/schemas/IntegerHyperParameterRange"
+      maxItems: 100
+    IntegerHyperParameterRange:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ParameterName"
+        minValue:
+          $ref: "#/components/schemas/IntegerMinValue"
+        maxValue:
+          $ref: "#/components/schemas/IntegerMaxValue"
+      description: Provides the name and range of an integer-valued hyperparameter.
+    NextToken:
+      type: string
+      maxLength: 1300
+    MaxResults:
+      type: integer
+      minimum: 1
+      maximum: 100
+    RecipeProvider:
+      type: string
+      enum:
+        - SERVICE
+    Recipes:
+      type: array
+      items:
+        $ref: "#/components/schemas/RecipeSummary"
+      maxItems: 100
+    Schemas:
+      type: array
+      items:
+        $ref: "#/components/schemas/DatasetSchemaSummary"
+      maxItems: 100
+    SolutionVersions:
+      type: array
+      items:
+        $ref: "#/components/schemas/SolutionVersionSummary"
+      maxItems: 100
+    Solutions:
+      type: array
+      items:
+        $ref: "#/components/schemas/SolutionSummary"
+      maxItems: 100
+    MetricValue:
+      type: number
+      format: double
+    PerformHPO:
+      type: boolean
+    RecipeType:
+      type: string
+      maxLength: 256
+    RecipeSummary:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        recipeArn:
+          $ref: "#/components/schemas/Arn"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: Provides a summary of the properties of a recipe. For a complete
+        listing, call the <a>DescribeRecipe</a> API.
+    SolutionVersionSummary:
+      type: object
+      properties:
+        solutionVersionArn:
+          $ref: "#/components/schemas/Arn"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+        failureReason:
+          $ref: "#/components/schemas/FailureReason"
+      description: Provides a summary of the properties of a solution version. For a
+        complete listing, call the <a>DescribeSolutionVersion</a> API.
+    SolutionSummary:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/Name"
+        solutionArn:
+          $ref: "#/components/schemas/Arn"
+        status:
+          $ref: "#/components/schemas/Status"
+        creationDateTime:
+          $ref: "#/components/schemas/Date"
+        lastUpdatedDateTime:
+          $ref: "#/components/schemas/Date"
+      description: Provides a summary of the properties of a solution. For a complete
+        listing, call the <a>DescribeSolution</a> API.
+    TrainingHours:
+      type: number
+      format: double
+      minimum: 0

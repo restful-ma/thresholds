@@ -1,0 +1,1265 @@
+openapi: 3.0.0
+info:
+  version: 2018-06-27
+  x-release: v4
+  title: Amazon Textract
+  description: Amazon Textract detects and analyzes text in documents and converts it into
+    machine-readable text. This is the API reference documentation for Amazon
+    Textract.
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: textract
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/textract-2018-06-27.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/textract/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  /#X-Amz-Target=Textract.AnalyzeDocument:
+    post:
+      operationId: AnalyzeDocument
+      description: '<p>Analyzes an input document for relationships between detected items.
+        </p> <p>The types of information returned are as follows: </p> <ul> <li>
+        <p>Words and lines that are related to nearby lines and words. The
+        related information is returned in two <a>Block</a> objects each of type
+        <code>KEY_VALUE_SET</code>: a KEY Block object and a VALUE Block object.
+        For example, <i>Name: Ana Silva Carolina</i> contains a key and value.
+        <i>Name:</i> is the key. <i>Ana Silva Carolina</i> is the value.</p>
+        </li> <li> <p>Table and table cell data. A TABLE Block object contains
+        information about a detected table. A CELL Block object is returned for
+        each cell in a table.</p> </li> <li> <p>Selectable elements such as
+        checkboxes and radio buttons. A SELECTION_ELEMENT Block object contains
+        information about a selectable element.</p> </li> <li> <p>Lines and
+        words of text. A LINE Block object contains one or more WORD Block
+        objects.</p> </li> </ul> <p>You can choose which type of analysis to
+        perform by specifying the <code>FeatureTypes</code> list. </p> <p>The
+        output is returned in a list of <code>BLOCK</code> objects.</p> <p>
+        <code>AnalyzeDocument</code> is a synchronous operation. To analyze
+        documents asynchronously, use <a>StartDocumentAnalysis</a>.</p> <p>For
+        more information, see <a
+        href="https://docs.aws.amazon.com/textract/latest/dg/how-it-works-analyzing.html">Document
+        Text Analysis</a>.</p>'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyzeDocumentResponse"
+        "480":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "481":
+          description: InvalidS3ObjectException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidS3ObjectException"
+        "482":
+          description: UnsupportedDocumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnsupportedDocumentException"
+        "483":
+          description: DocumentTooLargeException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentTooLargeException"
+        "484":
+          description: BadDocumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadDocumentException"
+        "485":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "486":
+          description: ProvisionedThroughputExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisionedThroughputExceededException"
+        "487":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+        "488":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Textract.AnalyzeDocument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnalyzeDocumentRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Textract.DetectDocumentText:
+    post:
+      operationId: DetectDocumentText
+      description: <p>Detects text in the input document. Amazon Textract can detect lines
+        of text and the words that make up a line of text. The input document
+        must be an image in JPG or PNG format. <code>DetectDocumentText</code>
+        returns the detected text in an array of <a>Block</a> objects. </p>
+        <p>Each document page has as an associated <code>Block</code> of type
+        PAGE. Each PAGE <code>Block</code> object is the parent of LINE
+        <code>Block</code> objects that represent the lines of detected text on
+        a page. A LINE <code>Block</code> object is a parent for each word that
+        makes up the line. Words are represented by <code>Block</code> objects
+        of type WORD.</p> <p> <code>DetectDocumentText</code> is a synchronous
+        operation. To analyze documents asynchronously, use
+        <a>StartDocumentTextDetection</a>.</p> <p>For more information, see <a
+        href="https://docs.aws.amazon.com/textract/latest/dg/how-it-works-detecting.html">Document
+        Text Detection</a>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DetectDocumentTextResponse"
+        "480":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "481":
+          description: InvalidS3ObjectException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidS3ObjectException"
+        "482":
+          description: UnsupportedDocumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnsupportedDocumentException"
+        "483":
+          description: DocumentTooLargeException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentTooLargeException"
+        "484":
+          description: BadDocumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadDocumentException"
+        "485":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "486":
+          description: ProvisionedThroughputExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisionedThroughputExceededException"
+        "487":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+        "488":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Textract.DetectDocumentText
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DetectDocumentTextRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Textract.GetDocumentAnalysis:
+    post:
+      operationId: GetDocumentAnalysis
+      description: "<p>Gets the results for an Amazon Textract asynchronous operation that
+        analyzes text in a document.</p> <p>You start asynchronous text analysis
+        by calling <a>StartDocumentAnalysis</a>, which returns a job identifier
+        (<code>JobId</code>). When the text analysis operation finishes, Amazon
+        Textract publishes a completion status to the Amazon Simple Notification
+        Service (Amazon SNS) topic that's registered in the initial call to
+        <code>StartDocumentAnalysis</code>. To get the results of the
+        text-detection operation, first check that the status value published to
+        the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call
+        <code>GetDocumentAnalysis</code>, and pass the job identifier
+        (<code>JobId</code>) from the initial call to
+        <code>StartDocumentAnalysis</code>.</p> <p>
+        <code>GetDocumentAnalysis</code> returns an array of <a>Block</a>
+        objects. The following types of information are returned: </p> <ul> <li>
+        <p>Words and lines that are related to nearby lines and words. The
+        related information is returned in two <a>Block</a> objects each of type
+        <code>KEY_VALUE_SET</code>: a KEY Block object and a VALUE Block object.
+        For example, <i>Name: Ana Silva Carolina</i> contains a key and value.
+        <i>Name:</i> is the key. <i>Ana Silva Carolina</i> is the value.</p>
+        </li> <li> <p>Table and table cell data. A TABLE Block object contains
+        information about a detected table. A CELL Block object is returned for
+        each cell in a table.</p> </li> <li> <p>Selectable elements such as
+        checkboxes and radio buttons. A SELECTION_ELEMENT Block object contains
+        information about a selectable element.</p> </li> <li> <p>Lines and
+        words of text. A LINE Block object contains one or more WORD Block
+        objects.</p> </li> </ul> <p>Use the <code>MaxResults</code> parameter to
+        limit the number of blocks returned. If there are more results than
+        specified in <code>MaxResults</code>, the value of
+        <code>NextToken</code> in the operation response contains a pagination
+        token for getting the next set of results. To get the next page of
+        results, call <code>GetDocumentAnalysis</code>, and populate the
+        <code>NextToken</code> request parameter with the token value that's
+        returned from the previous call to <code>GetDocumentAnalysis</code>.</p>
+        <p>For more information, see <a
+        href=\"https://docs.aws.amazon.com/textract/latest/dg/how-it-works-anal\
+        yzing.html\">Document Text Analysis</a>.</p>"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetDocumentAnalysisResponse"
+        "480":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ProvisionedThroughputExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisionedThroughputExceededException"
+        "483":
+          description: InvalidJobIdException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidJobIdException"
+        "484":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+        "485":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Textract.GetDocumentAnalysis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetDocumentAnalysisRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Textract.GetDocumentTextDetection:
+    post:
+      operationId: GetDocumentTextDetection
+      description: <p>Gets the results for an Amazon Textract asynchronous operation that
+        detects text in a document. Amazon Textract can detect lines of text and
+        the words that make up a line of text.</p> <p>You start asynchronous
+        text detection by calling <a>StartDocumentTextDetection</a>, which
+        returns a job identifier (<code>JobId</code>). When the text detection
+        operation finishes, Amazon Textract publishes a completion status to the
+        Amazon Simple Notification Service (Amazon SNS) topic that's registered
+        in the initial call to <code>StartDocumentTextDetection</code>. To get
+        the results of the text-detection operation, first check that the status
+        value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If
+        so, call <code>GetDocumentTextDetection</code>, and pass the job
+        identifier (<code>JobId</code>) from the initial call to
+        <code>StartDocumentTextDetection</code>.</p> <p>
+        <code>GetDocumentTextDetection</code> returns an array of <a>Block</a>
+        objects. </p> <p>Each document page has as an associated
+        <code>Block</code> of type PAGE. Each PAGE <code>Block</code> object is
+        the parent of LINE <code>Block</code> objects that represent the lines
+        of detected text on a page. A LINE <code>Block</code> object is a parent
+        for each word that makes up the line. Words are represented by
+        <code>Block</code> objects of type WORD.</p> <p>Use the MaxResults
+        parameter to limit the number of blocks that are returned. If there are
+        more results than specified in <code>MaxResults</code>, the value of
+        <code>NextToken</code> in the operation response contains a pagination
+        token for getting the next set of results. To get the next page of
+        results, call <code>GetDocumentTextDetection</code>, and populate the
+        <code>NextToken</code> request parameter with the token value that's
+        returned from the previous call to
+        <code>GetDocumentTextDetection</code>.</p> <p>For more information, see
+        <a
+        href="https://docs.aws.amazon.com/textract/latest/dg/how-it-works-detecting.html">Document
+        Text Detection</a>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetDocumentTextDetectionResponse"
+        "480":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "482":
+          description: ProvisionedThroughputExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisionedThroughputExceededException"
+        "483":
+          description: InvalidJobIdException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidJobIdException"
+        "484":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+        "485":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Textract.GetDocumentTextDetection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetDocumentTextDetectionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Textract.StartDocumentAnalysis:
+    post:
+      operationId: StartDocumentAnalysis
+      description: <p>Starts asynchronous analysis of an input document for relationships
+        between detected items such as key and value pairs, tables, and
+        selection elements.</p> <p> <code>StartDocumentAnalysis</code> can
+        analyze text in documents that are in JPG, PNG, and PDF format. The
+        documents are stored in an Amazon S3 bucket. Use <a>DocumentLocation</a>
+        to specify the bucket name and file name of the document. </p> <p>
+        <code>StartDocumentAnalysis</code> returns a job identifier
+        (<code>JobId</code>) that you use to get the results of the operation.
+        When text analysis is finished, Amazon Textract publishes a completion
+        status to the Amazon Simple Notification Service (Amazon SNS) topic that
+        you specify in <code>NotificationChannel</code>. To get the results of
+        the text analysis operation, first check that the status value published
+        to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call
+        <a>GetDocumentAnalysis</a>, and pass the job identifier
+        (<code>JobId</code>) from the initial call to
+        <code>StartDocumentAnalysis</code>.</p> <p>For more information, see <a
+        href="https://docs.aws.amazon.com/textract/latest/dg/how-it-works-analyzing.html">Document
+        Text Analysis</a>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartDocumentAnalysisResponse"
+        "480":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "481":
+          description: InvalidS3ObjectException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidS3ObjectException"
+        "482":
+          description: UnsupportedDocumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnsupportedDocumentException"
+        "483":
+          description: DocumentTooLargeException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentTooLargeException"
+        "484":
+          description: BadDocumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadDocumentException"
+        "485":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "486":
+          description: ProvisionedThroughputExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisionedThroughputExceededException"
+        "487":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+        "488":
+          description: IdempotentParameterMismatchException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdempotentParameterMismatchException"
+        "489":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "490":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Textract.StartDocumentAnalysis
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartDocumentAnalysisRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Textract.StartDocumentTextDetection:
+    post:
+      operationId: StartDocumentTextDetection
+      description: <p>Starts the asynchronous detection of text in a document. Amazon
+        Textract can detect lines of text and the words that make up a line of
+        text.</p> <p> <code>StartDocumentTextDetection</code> can analyze text
+        in documents that are in JPG, PNG, and PDF format. The documents are
+        stored in an Amazon S3 bucket. Use <a>DocumentLocation</a> to specify
+        the bucket name and file name of the document. </p> <p>
+        <code>StartTextDetection</code> returns a job identifier
+        (<code>JobId</code>) that you use to get the results of the operation.
+        When text detection is finished, Amazon Textract publishes a completion
+        status to the Amazon Simple Notification Service (Amazon SNS) topic that
+        you specify in <code>NotificationChannel</code>. To get the results of
+        the text detection operation, first check that the status value
+        published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call
+        <a>GetDocumentTextDetection</a>, and pass the job identifier
+        (<code>JobId</code>) from the initial call to
+        <code>StartDocumentTextDetection</code>.</p> <p>For more information,
+        see <a
+        href="https://docs.aws.amazon.com/textract/latest/dg/how-it-works-detecting.html">Document
+        Text Detection</a>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartDocumentTextDetectionResponse"
+        "480":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "481":
+          description: InvalidS3ObjectException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidS3ObjectException"
+        "482":
+          description: UnsupportedDocumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnsupportedDocumentException"
+        "483":
+          description: DocumentTooLargeException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentTooLargeException"
+        "484":
+          description: BadDocumentException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadDocumentException"
+        "485":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+        "486":
+          description: ProvisionedThroughputExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisionedThroughputExceededException"
+        "487":
+          description: InternalServerError
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+        "488":
+          description: IdempotentParameterMismatchException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdempotentParameterMismatchException"
+        "489":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "490":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Textract.StartDocumentTextDetection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartDocumentTextDetectionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://textract.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Amazon Textract multi-region endpoint
+  - url: https://textract.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Amazon Textract multi-region endpoint
+  - url: http://textract.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Amazon Textract endpoint for China (Beijing) and China (Ningxia)
+  - url: https://textract.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Amazon Textract endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    AnalyzeDocumentResponse:
+      type: object
+      properties:
+        DocumentMetadata:
+          $ref: "#/components/schemas/DocumentMetadata"
+        Blocks:
+          $ref: "#/components/schemas/BlockList"
+    AnalyzeDocumentRequest:
+      type: object
+      required:
+        - Document
+        - FeatureTypes
+      properties:
+        Document:
+          $ref: "#/components/schemas/Document"
+        FeatureTypes:
+          $ref: "#/components/schemas/FeatureTypes"
+    InvalidParameterException: {}
+    InvalidS3ObjectException: {}
+    UnsupportedDocumentException: {}
+    DocumentTooLargeException: {}
+    BadDocumentException: {}
+    AccessDeniedException: {}
+    ProvisionedThroughputExceededException: {}
+    InternalServerError: {}
+    ThrottlingException: {}
+    DetectDocumentTextResponse:
+      type: object
+      properties:
+        DocumentMetadata:
+          $ref: "#/components/schemas/DocumentMetadata"
+        Blocks:
+          $ref: "#/components/schemas/BlockList"
+    DetectDocumentTextRequest:
+      type: object
+      required:
+        - Document
+      properties:
+        Document:
+          $ref: "#/components/schemas/Document"
+    GetDocumentAnalysisResponse:
+      type: object
+      properties:
+        DocumentMetadata:
+          $ref: "#/components/schemas/DocumentMetadata"
+        JobStatus:
+          $ref: "#/components/schemas/JobStatus"
+        NextToken:
+          $ref: "#/components/schemas/PaginationToken"
+        Blocks:
+          $ref: "#/components/schemas/BlockList"
+        Warnings:
+          $ref: "#/components/schemas/Warnings"
+        StatusMessage:
+          $ref: "#/components/schemas/StatusMessage"
+    GetDocumentAnalysisRequest:
+      type: object
+      required:
+        - JobId
+      properties:
+        JobId:
+          $ref: "#/components/schemas/JobId"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        NextToken:
+          $ref: "#/components/schemas/PaginationToken"
+    InvalidJobIdException: {}
+    GetDocumentTextDetectionResponse:
+      type: object
+      properties:
+        DocumentMetadata:
+          $ref: "#/components/schemas/DocumentMetadata"
+        JobStatus:
+          $ref: "#/components/schemas/JobStatus"
+        NextToken:
+          $ref: "#/components/schemas/PaginationToken"
+        Blocks:
+          $ref: "#/components/schemas/BlockList"
+        Warnings:
+          $ref: "#/components/schemas/Warnings"
+        StatusMessage:
+          $ref: "#/components/schemas/StatusMessage"
+    GetDocumentTextDetectionRequest:
+      type: object
+      required:
+        - JobId
+      properties:
+        JobId:
+          $ref: "#/components/schemas/JobId"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        NextToken:
+          $ref: "#/components/schemas/PaginationToken"
+    StartDocumentAnalysisResponse:
+      type: object
+      properties:
+        JobId:
+          $ref: "#/components/schemas/JobId"
+    StartDocumentAnalysisRequest:
+      type: object
+      required:
+        - DocumentLocation
+        - FeatureTypes
+      properties:
+        DocumentLocation:
+          $ref: "#/components/schemas/DocumentLocation"
+        FeatureTypes:
+          $ref: "#/components/schemas/FeatureTypes"
+        ClientRequestToken:
+          $ref: "#/components/schemas/ClientRequestToken"
+        JobTag:
+          $ref: "#/components/schemas/JobTag"
+        NotificationChannel:
+          $ref: "#/components/schemas/NotificationChannel"
+    IdempotentParameterMismatchException: {}
+    LimitExceededException: {}
+    StartDocumentTextDetectionResponse:
+      type: object
+      properties:
+        JobId:
+          $ref: "#/components/schemas/JobId"
+    StartDocumentTextDetectionRequest:
+      type: object
+      required:
+        - DocumentLocation
+      properties:
+        DocumentLocation:
+          $ref: "#/components/schemas/DocumentLocation"
+        ClientRequestToken:
+          $ref: "#/components/schemas/ClientRequestToken"
+        JobTag:
+          $ref: "#/components/schemas/JobTag"
+        NotificationChannel:
+          $ref: "#/components/schemas/NotificationChannel"
+    Document:
+      type: object
+      properties:
+        Bytes:
+          $ref: "#/components/schemas/ImageBlob"
+        S3Object:
+          $ref: "#/components/schemas/S3Object"
+      description: <p>The input document, either as bytes or as an S3 object.</p> <p>You
+        pass image bytes to an Amazon Textract API operation by using the
+        <code>Bytes</code> property. For example, you would use the
+        <code>Bytes</code> property to pass a document loaded from a local file
+        system. Image bytes passed by using the <code>Bytes</code> property must
+        be base64 encoded. Your code might not need to encode document file
+        bytes if you're using an AWS SDK to call Amazon Textract API operations.
+        </p> <p>You pass images stored in an S3 bucket to an Amazon Textract API
+        operation by using the <code>S3Object</code> property. Documents stored
+        in an S3 bucket don't need to be base64 encoded.</p> <p>The AWS Region
+        for the S3 bucket that contains the S3 object must match the AWS Region
+        that you use for Amazon Textract operations.</p> <p>If you use the AWS
+        CLI to call Amazon Textract operations, passing image bytes using the
+        Bytes property isn't supported. You must first upload the document to an
+        Amazon S3 bucket, and then call the operation using the S3Object
+        property.</p> <p>For Amazon Textract to process an S3 object, the user
+        must have permission to access the S3 object. </p>
+    FeatureTypes:
+      type: array
+      items:
+        $ref: "#/components/schemas/FeatureType"
+    DocumentMetadata:
+      type: object
+      properties:
+        Pages:
+          $ref: "#/components/schemas/UInteger"
+      description: Information about the input document.
+    BlockList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Block"
+    BlockType:
+      type: string
+      enum:
+        - KEY_VALUE_SET
+        - PAGE
+        - LINE
+        - WORD
+        - TABLE
+        - CELL
+        - SELECTION_ELEMENT
+    Percent:
+      type: number
+      format: float
+      minimum: 0
+      maximum: 100
+    String:
+      type: string
+    UInteger:
+      type: integer
+      minimum: 0
+    Geometry:
+      type: object
+      properties:
+        BoundingBox:
+          $ref: "#/components/schemas/BoundingBox"
+        Polygon:
+          $ref: "#/components/schemas/Polygon"
+      description: Information about where a recognized text, key, value, table, or table
+        cell is located on a document page.
+    NonEmptyString:
+      type: string
+      pattern: .*\S.*
+    RelationshipList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Relationship"
+    EntityTypes:
+      type: array
+      items:
+        $ref: "#/components/schemas/EntityType"
+    SelectionStatus:
+      type: string
+      enum:
+        - SELECTED
+        - NOT_SELECTED
+    Block:
+      type: object
+      properties:
+        BlockType:
+          $ref: "#/components/schemas/BlockType"
+        Confidence:
+          $ref: "#/components/schemas/Percent"
+        Text:
+          $ref: "#/components/schemas/String"
+        RowIndex:
+          $ref: "#/components/schemas/UInteger"
+        ColumnIndex:
+          $ref: "#/components/schemas/UInteger"
+        RowSpan:
+          $ref: "#/components/schemas/UInteger"
+        ColumnSpan:
+          $ref: "#/components/schemas/UInteger"
+        Geometry:
+          $ref: "#/components/schemas/Geometry"
+        Id:
+          $ref: "#/components/schemas/NonEmptyString"
+        Relationships:
+          $ref: "#/components/schemas/RelationshipList"
+        EntityTypes:
+          $ref: "#/components/schemas/EntityTypes"
+        SelectionStatus:
+          $ref: "#/components/schemas/SelectionStatus"
+        Page:
+          $ref: "#/components/schemas/UInteger"
+      description: <p>A <code>Block</code> represents items that are recognized in a
+        document within a group of pixels close to each other. The information
+        returned in a <code>Block</code> depends on the type of operation. In
+        document-text detection (for example <a>DetectDocumentText</a>), you get
+        information about the detected words and lines of text. In text analysis
+        (for example <a>AnalyzeDocument</a>), you can also get information about
+        the fields, tables and selection elements that are detected in the
+        document.</p> <p>An array of <code>Block</code> objects is returned by
+        both synchronous and asynchronous operations. In synchronous operations,
+        such as <a>DetectDocumentText</a>, the array of <code>Block</code>
+        objects is the entire set of results. In asynchronous operations, such
+        as <a>GetDocumentAnalysis</a>, the array is returned over one or more
+        responses.</p> <p>For more information, see <a
+        href="https://docs.aws.amazon.com/textract/latest/dg/how-it-works.html">How
+        Amazon Textract Works</a>.</p>
+    Float:
+      type: number
+      format: float
+    BoundingBox:
+      type: object
+      properties:
+        Width:
+          $ref: "#/components/schemas/Float"
+        Height:
+          $ref: "#/components/schemas/Float"
+        Left:
+          $ref: "#/components/schemas/Float"
+        Top:
+          $ref: "#/components/schemas/Float"
+      description: <p>The bounding box around the recognized text, key, value, table or
+        table cell on a document page. The <code>left</code> (x-coordinate) and
+        <code>top</code> (y-coordinate) are coordinates that represent the top
+        and left sides of the bounding box. Note that the upper-left corner of
+        the image is the origin (0,0). </p> <p>The <code>top</code> and
+        <code>left</code> values returned are ratios of the overall document
+        page size. For example, if the input image is 700 x 200 pixels, and the
+        top-left coordinate of the bounding box is 350 x 50 pixels, the API
+        returns a <code>left</code> value of 0.5 (350/700) and a
+        <code>top</code> value of 0.25 (50/200).</p> <p>The <code>width</code>
+        and <code>height</code> values represent the dimensions of the bounding
+        box as a ratio of the overall document page dimension. For example, if
+        the document page size is 700 x 200 pixels, and the bounding box width
+        is 70 pixels, the width returned is 0.1. </p>
+    ClientRequestToken:
+      type: string
+      pattern: ^[a-zA-Z0-9-_]+$
+      minLength: 1
+      maxLength: 64
+    ImageBlob:
+      type: string
+      minLength: 1
+      maxLength: 5242880
+    S3Object:
+      type: object
+      properties:
+        Bucket:
+          $ref: "#/components/schemas/S3Bucket"
+        Name:
+          $ref: "#/components/schemas/S3ObjectName"
+        Version:
+          $ref: "#/components/schemas/S3ObjectVersion"
+      description: <p>The S3 bucket name and file name that identifies the document.</p>
+        <p>The AWS Region for the S3 bucket that contains the document must
+        match the Region that you use for Amazon Textract operations.</p> <p>For
+        Amazon Textract to process a file in an S3 bucket, the user must have
+        permission to access the S3 bucket and file. </p>
+    DocumentLocation:
+      type: object
+      properties:
+        S3Object:
+          $ref: "#/components/schemas/S3Object"
+      description: <p>The Amazon S3 bucket that contains the document to be processed. It's
+        used by asynchronous operations such as
+        <a>StartDocumentTextDetection</a>.</p> <p>The input document can be an
+        image file in JPG or PNG format. It can also be a file in PDF
+        format.</p>
+    EntityType:
+      type: string
+      enum:
+        - KEY
+        - VALUE
+    ErrorCode:
+      type: string
+    FeatureType:
+      type: string
+      enum:
+        - TABLES
+        - FORMS
+    Polygon:
+      type: array
+      items:
+        $ref: "#/components/schemas/Point"
+    JobId:
+      type: string
+      pattern: ^[a-zA-Z0-9-_]+$
+      minLength: 1
+      maxLength: 64
+    MaxResults:
+      type: integer
+      minimum: 1
+    PaginationToken:
+      type: string
+      pattern: .*\S.*
+      minLength: 1
+      maxLength: 255
+    JobStatus:
+      type: string
+      enum:
+        - IN_PROGRESS
+        - SUCCEEDED
+        - FAILED
+        - PARTIAL_SUCCESS
+    Warnings:
+      type: array
+      items:
+        $ref: "#/components/schemas/Warning"
+    StatusMessage:
+      type: string
+    IdList:
+      type: array
+      items:
+        $ref: "#/components/schemas/NonEmptyString"
+    JobTag:
+      type: string
+      pattern: "[a-zA-Z0-9_.\\-:]+"
+      minLength: 1
+      maxLength: 64
+    SNSTopicArn:
+      type: string
+      pattern: (^arn:([a-z\d-]+):sns:[a-zA-Z\d-]{1,20}:\w{12}:.+$)
+      minLength: 20
+      maxLength: 1024
+    RoleArn:
+      type: string
+      pattern: arn:([a-z\d-]+):iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+
+      minLength: 20
+      maxLength: 2048
+    NotificationChannel:
+      type: object
+      required:
+        - SNSTopicArn
+        - RoleArn
+      properties:
+        SNSTopicArn:
+          $ref: "#/components/schemas/SNSTopicArn"
+        RoleArn:
+          $ref: "#/components/schemas/RoleArn"
+      description: "The Amazon Simple Notification Service (Amazon SNS) topic to which
+        Amazon Textract publishes the completion status of an asynchronous
+        document operation, such as <a>StartDocumentTextDetection</a>. "
+    Pages:
+      type: array
+      items:
+        $ref: "#/components/schemas/UInteger"
+    Point:
+      type: object
+      properties:
+        X:
+          $ref: "#/components/schemas/Float"
+        Y:
+          $ref: "#/components/schemas/Float"
+      description: <p>The X and Y coordinates of a point on a document page. The X and Y
+        values returned are ratios of the overall document page size. For
+        example, if the input document is 700 x 200 and the operation returns
+        X=0.5 and Y=0.25, then the point is at the (350,50) pixel coordinate on
+        the document page.</p> <p>An array of <code>Point</code> objects,
+        <code>Polygon</code>, is returned by <a>DetectDocumentText</a>.
+        <code>Polygon</code> represents a fine-grained polygon around detected
+        text. For more information, see Geometry in the Amazon Textract
+        Developer Guide. </p>
+    RelationshipType:
+      type: string
+      enum:
+        - VALUE
+        - CHILD
+    Relationship:
+      type: object
+      properties:
+        Type:
+          $ref: "#/components/schemas/RelationshipType"
+        Ids:
+          $ref: "#/components/schemas/IdList"
+      description: <p>Information about how blocks are related to each other. A
+        <code>Block</code> object contains 0 or more <code>Relation</code>
+        objects in a list, <code>Relationships</code>. For more information, see
+        <a>Block</a>.</p> <p>The <code>Type</code> element provides the type of
+        the relationship for all blocks in the <code>IDs</code> array. </p>
+    S3Bucket:
+      type: string
+      pattern: "[0-9A-Za-z\\.\\-_]*"
+      minLength: 3
+      maxLength: 255
+    S3ObjectName:
+      type: string
+      pattern: .*\S.*
+      minLength: 1
+      maxLength: 1024
+    S3ObjectVersion:
+      type: string
+      pattern: .*\S.*
+      minLength: 1
+      maxLength: 1024
+    Warning:
+      type: object
+      properties:
+        ErrorCode:
+          $ref: "#/components/schemas/ErrorCode"
+        Pages:
+          $ref: "#/components/schemas/Pages"
+      description: "A warning about an issue that occurred during asynchronous text
+        analysis (<a>StartDocumentAnalysis</a>) or asynchronous document-text
+        detection (<a>StartDocumentTextDetection</a>). "

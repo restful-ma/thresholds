@@ -1,0 +1,1344 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2015-05-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/syncGroups.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: sql-syncGroups
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/syncDatabaseIds":
+    get:
+      description: Gets a collection of sync database ids.
+      operationId: SyncGroups_ListSyncDatabaseIds
+      parameters:
+        - description: The name of the region where the resource is located.
+          in: path
+          name: locationName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a sync database ID:
+              value: westus
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved collection of sync database ids.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncDatabaseIdListResult"
+              examples:
+                Get a sync database ID:
+                  $ref: "#/components/examples/Get_a_sync_database_ID"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidSyncGroupCreateOrUpdateRequest - The create or update sync group request body is empty.
+
+             * 400 InvalidSyncMemberCreateOrUpdateRequest - The create or update sync member request body is empty.
+
+             * 400 InvalidSyncAgentCreateOrUpdateRequest - The create or update sync agent request body is empty.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 InvalidSyncAgentResourceId - Invalid sync agent resource identifier.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+      tags:
+        - SyncGroups
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups":
+    get:
+      description: Lists sync groups under a hub database.
+      operationId: SyncGroups_ListByDatabase
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database on which the sync group is hosted.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            List sync groups under a given database:
+              value: syncgroupcrud-4328
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of sync groups.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncGroupListResult"
+              examples:
+                List sync groups under a given database:
+                  $ref: "#/components/examples/List_sync_groups_under_a_given_datab\
+                    ase"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidSyncGroupCreateOrUpdateRequest - The create or update sync group request body is empty.
+
+             * 400 InvalidSyncMemberCreateOrUpdateRequest - The create or update sync member request body is empty.
+
+             * 400 InvalidSyncAgentCreateOrUpdateRequest - The create or update sync agent request body is empty.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 InvalidSyncAgentResourceId - Invalid sync agent resource identifier.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidSyncGroup - Sync group is invalid.
+
+             * 400 InvalidSyncMetadataDatabase - Sync metadata database is invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 409 CannotCreateSyncGroupDueToQuotaExceeded - Cannot create sync group due to quota exceeded.
+      tags:
+        - SyncGroups
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}":
+    delete:
+      description: Deletes a sync group.
+      operationId: SyncGroups_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database on which the sync group is hosted.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a sync group:
+              value: syncgroupcrud-4328
+        - description: The name of the sync group.
+          in: path
+          name: syncGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete a sync group:
+              value: syncgroupcrud-3187
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully deleted the sync group.
+        "202":
+          description: Deleting the sync group is in progress.
+        "204":
+          description: The specified sync group does not exist.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidSyncGroupCreateOrUpdateRequest - The create or update sync group request body is empty.
+
+             * 400 InvalidSyncMemberCreateOrUpdateRequest - The create or update sync member request body is empty.
+
+             * 400 InvalidSyncAgentCreateOrUpdateRequest - The create or update sync agent request body is empty.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 InvalidSyncAgentResourceId - Invalid sync agent resource identifier.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidSyncGroup - Sync group is invalid.
+
+             * 400 InvalidSyncMetadataDatabase - Sync metadata database is invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 409 CannotCreateSyncGroupDueToQuotaExceeded - Cannot create sync group due to quota exceeded.
+      tags:
+        - SyncGroups
+      x-ms-long-running-operation: true
+    get:
+      description: Gets a sync group.
+      operationId: SyncGroups_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database on which the sync group is hosted.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a sync group:
+              value: syncgroupcrud-4328
+        - description: The name of the sync group.
+          in: path
+          name: syncGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a sync group:
+              value: syncgroupcrud-3187
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the specified sync group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncGroup"
+              examples:
+                Get a sync group:
+                  $ref: "#/components/examples/Get_a_sync_group"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidSyncGroupCreateOrUpdateRequest - The create or update sync group request body is empty.
+
+             * 400 InvalidSyncMemberCreateOrUpdateRequest - The create or update sync member request body is empty.
+
+             * 400 InvalidSyncAgentCreateOrUpdateRequest - The create or update sync agent request body is empty.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 InvalidSyncAgentResourceId - Invalid sync agent resource identifier.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidSyncGroup - Sync group is invalid.
+
+             * 400 InvalidSyncMetadataDatabase - Sync metadata database is invalid.
+
+             * 404 ResourceNotFound - The requested resource was not found.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 409 CannotCreateSyncGroupDueToQuotaExceeded - Cannot create sync group due to quota exceeded.
+      tags:
+        - SyncGroups
+    patch:
+      description: Updates a sync group.
+      operationId: SyncGroups_Update
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database on which the sync group is hosted.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Update a sync group:
+              value: syncgroupcrud-4328
+        - description: The name of the sync group.
+          in: path
+          name: syncGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Update a sync group:
+              value: syncgroupcrud-3187
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/SyncGroup"
+      responses:
+        "200":
+          description: Successfully updated the sync group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncGroup"
+              examples:
+                Update a sync group:
+                  $ref: "#/components/examples/Update_a_sync_group"
+        "202":
+          description: Updating the sync group is in progress.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidSyncGroupCreateOrUpdateRequest - The create or update sync group request body is empty.
+
+             * 400 InvalidSyncMemberCreateOrUpdateRequest - The create or update sync member request body is empty.
+
+             * 400 InvalidSyncAgentCreateOrUpdateRequest - The create or update sync agent request body is empty.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 InvalidSyncAgentResourceId - Invalid sync agent resource identifier.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidSyncGroup - Sync group is invalid.
+
+             * 400 InvalidSyncMetadataDatabase - Sync metadata database is invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 409 CannotCreateSyncGroupDueToQuotaExceeded - Cannot create sync group due to quota exceeded.
+      tags:
+        - SyncGroups
+      x-ms-long-running-operation: true
+    put:
+      description: Creates or updates a sync group.
+      operationId: SyncGroups_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database on which the sync group is hosted.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create a sync group:
+              value: syncgroupcrud-4328
+            Update a sync group:
+              value: syncgroupcrud-4328
+        - description: The name of the sync group.
+          in: path
+          name: syncGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create a sync group:
+              value: syncgroupcrud-3187
+            Update a sync group:
+              value: syncgroupcrud-3187
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/SyncGroup"
+      responses:
+        "200":
+          description: Successfully updated the sync group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncGroup"
+              examples:
+                Create a sync group:
+                  $ref: "#/components/examples/Create_a_sync_group"
+                Update a sync group:
+                  $ref: "#/components/examples/Update_a_sync_group"
+        "201":
+          description: Successfully created the sync group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncGroup"
+              examples:
+                Create a sync group:
+                  $ref: "#/components/examples/Create_a_sync_group"
+                Update a sync group:
+                  $ref: "#/components/examples/Update_a_sync_group"
+        "202":
+          description: Creating or updating the sync group is in progress.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidSyncGroupCreateOrUpdateRequest - The create or update sync group request body is empty.
+
+             * 400 InvalidSyncMemberCreateOrUpdateRequest - The create or update sync member request body is empty.
+
+             * 400 InvalidSyncAgentCreateOrUpdateRequest - The create or update sync agent request body is empty.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 InvalidSyncAgentResourceId - Invalid sync agent resource identifier.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidSyncGroup - Sync group is invalid.
+
+             * 400 InvalidSyncMetadataDatabase - Sync metadata database is invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 409 CannotCreateSyncGroupDueToQuotaExceeded - Cannot create sync group due to quota exceeded.
+      tags:
+        - SyncGroups
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/cancelSync":
+    post:
+      description: Cancels a sync group synchronization.
+      operationId: SyncGroups_CancelSync
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database on which the sync group is hosted.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Cancel a sync group synchronization:
+              value: syncgroupcrud-4328
+        - description: The name of the sync group.
+          in: path
+          name: syncGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Cancel a sync group synchronization:
+              value: syncgroupcrud-3187
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully cancel a sync group synchronization.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidSyncGroupCreateOrUpdateRequest - The create or update sync group request body is empty.
+
+             * 400 InvalidSyncMemberCreateOrUpdateRequest - The create or update sync member request body is empty.
+
+             * 400 InvalidSyncAgentCreateOrUpdateRequest - The create or update sync agent request body is empty.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 InvalidSyncAgentResourceId - Invalid sync agent resource identifier.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidSyncGroup - Sync group is invalid.
+
+             * 400 InvalidSyncMetadataDatabase - Sync metadata database is invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 409 CannotCreateSyncGroupDueToQuotaExceeded - Cannot create sync group due to quota exceeded.
+      tags:
+        - SyncGroups
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/hubSchemas":
+    get:
+      description: Gets a collection of hub database schemas.
+      operationId: SyncGroups_ListHubSchemas
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database on which the sync group is hosted.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a hub database schema.:
+              value: syncgroupcrud-4328
+        - description: The name of the sync group.
+          in: path
+          name: syncGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a hub database schema.:
+              value: syncgroupcrud-3187
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully get a sync group hub database schema.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncFullSchemaPropertiesListResult"
+              examples:
+                Get a hub database schema.:
+                  $ref: "#/components/examples/Get_a_hub_database_schema."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidSyncGroupCreateOrUpdateRequest - The create or update sync group request body is empty.
+
+             * 400 InvalidSyncMemberCreateOrUpdateRequest - The create or update sync member request body is empty.
+
+             * 400 InvalidSyncAgentCreateOrUpdateRequest - The create or update sync agent request body is empty.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 InvalidSyncAgentResourceId - Invalid sync agent resource identifier.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidSyncGroup - Sync group is invalid.
+
+             * 400 InvalidSyncMetadataDatabase - Sync metadata database is invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 409 CannotCreateSyncGroupDueToQuotaExceeded - Cannot create sync group due to quota exceeded.
+      tags:
+        - SyncGroups
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/logs":
+    get:
+      description: Gets a collection of sync group logs.
+      operationId: SyncGroups_ListLogs
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database on which the sync group is hosted.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get sync group logs:
+              value: syncgroupcrud-4328
+        - description: The name of the sync group.
+          in: path
+          name: syncGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get sync group logs:
+              value: syncgroupcrud-3187
+        - description: Get logs generated after this time.
+          in: query
+          name: startTime
+          required: true
+          schema:
+            type: string
+          examples:
+            Get sync group logs:
+              value: 2017-01-01T00:00:00
+        - description: Get logs generated before this time.
+          in: query
+          name: endTime
+          required: true
+          schema:
+            type: string
+          examples:
+            Get sync group logs:
+              value: 2017-12-31T00:00:00
+        - description: The types of logs to retrieve.
+          in: query
+          name: type
+          required: true
+          schema:
+            type: string
+            enum:
+              - All
+              - Error
+              - Warning
+              - Success
+          examples:
+            Get sync group logs:
+              value: All
+        - description: The continuation token for this operation.
+          in: query
+          name: continuationToken
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved sync group logs.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncGroupLogListResult"
+              examples:
+                Get sync group logs:
+                  $ref: "#/components/examples/Get_sync_group_logs"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidSyncGroupCreateOrUpdateRequest - The create or update sync group request body is empty.
+
+             * 400 InvalidSyncMemberCreateOrUpdateRequest - The create or update sync member request body is empty.
+
+             * 400 InvalidSyncAgentCreateOrUpdateRequest - The create or update sync agent request body is empty.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 InvalidSyncAgentResourceId - Invalid sync agent resource identifier.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidSyncGroup - Sync group is invalid.
+
+             * 400 InvalidSyncMetadataDatabase - Sync metadata database is invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 409 CannotCreateSyncGroupDueToQuotaExceeded - Cannot create sync group due to quota exceeded.
+      tags:
+        - SyncGroups
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/refreshHubSchema":
+    post:
+      description: Refreshes a hub database schema.
+      operationId: SyncGroups_RefreshHubSchema
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database on which the sync group is hosted.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Refresh a hub database schema.:
+              value: syncgroupcrud-4328
+        - description: The name of the sync group.
+          in: path
+          name: syncGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Refresh a hub database schema.:
+              value: syncgroupcrud-3187
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully refreshed a sync hub schema.
+        "202":
+          description: The sync hub schema refresh operation is on going.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidSyncGroupCreateOrUpdateRequest - The create or update sync group request body is empty.
+
+             * 400 InvalidSyncMemberCreateOrUpdateRequest - The create or update sync member request body is empty.
+
+             * 400 InvalidSyncAgentCreateOrUpdateRequest - The create or update sync agent request body is empty.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 InvalidSyncAgentResourceId - Invalid sync agent resource identifier.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidSyncGroup - Sync group is invalid.
+
+             * 400 InvalidSyncMetadataDatabase - Sync metadata database is invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 409 CannotCreateSyncGroupDueToQuotaExceeded - Cannot create sync group due to quota exceeded.
+      tags:
+        - SyncGroups
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/triggerSync":
+    post:
+      description: Triggers a sync group synchronization.
+      operationId: SyncGroups_TriggerSync
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database on which the sync group is hosted.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Trigger a sync group synchronization.:
+              value: syncgroupcrud-4328
+        - description: The name of the sync group.
+          in: path
+          name: syncGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Trigger a sync group synchronization.:
+              value: syncgroupcrud-3187
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully triggered a sync group synchronization.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidSyncGroupCreateOrUpdateRequest - The create or update sync group request body is empty.
+
+             * 400 InvalidSyncMemberCreateOrUpdateRequest - The create or update sync member request body is empty.
+
+             * 400 InvalidSyncAgentCreateOrUpdateRequest - The create or update sync agent request body is empty.
+
+             * 400 InvalidDatabaseResourceId - Invalid database resource identifier.
+
+             * 400 MismatchingSubscriptionWithUrl - The provided subscription did not match the subscription in the Url.
+
+             * 400 InvalidSyncAgentResourceId - Invalid sync agent resource identifier.
+
+             * 400 MismatchingResourceGroupNameWithUrl - The provided resource group name did not match the name in the Url.
+
+             * 400 MismatchingServerNameWithUrl - The provided server name did not match the name in the Url.
+
+             * 400 InvalidSyncGroup - Sync group is invalid.
+
+             * 400 InvalidSyncMetadataDatabase - Sync metadata database is invalid.
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 409 CannotCreateSyncGroupDueToQuotaExceeded - Cannot create sync group due to quota exceeded.
+      tags:
+        - SyncGroups
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_a_sync_database_ID:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328
+    List_sync_groups_under_a_given_database:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328/syncGroups/syncgroupcrud-3187
+            name: syncgroupcrud-3187
+            properties:
+              conflictResolutionPolicy: HubWin
+              hubDatabaseUserName: hubUser
+              interval: -1
+              lastSyncTime: 0001-01-01T08:00:00Z
+              syncDatabaseId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328
+              syncState: NotReady
+            type: Microsoft.Sql/servers/databases/syncGroups
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328/syncGroups/syncgroupcrud-5374
+            name: syncgroupcrud-5374
+            properties:
+              conflictResolutionPolicy: HubWin
+              hubDatabaseUserName: hubUser
+              interval: -1
+              lastSyncTime: 0001-01-01T08:00:00Z
+              syncDatabaseId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328
+              syncState: NotReady
+            type: Microsoft.Sql/servers/databases/syncGroups
+    Get_a_sync_group:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328/syncGroups/syncgroupcrud-3187
+        name: syncgroupcrud-3187
+        properties:
+          conflictResolutionPolicy: HubWin
+          hubDatabaseUserName: hubUser
+          interval: -1
+          lastSyncTime: 0001-01-01T08:00:00Z
+          syncDatabaseId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328
+          syncState: NotReady
+        type: Microsoft.Sql/servers/databases/syncGroups
+    Update_a_sync_group:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328/syncGroups/syncgroupcrud-3187
+        name: syncgroupcrud-3187
+        properties:
+          conflictResolutionPolicy: HubWin
+          hubDatabaseUserName: hubUser
+          interval: -1
+          lastSyncTime: 0001-01-01T08:00:00Z
+          syncDatabaseId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328
+          syncState: NotReady
+        type: Microsoft.Sql/servers/databases/syncGroups
+    Create_a_sync_group:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328/syncGroups/syncgroupcrud-3187
+        name: syncgroupcrud-3187
+        properties:
+          conflictResolutionPolicy: HubWin
+          hubDatabaseUserName: hubUser
+          interval: -1
+          lastSyncTime: 0001-01-01T08:00:00Z
+          syncDatabaseId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328
+          syncState: NotReady
+        type: Microsoft.Sql/servers/databases/syncGroups
+    Get_a_hub_database_schema.:
+      value:
+        value:
+          - lastUpdateTime: 2017-05-30T07:16:08.21Z
+            tables:
+              - columns:
+                  - dataSize: "4"
+                    dataType: int
+                    hasError: false
+                    isPrimaryKey: false
+                    name: intField
+                    quotedName: "[intField]"
+                  - dataSize: "100"
+                    dataType: nvarchar
+                    hasError: false
+                    isPrimaryKey: false
+                    name: charField
+                    quotedName: "[charField]"
+                errorId: Schema_TableHasNoPrimaryKey
+                hasError: true
+                name: dbo.myTable
+                quotedName: "[dbo].[myTable]"
+    Get_sync_group_logs:
+      value:
+        value:
+          - details: Schema information obtained successfully.
+            operationStatus: SchemaRefreshSuccess
+            source: syncgroupcrud-8475.database.windows.net/hub
+            timestamp: 2017-05-30T07:16:08.25Z
+            tracingId: c0480c8e-6269-424e-9404-b00efce0ebae
+            type: Success
+          - details: >-
+              Getting schema information for the database failed with the
+              exception "Failed to connect to server .
+
+              Inner exception: SqlException Error Code: -2146232060 - SqlError Number:53, Message: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server) 
+
+              Inner exception: The network path was not found
+               For more information, provide tracing ID ‘cd3aa28c-0c31-471f-8a77-f1b21c908cbd’ to customer support."
+            operationStatus: SchemaRefreshFailure
+            source: syncgroupcrud-8475.database.windows.net/member
+            timestamp: 2017-05-30T07:03:37.5733333Z
+            tracingId: cd3aa28c-0c31-471f-8a77-f1b21c908cbd
+            type: Error
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Get a sync database ID:
+          value: 2015-05-01-preview
+        List sync groups under a given database:
+          value: 2015-05-01-preview
+        Delete a sync group:
+          value: 2015-05-01-preview
+        Get a sync group:
+          value: 2015-05-01-preview
+        Update a sync group:
+          value: 2015-05-01-preview
+        Create a sync group:
+          value: 2015-05-01-preview
+        Cancel a sync group synchronization:
+          value: 2015-05-01-preview
+        Get a hub database schema.:
+          value: 2015-05-01-preview
+        Get sync group logs:
+          value: 2015-05-01-preview
+        Refresh a hub database schema.:
+          value: 2015-05-01-preview
+        Trigger a sync group synchronization.:
+          value: 2015-05-01-preview
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        List sync groups under a given database:
+          value: syncgroupcrud-65440
+        Delete a sync group:
+          value: syncgroupcrud-65440
+        Get a sync group:
+          value: syncgroupcrud-65440
+        Update a sync group:
+          value: syncgroupcrud-65440
+        Create a sync group:
+          value: syncgroupcrud-65440
+        Cancel a sync group synchronization:
+          value: syncgroupcrud-65440
+        Get a hub database schema.:
+          value: syncgroupcrud-65440
+        Get sync group logs:
+          value: syncgroupcrud-65440
+        Refresh a hub database schema.:
+          value: syncgroupcrud-65440
+        Trigger a sync group synchronization.:
+          value: syncgroupcrud-65440
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        List sync groups under a given database:
+          value: syncgroupcrud-8475
+        Delete a sync group:
+          value: syncgroupcrud-8475
+        Get a sync group:
+          value: syncgroupcrud-8475
+        Update a sync group:
+          value: syncgroupcrud-8475
+        Create a sync group:
+          value: syncgroupcrud-8475
+        Cancel a sync group synchronization:
+          value: syncgroupcrud-8475
+        Get a hub database schema.:
+          value: syncgroupcrud-8475
+        Get sync group logs:
+          value: syncgroupcrud-8475
+        Refresh a hub database schema.:
+          value: syncgroupcrud-8475
+        Trigger a sync group synchronization.:
+          value: syncgroupcrud-8475
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Get a sync database ID:
+          value: 00000000-1111-2222-3333-444444444444
+        List sync groups under a given database:
+          value: 00000000-1111-2222-3333-444444444444
+        Delete a sync group:
+          value: 00000000-1111-2222-3333-444444444444
+        Get a sync group:
+          value: 00000000-1111-2222-3333-444444444444
+        Update a sync group:
+          value: 00000000-1111-2222-3333-444444444444
+        Create a sync group:
+          value: 00000000-1111-2222-3333-444444444444
+        Cancel a sync group synchronization:
+          value: 00000000-1111-2222-3333-444444444444
+        Get a hub database schema.:
+          value: 00000000-1111-2222-3333-444444444444
+        Get sync group logs:
+          value: 00000000-1111-2222-3333-444444444444
+        Refresh a hub database schema.:
+          value: 00000000-1111-2222-3333-444444444444
+        Trigger a sync group synchronization.:
+          value: 00000000-1111-2222-3333-444444444444
+  requestBodies:
+    SyncGroup:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SyncGroup"
+      description: The requested sync group resource state.
+      required: true
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    SyncDatabaseIdListResult:
+      description: A list of sync database ID properties.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/SyncDatabaseIdProperties"
+          readOnly: true
+          type: array
+      type: object
+    SyncDatabaseIdProperties:
+      description: Properties of the sync database id.
+      properties:
+        id:
+          description: ARM resource id of sync database.
+          readOnly: true
+          type: string
+      type: object
+    SyncFullSchemaProperties:
+      description: Properties of the database full schema.
+      properties:
+        lastUpdateTime:
+          description: Last update time of the database schema.
+          format: date-time
+          readOnly: true
+          type: string
+        tables:
+          description: List of tables in the database full schema.
+          items:
+            $ref: "#/components/schemas/SyncFullSchemaTable"
+          readOnly: true
+          type: array
+      type: object
+    SyncFullSchemaPropertiesListResult:
+      description: A list of sync schema properties.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/SyncFullSchemaProperties"
+          readOnly: true
+          type: array
+      type: object
+    SyncFullSchemaTable:
+      description: Properties of the table in the database full schema.
+      properties:
+        columns:
+          description: List of columns in the table of database full schema.
+          items:
+            $ref: "#/components/schemas/SyncFullSchemaTableColumn"
+          readOnly: true
+          type: array
+        errorId:
+          description: Error id of the table.
+          readOnly: true
+          type: string
+        hasError:
+          description: If there is error in the table.
+          readOnly: true
+          type: boolean
+        name:
+          description: Name of the table.
+          readOnly: true
+          type: string
+        quotedName:
+          description: Quoted name of the table.
+          readOnly: true
+          type: string
+      type: object
+    SyncFullSchemaTableColumn:
+      description: Properties of the column in the table of database full schema.
+      properties:
+        dataSize:
+          description: Data size of the column.
+          readOnly: true
+          type: string
+        dataType:
+          description: Data type of the column.
+          readOnly: true
+          type: string
+        errorId:
+          description: Error id of the column.
+          readOnly: true
+          type: string
+        hasError:
+          description: If there is error in the table.
+          readOnly: true
+          type: boolean
+        isPrimaryKey:
+          description: If it is the primary key of the table.
+          readOnly: true
+          type: boolean
+        name:
+          description: Name of the column.
+          readOnly: true
+          type: string
+        quotedName:
+          description: Quoted name of the column.
+          readOnly: true
+          type: string
+      type: object
+    SyncGroup:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: An Azure SQL Database sync group.
+      properties:
+        properties:
+          $ref: "#/components/schemas/SyncGroupProperties"
+      type: object
+    SyncGroupListResult:
+      description: A list of sync groups.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/SyncGroup"
+          readOnly: true
+          type: array
+      type: object
+    SyncGroupLogListResult:
+      description: A list of sync group log properties.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/SyncGroupLogProperties"
+          readOnly: true
+          type: array
+      type: object
+    SyncGroupLogProperties:
+      description: Properties of an Azure SQL Database sync group log.
+      properties:
+        details:
+          description: Details of the sync group log.
+          readOnly: true
+          type: string
+        operationStatus:
+          description: OperationStatus of the sync group log.
+          readOnly: true
+          type: string
+        source:
+          description: Source of the sync group log.
+          readOnly: true
+          type: string
+        timestamp:
+          description: Timestamp of the sync group log.
+          format: date-time
+          readOnly: true
+          type: string
+        tracingId:
+          description: TracingId of the sync group log.
+          format: uuid
+          readOnly: true
+          type: string
+        type:
+          description: Type of the sync group log.
+          enum:
+            - All
+            - Error
+            - Warning
+            - Success
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SyncGroupLogType
+      type: object
+    SyncGroupProperties:
+      description: Properties of a sync group.
+      properties:
+        conflictResolutionPolicy:
+          description: Conflict resolution policy of the sync group.
+          enum:
+            - HubWin
+            - MemberWin
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SyncConflictResolutionPolicy
+        hubDatabasePassword:
+          description: Password for the sync group hub database credential.
+          type: string
+          x-ms-mutability:
+            - create
+            - update
+        hubDatabaseUserName:
+          description: User name for the sync group hub database credential.
+          type: string
+        interval:
+          description: Sync interval of the sync group.
+          format: int32
+          type: integer
+        lastSyncTime:
+          description: Last sync time of the sync group.
+          format: date-time
+          readOnly: true
+          type: string
+        schema:
+          $ref: "#/components/schemas/SyncGroupSchema"
+        syncDatabaseId:
+          description: ARM resource id of the sync database in the sync group.
+          type: string
+        syncState:
+          description: Sync state of the sync group.
+          enum:
+            - NotReady
+            - Error
+            - Warning
+            - Progressing
+            - Good
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SyncGroupState
+      type: object
+    SyncGroupSchema:
+      description: Properties of sync group schema.
+      properties:
+        masterSyncMemberName:
+          description: Name of master sync member where the schema is from.
+          type: string
+        tables:
+          description: List of tables in sync group schema.
+          items:
+            $ref: "#/components/schemas/SyncGroupSchemaTable"
+          type: array
+      type: object
+    SyncGroupSchemaTable:
+      description: Properties of table in sync group schema.
+      properties:
+        columns:
+          description: List of columns in sync group schema.
+          items:
+            $ref: "#/components/schemas/SyncGroupSchemaTableColumn"
+          type: array
+        quotedName:
+          description: Quoted name of sync group schema table.
+          type: string
+      type: object
+    SyncGroupSchemaTableColumn:
+      description: Properties of column in sync group table.
+      properties:
+        dataSize:
+          description: Data size of the column.
+          type: string
+        dataType:
+          description: Data type of the column.
+          type: string
+        quotedName:
+          description: Quoted name of sync group table column.
+          type: string
+      type: object

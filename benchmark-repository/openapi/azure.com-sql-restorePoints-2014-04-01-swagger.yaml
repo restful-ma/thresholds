@@ -1,0 +1,227 @@
+openapi: 3.0.0
+info:
+  description: Provides read functionality for Azure SQL Database Backups
+  title: Azure SQL Database Backup
+  version: 2014-04-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/restorePoints.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: sql-restorePoints
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints":
+    get:
+      description: Gets a list of database restore points.
+      operationId: RestorePoints_ListByDatabase
+      parameters:
+        - description: The API version to use for the request.
+          in: query
+          name: api-version
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Get a data warehouse's restore points:
+              value: 2014-04-01
+            Get a database's restore points:
+              value: 2014-04-01
+        - description: The subscription ID that identifies an Azure subscription.
+          in: path
+          name: subscriptionId
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Get a data warehouse's restore points:
+              value: 00000000-1111-2222-3333-444444444444
+            Get a database's restore points:
+              value: 00000000-1111-2222-3333-444444444444
+        - description: The name of the resource group that contains the resource. You can
+            obtain this value from the Azure Resource Manager API or the portal.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Get a data warehouse's restore points:
+              value: sqlcrudtest-6730
+            Get a database's restore points:
+              value: sqlcrudtest-6730
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - description: The name of the database to get available restore points.
+          in: path
+          name: databaseName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a data warehouse's restore points:
+              value: "3481"
+            Get a database's restore points:
+              value: "3481"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestorePointListResult"
+              examples:
+                Get a data warehouse's restore points:
+                  $ref: "#/components/examples/Get_a_data_warehouse_s_restore_points"
+                Get a database's restore points:
+                  $ref: "#/components/examples/Get_a_database_s_restore_points"
+      tags:
+        - DatabaseBackup
+      x-ms-pageable: {}
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_a_data_warehouse_s_restore_points:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-6730/providers/Microsoft.Sql/servers/9007/databases/3481/restorepoints/131448209670000000
+            location: West US
+            name: "131448209670000000"
+            properties:
+              restorePointCreationDate: 2017-07-18T03:09:27Z
+              restorePointType: DISCRETE
+            type: Microsoft.Sql/servers/databases/restorePoints
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-6730/providers/Microsoft.Sql/servers/9007/databases/3481/restorepoints/131448353660000000
+            location: West US
+            name: "131448353660000000"
+            properties:
+              restorePointCreationDate: 2017-07-18T07:09:26Z
+              restorePointType: DISCRETE
+            type: Microsoft.Sql/servers/databases/restorePoints
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-6730/providers/Microsoft.Sql/servers/9007/databases/3481/restorepoints/131448497660000000
+            location: West US
+            name: "131448497660000000"
+            properties:
+              restorePointCreationDate: 2017-07-18T11:09:26Z
+              restorePointType: DISCRETE
+            type: Microsoft.Sql/servers/databases/restorePoints
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-6730/providers/Microsoft.Sql/servers/9007/databases/3481/restorepoints/131448641650000000
+            location: West US
+            name: "131448641650000000"
+            properties:
+              restorePointCreationDate: 2017-07-18T15:09:25Z
+              restorePointType: DISCRETE
+            type: Microsoft.Sql/servers/databases/restorePoints
+    Get_a_database_s_restore_points:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-6730/providers/Microsoft.Sql/servers/sqlcrudtest-9007/databases/3481/restorepoints/ContinuousRestorePoint
+            location: West US
+            name: ContinuousRestorePoint
+            properties:
+              earliestRestoreDate: 2017-06-12T00:00:00Z
+              restorePointType: CONTINUOUS
+            type: Microsoft.Sql/servers/databases/restorePoints
+  parameters:
+    DatabaseExpandParameter:
+      description: "A comma separated list of child objects to expand in the response.
+        Possible properties: serviceTierAdvisors, transparentDataEncryption."
+      in: query
+      name: $expand
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get a data warehouse's restore points:
+          value: sqlcrudtest-9007
+        Get a database's restore points:
+          value: sqlcrudtest-9007
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    RestorePoint:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: A database restore point.
+      properties:
+        properties:
+          $ref: "#/components/schemas/RestorePointProperties"
+    RestorePointListResult:
+      description: The response to a list database restore points request.
+      properties:
+        value:
+          description: The list of database restore points.
+          items:
+            $ref: "#/components/schemas/RestorePoint"
+          type: array
+      required:
+        - value
+    RestorePointProperties:
+      description: Represents the properties of a database restore point.
+      properties:
+        earliestRestoreDate:
+          description: Earliest restore time (ISO8601 format). Populated when
+            restorePointType = DISCRETE. Null otherwise.
+          format: date-time
+          readOnly: true
+          type: string
+        restorePointCreationDate:
+          description: Restore point creation time (ISO8601 format). Populated when
+            restorePointType = CONTINUOUS. Null otherwise.
+          format: date-time
+          readOnly: true
+          type: string
+        restorePointType:
+          description: The restore point type of the database restore point.
+          enum:
+            - DISCRETE
+            - CONTINUOUS
+          readOnly: true
+          type: string
+          x-ms-enum:
+            name: RestorePointType

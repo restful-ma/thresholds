@@ -1,0 +1,1351 @@
+openapi: 3.0.0
+info:
+  version: 2018-08-20
+  x-release: s3v4
+  title: AWS S3 Control
+  description: " AWS S3 Control provides access to Amazon S3 control plane operations. "
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: s3control
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/s3control-2018-08-20.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/s3-control/
+security:
+  - hmac: []
+paths:
+  /v20180820/jobs#x-amz-account-id:
+    post:
+      operationId: CreateJob
+      description: Creates an Amazon S3 batch operations job.
+      responses:
+        "200":
+          description: Success
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/CreateJobResult"
+        "480":
+          description: TooManyRequestsException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+        "481":
+          description: BadRequestException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "482":
+          description: IdempotencyException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/IdempotencyException"
+        "483":
+          description: InternalServiceException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: x-amz-account-id
+          in: header
+          required: true
+          description: <p/>
+          schema:
+            type: string
+            maxLength: 64
+      requestBody:
+        content:
+          text/xml:
+            schema:
+              type: object
+              required:
+                - Operation
+                - Report
+                - ClientRequestToken
+                - Manifest
+                - Priority
+                - RoleArn
+              properties:
+                ConfirmationRequired:
+                  description: Indicates whether confirmation is required before Amazon S3
+                    runs the job. Confirmation is only required for jobs created
+                    through the Amazon S3 console.
+                  type: boolean
+                Operation:
+                  description: The operation that you want this job to perform on each
+                    object listed in the manifest. For more information about
+                    the available operations, see <a
+                    href="https://docs.aws.amazon.com/AmazonS3/latest/dev/batch-ops-operations.html">Available
+                    Operations</a> in the <i>Amazon Simple Storage Service
+                    Developer Guide</i>.
+                  type: object
+                  properties:
+                    LambdaInvoke:
+                      $ref: "#/components/schemas/LambdaInvokeOperation"
+                    S3PutObjectCopy:
+                      $ref: "#/components/schemas/S3CopyObjectOperation"
+                    S3PutObjectAcl:
+                      $ref: "#/components/schemas/S3SetObjectAclOperation"
+                    S3PutObjectTagging:
+                      $ref: "#/components/schemas/S3SetObjectTaggingOperation"
+                    S3InitiateRestoreObject:
+                      $ref: "#/components/schemas/S3InitiateRestoreObjectOperation"
+                Report:
+                  description: Contains the configuration parameters for a job-completion
+                    report.
+                  type: object
+                  properties:
+                    Bucket:
+                      $ref: "#/components/schemas/S3BucketArnString"
+                    Format:
+                      $ref: "#/components/schemas/JobReportFormat"
+                    Enabled:
+                      $ref: "#/components/schemas/Boolean"
+                    Prefix:
+                      $ref: "#/components/schemas/ReportPrefixString"
+                    ReportScope:
+                      $ref: "#/components/schemas/JobReportScope"
+                ClientRequestToken:
+                  description: An idempotency token to ensure that you don't accidentally
+                    submit the same request twice. You can use any string up to
+                    the maximum length.
+                  type: string
+                  minLength: 1
+                  maxLength: 64
+                Manifest:
+                  description: Contains the configuration information for a job's manifest.
+                  type: object
+                  properties:
+                    Spec:
+                      $ref: "#/components/schemas/JobManifestSpec"
+                    Location:
+                      $ref: "#/components/schemas/JobManifestLocation"
+                Description:
+                  description: A description for this job. You can use any string within
+                    the permitted length. Descriptions don't need to be unique
+                    and can be used for multiple jobs.
+                  type: string
+                  minLength: 1
+                  maxLength: 256
+                Priority:
+                  description: The numerical priority for this job. Higher numbers indicate
+                    higher priority.
+                  type: integer
+                  minimum: 0
+                  maximum: 2147483647
+                RoleArn:
+                  description: The Amazon Resource Name (ARN) for the Identity and Access
+                    Management (IAM) Role that batch operations will use to
+                    execute this job's operation on each object in the manifest.
+                  type: string
+                  minLength: 1
+                  maxLength: 2048
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListJobs
+      description: Lists current jobs and jobs that have ended within the last 30 days for
+        the AWS account making the request.
+      responses:
+        "200":
+          description: Success
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/ListJobsResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InternalServiceException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+        "482":
+          description: InvalidNextTokenException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+      parameters:
+        - name: x-amz-account-id
+          in: header
+          required: true
+          description: <p/>
+          schema:
+            type: string
+            maxLength: 64
+        - name: jobStatuses
+          in: query
+          required: false
+          description: The <code>List Jobs</code> request returns jobs that match the
+            statuses listed in this element.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: nextToken
+          in: query
+          required: false
+          description: A pagination token to request the next page of results. Use the
+            token that Amazon S3 returned in the <code>NextToken</code> element
+            of the <code>ListJobsResult</code> from the previous <code>List
+            Jobs</code> request.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 1024
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of jobs that Amazon S3 will include in the
+            <code>List Jobs</code> response. If there are more jobs than this
+            number, the response will include a pagination token in the
+            <code>NextToken</code> field to enable you to retrieve the next page
+            of results.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  /v20180820/configuration/publicAccessBlock#x-amz-account-id:
+    delete:
+      operationId: DeletePublicAccessBlock
+      description: Deletes the block public access configuration for the specified account.
+      responses:
+        "200":
+          description: Success
+      parameters:
+        - name: x-amz-account-id
+          in: header
+          required: true
+          description: The account ID for the AWS account whose block public access
+            configuration you want to delete.
+          schema:
+            type: string
+            maxLength: 64
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetPublicAccessBlock
+      description: <p/>
+      responses:
+        "200":
+          description: Success
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/GetPublicAccessBlockOutput"
+        "480":
+          description: NoSuchPublicAccessBlockConfiguration
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/NoSuchPublicAccessBlockConfiguration"
+      parameters:
+        - name: x-amz-account-id
+          in: header
+          required: true
+          description: <p/>
+          schema:
+            type: string
+            maxLength: 64
+    put:
+      operationId: PutPublicAccessBlock
+      description: <p/>
+      responses:
+        "200":
+          description: Success
+      parameters:
+        - name: x-amz-account-id
+          in: header
+          required: true
+          description: <p/>
+          schema:
+            type: string
+            maxLength: 64
+      requestBody:
+        content:
+          text/xml:
+            schema:
+              type: object
+              required:
+                - PublicAccessBlockConfiguration
+              properties:
+                PublicAccessBlockConfiguration:
+                  description: <p/>
+                  type: object
+                  properties:
+                    BlockPublicAcls:
+                      $ref: "#/components/schemas/Setting"
+                    IgnorePublicAcls:
+                      $ref: "#/components/schemas/Setting"
+                    BlockPublicPolicy:
+                      $ref: "#/components/schemas/Setting"
+                    RestrictPublicBuckets:
+                      $ref: "#/components/schemas/Setting"
+        required: true
+  "/v20180820/jobs/{id}#x-amz-account-id":
+    get:
+      operationId: DescribeJob
+      description: Retrieves the configuration parameters and status for a batch operations
+        job.
+      responses:
+        "200":
+          description: Success
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/DescribeJobResult"
+        "480":
+          description: BadRequestException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: TooManyRequestsException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+        "482":
+          description: NotFoundException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "483":
+          description: InternalServiceException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: x-amz-account-id
+          in: header
+          required: true
+          description: <p/>
+          schema:
+            type: string
+            maxLength: 64
+        - name: id
+          in: path
+          required: true
+          description: The ID for the job whose information you want to retrieve.
+          schema:
+            type: string
+            minLength: 5
+            maxLength: 36
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/v20180820/jobs/{id}/priority#x-amz-account-id&priority":
+    post:
+      operationId: UpdateJobPriority
+      description: Updates an existing job's priority.
+      responses:
+        "200":
+          description: Success
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/UpdateJobPriorityResult"
+        "480":
+          description: BadRequestException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: TooManyRequestsException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+        "482":
+          description: NotFoundException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "483":
+          description: InternalServiceException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: x-amz-account-id
+          in: header
+          required: true
+          description: <p/>
+          schema:
+            type: string
+            maxLength: 64
+        - name: id
+          in: path
+          required: true
+          description: The ID for the job whose priority you want to update.
+          schema:
+            type: string
+            minLength: 5
+            maxLength: 36
+        - name: priority
+          in: query
+          required: true
+          description: The priority you want to assign to this job.
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 2147483647
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/v20180820/jobs/{id}/status#x-amz-account-id&requestedJobStatus":
+    post:
+      operationId: UpdateJobStatus
+      description: Updates the status for the specified job. Use this operation to confirm
+        that you want to run a job or to cancel an existing job.
+      responses:
+        "200":
+          description: Success
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/UpdateJobStatusResult"
+        "480":
+          description: BadRequestException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: TooManyRequestsException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+        "482":
+          description: NotFoundException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "483":
+          description: JobStatusException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/JobStatusException"
+        "484":
+          description: InternalServiceException
+          content:
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/InternalServiceException"
+      parameters:
+        - name: x-amz-account-id
+          in: header
+          required: true
+          description: <p/>
+          schema:
+            type: string
+            maxLength: 64
+        - name: id
+          in: path
+          required: true
+          description: The ID of the job whose status you want to update.
+          schema:
+            type: string
+            minLength: 5
+            maxLength: 36
+        - name: requestedJobStatus
+          in: query
+          required: true
+          description: The status that you want to move the specified job to.
+          schema:
+            type: string
+            enum:
+              - Cancelled
+              - Ready
+        - name: statusUpdateReason
+          in: query
+          required: false
+          description: A description of the reason why you want to change the specified
+            job's status. This field can be any string up to the maximum length.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://s3-control.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS S3 Control multi-region endpoint
+  - url: https://s3-control.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS S3 Control multi-region endpoint
+  - url: http://s3-control.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS S3 Control endpoint for China (Beijing) and China (Ningxia)
+  - url: https://s3-control.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS S3 Control endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    CreateJobResult:
+      type: object
+      properties:
+        JobId:
+          $ref: "#/components/schemas/JobId"
+    LambdaInvokeOperation:
+      type: object
+      properties:
+        FunctionArn:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+      description: Contains the configuration parameters for a <code>Lambda Invoke</code>
+        operation.
+    S3CopyObjectOperation:
+      type: object
+      properties:
+        TargetResource:
+          $ref: "#/components/schemas/S3BucketArnString"
+        CannedAccessControlList:
+          $ref: "#/components/schemas/S3CannedAccessControlList"
+        AccessControlGrants:
+          $ref: "#/components/schemas/S3GrantList"
+        MetadataDirective:
+          $ref: "#/components/schemas/S3MetadataDirective"
+        ModifiedSinceConstraint:
+          $ref: "#/components/schemas/TimeStamp"
+        NewObjectMetadata:
+          $ref: "#/components/schemas/S3ObjectMetadata"
+        NewObjectTagging:
+          $ref: "#/components/schemas/S3TagSet"
+        RedirectLocation:
+          $ref: "#/components/schemas/NonEmptyMaxLength2048String"
+        RequesterPays:
+          $ref: "#/components/schemas/Boolean"
+        StorageClass:
+          $ref: "#/components/schemas/S3StorageClass"
+        UnModifiedSinceConstraint:
+          $ref: "#/components/schemas/TimeStamp"
+        SSEAwsKmsKeyId:
+          $ref: "#/components/schemas/KmsKeyArnString"
+        TargetKeyPrefix:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+        ObjectLockLegalHoldStatus:
+          $ref: "#/components/schemas/S3ObjectLockLegalHoldStatus"
+        ObjectLockMode:
+          $ref: "#/components/schemas/S3ObjectLockMode"
+        ObjectLockRetainUntilDate:
+          $ref: "#/components/schemas/TimeStamp"
+      description: Contains the configuration parameters for a PUT Copy object operation.
+        Amazon S3 batch operations passes each value through to the underlying
+        PUT Copy object API. For more information about the parameters for this
+        operation, see <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectCOPY.html">PUT
+        Object - Copy</a>.
+    S3SetObjectAclOperation:
+      type: object
+      properties:
+        AccessControlPolicy:
+          $ref: "#/components/schemas/S3AccessControlPolicy"
+      description: Contains the configuration parameters for a Set Object ACL operation.
+        Amazon S3 batch operations passes each value through to the underlying
+        PUT Object acl API. For more information about the parameters for this
+        operation, see <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectPUTacl.html">PUT
+        Object acl</a>.
+    S3SetObjectTaggingOperation:
+      type: object
+      properties:
+        TagSet:
+          $ref: "#/components/schemas/S3TagSet"
+      description: Contains the configuration parameters for a Set Object Tagging
+        operation. Amazon S3 batch operations passes each value through to the
+        underlying PUT Object tagging API. For more information about the
+        parameters for this operation, see <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectPUTtagging.html">PUT
+        Object tagging</a>.
+    S3InitiateRestoreObjectOperation:
+      type: object
+      properties:
+        ExpirationInDays:
+          $ref: "#/components/schemas/S3ExpirationInDays"
+        GlacierJobTier:
+          $ref: "#/components/schemas/S3GlacierJobTier"
+      description: Contains the configuration parameters for an Initiate Glacier Restore
+        job. Amazon S3 batch operations passes each value through to the
+        underlying POST Object restore API. For more information about the
+        parameters for this operation, see <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectPOSTrestore.html#RESTObjectPOSTrestore-restore-request">Restoring
+        Archives</a>.
+    S3BucketArnString:
+      type: string
+      minLength: 1
+      maxLength: 128
+    JobReportFormat:
+      type: string
+      enum:
+        - Report_CSV_20180820
+    Boolean:
+      type: boolean
+    ReportPrefixString:
+      type: string
+      minLength: 1
+      maxLength: 512
+    JobReportScope:
+      type: string
+      enum:
+        - AllTasks
+        - FailedTasksOnly
+    JobManifestSpec:
+      type: object
+      required:
+        - Format
+      properties:
+        Format:
+          $ref: "#/components/schemas/JobManifestFormat"
+        Fields:
+          $ref: "#/components/schemas/JobManifestFieldList"
+      description: Describes the format of a manifest. If the manifest is in CSV format,
+        also describes the columns contained within the manifest.
+    JobManifestLocation:
+      type: object
+      required:
+        - ObjectArn
+        - ETag
+      properties:
+        ObjectArn:
+          $ref: "#/components/schemas/S3KeyArnString"
+        ObjectVersionId:
+          $ref: "#/components/schemas/S3ObjectVersionId"
+        ETag:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+      description: Contains the information required to locate a manifest object.
+    TooManyRequestsException: {}
+    BadRequestException: {}
+    IdempotencyException: {}
+    InternalServiceException: {}
+    DescribeJobResult:
+      type: object
+      properties:
+        Job:
+          $ref: "#/components/schemas/JobDescriptor"
+    NotFoundException: {}
+    GetPublicAccessBlockOutput:
+      type: object
+      properties:
+        PublicAccessBlockConfiguration:
+          $ref: "#/components/schemas/PublicAccessBlockConfiguration"
+    NoSuchPublicAccessBlockConfiguration: {}
+    ListJobsResult:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+        Jobs:
+          $ref: "#/components/schemas/JobListDescriptorList"
+    JobStatus:
+      type: string
+      enum:
+        - Active
+        - Cancelled
+        - Cancelling
+        - Complete
+        - Completing
+        - Failed
+        - Failing
+        - New
+        - Paused
+        - Pausing
+        - Preparing
+        - Ready
+        - Suspended
+    InvalidRequestException: {}
+    InvalidNextTokenException: {}
+    Setting:
+      type: boolean
+    UpdateJobPriorityResult:
+      type: object
+      required:
+        - JobId
+        - Priority
+      properties:
+        JobId:
+          $ref: "#/components/schemas/JobId"
+        Priority:
+          $ref: "#/components/schemas/JobPriority"
+    UpdateJobStatusResult:
+      type: object
+      properties:
+        JobId:
+          $ref: "#/components/schemas/JobId"
+        Status:
+          $ref: "#/components/schemas/JobStatus"
+        StatusUpdateReason:
+          $ref: "#/components/schemas/JobStatusUpdateReason"
+    JobStatusException: {}
+    AccountId:
+      type: string
+      maxLength: 64
+    ConfirmationRequired:
+      type: boolean
+    JobOperation:
+      type: object
+      properties:
+        LambdaInvoke:
+          $ref: "#/components/schemas/LambdaInvokeOperation"
+        S3PutObjectCopy:
+          $ref: "#/components/schemas/S3CopyObjectOperation"
+        S3PutObjectAcl:
+          $ref: "#/components/schemas/S3SetObjectAclOperation"
+        S3PutObjectTagging:
+          $ref: "#/components/schemas/S3SetObjectTaggingOperation"
+        S3InitiateRestoreObject:
+          $ref: "#/components/schemas/S3InitiateRestoreObjectOperation"
+      description: The operation that you want this job to perform on each object listed in
+        the manifest. For more information about the available operations, see
+        <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/dev/batch-ops-operations.html">Available
+        Operations</a> in the <i>Amazon Simple Storage Service Developer
+        Guide</i>.
+    JobReport:
+      type: object
+      required:
+        - Enabled
+      properties:
+        Bucket:
+          $ref: "#/components/schemas/S3BucketArnString"
+        Format:
+          $ref: "#/components/schemas/JobReportFormat"
+        Enabled:
+          $ref: "#/components/schemas/Boolean"
+        Prefix:
+          $ref: "#/components/schemas/ReportPrefixString"
+        ReportScope:
+          $ref: "#/components/schemas/JobReportScope"
+      description: Contains the configuration parameters for a job-completion report.
+    NonEmptyMaxLength64String:
+      type: string
+      minLength: 1
+      maxLength: 64
+    JobManifest:
+      type: object
+      required:
+        - Spec
+        - Location
+      properties:
+        Spec:
+          $ref: "#/components/schemas/JobManifestSpec"
+        Location:
+          $ref: "#/components/schemas/JobManifestLocation"
+      description: Contains the configuration information for a job's manifest.
+    NonEmptyMaxLength256String:
+      type: string
+      minLength: 1
+      maxLength: 256
+    JobPriority:
+      type: integer
+      minimum: 0
+      maximum: 2147483647
+    IAMRoleArn:
+      type: string
+      minLength: 1
+      maxLength: 2048
+    CreateJobRequest:
+      type: object
+      required:
+        - Operation
+        - Report
+        - ClientRequestToken
+        - Manifest
+        - Priority
+        - RoleArn
+      properties:
+        ConfirmationRequired:
+          $ref: "#/components/schemas/ConfirmationRequired"
+        Operation:
+          $ref: "#/components/schemas/JobOperation"
+        Report:
+          $ref: "#/components/schemas/JobReport"
+        ClientRequestToken:
+          $ref: "#/components/schemas/NonEmptyMaxLength64String"
+        Manifest:
+          $ref: "#/components/schemas/JobManifest"
+        Description:
+          $ref: "#/components/schemas/NonEmptyMaxLength256String"
+        Priority:
+          $ref: "#/components/schemas/JobPriority"
+        RoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+    JobId:
+      type: string
+      minLength: 5
+      maxLength: 36
+    DeletePublicAccessBlockRequest:
+      type: object
+      properties: {}
+    DescribeJobRequest:
+      type: object
+      properties: {}
+    JobDescriptor:
+      type: object
+      properties:
+        JobId:
+          $ref: "#/components/schemas/JobId"
+        ConfirmationRequired:
+          $ref: "#/components/schemas/ConfirmationRequired"
+        Description:
+          $ref: "#/components/schemas/NonEmptyMaxLength256String"
+        JobArn:
+          $ref: "#/components/schemas/JobArn"
+        Status:
+          $ref: "#/components/schemas/JobStatus"
+        Manifest:
+          $ref: "#/components/schemas/JobManifest"
+        Operation:
+          $ref: "#/components/schemas/JobOperation"
+        Priority:
+          $ref: "#/components/schemas/JobPriority"
+        ProgressSummary:
+          $ref: "#/components/schemas/JobProgressSummary"
+        StatusUpdateReason:
+          $ref: "#/components/schemas/JobStatusUpdateReason"
+        FailureReasons:
+          $ref: "#/components/schemas/JobFailureList"
+        Report:
+          $ref: "#/components/schemas/JobReport"
+        CreationTime:
+          $ref: "#/components/schemas/JobCreationTime"
+        TerminationDate:
+          $ref: "#/components/schemas/JobTerminationDate"
+        RoleArn:
+          $ref: "#/components/schemas/IAMRoleArn"
+        SuspendedDate:
+          $ref: "#/components/schemas/SuspendedDate"
+        SuspendedCause:
+          $ref: "#/components/schemas/SuspendedCause"
+      description: A container element for the job configuration and status information
+        returned by a <code>Describe Job</code> request.
+    PublicAccessBlockConfiguration:
+      type: object
+      properties:
+        BlockPublicAcls:
+          $ref: "#/components/schemas/Setting"
+        IgnorePublicAcls:
+          $ref: "#/components/schemas/Setting"
+        BlockPublicPolicy:
+          $ref: "#/components/schemas/Setting"
+        RestrictPublicBuckets:
+          $ref: "#/components/schemas/Setting"
+      description: <p/>
+    GetPublicAccessBlockRequest:
+      type: object
+      properties: {}
+    JobArn:
+      type: string
+      minLength: 1
+      maxLength: 1024
+    JobCreationTime:
+      type: string
+      format: date-time
+    JobProgressSummary:
+      type: object
+      properties:
+        TotalNumberOfTasks:
+          $ref: "#/components/schemas/JobTotalNumberOfTasks"
+        NumberOfTasksSucceeded:
+          $ref: "#/components/schemas/JobNumberOfTasksSucceeded"
+        NumberOfTasksFailed:
+          $ref: "#/components/schemas/JobNumberOfTasksFailed"
+      description: Describes the total number of tasks that the specified job has executed,
+        the number of tasks that succeeded, and the number of tasks that failed.
+    JobStatusUpdateReason:
+      type: string
+      minLength: 1
+      maxLength: 256
+    JobFailureList:
+      type: array
+      items:
+        $ref: "#/components/schemas/JobFailure"
+    JobTerminationDate:
+      type: string
+      format: date-time
+    SuspendedDate:
+      type: string
+      format: date-time
+    SuspendedCause:
+      type: string
+      minLength: 1
+      maxLength: 1024
+    JobFailureCode:
+      type: string
+      minLength: 1
+      maxLength: 64
+    JobFailureReason:
+      type: string
+      minLength: 1
+      maxLength: 256
+    JobFailure:
+      type: object
+      properties:
+        FailureCode:
+          $ref: "#/components/schemas/JobFailureCode"
+        FailureReason:
+          $ref: "#/components/schemas/JobFailureReason"
+      description: If this job failed, this element indicates why the job failed.
+    OperationName:
+      type: string
+      enum:
+        - LambdaInvoke
+        - S3PutObjectCopy
+        - S3PutObjectAcl
+        - S3PutObjectTagging
+        - S3InitiateRestoreObject
+    JobListDescriptor:
+      type: object
+      properties:
+        JobId:
+          $ref: "#/components/schemas/JobId"
+        Description:
+          $ref: "#/components/schemas/NonEmptyMaxLength256String"
+        Operation:
+          $ref: "#/components/schemas/OperationName"
+        Priority:
+          $ref: "#/components/schemas/JobPriority"
+        Status:
+          $ref: "#/components/schemas/JobStatus"
+        CreationTime:
+          $ref: "#/components/schemas/JobCreationTime"
+        TerminationDate:
+          $ref: "#/components/schemas/JobTerminationDate"
+        ProgressSummary:
+          $ref: "#/components/schemas/JobProgressSummary"
+      description: Contains the configuration and status information for a single job
+        retrieved as part of a job list.
+    JobListDescriptorList:
+      type: array
+      items:
+        $ref: "#/components/schemas/JobListDescriptor"
+    JobManifestFieldName:
+      type: string
+      enum:
+        - Ignore
+        - Bucket
+        - Key
+        - VersionId
+    JobManifestFieldList:
+      type: array
+      items:
+        $ref: "#/components/schemas/JobManifestFieldName"
+    JobManifestFormat:
+      type: string
+      enum:
+        - S3BatchOperations_CSV_20180820
+        - S3InventoryReport_CSV_20161130
+    S3KeyArnString:
+      type: string
+      minLength: 1
+      maxLength: 2000
+    S3ObjectVersionId:
+      type: string
+      minLength: 1
+      maxLength: 2000
+    NonEmptyMaxLength1024String:
+      type: string
+      minLength: 1
+      maxLength: 1024
+    JobNumberOfTasksFailed:
+      type: integer
+      minimum: 0
+    JobNumberOfTasksSucceeded:
+      type: integer
+      minimum: 0
+    JobTotalNumberOfTasks:
+      type: integer
+      minimum: 0
+    JobStatusList:
+      type: array
+      items:
+        $ref: "#/components/schemas/JobStatus"
+    KmsKeyArnString:
+      type: string
+      minLength: 1
+      maxLength: 2000
+    MaxResults:
+      type: integer
+      minimum: 1
+      maximum: 1000
+    ListJobsRequest:
+      type: object
+      properties: {}
+    MaxLength1024String:
+      type: string
+      maxLength: 1024
+    NonEmptyMaxLength2048String:
+      type: string
+      minLength: 1
+      maxLength: 2048
+    PutPublicAccessBlockRequest:
+      type: object
+      required:
+        - PublicAccessBlockConfiguration
+      properties:
+        PublicAccessBlockConfiguration:
+          $ref: "#/components/schemas/PublicAccessBlockConfiguration"
+      xml:
+        namespace: http://awss3control.amazonaws.com/doc/2018-08-20/
+    RequestedJobStatus:
+      type: string
+      enum:
+        - Cancelled
+        - Ready
+    S3ObjectOwner:
+      type: object
+      properties:
+        ID:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+        DisplayName:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+      description: <p/>
+    S3GrantList:
+      type: array
+      items:
+        $ref: "#/components/schemas/S3Grant"
+    S3AccessControlList:
+      type: object
+      required:
+        - Owner
+      properties:
+        Owner:
+          $ref: "#/components/schemas/S3ObjectOwner"
+        Grants:
+          $ref: "#/components/schemas/S3GrantList"
+      description: <p/>
+    S3CannedAccessControlList:
+      type: string
+      enum:
+        - private
+        - public-read
+        - public-read-write
+        - aws-exec-read
+        - authenticated-read
+        - bucket-owner-read
+        - bucket-owner-full-control
+    S3AccessControlPolicy:
+      type: object
+      properties:
+        AccessControlList:
+          $ref: "#/components/schemas/S3AccessControlList"
+        CannedAccessControlList:
+          $ref: "#/components/schemas/S3CannedAccessControlList"
+      description: <p/>
+    S3ContentLength:
+      type: integer
+      minimum: 0
+    S3MetadataDirective:
+      type: string
+      enum:
+        - COPY
+        - REPLACE
+    TimeStamp:
+      type: string
+      format: date-time
+    S3ObjectMetadata:
+      type: object
+      properties:
+        CacheControl:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+        ContentDisposition:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+        ContentEncoding:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+        ContentLanguage:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+        UserMetadata:
+          $ref: "#/components/schemas/S3UserMetadata"
+        ContentLength:
+          $ref: "#/components/schemas/S3ContentLength"
+        ContentMD5:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+        ContentType:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+        HttpExpiresDate:
+          $ref: "#/components/schemas/TimeStamp"
+        RequesterCharged:
+          $ref: "#/components/schemas/Boolean"
+        SSEAlgorithm:
+          $ref: "#/components/schemas/S3SSEAlgorithm"
+      description: <p/>
+    S3TagSet:
+      type: array
+      items:
+        $ref: "#/components/schemas/S3Tag"
+    S3StorageClass:
+      type: string
+      enum:
+        - STANDARD
+        - STANDARD_IA
+        - ONEZONE_IA
+        - GLACIER
+        - INTELLIGENT_TIERING
+        - DEEP_ARCHIVE
+    S3ObjectLockLegalHoldStatus:
+      type: string
+      enum:
+        - OFF
+        - ON
+    S3ObjectLockMode:
+      type: string
+      enum:
+        - COMPLIANCE
+        - GOVERNANCE
+    S3ExpirationInDays:
+      type: integer
+      minimum: 0
+    S3GlacierJobTier:
+      type: string
+      enum:
+        - BULK
+        - STANDARD
+    S3Grantee:
+      type: object
+      properties:
+        TypeIdentifier:
+          $ref: "#/components/schemas/S3GranteeTypeIdentifier"
+        Identifier:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+        DisplayName:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+      description: <p/>
+    S3Permission:
+      type: string
+      enum:
+        - FULL_CONTROL
+        - READ
+        - WRITE
+        - READ_ACP
+        - WRITE_ACP
+    S3Grant:
+      type: object
+      properties:
+        Grantee:
+          $ref: "#/components/schemas/S3Grantee"
+        Permission:
+          $ref: "#/components/schemas/S3Permission"
+      description: <p/>
+    S3GranteeTypeIdentifier:
+      type: string
+      enum:
+        - id
+        - emailAddress
+        - uri
+    S3UserMetadata:
+      type: object
+      maxProperties: 8192
+      additionalProperties:
+        $ref: "#/components/schemas/MaxLength1024String"
+    S3SSEAlgorithm:
+      type: string
+      enum:
+        - AES256
+        - KMS
+    S3Tag:
+      type: object
+      required:
+        - Key
+        - Value
+      properties:
+        Key:
+          $ref: "#/components/schemas/NonEmptyMaxLength1024String"
+        Value:
+          $ref: "#/components/schemas/MaxLength1024String"
+      description: <p/>
+    UpdateJobPriorityRequest:
+      type: object
+      properties: {}
+    UpdateJobStatusRequest:
+      type: object
+      properties: {}

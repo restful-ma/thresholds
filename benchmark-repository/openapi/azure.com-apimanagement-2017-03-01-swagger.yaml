@@ -1,0 +1,1077 @@
+openapi: 3.0.0
+info:
+  description: Use these REST APIs for performing operations on entities like API, Product,
+    and Subscription associated with your Azure API Management deployment.
+  title: ApiManagementClient
+  version: 2017-03-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/control-plane/Microsoft.ApiManagement/preview/2017-03-01/apimanagement.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: apimanagement
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - apim_key: []
+paths:
+  /policies:
+    get:
+      description: Lists all the Global Policy definitions of the Api Management service.
+      operationId: Policy_List
+      parameters:
+        - description: Policy scope.
+          in: query
+          name: scope
+          required: false
+          x-ms-enum:
+            modelAsString: false
+            name: PolicyScopeContract
+          schema:
+            type: string
+            enum:
+              - Tenant
+              - Product
+              - Api
+              - Operation
+              - All
+          examples:
+            ApiManagementListPolicies:
+              value: All
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Returns an array of Policy Contracts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyCollection"
+              examples:
+                ApiManagementListPolicies:
+                  $ref: "#/components/examples/ApiManagementListPolicies"
+      tags:
+        - Policy
+      x-ms-pageable: {}
+  "/policies/{policyId}":
+    delete:
+      description: Deletes the global policy configuration of the Api Management Service.
+      operationId: Policy_Delete
+      parameters:
+        - $ref: "#/components/parameters/PolicyIdParameter"
+        - description: The entity state (Etag) version of the policy to be deleted. A value
+            of "*" can be used for If-Match to unconditionally apply the
+            operation.
+          in: header
+          name: If-Match
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeletePolicies:
+              value: "*"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "204":
+          description: Successfully deleted the policy configuration at the Global level.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Policy
+    get:
+      description: Get the Global policy definition of the Api Management service.
+      operationId: Policy_Get
+      parameters:
+        - $ref: "#/components/parameters/PolicyIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Returns the Policy Contracts.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyContract"
+              examples:
+                ApiManagementGetPolicies:
+                  $ref: "#/components/examples/ApiManagementGetPolicies"
+            application/vnd.ms-azure-apim.policy+xml:
+              schema:
+                $ref: "#/components/schemas/PolicyContract"
+              examples:
+                ApiManagementGetPolicies:
+                  $ref: "#/components/examples/ApiManagementGetPolicies"
+            application/vnd.ms-azure-apim.policy.raw+xml:
+              schema:
+                $ref: "#/components/schemas/PolicyContract"
+              examples:
+                ApiManagementGetPolicies:
+                  $ref: "#/components/examples/ApiManagementGetPolicies"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+            application/vnd.ms-azure-apim.policy+xml:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+            application/vnd.ms-azure-apim.policy.raw+xml:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Policy
+    put:
+      description: Creates or updates the global policy configuration of the Api Management
+        service.
+      operationId: Policy_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/PolicyIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PolicyContract"
+          application/vnd.ms-azure-apim.policy+xml:
+            schema:
+              $ref: "#/components/schemas/PolicyContract"
+          application/vnd.ms-azure-apim.policy.raw+xml:
+            schema:
+              $ref: "#/components/schemas/PolicyContract"
+        description: The policy contents to apply.
+        required: true
+      responses:
+        "200":
+          description: Global policy configuration of the Api Management service was
+            successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyContract"
+              examples:
+                ApiManagementPutPolicies:
+                  $ref: "#/components/examples/ApiManagementPutPolicies"
+        "201":
+          description: Global policy configuration was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyContract"
+              examples:
+                ApiManagementPutPolicies:
+                  $ref: "#/components/examples/ApiManagementPutPolicies"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Policy
+  /policySnippets:
+    get:
+      description: Lists all policy snippets.
+      operationId: PolicySnippets_List
+      parameters:
+        - description: Policy scope.
+          in: query
+          name: scope
+          required: false
+          x-ms-enum:
+            modelAsString: false
+            name: PolicyScopeContract
+          schema:
+            type: string
+            enum:
+              - Tenant
+              - Product
+              - Api
+              - Operation
+              - All
+          examples:
+            ApiManagementListPolicySnippets:
+              value: Api
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Returns an array of Policy Contracts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicySnippetsCollection"
+              examples:
+                ApiManagementListPolicySnippets:
+                  $ref: "#/components/examples/ApiManagementListPolicySnippets"
+      tags:
+        - PolicySnippets
+      x-ms-pageable: {}
+  /regions:
+    get:
+      description: Lists all azure regions in which the service exists.
+      operationId: Regions_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Lists of Regions in which the service is deployed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegionListResult"
+              examples:
+                ApiManagementListRegions:
+                  $ref: "#/components/examples/ApiManagementListRegions"
+      tags:
+        - Regions
+      x-ms-pageable:
+        nextLinkName: ""
+servers:
+  - url: https://azure.local
+  - url: "{apimBaseUrl}"
+    variables:
+      apimBaseUrl:
+        description: The management endpoint of the API Management service, for example
+          https://myapimservice.management.azure-api.net.
+        x-ms-skip-url-encoding: true
+        default: ""
+components:
+  examples:
+    ApiManagementListPolicies:
+      value:
+        count: 1
+        value:
+          - id: /policies/policy
+            policyContent: "<!--\r
+
+              \    IMPORTANT:\r
+
+              \    - Policy elements can appear only within the
+              <inbound>, <outbound>, <backend> section elements.\r
+
+              \    - Only the <forward-request> policy element can
+              appear within the <backend> section element.\r
+
+              \    - To apply a policy to the incoming request
+              (before it is forwarded to the backend service), place a
+              corresponding policy element within the <inbound> section
+              element.\r
+
+              \    - To apply a policy to the outgoing response
+              (before it is sent back to the caller), place a corresponding
+              policy element within the <outbound> section element.\r
+
+              \    - To add a policy position the cursor at the
+              desired insertion point and click on the round button associated
+              with the policy.\r
+
+              \    - To remove a policy, delete the corresponding
+              policy statement from the policy document.\r
+
+              \    - Policies are applied in the order of their
+              appearance, from the top down.\r
+
+              -->\r
+
+              <policies>\r
+
+              \  <inbound />\r
+
+              \  <backend>\r
+
+              \    <forward-request />\r
+
+              \  </backend>\r
+
+              \  <outbound />\r
+
+              </policies>"
+    ApiManagementGetPolicies:
+      value:
+        id: /policies/policy
+        policyContent: "<!--\r
+
+          \    IMPORTANT:\r
+
+          \    - Policy elements can appear only within the <inbound>,
+          <outbound>, <backend> section elements.\r
+
+          \    - Only the <forward-request> policy element can appear
+          within the <backend> section element.\r
+
+          \    - To apply a policy to the incoming request (before it
+          is forwarded to the backend service), place a corresponding policy
+          element within the <inbound> section element.\r
+
+          \    - To apply a policy to the outgoing response (before it
+          is sent back to the caller), place a corresponding policy element
+          within the <outbound> section element.\r
+
+          \    - To add a policy position the cursor at the desired
+          insertion point and click on the round button associated with the
+          policy.\r
+
+          \    - To remove a policy, delete the corresponding policy
+          statement from the policy document.\r
+
+          \    - Policies are applied in the order of their
+          appearance, from the top down.\r
+
+          -->\r
+
+          <policies>\r
+
+          \  <inbound />\r
+
+          \  <backend>\r
+
+          \    <forward-request />\r
+
+          \  </backend>\r
+
+          \  <outbound />\r
+
+          </policies>"
+    ApiManagementPutPolicies:
+      value:
+        id: /policies/policy
+        policyContent: "<policies>\r
+
+          \  <inbound>\r
+
+          \    <find-and-replace from=\"aaa\" to=\"BBB\" />\r
+
+          \    <set-header name=\"ETag\" exists-action=\"skip\">\r
+
+          \      <value>bbyby</value>\r
+
+          \      <!-- for multiple headers with the same name add
+          additional value elements -->\r
+
+          \    </set-header>\r
+
+          \    <set-query-parameter name=\"additional\"
+          exists-action=\"append\">\r
+
+          \      <value>xxbbcczc</value>\r
+
+          \      <!-- for multiple parameters with the same name add
+          additional value elements -->\r
+
+          \    </set-query-parameter>\r
+
+          \    <cross-domain />\r
+
+          \  </inbound>\r
+
+          \  <backend>\r
+
+          \    <forward-request />\r
+
+          \  </backend>\r
+
+          \  <outbound />\r
+
+          </policies>"
+    ApiManagementListPolicySnippets:
+      value:
+        - content: <authentication-basic username="username" password="password" />
+          name: Authenticate with Basic
+          scope: 268435471
+          toolTip: Authenticate with the backend service using Basic authentication.
+            Use in the inbound section at API scope.
+        - content: <authentication-certificate thumbprint="thumbprint" />
+          name: Authenticate with client certificate
+          scope: 268435471
+          toolTip: Authenticate with the backend service using a client certificate.
+            Use in the inbound section at API scope.
+        - content: "<check-header name=\"header name\"\r
+
+            \              failed-check-httpcode=\"http status code
+            to return on failure\"\r
+
+            \              failed-check-error-message=\"error
+            message to return\"\r
+
+            \              ignore-case=\"true | false\">\r
+
+            \    <value>value</value> <!-- if there are multiple
+            possible allowed values, then add additional value elements -->\r
+
+            </check-header>"
+          name: Check HTTP header
+          scope: 268435471
+          toolTip: Check header and return specified HTTP status code if it doesn't
+            exist or match expected value. Works for both response and request
+            headers – policy can be applied in inbound or outbound sections at
+            any scope.
+        - content: "<choose>\r
+
+            \    <when condition=\"@(expression to evaluate)\">\r
+
+            \    </when>\r
+
+            \    <when condition=\"@(expression to evaluate)\">\r
+
+            \    </when>\r
+
+            \    <otherwise>\r
+
+            \    </otherwise>\r
+
+            </choose>"
+          name: Control flow
+          scope: 268435471
+          toolTip: Conditionally apply policy statements based on the results of the
+            evaluation of Boolean expressions. Use at any scope in the inbound
+            and outbound sections.
+        - content: <json-to-xml apply="always | content-type-json"
+            consider-accept-header="true | false"/>
+          name: Convert JSON to XML
+          scope: 268435471
+          toolTip: Convert request or response body from JSON to XML. Use in the
+            inbound or outbound sections at API or Operation scopes.
+        - content: <xml-to-json kind="javascript-friendly | direct" apply="always |
+            content-type-xml" consider-accept-header="true | false"/>
+          name: Convert XML to JSON
+          scope: 268435471
+          toolTip: Convert request or response body from XML to either "JSON friendly"
+            or "XML faithful" form of JSON. Use in the inbound or outbound
+            sections at API or Operation scopes.
+        - content: "<cors>\r
+
+            \    <allowed-origins>\r
+
+            \        <origin>*</origin> <!-- allow any -->\r
+
+            \        <!-- OR a list of one or more specific URIs
+            (case-sensitive) -->\r
+
+            \        <origin>URI</origin> <!-- URI must include
+            scheme, host, and port. If port is omitted, 80 is assumed for http
+            and 443 is assumed for https. -->\r
+
+            \    </allowed-origins>\r
+
+            \    <allowed-methods> <!-- allow any -->\r
+
+            \        <method>*</method>\r
+
+            \    </allowed-methods>\r
+
+            \    <allowed-headers> <!-- allow any -->\r
+
+            \        <header>*</header>\r
+
+            \    </allowed-headers>\r
+
+            </cors>"
+          name: CORS
+          scope: 13
+          toolTip: CORS stands for cross-origin resource sharing. Add CORS support to
+            an operation or an API to allow cross-domain calls from
+            browser-based clients. Use in the inbound section only.
+        - content: <find-and-replace from="what to replace" to="replacement" />
+          name: Find and replace string in body
+          scope: 268435471
+          toolTip: Find a request or response substring and replace it with a different
+            substring. Use in the inbound and outbound sections at any scope.
+        - content: <forward-request timeout="seconds" />
+          name: Forward request to backend service
+          scope: 268435471
+          toolTip: Forward request to the backend service using information in the
+            context and receive a response, waiting no longer then specified
+            timeout value. Use at any scope in the backend section.
+        - content: "<cache-lookup vary-by-developer=\"true | false\"
+            vary-by-developer-groups=\"true | false\"
+            downstream-caching-type=\"none | private | public\"
+            must-revalidate=\"true | false\"
+            allow-private-response-caching=\"@(expression to evaluate)\">\r
+
+            \    <vary-by-header>Accept</vary-by-header> <!-- should
+            be present in most cases -->\r
+
+            \    <vary-by-header>Accept-Charset</vary-by-header>
+            <!-- should be present in most cases -->\r
+
+            \    <vary-by-header>Authorization</vary-by-header> <!--
+            should be present when allow-authorized-response-caching is
+            \"true\"-->\r
+
+            \    <vary-by-header>header name</vary-by-header> <!--
+            optional, can repeated several times -->\r
+
+            \    <vary-by-query-parameter>parameter
+            name</vary-by-query-parameter> <!-- optional, can repeated several
+            times -->\r
+
+            </cache-lookup>"
+          name: Get from cache
+          scope: 268435471
+          toolTip: Perform cache lookup and return a valid cached response when
+            available. Appropriately respond to cache validation requests from
+            callers. Use anywhere in the inbound section at Product, API, or
+            Operation scopes.
+        - content: <cache-lookup-value key="@(expression to evaluate)"
+            default-value="@(expression to evaluate)" variable-name="name of a
+            variable to put response into" />
+          name: Get value from cache
+          scope: 268435471
+          toolTip: Perform cache lookup and returned value under the key, if available,
+            or default. If value is not present and no default is specified,
+            variable will not be set. Use at any scope in any section except
+            <backend>.
+        - content: <jsonp callback-parameter-name="callback function name" />
+          name: JSONP
+          scope: 268435471
+          toolTip: Add support for JSONP to an operation or an API to allow
+            cross-domain calls from JavaScript browser-based clients. Use in the
+            outbound section only.
+        - content: "<rate-limit-by-key calls=\"number\" renewal-period=\"seconds\" \r
+
+            \    counter-key=\"expression like
+            @(context.Subscription.Id) or a constant string\"\r
+
+            \    increment-count=\"optional, by default = 1\"\r
+
+            \    flexible-retry-window=\"optional, by default =
+            false\"\r
+
+            />"
+          name: Limit call rate per key
+          scope: 268435471
+          toolTip: Arrest usage spikes by limiting calls and/or bandwidth consumption
+            rate per calculated key. Use in the inbound section at any scope.
+        - content: "<limit-concurrency key=\"@(expression) or a constant string\"
+            max-count=\"10\" >\r
+
+            </limit-concurrency>"
+          name: Limit request processing concurrency level
+          scope: 268435471
+          toolTip: Limit how many calls may be processed in parallel for the duration
+            of this policy's body.
+        - content: "<log-to-eventhub logger-id ='logger-id'>\r
+
+            \                 @( string.Join(\",\", DateTime.UtcNow,
+            context.Deployment.ServiceName, context.RequestId,
+            context.Request.IpAddress, context.Operation.Name) ) \r
+
+            \             </log-to-eventhub>"
+          name: Log to EventHub
+          scope: 268435471
+          toolTip: Send custom messages to Event Hub. Use at any scope in the inbound
+            or outbound sections.
+        - content: <redirect-content-urls />
+          name: Mask URLs in content
+          scope: 268435471
+          toolTip: Use in the outbound section to re-write response body links and
+            Location header values making them point to the proxy. Use in the
+            inbound section for an opposite effect. Apply at API or Operation
+            scopes.
+        - content: <mock-response status-code='200' content-type='application/json'/>
+          name: Mock Response
+          scope: 268435471
+          toolTip: Mock response based on operation responses samples/schemas. Use at
+            any scope in the inbound or outbound sections.
+        - content: "<trace source=\"source name\">\r
+
+            \    @(context.Request.Url.ToUri().ToString()) \r
+
+            </trace>"
+          name: Output trace information
+          scope: 268435471
+          toolTip: Output information into trace logs, if request is executed with
+            tracing enabled.
+        - content: <cache-remove-value key="@(expression to evaluate)" />
+          name: Remove value from cache
+          scope: 268435471
+          toolTip: Remove value from cache under the key. Use at any scope in any
+            section except <backend>.
+        - content: "<ip-filter action=\"allow | forbid\">\r
+
+            \    <address>address</address>\r
+
+            \    <address-range from=\"address\" to=\"address\" />\r
+
+            </ip-filter>"
+          name: Restrict caller IPs
+          scope: 268435471
+          toolTip: Allow calls only from specific IP addresses and/or address ranges.
+            Forbid calls from specific IP addresses and/or address ranges. Use
+            in the inbound section at any scope.
+        - content: "<retry condition=\"@( decide whether retry is required )\"
+            count=\"10\" interval=\"seconds\">\r
+
+            \    <!-- put retryable sequence here -->\r
+
+            </retry>"
+          name: Retry
+          scope: 268435471
+          toolTip: Retry execution of the enclosed policy statements, if and until the
+            condition is met. Execution will repeat at the specified time
+            interval, up to the specified count.
+        - content: "<return-response response-variable-name=\"existing response
+            variable\">\r
+
+            \    <set-status code=\"code\" reason=\"reason\" />\r
+
+            \    <set-header name=\"header name\"
+            exists-action=\"override | skip | append | delete\">\r
+
+            \    <value>value</value> <!-- for multiple headers with
+            the same name add additional value elements -->\r
+
+            </set-header>\r
+
+            \    <set-body>new body value as text</set-body>\r
+
+            </return-response>"
+          name: Return response
+          scope: 268435471
+          toolTip: Abort pipeline execution and return the specified response directly
+            to the caller. Use at any scope in the inbound and outbound
+            sections.
+        - content: <rewrite-uri template="uri template" />
+          name: Rewrite URL
+          scope: 14
+          toolTip: Convert request URL from its public form to the form expected by the
+            web service. Use anywhere in the inbound section at Operation scope
+            only.
+        - content: "<send-one-way-request mode=\"new | copy\">\r
+
+            \    <set-url>service URL to call</set-url>\r
+
+            \    <set-method>GET</set-method>\r
+
+            \    <set-header name=\"header name\"
+            exists-action=\"override | skip | append | delete\">\r
+
+            \        <value>value</value> <!-- for multiple headers
+            with the same name add additional value elements -->\r
+
+            \    </set-header>\r
+
+            \    <set-body>new body value as text</set-body>\r
+
+            </send-one-way-request>"
+          name: Send one way request
+          scope: 268435471
+          toolTip: Send provided request to the specified URL, without waiting for
+            response. Use at any scope in the inbound and outbound sections.
+        - content: "<send-request mode=\"new | copy\" response-variable-name=\"name of
+            a variable to put response into\" timeout=\"seconds\"
+            ignore-error=\"false | true\">\r
+
+            \    <set-url>service URL to call</set-url>\r
+
+            \    <set-method>GET</set-method>\r
+
+            \    <set-header name=\"header name\"
+            exists-action=\"override | skip | append | delete\">\r
+
+            \        <value>value</value> <!-- for multiple headers
+            with the same name add additional value elements -->\r
+
+            \    </set-header>\r
+
+            \    <set-body>new body value as text</set-body>\r
+
+            </send-request>"
+          name: Send request
+          scope: 268435471
+          toolTip: Send provided request to the specified URL, waiting no longer then
+            set timeout value. Use at any scope in the inbound and outbound
+            sections.
+        - content: <set-backend-service base-url="https://backend.com/service" />
+          name: Set backend service
+          scope: 268435471
+          toolTip: Change backend service where the incoming calls will be directed.
+            Use in the inbound section only at any scope.
+        - content: <set-body template="none">new body value as text</set-body>
+          name: Set body
+          scope: 268435471
+          toolTip: Set message body to a specific string value. The policy has no
+            effect on the Content-Type header value. Use at any scope in the
+            inbound or outbound sections.
+        - content: <set-variable name="variable name" value="@(expression to evaluate)"
+            />
+          name: Set context variable
+          scope: 268435471
+          toolTip: Persist a value in a named context variable for later access from
+            expressions. Use at any scope in the inbound and outbound sections.
+        - content: "<set-header name=\"header name\" exists-action=\"override | skip |
+            append | delete\">\r
+
+            \    <value>value</value> <!-- for multiple headers with
+            the same name add additional value elements -->\r
+
+            </set-header>"
+          name: Set HTTP header
+          scope: 268435471
+          toolTip: Add a new header, change the value of an existing header or remove a
+            header. Works for both response and request headers – policy can be
+            applied in inbound or outbound sections at any scope.
+        - content: <proxy url="http://localhost:8080" username="username"
+            password="password" />
+          name: Set http proxy for backend request
+          scope: 268435471
+          toolTip: Specify http proxy location and credentials.
+        - content: "<set-query-parameter name=\"param name\" exists-action=\"override |
+            skip | append | delete\">\r
+
+            \    <value>value</value> <!-- for multiple parameters
+            with the same name add additional value elements -->\r
+
+            </set-query-parameter>"
+          name: Set query string parameter
+          scope: 268435471
+          toolTip: Add a new query string parameter, change the value of an existing
+            parameter or remove a parameter. Can be applied in the inbound
+            section at any scope.
+        - content: <set-method>METHOD</set-method>
+          name: Set request method
+          scope: 268435471
+          toolTip: Change HTTP method to the specified value
+        - content: <set-status code="code" reason="reason" />
+          name: Set status code
+          scope: 268435471
+          toolTip: Change HTTP status code to the specified value. Use at any scope in
+            the outbound sections.
+        - content: "<quota-by-key calls=\"number\" bandwidth=\"kilobytes\" \r
+
+            \    renewal-period=\"period as number of seconds or xml
+            timespan as 'PxxYxxMxxDTxxHxxMxxS' where xx are numbers\" \r
+
+            \    counter-key=\"@(expression) or a constant
+            string\"\r
+
+            \    first-period-start=\"optional, date as
+            2002-05-30T09:30:10-06:00\"\r
+
+            \    increment-condition=\"optional boolean expression
+            like @( context.Response.StatusCode >= 200 &&
+            context.Response.StatusCode < 400 ) \"\r
+
+            \    increment-count=\"expression like
+            @(context.Request.Method == \"POST\" ? 1:0) or a constant integer
+            value. Optional, by default = 1.\"\r
+
+            />"
+          name: Set usage quota per key
+          scope: 268435471
+          toolTip: Enforce a renewable or lifetime call volume and/or bandwidth quota
+            per calculated key. Use in the inbound section at any scope.
+        - content: <cache-store duration="seconds" />
+          name: Store to cache
+          scope: 268435471
+          toolTip: Cache responses according to the specified cache configuration. Use
+            anywhere in the outbound section at Product, API, or Operation
+            scopes.
+        - content: <cache-store-value key="@(expression to evaluate)"
+            value="@(expression to evaluate)" duration="seconds" />
+          name: Store value in cache
+          scope: 268435471
+          toolTip: Store value in cache under a key for duration. Use at any scope in
+            any section except <backend>.
+        - content: "<xsl-transform>\r
+
+            \t\t\t<parameter
+            name=\"User-Agent\">@(context.Request.Headers.GetValueOrDefault(\"U\
+            ser-Agent\",\"non-specified\"))</parameter>\r
+
+            \t\t\t<xsl:stylesheet version=\"1.0\"
+            xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">\r
+
+            \t\t\t\t<xsl:output method=\"xml\" indent=\"yes\" />\r
+
+            \t\t\t\t<xsl:param name=\"User-Agent\" />\r
+
+            \t\t\t\t<xsl:template match=\"* | @* | node()\">\r
+
+            \t\t\t\t\t<xsl:copy>\r
+
+            \t\t\t\t\t\t<xsl:if test=\"self::* and
+            not(parent::*)\">\r
+
+            \t\t\t\t\t\t\t<xsl:attribute name=\"User-Agent\">\r
+
+            \t\t\t\t\t\t\t\t<xsl:value-of select=\"$User-Agent\"
+            />\r
+
+            \t\t\t\t\t\t\t</xsl:attribute>\r
+
+            \t\t\t\t\t\t</xsl:if>\r
+
+            \t\t\t\t\t\t<xsl:apply-templates select=\"* | @* |
+            node()\" />\r
+
+            \t\t\t\t\t</xsl:copy>\r
+
+            \t\t\t\t</xsl:template>\r
+
+            \t\t\t</xsl:stylesheet>\r
+
+            \t\t</xsl-transform>"
+          name: Transform XML using an XSLT
+          scope: 268435471
+          toolTip: Transform request or response body using XSLTransform. Use in the
+            inbound, outbound and on-error sections at any scope.
+        - content: "<validate-jwt header-name=\"Insert HTTP Header Name here\"
+            failed-validation-httpcode=\"401\"
+            failed-validation-error-message=\"Unauthorized\">\r
+
+            \    <issuer-signing-keys>\r
+
+            \        <key>Base64 Encoded Key 1</key>\r
+
+            \         <!-- if there are multiple possible allowed
+            values, then add additional value elements -->\r
+
+            \    </issuer-signing-keys>\r
+
+            \    <audiences>\r
+
+            \        <audience>Audience 1</audience>\r
+
+            \         <!-- if there are multiple possible allowed
+            values, then add additional value elements -->\r
+
+            \    </audiences>\r
+
+            \    <issuers>\r
+
+            \        <issuer>Issuer 1</issuer>\r
+
+            \         <!-- if there are multiple possible allowed
+            values, then add additional value elements -->\r
+
+            \    </issuers>\r
+
+            \    <required-claims>\r
+
+            \        <claim name=\"claim1\" match=\"all\">\r
+
+            \            <value>value1</value>\r
+
+            \            <value>value2</value>\r
+
+            \        </claim>\r
+
+            \         <!-- if there are multiple possible allowed
+            values, then add additional value elements -->\r
+
+            \    </required-claims>\r
+
+            </validate-jwt>"
+          name: Validate JWT
+          scope: 268435471
+          toolTip: Check and validate a JWT in a header or query parameter. Use in the
+            inbound section at any scope.
+        - content: "<wait for=\"all|any\">\r
+
+            \    <send-request ... />\r
+
+            \    <cache-lookup-value ... />\r
+
+            </wait>"
+          name: Wait for...
+          scope: 268435471
+          toolTip: Wait for all or any of the send request policies to complete before
+            proceeding. Use at any scope in the inbound and outbound sections.
+    ApiManagementListRegions:
+      value:
+        count: 1
+        nextLink: ""
+        value:
+          - isDeleted: false
+            isMasterRegion: true
+            name: West US
+  parameters:
+    ApiVersionParameter:
+      description: Version of the API to be used with the client request.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        ApiManagementListPolicies:
+          value: 2017-03-01
+        ApiManagementDeletePolicies:
+          value: 2017-03-01
+        ApiManagementGetPolicies:
+          value: 2017-03-01
+        ApiManagementPutPolicies:
+          value: 2017-03-01
+        ApiManagementListPolicySnippets:
+          value: 2017-03-01
+        ApiManagementListRegions:
+          value: 2017-03-01
+    PolicyIdParameter:
+      description: The identifier of the Policy.
+      in: path
+      name: policyId
+      required: true
+      x-ms-enum:
+        modelAsString: true
+        name: PolicyIdName
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - policy
+      examples:
+        ApiManagementDeletePolicies:
+          value: policy
+        ApiManagementGetPolicies:
+          value: policy
+        ApiManagementPutPolicies:
+          value: policy
+    SkipQueryParameter:
+      description: Number of records to skip.
+      in: query
+      name: $skip
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+    TopQueryParameter:
+      description: Number of records to return.
+      in: query
+      name: $top
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+  securitySchemes:
+    apim_key:
+      in: header
+      name: Authorization
+      type: apiKey
+  schemas:
+    ErrorFieldContract:
+      description: Error Field contract.
+      properties:
+        code:
+          description: Property level error code.
+          type: string
+        message:
+          description: Human-readable representation of property-level error.
+          type: string
+        target:
+          description: Property name.
+          type: string
+    ErrorResponse:
+      description: Error Body contract.
+      properties:
+        code:
+          description: Service-defined error code. This code serves as a sub-status for the
+            HTTP error code specified in the response.
+          type: string
+        details:
+          description: The list of invalid fields send in request, in case of validation
+            error.
+          items:
+            $ref: "#/components/schemas/ErrorFieldContract"
+          type: array
+        message:
+          description: Human-readable representation of the error.
+          type: string
+    PolicyCollection:
+      description: The response of the list policy operation.
+      properties:
+        count:
+          description: Total number of records
+          type: integer
+        nextLink:
+          description: Next page link if any.
+          type: string
+        value:
+          description: Policy Contract value.
+          items:
+            $ref: "#/components/schemas/PolicyContract"
+          type: array
+    PolicyContract:
+      description: Policy contract Properties.
+      properties:
+        id:
+          description: Policy identifier.
+          type: string
+        policyContent:
+          description: Json escaped Xml Encoded contents of the Policy.
+          type: string
+      required:
+        - policyContent
+    PolicySnippetContract:
+      description: Policy snippet.
+      properties:
+        content:
+          description: Snippet content.
+          readOnly: true
+          type: string
+        name:
+          description: Snippet name.
+          readOnly: true
+          type: string
+        scope:
+          description: Binary OR value of the Snippet scope.
+          readOnly: true
+          type: integer
+        toolTip:
+          description: Snippet toolTip.
+          readOnly: true
+          type: string
+    PolicySnippetsCollection:
+      description: The response of the list policy snippets operation.
+      properties:
+        value:
+          description: Policy snippet value.
+          items:
+            $ref: "#/components/schemas/PolicySnippetContract"
+          type: array
+    RegionContract:
+      description: Region profile.
+      properties:
+        isDeleted:
+          description: whether Region is deleted.
+          type: boolean
+        isMasterRegion:
+          description: whether Region is the master region.
+          type: boolean
+        name:
+          description: Region name.
+          readOnly: true
+          type: string
+    RegionListResult:
+      description: Lists Regions operation response details.
+      properties:
+        count:
+          description: Total record count number across all pages.
+          format: int64
+          type: integer
+        nextLink:
+          description: Next page link if any.
+          type: string
+        value:
+          description: Lists of Regions.
+          items:
+            $ref: "#/components/schemas/RegionContract"
+          type: array

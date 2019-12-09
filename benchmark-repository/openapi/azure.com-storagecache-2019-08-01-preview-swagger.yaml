@@ -1,0 +1,1737 @@
+openapi: 3.0.0
+info:
+  description: A Storage Cache provides scalable caching service for NAS clients, serving
+    data from either NFSv3 or Blob at-rest storage (referred to as "Storage
+    Targets"). These operations allow you to manage caches.
+  title: Storage Cache Mgmt Client
+  version: 2019-08-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2019-08-01-preview/storagecache.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: storagecache
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.StorageCache/operations:
+    get:
+      description: Lists all of the available RP operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiOperationListResult"
+              examples:
+                StorageTargets_List:
+                  $ref: "#/components/examples/StorageTargets_List"
+        default:
+          description: Resource Provider error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/caches":
+    get:
+      description: Returns all Caches the user has access to under a subscription.
+      operationId: Caches_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: A list of Cache objects.  Note that entity references might replace
+            complete Cache objects, as described in
+            http://docs.oasis-open.org/odata/odata-json-format/v4.01/cs01/odata-json-format-v4.01-cs01.html#sec_EntityReference
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CachesListResult"
+              examples:
+                Caches_List:
+                  $ref: "#/components/examples/Caches_List"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Caches
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/skus":
+    get:
+      description: Get the list of StorageCache.Cache SKUs available to this subscription.
+      operationId: Skus_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: A list of SKU descriptors.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceSkusResult"
+              examples:
+                Skus_List:
+                  $ref: "#/components/examples/Skus_List"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - SKUs
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/usageModels":
+    get:
+      description: Get the list of cache Usage Models available to this subscription.
+      operationId: UsageModels_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: A list of UsageModel descriptors.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageModelsResult"
+              examples:
+                UsageModels_List:
+                  $ref: "#/components/examples/UsageModels_List"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - UsageModels
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches":
+    get:
+      description: Returns all Caches the user has access to under a resource group and
+        subscription.
+      operationId: Caches_ListByResourceGroup
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Caches_ListByResourceGroup:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: A list of Cache objects.  Note that entity references might replace
+            complete Cache objects, as described in
+            http://docs.oasis-open.org/odata/odata-json-format/v4.01/cs01/odata-json-format-v4.01-cs01.html#sec_EntityReference
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CachesListResult"
+              examples:
+                Caches_ListByResourceGroup:
+                  $ref: "#/components/examples/Caches_ListByResourceGroup"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Caches
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}":
+    delete:
+      description: Schedules a Cache for deletion.
+      operationId: Caches_Delete
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Caches_Delete:
+              value: scgroup
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            Caches_Delete:
+              value: sc
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Cache deleted.
+          content:
+            application/json:
+              schema: {}
+        "202":
+          description: Started the Cache's transition to Deleted state.
+          content:
+            application/json:
+              schema: {}
+        "204":
+          description: Cache deleted.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Caches
+      x-ms-long-running-operation: true
+    get:
+      description: Returns a Cache.
+      operationId: Caches_Get
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Caches_Get:
+              value: scgroup
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            Caches_Get:
+              value: sc1
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: Returns the Cache object corresponding to cacheId.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cache"
+              examples:
+                Caches_Get:
+                  $ref: "#/components/examples/Caches_Get"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Caches
+    patch:
+      description: Update a Cache instance.
+      operationId: Caches_Update
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Caches_Update:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            Caches_Update:
+              value: sc1
+      requestBody:
+        $ref: "#/components/requestBodies/Cache"
+      responses:
+        "200":
+          description: Patched the Cache.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cache"
+              examples:
+                Caches_Update:
+                  $ref: "#/components/examples/Caches_Update"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Caches
+    put:
+      description: Create/update a Cache instance.
+      operationId: Caches_Create
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Caches_Create:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            Caches_Create:
+              value: sc1
+      requestBody:
+        $ref: "#/components/requestBodies/Cache"
+      responses:
+        "200":
+          description: Cache created or already exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cache"
+              examples:
+                Caches_Create:
+                  $ref: "#/components/examples/Caches_Create"
+        "201":
+          description: Cache creation has been initiated.  Poll the new Cache's
+            provisioningState property to monitor creation progress.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cache"
+              examples:
+                Caches_Create:
+                  $ref: "#/components/examples/Caches_Create"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Caches
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/flush":
+    post:
+      description: Tells a cache to write all dirty data to the StorageTarget(s).  During
+        the flush, clients will see errors returned until the flush is complete.
+      operationId: Caches_Flush
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Caches_Flush:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            Caches_Flush:
+              value: sc
+      responses:
+        "200":
+          description: All cache data is clean.
+          content:
+            application/json:
+              schema: {}
+        "202":
+          description: Cache has started flushing.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Caches
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/start":
+    post:
+      description: Tells a Stopped state cache to transition to Active state.
+      operationId: Caches_Start
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Caches_Start:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            Caches_Start:
+              value: sc
+      responses:
+        "200":
+          description: Cache is Active.
+          content:
+            application/json:
+              schema: {}
+        "202":
+          description: Cache has started the transition to Active.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Caches
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/stop":
+    post:
+      description: Tells an Active cache to transition to Stopped state.
+      operationId: Caches_Stop
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Caches_Stop:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            Caches_Stop:
+              value: sc
+      responses:
+        "200":
+          description: Cache is stopped.
+          content:
+            application/json:
+              schema: {}
+        "202":
+          description: Cache has started the transition to Stopped.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Caches
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets":
+    get:
+      description: Returns the StorageTargets for this cache in the subscription and
+        resource group.
+      operationId: StorageTargets_ListByCache
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            StorageTargets_List:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            StorageTargets_List:
+              value: sc1
+      responses:
+        "200":
+          description: Returns the list of storage targets defined by cacheId.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StorageTargetsResult"
+              examples:
+                StorageTargets_List:
+                  $ref: "#/components/examples/StorageTargets_List"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - StorageTargets
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}":
+    delete:
+      description: Removes a storage target from a cache.  This operation is allowed at any
+        time, but if the cache is down or unhealthy, the actual removal of the
+        storage target may be delayed until the cache is healthy again.
+      operationId: StorageTargets_Delete
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            StorageTargets_Delete:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            StorageTargets_Delete:
+              value: sc1
+        - description: Name of storage target.
+          in: path
+          name: storageTargetName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            StorageTargets_Delete:
+              value: st1
+      responses:
+        "200":
+          description: Storage target deleted.
+          content:
+            application/json:
+              schema: {}
+        "202":
+          description: Started the storage target's deletion.
+          content:
+            application/json:
+              schema: {}
+        "204":
+          description: Storage target deleted.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - StorageTargets
+      x-ms-long-running-operation: true
+    get:
+      description: Returns a storage target from a cache.
+      operationId: StorageTargets_Get
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            StorageTargets_Get:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            StorageTargets_Get:
+              value: sc1
+        - description: Name of storage target.
+          in: path
+          name: storageTargetName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            StorageTargets_Get:
+              value: st1
+      responses:
+        "200":
+          description: Returns the Storage Target object corresponding to storageTargetName.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StorageTarget"
+              examples:
+                StorageTargets_Get:
+                  $ref: "#/components/examples/StorageTargets_Get"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - StorageTargets
+    patch:
+      description: Update a storage target.  This operation is allowed at any time, but if
+        the cache is down or unhealthy, the actual creation/modification of the
+        storage target may be delayed until the cache is healthy again.
+      operationId: StorageTargets_Update
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            StorageTargets_Update:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            StorageTargets_Update:
+              value: sc1
+        - description: Name of storage target.
+          in: path
+          name: storageTargetName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            StorageTargets_Update:
+              value: st1
+      requestBody:
+        $ref: "#/components/requestBodies/StorageTarget"
+      responses:
+        "200":
+          description: Storage Target has been patched.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StorageTarget"
+              examples:
+                StorageTargets_Update:
+                  $ref: "#/components/examples/StorageTargets_Update"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - StorageTargets
+    put:
+      description: Create/update a storage target.  This operation is allowed at any time,
+        but if the cache is down or unhealthy, the actual creation/modification
+        of the storage target may be delayed until the cache is healthy again.
+      operationId: StorageTargets_Create
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            StorageTargets_Create:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            StorageTargets_Create:
+              value: sc1
+        - description: Name of storage target.
+          in: path
+          name: storageTargetName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            StorageTargets_Create:
+              value: st1
+      requestBody:
+        $ref: "#/components/requestBodies/StorageTarget"
+      responses:
+        "200":
+          description: Storage Target has been created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StorageTarget"
+              examples:
+                StorageTargets_Create:
+                  $ref: "#/components/examples/StorageTargets_Create"
+        "201":
+          description: Storage Target creation has been initiated.  Poll the new Storage
+            Target's provisioningState property to monitor creation progress.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StorageTarget"
+              examples:
+                StorageTargets_Create:
+                  $ref: "#/components/examples/StorageTargets_Create"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - StorageTargets
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/upgrade":
+    post:
+      description: Tells a cache to upgrade its firmware.
+      operationId: Caches_UpgradeFirmware
+      parameters:
+        - description: Target resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            Caches_UpgradeFirmware:
+              value: scgroup
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Name of cache.
+          in: path
+          name: cacheName
+          required: true
+          schema:
+            type: string
+            pattern: ^[-0-9a-zA-Z_]{1,31}$
+          examples:
+            Caches_UpgradeFirmware:
+              value: sc1
+      responses:
+        "201":
+          description: Cache firmware is up to date.
+          content:
+            application/json:
+              schema: {}
+        "202":
+          description: Cache has started the upgrade.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloudError"
+      tags:
+        - Caches
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com/
+components:
+  examples:
+    StorageTargets_List:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1/storagetargets/st1
+            name: st1
+            properties:
+              junctions:
+                - namespacePath: /path/on/cache
+                  nfsExport: exp1
+                  targetPath: /path/on/exp1
+                - namespacePath: /path2/on/cache
+                  nfsExport: exp2
+                  targetPath: /path2/on/exp2
+              nfs3:
+                target: 10.0.44.44
+                usageModel: READ_HEAVY_FREQ
+              targetType: nfs3
+            type: Microsoft.StorageCache/Cache/StorageTarget
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1/storagetargets/st2
+            name: st2
+            properties:
+              clfs:
+                target: https://atj5c2fc9b8c00.blob.core.windows.net/atj5c2fc9b8c01
+              junctions:
+                - namespacePath: /some/crazy/place/on/cache
+                  targetPath: /
+              targetType: clfs
+            type: Microsoft.StorageCache/Cache/StorageTarget
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1/storagetargets/st3
+            name: st3
+            properties:
+              junctions:
+                - namespacePath: /some/crazier/place/on/cache
+                  nfsExport: ""
+                  targetPath: /
+              targetType: unknown
+              unknown:
+                unknownMap:
+                  foo: bar
+                  foo2: test
+            type: Microsoft.StorageCache/Cache/StorageTarget
+    Caches_List:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1
+            location: westus
+            name: sc1
+            properties:
+              cacheSizeGB: 3072
+              health:
+                state: Transitioning
+                statusDescription: Cache is being created.
+              mountAddresses:
+                - 192.168.1.1
+                - 192.168.1.2
+              provisioningState: Booting
+              subnet: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1
+              upgradeStatus:
+                currentFirmwareVersion: AvereOS V5.1.1.2
+                firmwareUpdateDeadline: 2019-04-21T18:25:43.511Z
+                firmwareUpdateStatus: available
+                lastFirmwareUpdate: 2019-01-21T18:25:43.511Z
+                pendingFirmwareVersion: AvereOS V5.1.1.32
+            sku:
+              name: Standard_2G
+            tags:
+              Dept: Initech
+            type: Microsoft.StorageCache/Cache
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc2
+            location: westus
+            name: sc2
+            properties:
+              cacheSizeGB: 3072
+              health:
+                state: Transitioning
+                statusDescription: Cache is being created.
+              mountAddresses:
+                - 192.168.1.1
+                - 192.168.1.2
+              provisioningState: Configuring
+              subnet: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub2
+              upgradeStatus:
+                currentFirmwareVersion: AvereOS V5.1.1.2
+                firmwareUpdateDeadline: 2019-04-21T18:25:43.511Z
+                firmwareUpdateStatus: available
+                lastFirmwareUpdate: 2019-01-21T18:25:43.511Z
+                pendingFirmwareVersion: AvereOS V5.1.1.32
+            sku:
+              name: Standard_2G
+            tags:
+              Dept: Intertrode
+            type: Microsoft.StorageCache/Cache
+    Skus_List:
+      value:
+        value:
+          - capabilities:
+              - name: throughput GB/s
+                value: "2"
+              - name: cache sizes(GB)
+                value: 3072,6144,12288
+            locationInfo:
+              - location: East US
+                zones: []
+            locations:
+              - East US
+            name: Standard_2G
+            resourceType: caches
+            restrictions: []
+          - capabilities:
+              - name: throughput GB/s
+                value: "4"
+              - name: cache sizes(GB)
+                value: 6144,12288,24576
+            locationInfo:
+              - location: East US
+                zones: []
+            locations:
+              - East US
+            name: Standard_4G
+            resourceType: caches
+            restrictions: []
+          - capabilities:
+              - name: throughput GB/s
+                value: "8"
+              - name: cache sizes(GB)
+                value: 12288,24576,49152
+            locationInfo:
+              - location: East US
+                zones: []
+            locations:
+              - East US
+            name: Standard_8G
+            resourceType: caches
+            restrictions: []
+    UsageModels_List:
+      value:
+        value:
+          - display:
+              description: Read heavy, infrequent changes
+            modelName: READ_HEAVY_INFREQ
+            targetType: nfs3
+          - display:
+              description: Clients write directly to storage
+            modelName: WRITE_AROUND
+            targetType: nfs3
+          - display:
+              description: Write workload > 15%
+            modelName: WRITE_WORKLOAD_15
+            targetType: nfs3
+    Caches_ListByResourceGroup:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1
+            location: westus
+            name: sc1
+            properties:
+              cacheSizeGB: 3072
+              health:
+                state: Transitioning
+                statusDescription: Cache is being created.
+              mountAddresses:
+                - 192.168.1.1
+                - 192.168.1.2
+              provisioningState: Booting
+              subnet: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1
+              upgradeStatus:
+                currentFirmwareVersion: AvereOS V5.1.1.2
+                firmwareUpdateDeadline: 2019-04-21T18:25:43.511Z
+                firmwareUpdateStatus: available
+                lastFirmwareUpdate: 2019-01-21T18:25:43.511Z
+                pendingFirmwareVersion: AvereOS V5.1.1.32
+            sku:
+              name: Standard_2G
+            tags:
+              Dept: Initech
+            type: Microsoft.StorageCache/Cache
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc2
+            location: westus
+            name: sc2
+            properties:
+              cacheSizeGB: 3072
+              health:
+                state: Transitioning
+                statusDescription: Cache is being created.
+              mountAddresses:
+                - 192.168.1.1
+                - 192.168.1.2
+              provisioningState: Booting
+              subnet: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub2
+              upgradeStatus:
+                currentFirmwareVersion: AvereOS V5.1.1.2
+                firmwareUpdateDeadline: 2019-04-21T18:25:43.511Z
+                firmwareUpdateStatus: available
+                lastFirmwareUpdate: 2019-01-21T18:25:43.511Z
+                pendingFirmwareVersion: AvereOS V5.1.1.32
+            sku:
+              name: Standard_2G
+            tags:
+              Dept: Intertrode
+            type: Microsoft.StorageCache/Cache
+    Caches_Get:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1
+        location: westus
+        name: sc1
+        properties:
+          cacheSizeGB: 3072
+          health:
+            state: Transitioning
+            statusDescription: Cache is being created.
+          mountAddresses:
+            - 192.168.1.1
+            - 192.168.1.2
+          provisioningState: Booting
+          subnet: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1
+          upgradeStatus:
+            currentFirmwareVersion: AvereOS V5.1.1.2
+            firmwareUpdateDeadline: 2019-04-21T18:25:43.511Z
+            firmwareUpdateStatus: available
+            lastFirmwareUpdate: 2019-01-21T18:25:43.511Z
+            pendingFirmwareVersion: AvereOS V5.1.1.32
+        sku:
+          name: Standard_2G
+        tags:
+          Dept: Initech
+        type: Microsoft.StorageCache/Cache
+    Caches_Update:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1
+        location: westus
+        name: sc1
+        properties:
+          cacheSizeGB: 3072
+          health:
+            state: Transitioning
+            statusDescription: Cache is being created.
+          mountAddresses:
+            - 192.168.1.1
+            - 192.168.1.2
+          provisioningState: Booting
+          subnet: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1
+          upgradeStatus:
+            currentFirmwareVersion: AvereOS V5.1.1.2
+            firmwareUpdateDeadline: 2019-04-21T18:25:43.511Z
+            firmwareUpdateStatus: available
+            lastFirmwareUpdate: 2019-01-21T18:25:43.511Z
+            pendingFirmwareVersion: AvereOS V5.1.1.32
+        sku:
+          name: Standard_2G
+        tags:
+          Dept: Initech
+        type: Microsoft.StorageCache/Cache
+    Caches_Create:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1
+        location: westus
+        name: sc1
+        properties:
+          cacheSizeGB: 3072
+          health:
+            state: Transitioning
+            statusDescription: Cache is being created.
+          mountAddresses:
+            - 192.168.1.1
+            - 192.168.1.2
+          provisioningState: Booting
+          subnet: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1
+          upgradeStatus:
+            currentFirmwareVersion: AvereOS V5.1.1.2
+            firmwareUpdateDeadline: 2019-04-21T18:25:43.511Z
+            firmwareUpdateStatus: available
+            lastFirmwareUpdate: 2019-01-21T18:25:43.511Z
+            pendingFirmwareVersion: AvereOS V5.1.1.32
+        sku:
+          name: Standard_2G
+        tags:
+          Dept: Initech
+        type: Microsoft.StorageCache/Cache
+    StorageTargets_Get:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1/storagetargets/st1
+        name: st1
+        properties:
+          junctions:
+            - namespacePath: /path/on/cache
+              nfsExport: exp1
+              targetPath: /path/on/exp1
+            - namespacePath: /path2/on/cache
+              nfsExport: exp2
+              targetPath: /path2/on/exp2
+          nfs3:
+            target: 10.0.44.44
+            usageModel: READ_HEAVY_FREQ
+          targetType: nfs3
+        type: Microsoft.StorageCache/Cache/StorageTarget
+    StorageTargets_Update:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1/storagetargets/st1
+        name: st1
+        properties:
+          junctions:
+            - namespacePath: /path/on/cache
+              nfsExport: exp1
+              targetPath: /path/on/exp1
+            - namespacePath: /path2/on/cache
+              nfsExport: exp2
+              targetPath: /path2/on/exp2
+          nfs3:
+            target: 10.0.44.44
+            usageModel: READ_HEAVY_FREQ
+          targetType: nfs3
+        type: Microsoft.StorageCache/Cache/StorageTarget
+    StorageTargets_Create:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1/storagetargets/st1
+        name: st1
+        properties:
+          junctions:
+            - namespacePath: /path/on/cache
+              nfsExport: exp1
+              targetPath: /path/on/exp1
+            - namespacePath: /path2/on/cache
+              nfsExport: exp2
+              targetPath: /path2/on/exp2
+          nfs3:
+            target: 10.0.44.44
+            usageModel: READ_HEAVY_INFREQ
+          targetType: nfs3
+        type: Microsoft.StorageCache/Cache/StorageTarget
+  parameters:
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        StorageTargets_List:
+          value: 2019-08-01-preview
+        Caches_List:
+          value: 2019-08-01-preview
+        Skus_List:
+          value: 2019-08-01-preview
+        UsageModels_List:
+          value: 2019-08-01-preview
+        Caches_ListByResourceGroup:
+          value: 2019-08-01-preview
+        Caches_Delete:
+          value: 2019-08-01-preview
+        Caches_Get:
+          value: 2019-08-01-preview
+        Caches_Update:
+          value: 2019-08-01-preview
+        Caches_Create:
+          value: 2019-08-01-preview
+        Caches_Flush:
+          value: 2019-08-01-preview
+        Caches_Start:
+          value: 2019-08-01-preview
+        Caches_Stop:
+          value: 2019-08-01-preview
+        StorageTargets_Delete:
+          value: 2019-08-01-preview
+        StorageTargets_Get:
+          value: 2019-08-01-preview
+        StorageTargets_Update:
+          value: 2019-08-01-preview
+        StorageTargets_Create:
+          value: 2019-08-01-preview
+        Caches_UpgradeFirmware:
+          value: 2019-08-01-preview
+    SubscriptionIdParameter:
+      description: Subscription credentials which uniquely identify Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Caches_List:
+          value: 00000000-0000-0000-0000-000000000000
+        Skus_List:
+          value: 00000000-0000-0000-0000-000000000000
+        UsageModels_List:
+          value: 00000000-0000-0000-0000-000000000000
+        Caches_ListByResourceGroup:
+          value: 00000000-0000-0000-0000-000000000000
+        Caches_Delete:
+          value: 00000000-0000-0000-0000-000000000000
+        Caches_Get:
+          value: 00000000-0000-0000-0000-000000000000
+        Caches_Update:
+          value: 00000000-0000-0000-0000-000000000000
+        Caches_Create:
+          value: 00000000-0000-0000-0000-000000000000
+        Caches_Flush:
+          value: 00000000-0000-0000-0000-000000000000
+        Caches_Start:
+          value: 00000000-0000-0000-0000-000000000000
+        Caches_Stop:
+          value: 00000000-0000-0000-0000-000000000000
+        StorageTargets_List:
+          value: 00000000-0000-0000-0000-000000000000
+        StorageTargets_Delete:
+          value: 00000000-0000-0000-0000-000000000000
+        StorageTargets_Get:
+          value: 00000000-0000-0000-0000-000000000000
+        StorageTargets_Update:
+          value: 00000000-0000-0000-0000-000000000000
+        StorageTargets_Create:
+          value: 00000000-0000-0000-0000-000000000000
+        Caches_UpgradeFirmware:
+          value: 00000000-0000-0000-0000-000000000000
+  requestBodies:
+    Cache:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Cache"
+      description: Object containing the user selectable properties of the new cache.  If
+        read-only properties are included, they must match the existing values
+        of those properties.
+    StorageTarget:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/StorageTarget"
+      description: Object containing the definition of a storage target.
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ApiOperation:
+      description: "REST API operation description: see
+        https://github.com/Azure/azure-rest-api-specs/blob/master/documentation\
+        /openapi-authoring-automated-guidelines.md#r3023-operationsapiimplement\
+        ation"
+      properties:
+        display:
+          description: The object that represents the operation.
+          properties:
+            operation:
+              description: "Operation type: Read, write, delete, etc."
+              type: string
+            provider:
+              description: "Service provider: Microsoft.StorageCache"
+              type: string
+            resource:
+              description: "Resource on which the operation is performed: cache, etc."
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}"
+          type: string
+      type: object
+    ApiOperationListResult:
+      description: Result of the request to list Resource Provider operations. It contains
+        a list of operations and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          type: string
+        value:
+          description: List of Resource Provider operations supported by the
+            Microsoft.StorageCache resource provider.
+          items:
+            $ref: "#/components/schemas/ApiOperation"
+          type: array
+      type: object
+    Cache:
+      description: "A cache instance.  Follows Azure Resource Manager standards:
+        https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/re\
+        source-api-reference.md"
+      properties:
+        id:
+          $ref: "#/components/schemas/URLString"
+        location:
+          description: Region name string.
+          type: string
+        name:
+          $ref: "#/components/schemas/ResourceName"
+        properties:
+          description: Properties for the cache.
+          properties:
+            cacheSizeGB:
+              description: The size of this cache's cache, in GB.
+              type: integer
+            health:
+              $ref: "#/components/schemas/CacheHealth"
+            mountAddresses:
+              description: Array of IP addresses that can be used by clients mounting this
+                Cache.
+              items:
+                type: string
+              readOnly: true
+              type: array
+            provisioningState:
+              description: ARM provisioning state, see
+                https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
+              enum:
+                - Succeeded
+                - Failed
+                - Cancelled
+                - Creating
+                - Deleting
+                - Updating
+              type: string
+              x-ms-enum:
+                modelAsString: true
+                name: ProvisioningStateType
+            subnet:
+              $ref: "#/components/schemas/URLString"
+            upgradeStatus:
+              $ref: "#/components/schemas/CacheUpgradeStatus"
+          type: object
+          x-ms-client-flatten: true
+        sku:
+          description: Sku for the cache.
+          properties:
+            name:
+              description: Sku name for this cache.
+              type: string
+          type: object
+        tags:
+          description: ARM tags as name/value pairs.
+          type: object
+        type:
+          description: Type for the cache; Microsoft.StorageCache/Cache
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    CacheHealth:
+      description: An indication of cache health.  Gives more information about health than
+        just that related to provisioning.
+      properties:
+        state:
+          description: List of cache health states.
+          enum:
+            - Unknown
+            - Healthy
+            - Degraded
+            - Down
+            - Transitioning
+            - Stopping
+            - Stopped
+            - Upgrading
+            - Flushing
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: HealthStateType
+        statusDescription:
+          description: Describes explanation of state.
+          type: string
+    CacheUpgradeStatus:
+      description: Properties describing the software upgrade state of the cache
+      properties:
+        currentFirmwareVersion:
+          description: Version string of the firmware currently installed on this cache.
+          readOnly: true
+          type: string
+        firmwareUpdateDeadline:
+          description: Time at which the pending firmware update will automatically be
+            installed on the cache.
+          format: date-time
+          readOnly: true
+          type: string
+        firmwareUpdateStatus:
+          description: True if there is a firmware update ready to install on this
+            cache.  The firmware will automatically be installed after
+            firmwareUpdateDeadline if not triggered earlier via the upgrade
+            operation.
+          enum:
+            - available
+            - unavailable
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: FirmwareStatusType
+        lastFirmwareUpdate:
+          description: Time of the last successful firmware update.
+          format: date-time
+          readOnly: true
+          type: string
+        pendingFirmwareVersion:
+          description: When firmwareUpdateAvailable is true, this field holds the version
+            string for the update.
+          readOnly: true
+          type: string
+      type: object
+    CachesListResult:
+      description: Result of the request to list caches. It contains a list of caches and a
+        URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of cache list results if there are any.
+          type: string
+        value:
+          description: List of caches.
+          items:
+            $ref: "#/components/schemas/Cache"
+          type: array
+      type: object
+    ClfsTarget:
+      description: Storage container for use as a CLFS StorageTarget.
+      properties:
+        target:
+          $ref: "#/components/schemas/URLString"
+      type: object
+      x-ms-discriminator-value: clfs
+    CloudError:
+      description: An error response.
+      properties:
+        error:
+          $ref: "#/components/schemas/CloudErrorBody"
+      type: object
+    CloudErrorBody:
+      description: An error response.
+      properties:
+        code:
+          description: An identifier for the error. Codes are invariant and are intended to
+            be consumed programmatically.
+          type: string
+        details:
+          description: A list of additional details about the error.
+          items:
+            $ref: "#/components/schemas/CloudErrorBody"
+          type: array
+        message:
+          description: A message describing the error, intended to be suitable for display
+            in a user interface.
+          type: string
+        target:
+          description: The target of the particular error. For example, the name of the
+            property in error.
+          type: string
+      type: object
+    NamespaceJunction:
+      description: A namespace junction.
+      properties:
+        namespacePath:
+          description: Namespace path on a cache for a storage target.
+          type: string
+        nfsExport:
+          description: NFS export where targetPath exists.
+          type: string
+        targetPath:
+          description: Path in storage target to which namespacePath points.
+          type: string
+      type: object
+    Nfs3Target:
+      description: An NFS mount point for use as a StorageTarget.
+      properties:
+        target:
+          description: "IP or name of an NFS Storage Target host, ie: 10.0.44.44"
+          pattern: ^[-.0-9a-zA-Z]+$
+          type: string
+        usageModel:
+          description: Identifies the primary usage model to be used for this storage
+            target.   GET choices from .../usageModels
+          type: string
+      type: object
+      x-ms-discriminator-value: nfs3
+    ResourceName:
+      description: Schema for the name of resources served by this provider.   Note that
+        objects will contain an odata @id annotation as appropriate, this will
+        contain the complete URL of the object.   These names are
+        case-preserving, but not case sensitive.
+      pattern: ^[-0-9a-zA-Z_]{1,31}$
+      type: string
+    ResourceSku:
+      description: A resource SKU
+      properties:
+        capabilities:
+          description: A list of capabilities of this SKU, such as throughput or ops/sec
+          items:
+            $ref: "#/components/schemas/ResourceSkuCapabilities"
+          type: array
+        locationInfo:
+          description: The set of locations that the SKU is available.
+          items:
+            $ref: "#/components/schemas/ResourceSkuLocationInfo"
+          type: array
+        locations:
+          description: The set of locations that the SKU is available. This will be
+            supported and registered Azure Geo Regions (e.g. West US, East US,
+            Southeast Asia, etc.).
+          items:
+            type: string
+          readOnly: true
+          type: array
+        name:
+          description: The name of this sku.
+          type: string
+        resourceType:
+          description: The type of resource the sku applies to.
+          readOnly: true
+          type: string
+        restrictions:
+          description: The restrictions because of which SKU cannot be used. This is empty
+            if there are no restrictions.
+          items:
+            $ref: "#/components/schemas/Restriction"
+          type: array
+      type: object
+    ResourceSkuCapabilities:
+      description: A resource SKU capability.
+      properties:
+        name:
+          description: Name of a capability, such as ops/sec
+          type: string
+        value:
+          description: Quantity, if the capability is measured by quantity
+          type: string
+      type: object
+    ResourceSkuLocationInfo:
+      description: Resource SKU location information.
+      properties:
+        location:
+          description: Location where this Sku is available
+          type: string
+        zones:
+          description: Zones if any.
+          items:
+            type: string
+          type: array
+      type: object
+    ResourceSkusResult:
+      description: The response from the List Cache SKUs operation.
+      properties:
+        nextLink:
+          description: The uri to fetch the next page of cache Skus.
+          type: string
+        value:
+          description: The list of skus available for the subscription.
+          items:
+            $ref: "#/components/schemas/ResourceSku"
+          readOnly: true
+          type: array
+    Restriction:
+      description: The restriction because of which SKU cannot be used.
+      properties:
+        reasonCode:
+          description: The reason for the restriction. As of now this can be "QuotaId" or
+            "NotAvailableForSubscription". Quota Id is set when the SKU has
+            requiredQuotas parameter as the subscription does not belong to that
+            quota. The "NotAvailableForSubscription" is related to capacity at
+            DC.
+          enum:
+            - QuotaId
+            - NotAvailableForSubscription
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ReasonCode
+        type:
+          description: The type of restrictions. As of now only possible value for this is
+            location.
+          readOnly: true
+          type: string
+        values:
+          description: The value of restrictions. If the restriction type is set to
+            location. This would be different locations where the SKU is
+            restricted.
+          items:
+            type: string
+          readOnly: true
+          type: array
+    StorageTarget:
+      description: A storage system being cached by a Cache.
+      discriminator:
+        propertyName: targetType
+      properties:
+        id:
+          description: Resource Id
+          readOnly: true
+          type: string
+        name:
+          $ref: "#/components/schemas/ResourceName"
+        properties:
+          description: Properties of the storage target.
+          properties:
+            clfs:
+              $ref: "#/components/schemas/ClfsTarget"
+            junctions:
+              description: List of cache namespace to target namespace associations.
+              items:
+                $ref: "#/components/schemas/NamespaceJunction"
+              type: array
+            nfs3:
+              $ref: "#/components/schemas/Nfs3Target"
+            provisioningState:
+              description: ARM provisioning state, see
+                https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
+              enum:
+                - Succeeded
+                - Failed
+                - Cancelled
+                - Creating
+                - Deleting
+                - Updating
+              type: string
+              x-ms-enum:
+                modelAsString: true
+                name: ProvisioningStateType
+            targetType:
+              description: Type for storage target.
+              enum:
+                - nfs3
+                - clfs
+                - unknown
+              type: string
+              x-ms-enum:
+                modelAsString: true
+                name: StorageTargetType
+            unknown:
+              $ref: "#/components/schemas/UnknownTarget"
+          type: object
+          x-ms-client-flatten: true
+        type:
+          description: Type for the storage target;
+            Microsoft.StorageCache/Cache/StorageTarget
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    StorageTargetsResult:
+      description: A list of storage targets.
+      properties:
+        nextLink:
+          description: The uri to fetch the next page of storage targets.
+          type: string
+        value:
+          description: The list of storage targets defined for the cache.
+          items:
+            $ref: "#/components/schemas/StorageTarget"
+          type: array
+      type: object
+    URLString:
+      description: A fully qualified URL.
+      type: string
+    UnknownProperties:
+      additionalProperties:
+        type: string
+      description: Properties of an unknown type of StorageTarget
+      type: object
+    UnknownTarget:
+      description: Storage container for use as a Unknown StorageTarget.
+      properties:
+        unknownMap:
+          $ref: "#/components/schemas/UnknownProperties"
+      type: object
+      x-ms-discriminator-value: unknown
+    UsageModel:
+      description: A usage model.
+      properties:
+        display:
+          description: Localized information describing this usage model.
+          properties:
+            description:
+              description: String to display for this usage model.
+              type: string
+          type: object
+        modelName:
+          description: Non localized keyword naming this usage model.
+          type: string
+        targetType:
+          description: The type of Storage Target to which this model is applicable (only
+            nfs for now)
+          type: string
+      type: object
+    UsageModelsResult:
+      description: A list of cache usage models.
+      properties:
+        nextLink:
+          description: The uri to fetch the next page of cache usage models.
+          type: string
+        value:
+          description: The list of usage models available for the subscription.
+          items:
+            $ref: "#/components/schemas/UsageModel"
+          type: array
+      type: object

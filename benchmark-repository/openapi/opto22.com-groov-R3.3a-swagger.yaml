@@ -1,0 +1,509 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: developer@opto22.com
+    name: Opto 22
+    url: http://developer.opto22.com
+    x-twitter: opto22
+  description: |
+    #### Revised: 2016-09-29
+
+    ### Overview
+    groov Public API revision 1.
+  title: groov Public
+  version: R3.3a
+  x-apisguru-categories:
+    - iot
+  x-logo:
+    url: https://twitter.com/opto22/profile_image?size=original
+  x-origin:
+    - format: swagger
+      url: http://developer.opto22.com/static/generated/groov-rest-api/swagger.yaml
+      version: "2.0"
+  x-providerName: opto22.com
+  x-serviceName: groov
+tags:
+  - description: Provides information about groov itself.
+    name: info
+  - description: Provides information about the user you are authenticated as.
+    name: whoami
+  - description: Provides access to the Data Store devices and tags.
+    name: data-store
+paths:
+  /info:
+    get:
+      description: Get information about groov. No authorization required.
+      operationId: groovInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/groovInfo"
+      tags:
+        - info
+  /v1/data-store/devices:
+    get:
+      description: List devices available in the data store. Authorized for admins and
+        editors.
+      operationId: listDevices
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/dataStoreDevice"
+                type: array
+      security:
+        - api_key: []
+      tags:
+        - data-store
+  "/v1/data-store/devices/{id}/tags":
+    get:
+      description: List tags of the given device. Authorized for admins and editors.
+      operationId: listDeviceTags
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/tagDefinition"
+                type: array
+      security:
+        - api_key: []
+      tags:
+        - data-store
+    parameters:
+      - description: ID of the device to use.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          format: int64
+  /v1/data-store/read:
+    parameters: []
+    post:
+      description: Read selected tags from the data store. Authorized for admins and
+        editors.
+      operationId: batchReadTags
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/tagValue"
+                type: array
+      security:
+        - api_key: []
+      tags:
+        - data-store
+  "/v1/data-store/read/{id}":
+    get:
+      description: Read the current value of a single tag. Authorized for admins and
+        editors.
+      operationId: readTag
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/tagValue"
+      security:
+        - api_key: []
+      tags:
+        - data-store
+    parameters:
+      - description: ID of the tag to read.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          format: int64
+      - description: Table index to start reading at.
+        in: query
+        name: index
+        required: false
+        schema:
+          type: number
+          format: int32
+          default: 0
+      - description: Number of elements to read from a table.
+        in: query
+        name: count
+        required: false
+        schema:
+          type: number
+          format: int32
+          default: 1
+  /v1/data-store/tags:
+    get:
+      description: List all data store tags defined in the project. Authorized for admins
+        and editors.
+      operationId: listAllTags
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/tagDefinition"
+                type: array
+      security:
+        - api_key: []
+      tags:
+        - data-store
+  "/v1/data-store/write/{id}":
+    parameters:
+      - description: ID of the tag to write.
+        in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          format: int64
+      - description: Value to write to the tag. Must be a string, number, or boolean.
+        in: query
+        name: value
+        required: true
+        schema:
+          type: string
+      - description: For array tags, the index to write the value to.
+        in: query
+        name: index
+        required: false
+        schema:
+          type: number
+          format: int32
+          default: 0
+    post:
+      description: Writes a new value to the given tag. Authorized for admins and editors.
+      operationId: writeTag
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/tagValue"
+      security:
+        - api_key: []
+      tags:
+        - data-store
+  /whoami:
+    get:
+      description: Get information about the user you are authenticated as. Authorized for
+        admins, editors, operators, and kiosk.
+      operationId: whoAmI
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      security:
+        - api_key: []
+      tags:
+        - whoami
+servers:
+  - url: http://developer.opto22.com/api
+  - url: https://developer.opto22.com/api
+components:
+  securitySchemes:
+    api_key:
+      in: query
+      name: api_key
+      type: apiKey
+  schemas:
+    User:
+      properties:
+        apiKey:
+          type: string
+        email:
+          type: string
+        groups:
+          items:
+            format: int64
+            type: number
+          type: array
+        id:
+          format: int64
+          type: number
+        needsPasswordChange:
+          description: True if your password is expired
+          type: boolean
+        role:
+          type: string
+        username:
+          type: string
+      required:
+        - role
+        - apiKey
+        - groups
+        - id
+        - needsPasswordChange
+        - email
+        - username
+      type: object
+    booleanArrayValue:
+      allOf:
+        - $ref: "#/components/schemas/tagValue"
+        - properties:
+            value:
+              items:
+                type: boolean
+              type: array
+          required:
+            - value
+          type: object
+    booleanValue:
+      allOf:
+        - $ref: "#/components/schemas/tagValue"
+        - properties:
+            value:
+              type: boolean
+          required:
+            - value
+          type: object
+    dataStoreDevice:
+      allOf:
+        - $ref: "#/components/schemas/device"
+        - properties:
+            id:
+              format: int64
+              type: number
+            name:
+              type: string
+          required:
+            - id
+            - name
+          type: object
+      description: A Data Store device within a groov project
+    device:
+      description: A generic device within a groov project
+      discriminator:
+        propertyName: deviceType
+      properties:
+        deviceType:
+          type: string
+      required:
+        - deviceType
+      type: object
+    errorValue:
+      allOf:
+        - $ref: "#/components/schemas/tagValue"
+        - properties:
+            errorCode:
+              type: string
+            errorMessage:
+              type: string
+          required:
+            - errorCode
+            - errorMessage
+          type: object
+    floatArrayValue:
+      allOf:
+        - $ref: "#/components/schemas/tagValue"
+        - properties:
+            value:
+              items:
+                format: float
+                type: number
+              type: array
+          required:
+            - value
+          type: object
+    floatValue:
+      allOf:
+        - $ref: "#/components/schemas/tagValue"
+        - properties:
+            value:
+              format: float
+              type: number
+          required:
+            - value
+          type: object
+    groovInfo:
+      properties:
+        currentApiVersion:
+          description: The current API version number
+          format: int32
+          type: number
+        groovAdminVersion:
+          description: The groov admin version number if running on a groov hardware box
+          type: string
+        groovBoxDescription:
+          description: The groov box type (GROOV-AT1 or GROOV-AR1)
+          type: string
+        groovNodeRedVersion:
+          description: The node red version number if running on a GROOV-AR1 which has node
+            red installed
+          type: string
+        isCoreInUse:
+          description: True if Core Features (Opto 22 Controllers, Modbus Devices, Data
+            Store) are in use
+          type: boolean
+        isGroovBox:
+          description: True if running on a groov hardware box
+          type: boolean
+        isGroovBoxSetup:
+          description: True if running on a groov hardware box which has been setup or true
+            if running on groov Server for Windows
+          type: boolean
+        isLicenseValid:
+          description: True if a license is installed, valid, and not expired
+          type: boolean
+        isOpcUaInUse:
+          description: True if an OPC-UA device is in use
+          type: boolean
+        licenseType:
+          description: The license type (NONE, EXPIRED, SOLO, STANDARD, or ENTERPRISE)
+          type: string
+        minimumApiVersion:
+          description: The minimum supported API version number
+          format: int32
+          type: number
+        shouldShowTrialDialog:
+          description: True if the trial dialog pops up when logging into groov
+          type: boolean
+        timezoneName:
+          description: The server's timezone
+          type: string
+        timezoneOffset:
+          description: The server's timezone offset from UTC in minutes
+          format: int32
+          type: number
+        trialPeriodExpiration:
+          description: Milliseconds until trial period is expired
+          format: int64
+          type: number
+        warVersion:
+          description: The version number of the war
+          type: string
+      required:
+        - isGroovBox
+        - isGroovBoxSetup
+        - isCoreInUse
+        - isOpcUaInUse
+        - isLicenseValid
+        - licenseType
+        - trialPeriodExpiration
+        - shouldShowTrialDialog
+        - groovBoxDescription
+        - groovAdminVersion
+        - groovNodeRedVersion
+        - timezoneOffset
+        - timezoneName
+        - warVersion
+        - minimumApiVersion
+        - currentApiVersion
+      type: object
+    integerArrayValue:
+      allOf:
+        - $ref: "#/components/schemas/tagValue"
+        - properties:
+            value:
+              items:
+                format: int64
+                type: number
+              type: array
+          required:
+            - value
+          type: object
+    integerValue:
+      allOf:
+        - $ref: "#/components/schemas/tagValue"
+        - properties:
+            value:
+              format: int64
+              type: number
+          required:
+            - value
+          type: object
+    stringArrayValue:
+      allOf:
+        - $ref: "#/components/schemas/tagValue"
+        - properties:
+            value:
+              items:
+                type: string
+              type: array
+          required:
+            - value
+          type: object
+    stringValue:
+      allOf:
+        - $ref: "#/components/schemas/tagValue"
+        - properties:
+            value:
+              type: string
+          required:
+            - value
+          type: object
+    tagDefinition:
+      properties:
+        dataType:
+          enum:
+            - boolean
+            - integer
+            - float
+            - string
+            - booleanArray
+            - integerArray
+            - floatArray
+            - stringArray
+          type: string
+        deviceId:
+          format: int64
+          type: number
+        id:
+          format: int64
+          type: number
+        length:
+          format: int32
+          type: number
+        name:
+          type: string
+      required:
+        - id
+        - deviceId
+        - name
+        - dataType
+      type: object
+    tagReference:
+      properties:
+        count:
+          description: For array tags, the number of elements to read, starting at index.
+          format: int32
+          type: number
+        id:
+          description: Unique id for the tag.
+          format: int64
+          type: number
+        index:
+          description: For array tags, the index to start reading at.
+          format: int32
+          type: number
+      required:
+        - id
+      type: object
+    tagValue:
+      discriminator:
+        propertyName: valueType
+      properties:
+        valueType:
+          type: string
+      required:
+        - valueType
+      type: object

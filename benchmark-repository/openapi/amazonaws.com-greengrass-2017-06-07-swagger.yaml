@@ -1,0 +1,5549 @@
+openapi: 3.0.0
+info:
+  version: 2017-06-07
+  x-release: v4
+  title: AWS Greengrass
+  description: AWS IoT Greengrass seamlessly extends AWS onto physical devices so they can
+    act locally on the data they generate, while still using the cloud for
+    management, analytics, and durable storage. AWS IoT Greengrass ensures your
+    devices can respond quickly to local events and operate with intermittent
+    connectivity. AWS IoT Greengrass minimizes the cost of transmitting data to
+    the cloud by allowing you to author AWS Lambda functions that execute
+    locally.
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: greengrass
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/greengrass-2017-06-07.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/greengrass/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  "/greengrass/groups/{GroupId}/role":
+    put:
+      operationId: AssociateRoleToGroup
+      description: Associates a role with a group. Your Greengrass core will use the role
+        to access AWS cloud services. The role's permissions should allow
+        Greengrass core Lambda functions to perform actions against the cloud.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssociateRoleToGroupResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - RoleArn
+              properties:
+                RoleArn:
+                  description: The ARN of the role you wish to associate with this group.
+                    The existence of the role is not validated.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    delete:
+      operationId: DisassociateRoleFromGroup
+      description: Disassociates the role from a group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisassociateRoleFromGroupResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+    get:
+      operationId: GetAssociatedRole
+      description: Retrieves the role associated with a particular group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAssociatedRoleResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+  /greengrass/servicerole:
+    put:
+      operationId: AssociateServiceRoleToAccount
+      description: Associates a role with your account. AWS IoT Greengrass will use the
+        role to access your Lambda functions and AWS IoT resources. This is
+        necessary for deployments to succeed. The role must have at least
+        minimum permissions in the policy
+        ''AWSGreengrassResourceAccessRolePolicy''.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssociateServiceRoleToAccountResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - RoleArn
+              properties:
+                RoleArn:
+                  description: The ARN of the service role you wish to associate with your
+                    account.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    delete:
+      operationId: DisassociateServiceRoleFromAccount
+      description: Disassociates the service role from your account. Without a service
+        role, deployments will not work.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisassociateServiceRoleFromAccountRespo\
+                  nse"
+        "480":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+    get:
+      operationId: GetServiceRoleForAccount
+      description: Retrieves the service role that is attached to your account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetServiceRoleForAccountResponse"
+        "480":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+  /greengrass/definition/connectors:
+    post:
+      operationId: CreateConnectorDefinition
+      description: Creates a connector definition. You may provide the initial version of
+        the connector definition now or use ''CreateConnectorDefinitionVersion''
+        at a later time.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateConnectorDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                InitialVersion:
+                  description: Information about the connector definition version, which is
+                    a container for connectors.
+                  type: object
+                  properties:
+                    Connectors:
+                      $ref: "#/components/schemas/__listOfConnector"
+                Name:
+                  description: The name of the connector definition.
+                  type: string
+                tags:
+                  description: The key-value pair for the resource tag.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListConnectorDefinitions
+      description: Retrieves a list of connector definitions.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListConnectorDefinitionsResponse"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  "/greengrass/definition/connectors/{ConnectorDefinitionId}/versions":
+    post:
+      operationId: CreateConnectorDefinitionVersion
+      description: Creates a version of a connector definition which has already been
+        defined.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateConnectorDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+        - name: ConnectorDefinitionId
+          in: path
+          required: true
+          description: The ID of the connector definition.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Connectors:
+                  description: A list of references to connectors in this version, with
+                    their corresponding configuration settings.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Connector"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListConnectorDefinitionVersions
+      description: Lists the versions of a connector definition, which are containers for
+        connectors. Connectors run on the Greengrass core and contain built-in
+        integration with local infrastructure, device protocols, AWS, and other
+        cloud services.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListConnectorDefinitionVersionsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: ConnectorDefinitionId
+          in: path
+          required: true
+          description: The ID of the connector definition.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  /greengrass/definition/cores:
+    post:
+      operationId: CreateCoreDefinition
+      description: Creates a core definition. You may provide the initial version of the
+        core definition now or use ''CreateCoreDefinitionVersion'' at a later
+        time. Greengrass groups must each contain exactly one Greengrass core.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateCoreDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                InitialVersion:
+                  description: Information about a core definition version.
+                  type: object
+                  properties:
+                    Cores:
+                      $ref: "#/components/schemas/__listOfCore"
+                Name:
+                  description: The name of the core definition.
+                  type: string
+                tags:
+                  description: The key-value pair for the resource tag.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListCoreDefinitions
+      description: Retrieves a list of core definitions.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListCoreDefinitionsResponse"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  "/greengrass/definition/cores/{CoreDefinitionId}/versions":
+    post:
+      operationId: CreateCoreDefinitionVersion
+      description: Creates a version of a core definition that has already been defined.
+        Greengrass groups must each contain exactly one Greengrass core.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateCoreDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+        - name: CoreDefinitionId
+          in: path
+          required: true
+          description: The ID of the core definition.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Cores:
+                  description: A list of cores in the core definition version.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Core"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListCoreDefinitionVersions
+      description: Lists the versions of a core definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListCoreDefinitionVersionsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: CoreDefinitionId
+          in: path
+          required: true
+          description: The ID of the core definition.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  "/greengrass/groups/{GroupId}/deployments":
+    post:
+      operationId: CreateDeployment
+      description: Creates a deployment. ''CreateDeployment'' requests are idempotent with
+        respect to the ''X-Amzn-Client-Token'' token and the request parameters.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateDeploymentResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - DeploymentType
+              properties:
+                DeploymentId:
+                  description: The ID of the deployment if you wish to redeploy a previous
+                    deployment.
+                  type: string
+                DeploymentType:
+                  description: The type of deployment. When used for ''CreateDeployment'',
+                    only ''NewDeployment'' and ''Redeployment'' are valid.
+                  type: string
+                  enum:
+                    - NewDeployment
+                    - Redeployment
+                    - ResetDeployment
+                    - ForceResetDeployment
+                GroupVersionId:
+                  description: The ID of the group version to be deployed.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListDeployments
+      description: Returns a history of deployments for the group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListDeploymentsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  /greengrass/definition/devices:
+    post:
+      operationId: CreateDeviceDefinition
+      description: Creates a device definition. You may provide the initial version of the
+        device definition now or use ''CreateDeviceDefinitionVersion'' at a
+        later time.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateDeviceDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                InitialVersion:
+                  description: Information about a device definition version.
+                  type: object
+                  properties:
+                    Devices:
+                      $ref: "#/components/schemas/__listOfDevice"
+                Name:
+                  description: The name of the device definition.
+                  type: string
+                tags:
+                  description: The key-value pair for the resource tag.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListDeviceDefinitions
+      description: Retrieves a list of device definitions.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListDeviceDefinitionsResponse"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  "/greengrass/definition/devices/{DeviceDefinitionId}/versions":
+    post:
+      operationId: CreateDeviceDefinitionVersion
+      description: Creates a version of a device definition that has already been defined.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateDeviceDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+        - name: DeviceDefinitionId
+          in: path
+          required: true
+          description: The ID of the device definition.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Devices:
+                  description: A list of devices in the definition version.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Device"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListDeviceDefinitionVersions
+      description: Lists the versions of a device definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListDeviceDefinitionVersionsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: DeviceDefinitionId
+          in: path
+          required: true
+          description: The ID of the device definition.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  /greengrass/definition/functions:
+    post:
+      operationId: CreateFunctionDefinition
+      description: Creates a Lambda function definition which contains a list of Lambda
+        functions and their configurations to be used in a group. You can create
+        an initial version of the definition by providing a list of Lambda
+        functions and their configurations now, or use
+        ''CreateFunctionDefinitionVersion'' later.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateFunctionDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                InitialVersion:
+                  description: Information about a function definition version.
+                  type: object
+                  properties:
+                    DefaultConfig:
+                      $ref: "#/components/schemas/FunctionDefaultConfig"
+                    Functions:
+                      $ref: "#/components/schemas/__listOfFunction"
+                Name:
+                  description: The name of the function definition.
+                  type: string
+                tags:
+                  description: The key-value pair for the resource tag.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListFunctionDefinitions
+      description: Retrieves a list of Lambda function definitions.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListFunctionDefinitionsResponse"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  "/greengrass/definition/functions/{FunctionDefinitionId}/versions":
+    post:
+      operationId: CreateFunctionDefinitionVersion
+      description: Creates a version of a Lambda function definition that has already been
+        defined.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateFunctionDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+        - name: FunctionDefinitionId
+          in: path
+          required: true
+          description: The ID of the Lambda function definition.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                DefaultConfig:
+                  description: The default configuration that applies to all Lambda
+                    functions in the group. Individual Lambda functions can
+                    override these settings.
+                  type: object
+                  properties:
+                    Execution:
+                      $ref: "#/components/schemas/FunctionDefaultExecutionConfig"
+                Functions:
+                  description: A list of Lambda functions in this function definition
+                    version.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Function"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListFunctionDefinitionVersions
+      description: Lists the versions of a Lambda function definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListFunctionDefinitionVersionsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: FunctionDefinitionId
+          in: path
+          required: true
+          description: The ID of the Lambda function definition.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  /greengrass/groups:
+    post:
+      operationId: CreateGroup
+      description: "Creates a group. You may provide the initial version of the group or
+        use ''CreateGroupVersion'' at a later time. Tip: You can use the
+        ''gg_group_setup'' package
+        (https://github.com/awslabs/aws-greengrass-group-setup) as a library or
+        command-line application to create and deploy Greengrass groups."
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateGroupResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                InitialVersion:
+                  description: Information about a group version.
+                  type: object
+                  properties:
+                    ConnectorDefinitionVersionArn:
+                      $ref: "#/components/schemas/__string"
+                    CoreDefinitionVersionArn:
+                      $ref: "#/components/schemas/__string"
+                    DeviceDefinitionVersionArn:
+                      $ref: "#/components/schemas/__string"
+                    FunctionDefinitionVersionArn:
+                      $ref: "#/components/schemas/__string"
+                    LoggerDefinitionVersionArn:
+                      $ref: "#/components/schemas/__string"
+                    ResourceDefinitionVersionArn:
+                      $ref: "#/components/schemas/__string"
+                    SubscriptionDefinitionVersionArn:
+                      $ref: "#/components/schemas/__string"
+                Name:
+                  description: The name of the group.
+                  type: string
+                tags:
+                  description: The key-value pair for the resource tag.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListGroups
+      description: Retrieves a list of groups.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListGroupsResponse"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  "/greengrass/groups/{GroupId}/certificateauthorities":
+    post:
+      operationId: CreateGroupCertificateAuthority
+      description: Creates a CA for the group. If a CA already exists, it will rotate the
+        existing CA.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateGroupCertificateAuthorityResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListGroupCertificateAuthorities
+      description: Retrieves the current CAs for a group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListGroupCertificateAuthoritiesResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+  "/greengrass/groups/{GroupId}/versions":
+    post:
+      operationId: CreateGroupVersion
+      description: Creates a version of a group which has already been defined.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateGroupVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ConnectorDefinitionVersionArn:
+                  description: The ARN of the connector definition version for this group.
+                  type: string
+                CoreDefinitionVersionArn:
+                  description: The ARN of the core definition version for this group.
+                  type: string
+                DeviceDefinitionVersionArn:
+                  description: The ARN of the device definition version for this group.
+                  type: string
+                FunctionDefinitionVersionArn:
+                  description: The ARN of the function definition version for this group.
+                  type: string
+                LoggerDefinitionVersionArn:
+                  description: The ARN of the logger definition version for this group.
+                  type: string
+                ResourceDefinitionVersionArn:
+                  description: The ARN of the resource definition version for this group.
+                  type: string
+                SubscriptionDefinitionVersionArn:
+                  description: The ARN of the subscription definition version for this
+                    group.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListGroupVersions
+      description: Lists the versions of a group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListGroupVersionsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  /greengrass/definition/loggers:
+    post:
+      operationId: CreateLoggerDefinition
+      description: Creates a logger definition. You may provide the initial version of the
+        logger definition now or use ''CreateLoggerDefinitionVersion'' at a
+        later time.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateLoggerDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                InitialVersion:
+                  description: Information about a logger definition version.
+                  type: object
+                  properties:
+                    Loggers:
+                      $ref: "#/components/schemas/__listOfLogger"
+                Name:
+                  description: The name of the logger definition.
+                  type: string
+                tags:
+                  description: The key-value pair for the resource tag.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListLoggerDefinitions
+      description: Retrieves a list of logger definitions.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListLoggerDefinitionsResponse"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  "/greengrass/definition/loggers/{LoggerDefinitionId}/versions":
+    post:
+      operationId: CreateLoggerDefinitionVersion
+      description: Creates a version of a logger definition that has already been defined.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateLoggerDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+        - name: LoggerDefinitionId
+          in: path
+          required: true
+          description: The ID of the logger definition.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Loggers:
+                  description: A list of loggers.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Logger"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListLoggerDefinitionVersions
+      description: Lists the versions of a logger definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListLoggerDefinitionVersionsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: LoggerDefinitionId
+          in: path
+          required: true
+          description: The ID of the logger definition.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  /greengrass/definition/resources:
+    post:
+      operationId: CreateResourceDefinition
+      description: Creates a resource definition which contains a list of resources to be
+        used in a group. You can create an initial version of the definition by
+        providing a list of resources now, or use
+        ''CreateResourceDefinitionVersion'' later.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResourceDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                InitialVersion:
+                  description: Information about a resource definition version.
+                  type: object
+                  properties:
+                    Resources:
+                      $ref: "#/components/schemas/__listOfResource"
+                Name:
+                  description: The name of the resource definition.
+                  type: string
+                tags:
+                  description: The key-value pair for the resource tag.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListResourceDefinitions
+      description: Retrieves a list of resource definitions.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListResourceDefinitionsResponse"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  "/greengrass/definition/resources/{ResourceDefinitionId}/versions":
+    post:
+      operationId: CreateResourceDefinitionVersion
+      description: Creates a version of a resource definition that has already been defined.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResourceDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+        - name: ResourceDefinitionId
+          in: path
+          required: true
+          description: The ID of the resource definition.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Resources:
+                  description: A list of resources.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Resource"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListResourceDefinitionVersions
+      description: Lists the versions of a resource definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListResourceDefinitionVersionsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+        - name: ResourceDefinitionId
+          in: path
+          required: true
+          description: The ID of the resource definition.
+          schema:
+            type: string
+  /greengrass/updates:
+    post:
+      operationId: CreateSoftwareUpdateJob
+      description: Creates a software update for a core or group of cores (specified as an
+        IoT thing group.) Use this to update the OTA Agent as well as the
+        Greengrass core software. It makes use of the IoT Jobs feature which
+        provides additional commands to manage a Greengrass core software update
+        job.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateSoftwareUpdateJobResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - S3UrlSignerRole
+                - SoftwareToUpdate
+                - UpdateTargets
+                - UpdateTargetsArchitecture
+                - UpdateTargetsOperatingSystem
+              properties:
+                S3UrlSignerRole:
+                  description: The IAM Role that Greengrass will use to create pre-signed
+                    URLs pointing towards the update artifact.
+                  type: string
+                SoftwareToUpdate:
+                  description: The piece of software on the Greengrass core that will be
+                    updated.
+                  type: string
+                  enum:
+                    - core
+                    - ota_agent
+                UpdateAgentLogLevel:
+                  description: The minimum level of log statements that should be logged by
+                    the OTA Agent during an update.
+                  type: string
+                  enum:
+                    - NONE
+                    - TRACE
+                    - DEBUG
+                    - VERBOSE
+                    - INFO
+                    - WARN
+                    - ERROR
+                    - FATAL
+                UpdateTargets:
+                  description: The ARNs of the targets (IoT things or IoT thing groups)
+                    that this update will be applied to.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/__string"
+                UpdateTargetsArchitecture:
+                  description: The architecture of the cores which are the targets of an
+                    update.
+                  type: string
+                  enum:
+                    - armv7l
+                    - x86_64
+                    - aarch64
+                    - openwrt
+                UpdateTargetsOperatingSystem:
+                  description: The operating system of the cores which are the targets of
+                    an update.
+                  type: string
+                  enum:
+                    - ubuntu
+                    - raspbian
+                    - amazon_linux
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /greengrass/definition/subscriptions:
+    post:
+      operationId: CreateSubscriptionDefinition
+      description: Creates a subscription definition. You may provide the initial version
+        of the subscription definition now or use
+        ''CreateSubscriptionDefinitionVersion'' at a later time.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateSubscriptionDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                InitialVersion:
+                  description: Information about a subscription definition version.
+                  type: object
+                  properties:
+                    Subscriptions:
+                      $ref: "#/components/schemas/__listOfSubscription"
+                Name:
+                  description: The name of the subscription definition.
+                  type: string
+                tags:
+                  description: The key-value pair for the resource tag.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListSubscriptionDefinitions
+      description: Retrieves a list of subscription definitions.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSubscriptionDefinitionsResponse"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+  "/greengrass/definition/subscriptions/{SubscriptionDefinitionId}/versions":
+    post:
+      operationId: CreateSubscriptionDefinitionVersion
+      description: Creates a version of a subscription definition which has already been
+        defined.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateSubscriptionDefinitionVersionResp\
+                  onse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+        - name: SubscriptionDefinitionId
+          in: path
+          required: true
+          description: The ID of the subscription definition.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Subscriptions:
+                  description: A list of subscriptions.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Subscription"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListSubscriptionDefinitionVersions
+      description: Lists the versions of a subscription definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSubscriptionDefinitionVersionsRespo\
+                  nse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+        - name: SubscriptionDefinitionId
+          in: path
+          required: true
+          description: The ID of the subscription definition.
+          schema:
+            type: string
+  "/greengrass/definition/connectors/{ConnectorDefinitionId}":
+    delete:
+      operationId: DeleteConnectorDefinition
+      description: Deletes a connector definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteConnectorDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: ConnectorDefinitionId
+          in: path
+          required: true
+          description: The ID of the connector definition.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetConnectorDefinition
+      description: Retrieves information about a connector definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetConnectorDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: ConnectorDefinitionId
+          in: path
+          required: true
+          description: The ID of the connector definition.
+          schema:
+            type: string
+    put:
+      operationId: UpdateConnectorDefinition
+      description: Updates a connector definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateConnectorDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: ConnectorDefinitionId
+          in: path
+          required: true
+          description: The ID of the connector definition.
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateConnectorDefinitionBody"
+  "/greengrass/definition/cores/{CoreDefinitionId}":
+    delete:
+      operationId: DeleteCoreDefinition
+      description: Deletes a core definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteCoreDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: CoreDefinitionId
+          in: path
+          required: true
+          description: The ID of the core definition.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetCoreDefinition
+      description: Retrieves information about a core definition version.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCoreDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: CoreDefinitionId
+          in: path
+          required: true
+          description: The ID of the core definition.
+          schema:
+            type: string
+    put:
+      operationId: UpdateCoreDefinition
+      description: Updates a core definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateCoreDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: CoreDefinitionId
+          in: path
+          required: true
+          description: The ID of the core definition.
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateConnectorDefinitionBody"
+  "/greengrass/definition/devices/{DeviceDefinitionId}":
+    delete:
+      operationId: DeleteDeviceDefinition
+      description: Deletes a device definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteDeviceDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: DeviceDefinitionId
+          in: path
+          required: true
+          description: The ID of the device definition.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetDeviceDefinition
+      description: Retrieves information about a device definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetDeviceDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: DeviceDefinitionId
+          in: path
+          required: true
+          description: The ID of the device definition.
+          schema:
+            type: string
+    put:
+      operationId: UpdateDeviceDefinition
+      description: Updates a device definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateDeviceDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: DeviceDefinitionId
+          in: path
+          required: true
+          description: The ID of the device definition.
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateConnectorDefinitionBody"
+  "/greengrass/definition/functions/{FunctionDefinitionId}":
+    delete:
+      operationId: DeleteFunctionDefinition
+      description: Deletes a Lambda function definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteFunctionDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: FunctionDefinitionId
+          in: path
+          required: true
+          description: The ID of the Lambda function definition.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetFunctionDefinition
+      description: Retrieves information about a Lambda function definition, including its
+        creation time and latest version.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetFunctionDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: FunctionDefinitionId
+          in: path
+          required: true
+          description: The ID of the Lambda function definition.
+          schema:
+            type: string
+    put:
+      operationId: UpdateFunctionDefinition
+      description: Updates a Lambda function definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateFunctionDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: FunctionDefinitionId
+          in: path
+          required: true
+          description: The ID of the Lambda function definition.
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateConnectorDefinitionBody"
+  "/greengrass/groups/{GroupId}":
+    delete:
+      operationId: DeleteGroup
+      description: Deletes a group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteGroupResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetGroup
+      description: Retrieves information about a group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetGroupResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+    put:
+      operationId: UpdateGroup
+      description: Updates a group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateGroupResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateConnectorDefinitionBody"
+  "/greengrass/definition/loggers/{LoggerDefinitionId}":
+    delete:
+      operationId: DeleteLoggerDefinition
+      description: Deletes a logger definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteLoggerDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: LoggerDefinitionId
+          in: path
+          required: true
+          description: The ID of the logger definition.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetLoggerDefinition
+      description: Retrieves information about a logger definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetLoggerDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: LoggerDefinitionId
+          in: path
+          required: true
+          description: The ID of the logger definition.
+          schema:
+            type: string
+    put:
+      operationId: UpdateLoggerDefinition
+      description: Updates a logger definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateLoggerDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: LoggerDefinitionId
+          in: path
+          required: true
+          description: The ID of the logger definition.
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateConnectorDefinitionBody"
+  "/greengrass/definition/resources/{ResourceDefinitionId}":
+    delete:
+      operationId: DeleteResourceDefinition
+      description: Deletes a resource definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResourceDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: ResourceDefinitionId
+          in: path
+          required: true
+          description: The ID of the resource definition.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetResourceDefinition
+      description: Retrieves information about a resource definition, including its
+        creation time and latest version.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetResourceDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: ResourceDefinitionId
+          in: path
+          required: true
+          description: The ID of the resource definition.
+          schema:
+            type: string
+    put:
+      operationId: UpdateResourceDefinition
+      description: Updates a resource definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateResourceDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: ResourceDefinitionId
+          in: path
+          required: true
+          description: The ID of the resource definition.
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateConnectorDefinitionBody"
+  "/greengrass/definition/subscriptions/{SubscriptionDefinitionId}":
+    delete:
+      operationId: DeleteSubscriptionDefinition
+      description: Deletes a subscription definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteSubscriptionDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: SubscriptionDefinitionId
+          in: path
+          required: true
+          description: The ID of the subscription definition.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: GetSubscriptionDefinition
+      description: Retrieves information about a subscription definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSubscriptionDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: SubscriptionDefinitionId
+          in: path
+          required: true
+          description: The ID of the subscription definition.
+          schema:
+            type: string
+    put:
+      operationId: UpdateSubscriptionDefinition
+      description: Updates a subscription definition.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateSubscriptionDefinitionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: SubscriptionDefinitionId
+          in: path
+          required: true
+          description: The ID of the subscription definition.
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateConnectorDefinitionBody"
+  "/greengrass/bulk/deployments/{BulkDeploymentId}/status":
+    get:
+      operationId: GetBulkDeploymentStatus
+      description: Returns the status of a bulk deployment.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBulkDeploymentStatusResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: BulkDeploymentId
+          in: path
+          required: true
+          description: The ID of the bulk deployment.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/things/{ThingName}/connectivityInfo":
+    get:
+      operationId: GetConnectivityInfo
+      description: Retrieves the connectivity information for a core.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetConnectivityInfoResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: ThingName
+          in: path
+          required: true
+          description: The thing name.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    put:
+      operationId: UpdateConnectivityInfo
+      description: Updates the connectivity information for the core. Any devices that
+        belong to the group which has this core will receive this information in
+        order to find the location of the core and connect to it.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateConnectivityInfoResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: ThingName
+          in: path
+          required: true
+          description: The thing name.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ConnectivityInfo:
+                  description: A list of connectivity info.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ConnectivityInfo"
+        required: true
+  "/greengrass/definition/connectors/{ConnectorDefinitionId}/versions/{ConnectorDefinitionVersionId}":
+    get:
+      operationId: GetConnectorDefinitionVersion
+      description: Retrieves information about a connector definition version, including
+        the connectors that the version contains. Connectors are prebuilt
+        modules that interact with local infrastructure, device protocols, AWS,
+        and other cloud services.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetConnectorDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: ConnectorDefinitionId
+          in: path
+          required: true
+          description: The ID of the connector definition.
+          schema:
+            type: string
+        - name: ConnectorDefinitionVersionId
+          in: path
+          required: true
+          description: The ID of the connector definition version. This value maps to the
+            ''Version'' property of the corresponding ''VersionInformation''
+            object, which is returned by ''ListConnectorDefinitionVersions''
+            requests. If the version is the last one that was associated with a
+            connector definition, the value also maps to the ''LatestVersion''
+            property of the corresponding ''DefinitionInformation'' object.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/definition/cores/{CoreDefinitionId}/versions/{CoreDefinitionVersionId}":
+    get:
+      operationId: GetCoreDefinitionVersion
+      description: Retrieves information about a core definition version.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCoreDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: CoreDefinitionId
+          in: path
+          required: true
+          description: The ID of the core definition.
+          schema:
+            type: string
+        - name: CoreDefinitionVersionId
+          in: path
+          required: true
+          description: The ID of the core definition version. This value maps to the
+            ''Version'' property of the corresponding ''VersionInformation''
+            object, which is returned by ''ListCoreDefinitionVersions''
+            requests. If the version is the last one that was associated with a
+            core definition, the value also maps to the ''LatestVersion''
+            property of the corresponding ''DefinitionInformation'' object.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/groups/{GroupId}/deployments/{DeploymentId}/status":
+    get:
+      operationId: GetDeploymentStatus
+      description: Returns the status of a deployment.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetDeploymentStatusResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: DeploymentId
+          in: path
+          required: true
+          description: The ID of the deployment.
+          schema:
+            type: string
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/definition/devices/{DeviceDefinitionId}/versions/{DeviceDefinitionVersionId}":
+    get:
+      operationId: GetDeviceDefinitionVersion
+      description: Retrieves information about a device definition version.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetDeviceDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: DeviceDefinitionId
+          in: path
+          required: true
+          description: The ID of the device definition.
+          schema:
+            type: string
+        - name: DeviceDefinitionVersionId
+          in: path
+          required: true
+          description: The ID of the device definition version. This value maps to the
+            ''Version'' property of the corresponding ''VersionInformation''
+            object, which is returned by ''ListDeviceDefinitionVersions''
+            requests. If the version is the last one that was associated with a
+            device definition, the value also maps to the ''LatestVersion''
+            property of the corresponding ''DefinitionInformation'' object.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/definition/functions/{FunctionDefinitionId}/versions/{FunctionDefinitionVersionId}":
+    get:
+      operationId: GetFunctionDefinitionVersion
+      description: Retrieves information about a Lambda function definition version,
+        including which Lambda functions are included in the version and their
+        configurations.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetFunctionDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: FunctionDefinitionId
+          in: path
+          required: true
+          description: The ID of the Lambda function definition.
+          schema:
+            type: string
+        - name: FunctionDefinitionVersionId
+          in: path
+          required: true
+          description: The ID of the function definition version. This value maps to the
+            ''Version'' property of the corresponding ''VersionInformation''
+            object, which is returned by ''ListFunctionDefinitionVersions''
+            requests. If the version is the last one that was associated with a
+            function definition, the value also maps to the ''LatestVersion''
+            property of the corresponding ''DefinitionInformation'' object.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/groups/{GroupId}/certificateauthorities/{CertificateAuthorityId}":
+    get:
+      operationId: GetGroupCertificateAuthority
+      description: Retreives the CA associated with a group. Returns the public key of the
+        CA.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetGroupCertificateAuthorityResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: CertificateAuthorityId
+          in: path
+          required: true
+          description: The ID of the certificate authority.
+          schema:
+            type: string
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/groups/{GroupId}/certificateauthorities/configuration/expiry":
+    get:
+      operationId: GetGroupCertificateConfiguration
+      description: Retrieves the current configuration for the CA used by the group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetGroupCertificateConfigurationResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    put:
+      operationId: UpdateGroupCertificateConfiguration
+      description: Updates the Certificate expiry time for a group.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateGroupCertificateConfigurationResp\
+                  onse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                CertificateExpiryInMilliseconds:
+                  description: The amount of time remaining before the certificate expires,
+                    in milliseconds.
+                  type: string
+        required: true
+  "/greengrass/groups/{GroupId}/versions/{GroupVersionId}":
+    get:
+      operationId: GetGroupVersion
+      description: Retrieves information about a group version.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetGroupVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+        - name: GroupVersionId
+          in: path
+          required: true
+          description: The ID of the group version. This value maps to the ''Version''
+            property of the corresponding ''VersionInformation'' object, which
+            is returned by ''ListGroupVersions'' requests. If the version is the
+            last one that was associated with a group, the value also maps to
+            the ''LatestVersion'' property of the corresponding
+            ''GroupInformation'' object.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/definition/loggers/{LoggerDefinitionId}/versions/{LoggerDefinitionVersionId}":
+    get:
+      operationId: GetLoggerDefinitionVersion
+      description: Retrieves information about a logger definition version.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetLoggerDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: LoggerDefinitionId
+          in: path
+          required: true
+          description: The ID of the logger definition.
+          schema:
+            type: string
+        - name: LoggerDefinitionVersionId
+          in: path
+          required: true
+          description: The ID of the logger definition version. This value maps to the
+            ''Version'' property of the corresponding ''VersionInformation''
+            object, which is returned by ''ListLoggerDefinitionVersions''
+            requests. If the version is the last one that was associated with a
+            logger definition, the value also maps to the ''LatestVersion''
+            property of the corresponding ''DefinitionInformation'' object.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/definition/resources/{ResourceDefinitionId}/versions/{ResourceDefinitionVersionId}":
+    get:
+      operationId: GetResourceDefinitionVersion
+      description: Retrieves information about a resource definition version, including
+        which resources are included in the version.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetResourceDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: ResourceDefinitionId
+          in: path
+          required: true
+          description: The ID of the resource definition.
+          schema:
+            type: string
+        - name: ResourceDefinitionVersionId
+          in: path
+          required: true
+          description: The ID of the resource definition version. This value maps to the
+            ''Version'' property of the corresponding ''VersionInformation''
+            object, which is returned by ''ListResourceDefinitionVersions''
+            requests. If the version is the last one that was associated with a
+            resource definition, the value also maps to the ''LatestVersion''
+            property of the corresponding ''DefinitionInformation'' object.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/definition/subscriptions/{SubscriptionDefinitionId}/versions/{SubscriptionDefinitionVersionId}":
+    get:
+      operationId: GetSubscriptionDefinitionVersion
+      description: Retrieves information about a subscription definition version.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSubscriptionDefinitionVersionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+        - name: SubscriptionDefinitionId
+          in: path
+          required: true
+          description: The ID of the subscription definition.
+          schema:
+            type: string
+        - name: SubscriptionDefinitionVersionId
+          in: path
+          required: true
+          description: The ID of the subscription definition version. This value maps to
+            the ''Version'' property of the corresponding ''VersionInformation''
+            object, which is returned by ''ListSubscriptionDefinitionVersions''
+            requests. If the version is the last one that was associated with a
+            subscription definition, the value also maps to the
+            ''LatestVersion'' property of the corresponding
+            ''DefinitionInformation'' object.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/bulk/deployments/{BulkDeploymentId}/detailed-reports":
+    get:
+      operationId: ListBulkDeploymentDetailedReports
+      description: Gets a paginated list of the deployments that have been started in a
+        bulk deployment operation, and their current deployment status.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListBulkDeploymentDetailedReportsRespon\
+                  se"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: BulkDeploymentId
+          in: path
+          required: true
+          description: The ID of the bulk deployment.
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /greengrass/bulk/deployments:
+    get:
+      operationId: ListBulkDeployments
+      description: Returns a list of bulk deployments.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListBulkDeploymentsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: MaxResults
+          in: query
+          required: false
+          description: The maximum number of results to be returned per request.
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          required: false
+          description: The token for the next set of results, or ''null'' if there are no
+            additional results.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    post:
+      operationId: StartBulkDeployment
+      description: Deploys multiple groups in one operation. This action starts the bulk
+        deployment of a specified set of group versions. Each group version
+        deployment will be triggered with an adaptive rate that has a fixed
+        upper limit. We recommend that you include an ''X-Amzn-Client-Token''
+        token in every ''StartBulkDeployment'' request. These requests are
+        idempotent with respect to the token and the request parameters.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartBulkDeploymentResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ExecutionRoleArn
+                - InputFileUri
+              properties:
+                ExecutionRoleArn:
+                  description: The ARN of the execution role to associate with the bulk
+                    deployment operation. This IAM role must allow the
+                    ''greengrass:CreateDeployment'' action for all group
+                    versions that are listed in the input file. This IAM role
+                    must have access to the S3 bucket containing the input file.
+                  type: string
+                InputFileUri:
+                  description: The URI of the input file contained in the S3 bucket. The
+                    execution role must have ''getObject'' permissions on this
+                    bucket to access the input file. The input file is a
+                    JSON-serialized, line delimited file with UTF-8 encoding
+                    that provides a list of group and version IDs and the
+                    deployment type. This file must be less than 100 MB.
+                    Currently, AWS IoT Greengrass supports only
+                    ''NewDeployment'' deployment types.
+                  type: string
+                tags:
+                  description: The key-value pair for the resource tag.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+  "/tags/{resource-arn}":
+    get:
+      operationId: ListTagsForResource
+      description: Retrieves a list of resource tags for a resource arn.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTagsForResourceResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: resource-arn
+          in: path
+          required: true
+          description: The Amazon Resource Name (ARN) of the resource.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    post:
+      operationId: TagResource
+      description: Adds tags to a Greengrass resource. Valid resources are 'Group',
+        'ConnectorDefinition', 'CoreDefinition', 'DeviceDefinition',
+        'FunctionDefinition', 'LoggerDefinition', 'SubscriptionDefinition',
+        'ResourceDefinition', and 'BulkDeployment'.
+      responses:
+        "204":
+          description: Success
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: resource-arn
+          in: path
+          required: true
+          description: The Amazon Resource Name (ARN) of the resource.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tags:
+                  description: The key-value pair for the resource tag.
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+  "/greengrass/groups/{GroupId}/deployments/$reset":
+    post:
+      operationId: ResetDeployments
+      description: Resets a group's deployments.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResetDeploymentsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: X-Amzn-Client-Token
+          in: header
+          required: false
+          description: A client token used to correlate requests and responses.
+          schema:
+            type: string
+        - name: GroupId
+          in: path
+          required: true
+          description: The ID of the Greengrass group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Force:
+                  description: If true, performs a best-effort only core reset.
+                  type: boolean
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/greengrass/bulk/deployments/{BulkDeploymentId}/$stop":
+    put:
+      operationId: StopBulkDeployment
+      description: Stops the execution of a bulk deployment. This action returns a status
+        of ''Stopping'' until the deployment is stopped. You cannot start a new
+        bulk deployment while a previous deployment is in the ''Stopping''
+        state. This action doesn't rollback completed deployments or cancel
+        pending deployments.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StopBulkDeploymentResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: BulkDeploymentId
+          in: path
+          required: true
+          description: The ID of the bulk deployment.
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/tags/{resource-arn}#tagKeys":
+    delete:
+      operationId: UntagResource
+      description: Remove resource tags from a Greengrass Resource.
+      responses:
+        "204":
+          description: Success
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+      parameters:
+        - name: resource-arn
+          in: path
+          required: true
+          description: The Amazon Resource Name (ARN) of the resource.
+          schema:
+            type: string
+        - name: tagKeys
+          in: query
+          required: true
+          description: An array of tag keys to delete
+          schema:
+            type: array
+            items:
+              type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://greengrass.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Greengrass multi-region endpoint
+  - url: https://greengrass.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Greengrass multi-region endpoint
+  - url: http://greengrass.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Greengrass endpoint for China (Beijing) and China (Ningxia)
+  - url: https://greengrass.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Greengrass endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  requestBodies:
+    UpdateConnectorDefinitionBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              Name:
+                description: The name of the definition.
+                type: string
+      required: true
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    AssociateRoleToGroupResponse:
+      type: object
+      properties:
+        AssociatedAt:
+          $ref: "#/components/schemas/__string"
+    BadRequestException: {}
+    InternalServerErrorException: {}
+    AssociateServiceRoleToAccountResponse:
+      type: object
+      properties:
+        AssociatedAt:
+          $ref: "#/components/schemas/__string"
+    CreateConnectorDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+    __listOfConnector:
+      type: array
+      items:
+        $ref: "#/components/schemas/Connector"
+    __string:
+      type: string
+    CreateConnectorDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    Connector:
+      type: object
+      required:
+        - ConnectorArn
+        - Id
+      properties:
+        ConnectorArn:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Parameters:
+          $ref: "#/components/schemas/__mapOf__string"
+      description: Information about a connector. Connectors run on the Greengrass core and
+        contain built-in integration with local infrastructure, device
+        protocols, AWS, and other cloud services.
+    CreateCoreDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+    __listOfCore:
+      type: array
+      items:
+        $ref: "#/components/schemas/Core"
+    CreateCoreDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    Core:
+      type: object
+      required:
+        - ThingArn
+        - Id
+        - CertificateArn
+      properties:
+        CertificateArn:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        SyncShadow:
+          $ref: "#/components/schemas/__boolean"
+        ThingArn:
+          $ref: "#/components/schemas/__string"
+      description: Information about a core.
+    CreateDeploymentResponse:
+      type: object
+      properties:
+        DeploymentArn:
+          $ref: "#/components/schemas/__string"
+        DeploymentId:
+          $ref: "#/components/schemas/__string"
+    CreateDeviceDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+    __listOfDevice:
+      type: array
+      items:
+        $ref: "#/components/schemas/Device"
+    CreateDeviceDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    Device:
+      type: object
+      required:
+        - ThingArn
+        - Id
+        - CertificateArn
+      properties:
+        CertificateArn:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        SyncShadow:
+          $ref: "#/components/schemas/__boolean"
+        ThingArn:
+          $ref: "#/components/schemas/__string"
+      description: Information about a device.
+    CreateFunctionDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+    FunctionDefaultConfig:
+      type: object
+      properties:
+        Execution:
+          $ref: "#/components/schemas/FunctionDefaultExecutionConfig"
+      description: The default configuration that applies to all Lambda functions in the
+        group. Individual Lambda functions can override these settings.
+    __listOfFunction:
+      type: array
+      items:
+        $ref: "#/components/schemas/Function"
+    CreateFunctionDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    FunctionDefaultExecutionConfig:
+      type: object
+      properties:
+        IsolationMode:
+          $ref: "#/components/schemas/FunctionIsolationMode"
+        RunAs:
+          $ref: "#/components/schemas/FunctionRunAsConfig"
+      description: "Configuration information that specifies how a Lambda function runs. "
+    Function:
+      type: object
+      required:
+        - Id
+      properties:
+        FunctionArn:
+          $ref: "#/components/schemas/__string"
+        FunctionConfiguration:
+          $ref: "#/components/schemas/FunctionConfiguration"
+        Id:
+          $ref: "#/components/schemas/__string"
+      description: Information about a Lambda function.
+    CreateGroupResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+    CreateGroupCertificateAuthorityResponse:
+      type: object
+      properties:
+        GroupCertificateAuthorityArn:
+          $ref: "#/components/schemas/__string"
+    CreateGroupVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    CreateLoggerDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+    __listOfLogger:
+      type: array
+      items:
+        $ref: "#/components/schemas/Logger"
+    CreateLoggerDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    Logger:
+      type: object
+      required:
+        - Type
+        - Level
+        - Id
+        - Component
+      properties:
+        Component:
+          $ref: "#/components/schemas/LoggerComponent"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Level:
+          $ref: "#/components/schemas/LoggerLevel"
+        Space:
+          $ref: "#/components/schemas/__integer"
+        Type:
+          $ref: "#/components/schemas/LoggerType"
+      description: Information about a logger
+    CreateResourceDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+    __listOfResource:
+      type: array
+      items:
+        $ref: "#/components/schemas/Resource"
+    CreateResourceDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    Resource:
+      type: object
+      required:
+        - ResourceDataContainer
+        - Id
+        - Name
+      properties:
+        Id:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+        ResourceDataContainer:
+          $ref: "#/components/schemas/ResourceDataContainer"
+      description: Information about a resource.
+    CreateSoftwareUpdateJobResponse:
+      type: object
+      properties:
+        IotJobArn:
+          $ref: "#/components/schemas/__string"
+        IotJobId:
+          $ref: "#/components/schemas/__string"
+        PlatformSoftwareVersion:
+          $ref: "#/components/schemas/__string"
+    CreateSubscriptionDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+    __listOfSubscription:
+      type: array
+      items:
+        $ref: "#/components/schemas/Subscription"
+    CreateSubscriptionDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    Subscription:
+      type: object
+      required:
+        - Target
+        - Id
+        - Subject
+        - Source
+      properties:
+        Id:
+          $ref: "#/components/schemas/__string"
+        Source:
+          $ref: "#/components/schemas/__string"
+        Subject:
+          $ref: "#/components/schemas/__string"
+        Target:
+          $ref: "#/components/schemas/__string"
+      description: Information about a subscription.
+    DeleteConnectorDefinitionResponse:
+      type: object
+      properties: {}
+    DeleteCoreDefinitionResponse:
+      type: object
+      properties: {}
+    DeleteDeviceDefinitionResponse:
+      type: object
+      properties: {}
+    DeleteFunctionDefinitionResponse:
+      type: object
+      properties: {}
+    DeleteGroupResponse:
+      type: object
+      properties: {}
+    DeleteLoggerDefinitionResponse:
+      type: object
+      properties: {}
+    DeleteResourceDefinitionResponse:
+      type: object
+      properties: {}
+    DeleteSubscriptionDefinitionResponse:
+      type: object
+      properties: {}
+    DisassociateRoleFromGroupResponse:
+      type: object
+      properties:
+        DisassociatedAt:
+          $ref: "#/components/schemas/__string"
+    DisassociateServiceRoleFromAccountResponse:
+      type: object
+      properties:
+        DisassociatedAt:
+          $ref: "#/components/schemas/__string"
+    GetAssociatedRoleResponse:
+      type: object
+      properties:
+        AssociatedAt:
+          $ref: "#/components/schemas/__string"
+        RoleArn:
+          $ref: "#/components/schemas/__string"
+    GetBulkDeploymentStatusResponse:
+      type: object
+      properties:
+        BulkDeploymentMetrics:
+          $ref: "#/components/schemas/BulkDeploymentMetrics"
+        BulkDeploymentStatus:
+          $ref: "#/components/schemas/BulkDeploymentStatus"
+        CreatedAt:
+          $ref: "#/components/schemas/__string"
+        ErrorDetails:
+          $ref: "#/components/schemas/ErrorDetails"
+        ErrorMessage:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    GetConnectivityInfoResponse:
+      type: object
+      properties:
+        ConnectivityInfo:
+          $ref: "#/components/schemas/__listOfConnectivityInfo"
+        Message:
+          $ref: "#/components/schemas/__string"
+    GetConnectorDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    GetConnectorDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Definition:
+          $ref: "#/components/schemas/ConnectorDefinitionVersion"
+        Id:
+          $ref: "#/components/schemas/__string"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    GetCoreDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    GetCoreDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Definition:
+          $ref: "#/components/schemas/CoreDefinitionVersion"
+        Id:
+          $ref: "#/components/schemas/__string"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    GetDeploymentStatusResponse:
+      type: object
+      properties:
+        DeploymentStatus:
+          $ref: "#/components/schemas/__string"
+        DeploymentType:
+          $ref: "#/components/schemas/DeploymentType"
+        ErrorDetails:
+          $ref: "#/components/schemas/ErrorDetails"
+        ErrorMessage:
+          $ref: "#/components/schemas/__string"
+        UpdatedAt:
+          $ref: "#/components/schemas/__string"
+    GetDeviceDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    GetDeviceDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Definition:
+          $ref: "#/components/schemas/DeviceDefinitionVersion"
+        Id:
+          $ref: "#/components/schemas/__string"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    GetFunctionDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    GetFunctionDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Definition:
+          $ref: "#/components/schemas/FunctionDefinitionVersion"
+        Id:
+          $ref: "#/components/schemas/__string"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    GetGroupResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    GetGroupCertificateAuthorityResponse:
+      type: object
+      properties:
+        GroupCertificateAuthorityArn:
+          $ref: "#/components/schemas/__string"
+        GroupCertificateAuthorityId:
+          $ref: "#/components/schemas/__string"
+        PemEncodedCertificate:
+          $ref: "#/components/schemas/__string"
+    GetGroupCertificateConfigurationResponse:
+      type: object
+      properties:
+        CertificateAuthorityExpiryInMilliseconds:
+          $ref: "#/components/schemas/__string"
+        CertificateExpiryInMilliseconds:
+          $ref: "#/components/schemas/__string"
+        GroupId:
+          $ref: "#/components/schemas/__string"
+    GetGroupVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Definition:
+          $ref: "#/components/schemas/GroupVersion"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    GetLoggerDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    GetLoggerDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Definition:
+          $ref: "#/components/schemas/LoggerDefinitionVersion"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    GetResourceDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    GetResourceDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Definition:
+          $ref: "#/components/schemas/ResourceDefinitionVersion"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    GetServiceRoleForAccountResponse:
+      type: object
+      properties:
+        AssociatedAt:
+          $ref: "#/components/schemas/__string"
+        RoleArn:
+          $ref: "#/components/schemas/__string"
+    GetSubscriptionDefinitionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    GetSubscriptionDefinitionVersionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Definition:
+          $ref: "#/components/schemas/SubscriptionDefinitionVersion"
+        Id:
+          $ref: "#/components/schemas/__string"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    ListBulkDeploymentDetailedReportsResponse:
+      type: object
+      properties:
+        Deployments:
+          $ref: "#/components/schemas/BulkDeploymentResults"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListBulkDeploymentsResponse:
+      type: object
+      properties:
+        BulkDeployments:
+          $ref: "#/components/schemas/BulkDeployments"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListConnectorDefinitionVersionsResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Versions:
+          $ref: "#/components/schemas/__listOfVersionInformation"
+    ListConnectorDefinitionsResponse:
+      type: object
+      properties:
+        Definitions:
+          $ref: "#/components/schemas/__listOfDefinitionInformation"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListCoreDefinitionVersionsResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Versions:
+          $ref: "#/components/schemas/__listOfVersionInformation"
+    ListCoreDefinitionsResponse:
+      type: object
+      properties:
+        Definitions:
+          $ref: "#/components/schemas/__listOfDefinitionInformation"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListDeploymentsResponse:
+      type: object
+      properties:
+        Deployments:
+          $ref: "#/components/schemas/Deployments"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListDeviceDefinitionVersionsResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Versions:
+          $ref: "#/components/schemas/__listOfVersionInformation"
+    ListDeviceDefinitionsResponse:
+      type: object
+      properties:
+        Definitions:
+          $ref: "#/components/schemas/__listOfDefinitionInformation"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListFunctionDefinitionVersionsResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Versions:
+          $ref: "#/components/schemas/__listOfVersionInformation"
+    ListFunctionDefinitionsResponse:
+      type: object
+      properties:
+        Definitions:
+          $ref: "#/components/schemas/__listOfDefinitionInformation"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListGroupCertificateAuthoritiesResponse:
+      type: object
+      properties:
+        GroupCertificateAuthorities:
+          $ref: "#/components/schemas/__listOfGroupCertificateAuthorityProperties"
+    ListGroupVersionsResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Versions:
+          $ref: "#/components/schemas/__listOfVersionInformation"
+    ListGroupsResponse:
+      type: object
+      properties:
+        Groups:
+          $ref: "#/components/schemas/__listOfGroupInformation"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListLoggerDefinitionVersionsResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Versions:
+          $ref: "#/components/schemas/__listOfVersionInformation"
+    ListLoggerDefinitionsResponse:
+      type: object
+      properties:
+        Definitions:
+          $ref: "#/components/schemas/__listOfDefinitionInformation"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListResourceDefinitionVersionsResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Versions:
+          $ref: "#/components/schemas/__listOfVersionInformation"
+    ListResourceDefinitionsResponse:
+      type: object
+      properties:
+        Definitions:
+          $ref: "#/components/schemas/__listOfDefinitionInformation"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListSubscriptionDefinitionVersionsResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Versions:
+          $ref: "#/components/schemas/__listOfVersionInformation"
+    ListSubscriptionDefinitionsResponse:
+      type: object
+      properties:
+        Definitions:
+          $ref: "#/components/schemas/__listOfDefinitionInformation"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListTagsForResourceResponse:
+      type: object
+      properties:
+        tags:
+          $ref: "#/components/schemas/Tags"
+    ResetDeploymentsResponse:
+      type: object
+      properties:
+        DeploymentArn:
+          $ref: "#/components/schemas/__string"
+        DeploymentId:
+          $ref: "#/components/schemas/__string"
+    StartBulkDeploymentResponse:
+      type: object
+      properties:
+        BulkDeploymentArn:
+          $ref: "#/components/schemas/__string"
+        BulkDeploymentId:
+          $ref: "#/components/schemas/__string"
+    StopBulkDeploymentResponse:
+      type: object
+      properties: {}
+    UpdateConnectivityInfoResponse:
+      type: object
+      properties:
+        Message:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+    ConnectivityInfo:
+      type: object
+      properties:
+        HostAddress:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Metadata:
+          $ref: "#/components/schemas/__string"
+        PortNumber:
+          $ref: "#/components/schemas/__integer"
+      description: Information about a Greengrass core's connectivity.
+    UpdateConnectorDefinitionResponse:
+      type: object
+      properties: {}
+    UpdateCoreDefinitionResponse:
+      type: object
+      properties: {}
+    UpdateDeviceDefinitionResponse:
+      type: object
+      properties: {}
+    UpdateFunctionDefinitionResponse:
+      type: object
+      properties: {}
+    UpdateGroupResponse:
+      type: object
+      properties: {}
+    UpdateGroupCertificateConfigurationResponse:
+      type: object
+      properties:
+        CertificateAuthorityExpiryInMilliseconds:
+          $ref: "#/components/schemas/__string"
+        CertificateExpiryInMilliseconds:
+          $ref: "#/components/schemas/__string"
+        GroupId:
+          $ref: "#/components/schemas/__string"
+    UpdateLoggerDefinitionResponse:
+      type: object
+      properties: {}
+    UpdateResourceDefinitionResponse:
+      type: object
+      properties: {}
+    UpdateSubscriptionDefinitionResponse:
+      type: object
+      properties: {}
+    AssociateRoleToGroupRequest:
+      type: object
+      required:
+        - RoleArn
+      properties:
+        RoleArn:
+          $ref: "#/components/schemas/__string"
+    AssociateServiceRoleToAccountRequest:
+      type: object
+      required:
+        - RoleArn
+      properties:
+        RoleArn:
+          $ref: "#/components/schemas/__string"
+    BulkDeployment:
+      type: object
+      properties:
+        BulkDeploymentArn:
+          $ref: "#/components/schemas/__string"
+        BulkDeploymentId:
+          $ref: "#/components/schemas/__string"
+        CreatedAt:
+          $ref: "#/components/schemas/__string"
+      description: Information about a bulk deployment. You cannot start a new bulk
+        deployment while another one is still running or in a non-terminal
+        state.
+    __integer:
+      type: integer
+    BulkDeploymentMetrics:
+      type: object
+      properties:
+        InvalidInputRecords:
+          $ref: "#/components/schemas/__integer"
+        RecordsProcessed:
+          $ref: "#/components/schemas/__integer"
+        RetryAttempts:
+          $ref: "#/components/schemas/__integer"
+      description: Relevant metrics on input records processed during bulk deployment.
+    DeploymentType:
+      type: string
+      enum:
+        - NewDeployment
+        - Redeployment
+        - ResetDeployment
+        - ForceResetDeployment
+      description: The type of deployment. When used for ''CreateDeployment'', only
+        ''NewDeployment'' and ''Redeployment'' are valid.
+    ErrorDetails:
+      type: array
+      description: A list of error details.
+      items:
+        $ref: "#/components/schemas/ErrorDetail"
+    BulkDeploymentResult:
+      type: object
+      properties:
+        CreatedAt:
+          $ref: "#/components/schemas/__string"
+        DeploymentArn:
+          $ref: "#/components/schemas/__string"
+        DeploymentId:
+          $ref: "#/components/schemas/__string"
+        DeploymentStatus:
+          $ref: "#/components/schemas/__string"
+        DeploymentType:
+          $ref: "#/components/schemas/DeploymentType"
+        ErrorDetails:
+          $ref: "#/components/schemas/ErrorDetails"
+        ErrorMessage:
+          $ref: "#/components/schemas/__string"
+        GroupArn:
+          $ref: "#/components/schemas/__string"
+      description: Information about an individual group deployment in a bulk deployment
+        operation.
+    BulkDeploymentResults:
+      type: array
+      items:
+        $ref: "#/components/schemas/BulkDeploymentResult"
+    BulkDeploymentStatus:
+      type: string
+      enum:
+        - Initializing
+        - Running
+        - Completed
+        - Stopping
+        - Stopped
+        - Failed
+      description: The current status of the bulk deployment.
+    BulkDeployments:
+      type: array
+      items:
+        $ref: "#/components/schemas/BulkDeployment"
+    __mapOf__string:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/__string"
+    ConnectorDefinitionVersion:
+      type: object
+      properties:
+        Connectors:
+          $ref: "#/components/schemas/__listOfConnector"
+      description: Information about the connector definition version, which is a container
+        for connectors.
+    __boolean:
+      type: boolean
+    CoreDefinitionVersion:
+      type: object
+      properties:
+        Cores:
+          $ref: "#/components/schemas/__listOfCore"
+      description: Information about a core definition version.
+    Tags:
+      type: object
+      description: The key-value pair for the resource tag.
+      additionalProperties:
+        $ref: "#/components/schemas/__string"
+    CreateConnectorDefinitionRequest:
+      type: object
+      properties:
+        InitialVersion:
+          $ref: "#/components/schemas/ConnectorDefinitionVersion"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    CreateConnectorDefinitionVersionRequest:
+      type: object
+      properties:
+        Connectors:
+          $ref: "#/components/schemas/__listOfConnector"
+    CreateCoreDefinitionRequest:
+      type: object
+      properties:
+        InitialVersion:
+          $ref: "#/components/schemas/CoreDefinitionVersion"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+      description: Information needed to create a core definition.
+    CreateCoreDefinitionVersionRequest:
+      type: object
+      properties:
+        Cores:
+          $ref: "#/components/schemas/__listOfCore"
+    CreateDeploymentRequest:
+      type: object
+      required:
+        - DeploymentType
+      properties:
+        DeploymentId:
+          $ref: "#/components/schemas/__string"
+        DeploymentType:
+          $ref: "#/components/schemas/DeploymentType"
+        GroupVersionId:
+          $ref: "#/components/schemas/__string"
+    DeviceDefinitionVersion:
+      type: object
+      properties:
+        Devices:
+          $ref: "#/components/schemas/__listOfDevice"
+      description: Information about a device definition version.
+    CreateDeviceDefinitionRequest:
+      type: object
+      properties:
+        InitialVersion:
+          $ref: "#/components/schemas/DeviceDefinitionVersion"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    CreateDeviceDefinitionVersionRequest:
+      type: object
+      properties:
+        Devices:
+          $ref: "#/components/schemas/__listOfDevice"
+    FunctionDefinitionVersion:
+      type: object
+      properties:
+        DefaultConfig:
+          $ref: "#/components/schemas/FunctionDefaultConfig"
+        Functions:
+          $ref: "#/components/schemas/__listOfFunction"
+      description: Information about a function definition version.
+    CreateFunctionDefinitionRequest:
+      type: object
+      properties:
+        InitialVersion:
+          $ref: "#/components/schemas/FunctionDefinitionVersion"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    CreateFunctionDefinitionVersionRequest:
+      type: object
+      properties:
+        DefaultConfig:
+          $ref: "#/components/schemas/FunctionDefaultConfig"
+        Functions:
+          $ref: "#/components/schemas/__listOfFunction"
+      description: Information needed to create a function definition version.
+    CreateGroupCertificateAuthorityRequest:
+      type: object
+      properties: {}
+    GroupVersion:
+      type: object
+      properties:
+        ConnectorDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        CoreDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        DeviceDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        FunctionDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        LoggerDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        ResourceDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        SubscriptionDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+      description: Information about a group version.
+    CreateGroupRequest:
+      type: object
+      properties:
+        InitialVersion:
+          $ref: "#/components/schemas/GroupVersion"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    CreateGroupVersionRequest:
+      type: object
+      properties:
+        ConnectorDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        CoreDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        DeviceDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        FunctionDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        LoggerDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        ResourceDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+        SubscriptionDefinitionVersionArn:
+          $ref: "#/components/schemas/__string"
+    LoggerDefinitionVersion:
+      type: object
+      properties:
+        Loggers:
+          $ref: "#/components/schemas/__listOfLogger"
+      description: Information about a logger definition version.
+    CreateLoggerDefinitionRequest:
+      type: object
+      properties:
+        InitialVersion:
+          $ref: "#/components/schemas/LoggerDefinitionVersion"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    CreateLoggerDefinitionVersionRequest:
+      type: object
+      properties:
+        Loggers:
+          $ref: "#/components/schemas/__listOfLogger"
+    ResourceDefinitionVersion:
+      type: object
+      properties:
+        Resources:
+          $ref: "#/components/schemas/__listOfResource"
+      description: Information about a resource definition version.
+    CreateResourceDefinitionRequest:
+      type: object
+      properties:
+        InitialVersion:
+          $ref: "#/components/schemas/ResourceDefinitionVersion"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    CreateResourceDefinitionVersionRequest:
+      type: object
+      properties:
+        Resources:
+          $ref: "#/components/schemas/__listOfResource"
+    S3UrlSignerRole:
+      type: string
+      description: The IAM Role that Greengrass will use to create pre-signed URLs pointing
+        towards the update artifact.
+    SoftwareToUpdate:
+      type: string
+      enum:
+        - core
+        - ota_agent
+      description: The piece of software on the Greengrass core that will be updated.
+    UpdateAgentLogLevel:
+      type: string
+      enum:
+        - NONE
+        - TRACE
+        - DEBUG
+        - VERBOSE
+        - INFO
+        - WARN
+        - ERROR
+        - FATAL
+      description: The minimum level of log statements that should be logged by the OTA
+        Agent during an update.
+    UpdateTargets:
+      type: array
+      description: The ARNs of the targets (IoT things or IoT thing groups) that this
+        update will be applied to.
+      items:
+        $ref: "#/components/schemas/__string"
+    UpdateTargetsArchitecture:
+      type: string
+      enum:
+        - armv7l
+        - x86_64
+        - aarch64
+        - openwrt
+      description: The architecture of the cores which are the targets of an update.
+    UpdateTargetsOperatingSystem:
+      type: string
+      enum:
+        - ubuntu
+        - raspbian
+        - amazon_linux
+      description: The operating system of the cores which are the targets of an update.
+    CreateSoftwareUpdateJobRequest:
+      type: object
+      required:
+        - S3UrlSignerRole
+        - UpdateTargetsArchitecture
+        - SoftwareToUpdate
+        - UpdateTargets
+        - UpdateTargetsOperatingSystem
+      properties:
+        S3UrlSignerRole:
+          $ref: "#/components/schemas/S3UrlSignerRole"
+        SoftwareToUpdate:
+          $ref: "#/components/schemas/SoftwareToUpdate"
+        UpdateAgentLogLevel:
+          $ref: "#/components/schemas/UpdateAgentLogLevel"
+        UpdateTargets:
+          $ref: "#/components/schemas/UpdateTargets"
+        UpdateTargetsArchitecture:
+          $ref: "#/components/schemas/UpdateTargetsArchitecture"
+        UpdateTargetsOperatingSystem:
+          $ref: "#/components/schemas/UpdateTargetsOperatingSystem"
+    SubscriptionDefinitionVersion:
+      type: object
+      properties:
+        Subscriptions:
+          $ref: "#/components/schemas/__listOfSubscription"
+      description: Information about a subscription definition version.
+    CreateSubscriptionDefinitionRequest:
+      type: object
+      properties:
+        InitialVersion:
+          $ref: "#/components/schemas/SubscriptionDefinitionVersion"
+        Name:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    CreateSubscriptionDefinitionVersionRequest:
+      type: object
+      properties:
+        Subscriptions:
+          $ref: "#/components/schemas/__listOfSubscription"
+    DefinitionInformation:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+        Tags:
+          $ref: "#/components/schemas/Tags"
+      description: Information about a definition.
+    DeleteConnectorDefinitionRequest:
+      type: object
+      properties: {}
+    DeleteCoreDefinitionRequest:
+      type: object
+      properties: {}
+    DeleteDeviceDefinitionRequest:
+      type: object
+      properties: {}
+    DeleteFunctionDefinitionRequest:
+      type: object
+      properties: {}
+    DeleteGroupRequest:
+      type: object
+      properties: {}
+    DeleteLoggerDefinitionRequest:
+      type: object
+      properties: {}
+    DeleteResourceDefinitionRequest:
+      type: object
+      properties: {}
+    DeleteSubscriptionDefinitionRequest:
+      type: object
+      properties: {}
+    Deployment:
+      type: object
+      properties:
+        CreatedAt:
+          $ref: "#/components/schemas/__string"
+        DeploymentArn:
+          $ref: "#/components/schemas/__string"
+        DeploymentId:
+          $ref: "#/components/schemas/__string"
+        DeploymentType:
+          $ref: "#/components/schemas/DeploymentType"
+        GroupArn:
+          $ref: "#/components/schemas/__string"
+      description: Information about a deployment.
+    Deployments:
+      type: array
+      items:
+        $ref: "#/components/schemas/Deployment"
+    DisassociateRoleFromGroupRequest:
+      type: object
+      properties: {}
+    DisassociateServiceRoleFromAccountRequest:
+      type: object
+      properties: {}
+    EncodingType:
+      type: string
+      enum:
+        - binary
+        - json
+    ErrorDetail:
+      type: object
+      properties:
+        DetailedErrorCode:
+          $ref: "#/components/schemas/__string"
+        DetailedErrorMessage:
+          $ref: "#/components/schemas/__string"
+      description: Details about the error.
+    FunctionConfiguration:
+      type: object
+      properties:
+        EncodingType:
+          $ref: "#/components/schemas/EncodingType"
+        Environment:
+          $ref: "#/components/schemas/FunctionConfigurationEnvironment"
+        ExecArgs:
+          $ref: "#/components/schemas/__string"
+        Executable:
+          $ref: "#/components/schemas/__string"
+        MemorySize:
+          $ref: "#/components/schemas/__integer"
+        Pinned:
+          $ref: "#/components/schemas/__boolean"
+        Timeout:
+          $ref: "#/components/schemas/__integer"
+      description: The configuration of the Lambda function.
+    FunctionConfigurationEnvironment:
+      type: object
+      properties:
+        AccessSysfs:
+          $ref: "#/components/schemas/__boolean"
+        Execution:
+          $ref: "#/components/schemas/FunctionExecutionConfig"
+        ResourceAccessPolicies:
+          $ref: "#/components/schemas/__listOfResourceAccessPolicy"
+        Variables:
+          $ref: "#/components/schemas/__mapOf__string"
+      description: The environment configuration of the function.
+    FunctionExecutionConfig:
+      type: object
+      properties:
+        IsolationMode:
+          $ref: "#/components/schemas/FunctionIsolationMode"
+        RunAs:
+          $ref: "#/components/schemas/FunctionRunAsConfig"
+      description: "Configuration information that specifies how a Lambda function runs. "
+    __listOfResourceAccessPolicy:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResourceAccessPolicy"
+    FunctionIsolationMode:
+      type: string
+      enum:
+        - GreengrassContainer
+        - NoContainer
+      description: Specifies whether the Lambda function runs in a Greengrass container
+        (default) or without containerization. Unless your scenario requires
+        that you run without containerization, we recommend that you run in a
+        Greengrass container. Omit this value to run the Lambda function with
+        the default containerization for the group.
+    FunctionRunAsConfig:
+      type: object
+      properties:
+        Gid:
+          $ref: "#/components/schemas/__integer"
+        Uid:
+          $ref: "#/components/schemas/__integer"
+      description: Specifies the user and group whose permissions are used when running the
+        Lambda function. You can specify one or both values to override the
+        default values. We recommend that you avoid running as root unless
+        absolutely necessary to minimize the risk of unintended changes or
+        malicious attacks. To run as root, you must set ''IsolationMode'' to
+        ''NoContainer'' and update config.json in ''greengrass-root/config'' to
+        set ''allowFunctionsToRunAsRoot'' to ''yes''.
+    GetAssociatedRoleRequest:
+      type: object
+      properties: {}
+    GetBulkDeploymentStatusRequest:
+      type: object
+      properties: {}
+    GetConnectivityInfoRequest:
+      type: object
+      properties: {}
+    __listOfConnectivityInfo:
+      type: array
+      items:
+        $ref: "#/components/schemas/ConnectivityInfo"
+    GetConnectorDefinitionRequest:
+      type: object
+      properties: {}
+    GetConnectorDefinitionVersionRequest:
+      type: object
+      properties: {}
+    GetCoreDefinitionRequest:
+      type: object
+      properties: {}
+    GetCoreDefinitionVersionRequest:
+      type: object
+      properties: {}
+    GetDeploymentStatusRequest:
+      type: object
+      properties: {}
+    GetDeviceDefinitionRequest:
+      type: object
+      properties: {}
+    GetDeviceDefinitionVersionRequest:
+      type: object
+      properties: {}
+    GetFunctionDefinitionRequest:
+      type: object
+      properties: {}
+    GetFunctionDefinitionVersionRequest:
+      type: object
+      properties: {}
+    GetGroupCertificateAuthorityRequest:
+      type: object
+      properties: {}
+    GetGroupCertificateConfigurationRequest:
+      type: object
+      properties: {}
+    GetGroupRequest:
+      type: object
+      properties: {}
+    GetGroupVersionRequest:
+      type: object
+      properties: {}
+    GetLoggerDefinitionRequest:
+      type: object
+      properties: {}
+    GetLoggerDefinitionVersionRequest:
+      type: object
+      properties: {}
+    GetResourceDefinitionRequest:
+      type: object
+      properties: {}
+    GetResourceDefinitionVersionRequest:
+      type: object
+      properties: {}
+    GetServiceRoleForAccountRequest:
+      type: object
+      properties: {}
+    GetSubscriptionDefinitionRequest:
+      type: object
+      properties: {}
+    GetSubscriptionDefinitionVersionRequest:
+      type: object
+      properties: {}
+    GroupCertificateAuthorityProperties:
+      type: object
+      properties:
+        GroupCertificateAuthorityArn:
+          $ref: "#/components/schemas/__string"
+        GroupCertificateAuthorityId:
+          $ref: "#/components/schemas/__string"
+      description: Information about a certificate authority for a group.
+    GroupInformation:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        LastUpdatedTimestamp:
+          $ref: "#/components/schemas/__string"
+        LatestVersion:
+          $ref: "#/components/schemas/__string"
+        LatestVersionArn:
+          $ref: "#/components/schemas/__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+      description: Information about a group.
+    GroupOwnerSetting:
+      type: object
+      properties:
+        AutoAddGroupOwner:
+          $ref: "#/components/schemas/__boolean"
+        GroupOwner:
+          $ref: "#/components/schemas/__string"
+      description: Group owner related settings for local resources.
+    ListBulkDeploymentDetailedReportsRequest:
+      type: object
+      properties: {}
+    ListBulkDeploymentsRequest:
+      type: object
+      properties: {}
+    ListConnectorDefinitionVersionsRequest:
+      type: object
+      properties: {}
+    __listOfVersionInformation:
+      type: array
+      items:
+        $ref: "#/components/schemas/VersionInformation"
+    ListConnectorDefinitionsRequest:
+      type: object
+      properties: {}
+    __listOfDefinitionInformation:
+      type: array
+      items:
+        $ref: "#/components/schemas/DefinitionInformation"
+    ListCoreDefinitionVersionsRequest:
+      type: object
+      properties: {}
+    ListCoreDefinitionsRequest:
+      type: object
+      properties: {}
+    ListDeploymentsRequest:
+      type: object
+      properties: {}
+    ListDeviceDefinitionVersionsRequest:
+      type: object
+      properties: {}
+    ListDeviceDefinitionsRequest:
+      type: object
+      properties: {}
+    ListFunctionDefinitionVersionsRequest:
+      type: object
+      properties: {}
+    ListFunctionDefinitionsRequest:
+      type: object
+      properties: {}
+    ListGroupCertificateAuthoritiesRequest:
+      type: object
+      properties: {}
+    __listOfGroupCertificateAuthorityProperties:
+      type: array
+      items:
+        $ref: "#/components/schemas/GroupCertificateAuthorityProperties"
+    ListGroupVersionsRequest:
+      type: object
+      properties: {}
+    ListGroupsRequest:
+      type: object
+      properties: {}
+    __listOfGroupInformation:
+      type: array
+      items:
+        $ref: "#/components/schemas/GroupInformation"
+    ListLoggerDefinitionVersionsRequest:
+      type: object
+      properties: {}
+    ListLoggerDefinitionsRequest:
+      type: object
+      properties: {}
+    ListResourceDefinitionVersionsRequest:
+      type: object
+      properties: {}
+    ListResourceDefinitionsRequest:
+      type: object
+      properties: {}
+    ListSubscriptionDefinitionVersionsRequest:
+      type: object
+      properties: {}
+    ListSubscriptionDefinitionsRequest:
+      type: object
+      properties: {}
+    ListTagsForResourceRequest:
+      type: object
+      properties: {}
+    LocalDeviceResourceData:
+      type: object
+      properties:
+        GroupOwnerSetting:
+          $ref: "#/components/schemas/GroupOwnerSetting"
+        SourcePath:
+          $ref: "#/components/schemas/__string"
+      description: Attributes that define a local device resource.
+    LocalVolumeResourceData:
+      type: object
+      properties:
+        DestinationPath:
+          $ref: "#/components/schemas/__string"
+        GroupOwnerSetting:
+          $ref: "#/components/schemas/GroupOwnerSetting"
+        SourcePath:
+          $ref: "#/components/schemas/__string"
+      description: Attributes that define a local volume resource.
+    LoggerComponent:
+      type: string
+      enum:
+        - GreengrassSystem
+        - Lambda
+    LoggerLevel:
+      type: string
+      enum:
+        - DEBUG
+        - INFO
+        - WARN
+        - ERROR
+        - FATAL
+    LoggerType:
+      type: string
+      enum:
+        - FileSystem
+        - AWSCloudWatch
+    Permission:
+      type: string
+      enum:
+        - ro
+        - rw
+      description: The type of permission a function has to access a resource.
+    ResetDeploymentsRequest:
+      type: object
+      properties:
+        Force:
+          $ref: "#/components/schemas/__boolean"
+      description: Information needed to reset deployments.
+    ResourceDataContainer:
+      type: object
+      properties:
+        LocalDeviceResourceData:
+          $ref: "#/components/schemas/LocalDeviceResourceData"
+        LocalVolumeResourceData:
+          $ref: "#/components/schemas/LocalVolumeResourceData"
+        S3MachineLearningModelResourceData:
+          $ref: "#/components/schemas/S3MachineLearningModelResourceData"
+        SageMakerMachineLearningModelResourceData:
+          $ref: "#/components/schemas/SageMakerMachineLearningModelResourceData"
+        SecretsManagerSecretResourceData:
+          $ref: "#/components/schemas/SecretsManagerSecretResourceData"
+      description: "A container for resource data. The container takes only one of the
+        following supported resource data types: ''LocalDeviceResourceData'',
+        ''LocalVolumeResourceData'',
+        ''SageMakerMachineLearningModelResourceData'',
+        ''S3MachineLearningModelResourceData'',
+        ''SecretsManagerSecretResourceData''."
+    ResourceAccessPolicy:
+      type: object
+      required:
+        - ResourceId
+      properties:
+        Permission:
+          $ref: "#/components/schemas/Permission"
+        ResourceId:
+          $ref: "#/components/schemas/__string"
+      description: A policy used by the function to access a resource.
+    S3MachineLearningModelResourceData:
+      type: object
+      properties:
+        DestinationPath:
+          $ref: "#/components/schemas/__string"
+        S3Uri:
+          $ref: "#/components/schemas/__string"
+      description: Attributes that define an Amazon S3 machine learning resource.
+    SageMakerMachineLearningModelResourceData:
+      type: object
+      properties:
+        DestinationPath:
+          $ref: "#/components/schemas/__string"
+        SageMakerJobArn:
+          $ref: "#/components/schemas/__string"
+      description: Attributes that define an Amazon SageMaker machine learning resource.
+    SecretsManagerSecretResourceData:
+      type: object
+      properties:
+        ARN:
+          $ref: "#/components/schemas/__string"
+        AdditionalStagingLabelsToDownload:
+          $ref: "#/components/schemas/__listOf__string"
+      description: Attributes that define a secret resource, which references a secret from
+        AWS Secrets Manager. AWS IoT Greengrass stores a local, encrypted copy
+        of the secret on the Greengrass core, where it can be securely accessed
+        by connectors and Lambda functions.
+    __listOf__string:
+      type: array
+      items:
+        $ref: "#/components/schemas/__string"
+    StartBulkDeploymentRequest:
+      type: object
+      required:
+        - ExecutionRoleArn
+        - InputFileUri
+      properties:
+        ExecutionRoleArn:
+          $ref: "#/components/schemas/__string"
+        InputFileUri:
+          $ref: "#/components/schemas/__string"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    StopBulkDeploymentRequest:
+      type: object
+      properties: {}
+    TagResourceRequest:
+      type: object
+      properties:
+        tags:
+          $ref: "#/components/schemas/Tags"
+      description: A map of the key-value pairs for the resource tag.
+    UntagResourceRequest:
+      type: object
+      properties: {}
+    UpdateConnectivityInfoRequest:
+      type: object
+      properties:
+        ConnectivityInfo:
+          $ref: "#/components/schemas/__listOfConnectivityInfo"
+      description: Connectivity information.
+    UpdateConnectorDefinitionRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/__string"
+    UpdateCoreDefinitionRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/__string"
+    UpdateDeviceDefinitionRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/__string"
+    UpdateFunctionDefinitionRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/__string"
+    UpdateGroupCertificateConfigurationRequest:
+      type: object
+      properties:
+        CertificateExpiryInMilliseconds:
+          $ref: "#/components/schemas/__string"
+    UpdateGroupRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/__string"
+    UpdateLoggerDefinitionRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/__string"
+    UpdateResourceDefinitionRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/__string"
+    UpdateSubscriptionDefinitionRequest:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/__string"
+    VersionInformation:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTimestamp:
+          $ref: "#/components/schemas/__string"
+        Id:
+          $ref: "#/components/schemas/__string"
+        Version:
+          $ref: "#/components/schemas/__string"
+      description: Information about a version.

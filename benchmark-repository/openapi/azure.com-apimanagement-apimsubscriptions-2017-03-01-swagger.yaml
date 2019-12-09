@@ -1,0 +1,1191 @@
+openapi: 3.0.0
+info:
+  description: Use these REST APIs for performing operations on Subscription entity
+    associated with your Azure API Management deployment. The Subscription
+    entity represents the association between a user and a product in API
+    Management. Products contain one or more APIs, and once a product is
+    published, developers can subscribe to the product and begin to use the
+    product’s APIs.
+  title: ApiManagementClient
+  version: 2017-03-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2017-03-01/apimsubscriptions.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: apimanagement-apimsubscriptions
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions":
+    get:
+      description: Lists all subscriptions of the API Management service instance.
+      operationId: Subscription_List
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementListSubscriptions:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementListSubscriptions:
+              value: apimService1
+        - description: >-
+            | Field        | Supported operators    | Supported
+            functions                         |
+
+            |--------------|------------------------|---------------------------------------------|
+
+            | id           | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | name         | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | stateComment | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | userId       | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | productId    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | state        | eq                     |                                             |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListSubscriptions:
+              value: 2017-03-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListSubscriptions:
+              value: subid
+      responses:
+        "200":
+          description: A collection of the Subscription entities for the specified API
+            Management service instance.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionCollection"
+              examples:
+                ApiManagementListSubscriptions:
+                  $ref: "#/components/examples/ApiManagementListSubscriptions"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Subscriptions
+      x-ms-odata: "#/components/schemas/SubscriptionContract"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions/{sid}":
+    delete:
+      description: Deletes the specified subscription.
+      operationId: Subscription_Delete
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteSubscription:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementDeleteSubscription:
+              value: apimService1
+        - $ref: "#/components/parameters/SubscriptionEntityIdParameter"
+        - description: ETag of the Subscription Entity. ETag should match the current
+            entity state from the header response of the GET request or it
+            should be * for unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteSubscription:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteSubscription:
+              value: 2017-03-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteSubscription:
+              value: subid
+      responses:
+        "204":
+          description: The subscription details were successfully deleted.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Subscriptions
+    get:
+      description: Gets the specified Subscription entity.
+      operationId: Subscription_Get
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetSubscription:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetSubscription:
+              value: apimService1
+        - $ref: "#/components/parameters/SubscriptionEntityIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetSubscription:
+              value: 2017-03-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetSubscription:
+              value: subid
+      responses:
+        "200":
+          description: The response body contains the specified Subscription entity.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionContract"
+              examples:
+                ApiManagementGetSubscription:
+                  $ref: "#/components/examples/ApiManagementGetSubscription"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Subscriptions
+    head:
+      description: Gets the entity state (Etag) version of the apimanagement subscription
+        specified by its identifier.
+      operationId: Subscription_GetEntityTag
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadSubscription:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementHeadSubscription:
+              value: apimService1
+        - $ref: "#/components/parameters/SubscriptionEntityIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadSubscription:
+              value: 2017-03-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadSubscription:
+              value: subid
+      responses:
+        "200":
+          description: Specified apimanagement subscription entity exists and current
+            entity state version is present in the ETag header.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Subscriptions
+    patch:
+      description: Updates the details of a subscription specified by its identifier.
+      operationId: Subscription_Update
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateSubscription:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementUpdateSubscription:
+              value: apimService1
+        - $ref: "#/components/parameters/SubscriptionEntityIdParameter"
+        - description: ETag of the Subscription Entity. ETag should match the current
+            entity state from the header response of the GET request or it
+            should be * for unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateSubscription:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateSubscription:
+              value: 2017-03-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateSubscription:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriptionUpdateParameters"
+        description: Update parameters.
+        required: true
+      responses:
+        "204":
+          description: The subscription details were successfully updated.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Subscriptions
+    put:
+      description: Creates or updates the subscription of specified user to the specified
+        product.
+      operationId: Subscription_CreateOrUpdate
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateSubscription:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementCreateSubscription:
+              value: apimService1
+        - $ref: "#/components/parameters/SubscriptionEntityIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateSubscription:
+              value: 2017-03-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateSubscription:
+              value: subid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriptionCreateParameters"
+        description: Create parameters.
+        required: true
+      responses:
+        "200":
+          description: The user already subscribed to the product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionContract"
+              examples:
+                ApiManagementCreateSubscription:
+                  $ref: "#/components/examples/ApiManagementCreateSubscription"
+        "201":
+          description: The user was successfully subscribed to the product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionContract"
+              examples:
+                ApiManagementCreateSubscription:
+                  $ref: "#/components/examples/ApiManagementCreateSubscription"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Subscriptions
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions/{sid}/regeneratePrimaryKey":
+    post:
+      description: Regenerates primary key of existing subscription of the API Management
+        service instance.
+      operationId: Subscription_RegeneratePrimaryKey
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementSubscriptionRegenerateKey:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementSubscriptionRegenerateKey:
+              value: apimService1
+        - $ref: "#/components/parameters/SubscriptionEntityIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementSubscriptionRegenerateKey:
+              value: 2017-03-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementSubscriptionRegenerateKey:
+              value: subid
+      responses:
+        "204":
+          description: The primary key was successfully regenerated.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Subscriptions
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/subscriptions/{sid}/regenerateSecondaryKey":
+    post:
+      description: Regenerates secondary key of existing subscription of the API Management
+        service instance.
+      operationId: Subscription_RegenerateSecondaryKey
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementSubscriptionRegenerateKey:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementSubscriptionRegenerateKey:
+              value: apimService1
+        - $ref: "#/components/parameters/SubscriptionEntityIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementSubscriptionRegenerateKey:
+              value: 2017-03-01
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementSubscriptionRegenerateKey:
+              value: subid
+      responses:
+        "204":
+          description: The secondary key was successfully regenerated.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Subscriptions
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ApiManagementListSubscriptions:
+      value:
+        nextLink: ""
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/subscriptions/5600b59475ff190048070001
+            name: 5600b59475ff190048070001
+            properties:
+              createdDate: 2015-09-22T01:57:40.3Z
+              primaryKey: a24782fc06f648cbb1c3406c41dc9a3a
+              productId: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b59475ff190048060001
+              secondaryKey: b366198986614a7497a5a68fae19119d
+              state: active
+              userId: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1
+            type: Microsoft.ApiManagement/service/subscriptions
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/subscriptions/56eaed3dbaf08b06e46d27fe
+            name: 56eaed3dbaf08b06e46d27fe
+            properties:
+              createdDate: 2016-03-17T17:45:33.837Z
+              displayName: Starter
+              expirationDate: 2016-04-01T00:00:00Z
+              notificationDate: 2016-03-20T00:00:00Z
+              primaryKey: 77708695e79a495bb99b95f32adfa1f0
+              productId: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b59475ff190048060001
+              secondaryKey: 12e2e4ba857e420b88450dc8fe2a6cf9
+              startDate: 2016-03-17T00:00:00Z
+              state: active
+              userId: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/56eaec62baf08b06e46d27fd
+            type: Microsoft.ApiManagement/service/subscriptions
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/subscriptions/5931a769d8d14f0ad8ce13b8
+            name: 5931a769d8d14f0ad8ce13b8
+            properties:
+              createdDate: 2017-06-02T17:59:06.223Z
+              displayName: Unlimited
+              primaryKey: 6de0a3b2da204e459148d2f6785873f0
+              productId: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b59475ff190048060002
+              secondaryKey: c6de00b451f64ea780db1eb8dcf30b62
+              state: submitted
+              userId: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/5931a75ae4bbd512a88c680b
+            type: Microsoft.ApiManagement/service/subscriptions
+    ApiManagementGetSubscription:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/subscriptions/5931a769d8d14f0ad8ce13b8
+        name: 5931a769d8d14f0ad8ce13b8
+        properties:
+          createdDate: 2017-06-02T17:59:06.223Z
+          displayName: Unlimited
+          primaryKey: 6de0a3b2da204e459148d2f6785873f0
+          productId: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b59475ff190048060002
+          secondaryKey: c6de00b451f64ea780db1eb8dcf30b62
+          state: submitted
+          userId: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/5931a75ae4bbd512a88c680b
+        type: Microsoft.ApiManagement/service/subscriptions
+    ApiManagementCreateSubscription:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/subscriptions/testsub
+        name: testsub
+        properties:
+          createdDate: 2017-06-02T23:34:03.1055076Z
+          displayName: testsub
+          primaryKey: 06c34e1a9d394412b292e0611e73d417
+          productId: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b59475ff190048060002
+          secondaryKey: 1e756a7705364c529e8d1760190f47b3
+          state: submitted
+          userId: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/57127d485157a511ace86ae7
+        type: Microsoft.ApiManagement/service/subscriptions
+  parameters:
+    SubscriptionEntityIdParameter:
+      description: Subscription entity Identifier. The entity represents the association
+        between a user and a product in API Management.
+      in: path
+      name: sid
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        maxLength: 256
+        pattern: ^[^*#&+:<>?]+$
+      examples:
+        ApiManagementDeleteSubscription:
+          value: testsub
+        ApiManagementGetSubscription:
+          value: 5931a769d8d14f0ad8ce13b8
+        ApiManagementHeadSubscription:
+          value: 5931a769d8d14f0ad8ce13b8
+        ApiManagementUpdateSubscription:
+          value: testsub
+        ApiManagementCreateSubscription:
+          value: testsub
+        ApiManagementSubscriptionRegenerateKey:
+          value: testsub
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    SubscriptionCollection:
+      description: Paged Subscriptions list representation.
+      properties:
+        nextLink:
+          description: Next page link if any.
+          type: string
+        value:
+          description: Page values.
+          items:
+            $ref: "#/components/schemas/SubscriptionContract"
+          type: array
+    SubscriptionContract:
+      allOf:
+        - description: The Resource definition.
+          properties:
+            id:
+              description: Resource ID.
+              readOnly: true
+              type: string
+            name:
+              description: Resource name.
+              readOnly: true
+              type: string
+            type:
+              description: Resource type for API Management resource.
+              readOnly: true
+              type: string
+          x-ms-azure-resource: true
+      description: Subscription details.
+      properties:
+        properties:
+          $ref: "#/components/schemas/SubscriptionContractProperties"
+    SubscriptionContractProperties:
+      description: Subscription details.
+      properties:
+        createdDate:
+          description: >
+            Subscription creation date. The date conforms to the following
+            format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
+            standard.
+          format: date-time
+          readOnly: true
+          type: string
+        displayName:
+          description: The name of the subscription, or null if the subscription has no
+            name.
+          maxLength: 100
+          minLength: 0
+          type: string
+        endDate:
+          description: >
+            Date when subscription was cancelled or expired. The setting is for
+            audit purposes only and the subscription is not automatically
+            cancelled. The subscription lifecycle can be managed by using the
+            `state` property. The date conforms to the following format:
+            `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+          format: date-time
+          type: string
+        expirationDate:
+          description: >
+            Subscription expiration date. The setting is for audit purposes only
+            and the subscription is not automatically expired. The subscription
+            lifecycle can be managed by using the `state` property. The date
+            conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
+            specified by the ISO 8601 standard.
+          format: date-time
+          type: string
+        notificationDate:
+          description: >
+            Upcoming subscription expiration notification date. The date
+            conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
+            specified by the ISO 8601 standard.
+          format: date-time
+          type: string
+        primaryKey:
+          description: Subscription primary key.
+          maxLength: 256
+          minLength: 1
+          type: string
+        productId:
+          description: The product resource identifier of the subscribed product. The value
+            is a valid relative URL in the format of /products/{productId} where
+            {productId} is a product identifier.
+          type: string
+        secondaryKey:
+          description: Subscription secondary key.
+          maxLength: 256
+          minLength: 1
+          type: string
+        startDate:
+          description: >
+            Subscription activation date. The setting is for audit purposes only
+            and the subscription is not automatically activated. The
+            subscription lifecycle can be managed by using the `state` property.
+            The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
+            specified by the ISO 8601 standard.
+          format: date-time
+          type: string
+        state:
+          description: Subscription state. Possible states are * active – the subscription
+            is active, * suspended – the subscription is blocked, and the
+            subscriber cannot call any APIs of the product, * submitted – the
+            subscription request has been made by the developer, but has not yet
+            been approved or rejected, * rejected – the subscription request has
+            been denied by an administrator, * cancelled – the subscription has
+            been cancelled by the developer or administrator, * expired – the
+            subscription reached its expiration date and was deactivated.
+          enum:
+            - suspended
+            - active
+            - expired
+            - submitted
+            - rejected
+            - cancelled
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: SubscriptionState
+        stateComment:
+          description: Optional subscription comment added by an administrator.
+          type: string
+        userId:
+          description: The user resource identifier of the subscription owner. The value is
+            a valid relative URL in the format of /users/{uid} where {uid} is a
+            user identifier.
+          type: string
+      required:
+        - userId
+        - productId
+        - state
+        - primaryKey
+        - secondaryKey
+    SubscriptionCreateParameterProperties:
+      description: Parameters supplied to the Create subscription operation.
+      properties:
+        displayName:
+          description: Subscription name.
+          maxLength: 100
+          minLength: 1
+          type: string
+        primaryKey:
+          description: Primary subscription key. If not specified during request key will
+            be generated automatically.
+          maxLength: 256
+          minLength: 1
+          type: string
+        productId:
+          description: Product (product id path) for which subscription is being created in
+            form /products/{productId}
+          type: string
+        secondaryKey:
+          description: Secondary subscription key. If not specified during request key will
+            be generated automatically.
+          maxLength: 256
+          minLength: 1
+          type: string
+        state:
+          description: Initial subscription state. If no value is specified, subscription
+            is created with Submitted state. Possible states are * active – the
+            subscription is active, * suspended – the subscription is blocked,
+            and the subscriber cannot call any APIs of the product, * submitted
+            – the subscription request has been made by the developer, but has
+            not yet been approved or rejected, * rejected – the subscription
+            request has been denied by an administrator, * cancelled – the
+            subscription has been cancelled by the developer or administrator, *
+            expired – the subscription reached its expiration date and was
+            deactivated.
+          enum:
+            - suspended
+            - active
+            - expired
+            - submitted
+            - rejected
+            - cancelled
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: SubscriptionState
+        userId:
+          description: User (user id path) for whom subscription is being created in form
+            /users/{uid}
+          type: string
+      required:
+        - userId
+        - productId
+        - displayName
+    SubscriptionCreateParameters:
+      description: Subscription create details.
+      properties:
+        properties:
+          $ref: "#/components/schemas/SubscriptionCreateParameterProperties"
+    SubscriptionUpdateParameterProperties:
+      description: Parameters supplied to the Update subscription operation.
+      properties:
+        displayName:
+          description: Subscription name.
+          type: string
+        expirationDate:
+          description: "Subscription expiration date. The setting is for audit purposes
+            only and the subscription is not automatically expired. The
+            subscription lifecycle can be managed by using the `state` property.
+            The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
+            specified by the ISO 8601 standard."
+          format: date-time
+          type: string
+        primaryKey:
+          description: Primary subscription key.
+          maxLength: 256
+          minLength: 1
+          type: string
+        productId:
+          description: "Product identifier path: /products/{productId}"
+          type: string
+        secondaryKey:
+          description: Secondary subscription key.
+          maxLength: 256
+          minLength: 1
+          type: string
+        state:
+          description: Subscription state. Possible states are * active – the subscription
+            is active, * suspended – the subscription is blocked, and the
+            subscriber cannot call any APIs of the product, * submitted – the
+            subscription request has been made by the developer, but has not yet
+            been approved or rejected, * rejected – the subscription request has
+            been denied by an administrator, * cancelled – the subscription has
+            been cancelled by the developer or administrator, * expired – the
+            subscription reached its expiration date and was deactivated.
+          enum:
+            - suspended
+            - active
+            - expired
+            - submitted
+            - rejected
+            - cancelled
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: SubscriptionState
+        stateComment:
+          description: Comments describing subscription state change by the administrator.
+          type: string
+        userId:
+          description: "User identifier path: /users/{uid}"
+          type: string
+    SubscriptionUpdateParameters:
+      description: Subscription update details.
+      properties:
+        properties:
+          $ref: "#/components/schemas/SubscriptionUpdateParameterProperties"

@@ -1,0 +1,30 @@
+#%RAML 1.0 DocumentationItem
+title: Overview of Types
+content: |
+    # Log Entries
+
+    Log represent actions made by a user against an object. Events happen at a particular time, involve one or more objects, have an action, such as 'delete' or 'approve', and an optional payload which can store application-specific information, such as changed fields, environment information, and so on.
+    Events are queried by POSTing a query object to the /query endpoint. Note that this endpoint uses timespan ranges for paging, with a maximum return set of 200 log entries.
+
+    See the API reference for the annotated JSON schema for the query object structure, which can be found in the _/v1/organizations/{id}/_query POST endpoint, or below.
+
+
+    # Objects
+
+    Objects represent the entities about which actions are logged. Within an organization, objects are identified by a trio of properties:
+
+    **Platform:** The system that owns the object. Examples: "Runtime Manager", "api platform", "core services".
+    
+    **Type:** The business entity that the object represents. Examples: "api", "api version", "permission", "environment".
+    
+    **Id:** The system-local id of the object. Can be a uuid, a number or any other key representation used by the object's platform.
+
+    Note that the properties form a unique key, in the above order. So, for example, { "Runtime Manager", "widget", "21" } and { "api platform", "widget", "21" } would be two distinct objects.
+
+    In addition, objects have a Name which is used as a user-friendly identifier. The objects names are up-to-date with latest name of the object.
+
+    ## Object Hierarchies
+
+    In the real world, objects have parent-child relationships that are critical for querying and organizing log data. For example, when looking at api platform events, a user may wish to look at all events for a particular api. However, the api contains api versions as well as policies, portals, and other objects, whose events the user would need to see. To this end, objects have a parent id and a parent type, which acts as a key to their parent and enabled queries for the children of any entity. Parent id and parent type are optional.
+
+    See the API reference for complete information on object structure, which is embedded within the log entries schema.

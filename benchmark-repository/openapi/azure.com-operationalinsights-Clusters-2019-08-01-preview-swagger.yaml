@@ -1,0 +1,536 @@
+openapi: 3.0.0
+info:
+  description: Azure Log Analytics API reference
+  title: Azure Log Analytics
+  version: 2019-08-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2019-08-01-preview/Clusters.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: operationalinsights-Clusters
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/clusters":
+    get:
+      description: Gets the Log Analytics clusters in a subscription.
+      operationId: Clusters_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClusterListResult"
+              examples:
+                ClustersSubscriptionList:
+                  $ref: "#/components/examples/ClustersSubscriptionList"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Clusters
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/clusters":
+    get:
+      description: Gets Log Analytics clusters in a resource group.
+      operationId: Clusters_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClusterListResult"
+              examples:
+                ClustersGet:
+                  $ref: "#/components/examples/ClustersGet"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Clusters
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/clusters/{clusterName}":
+    delete:
+      description: Deletes a cluster instance.
+      operationId: Clusters_Delete
+      parameters:
+        - description: The resource group name of the Log Analytics cluster.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            ClustersDelete:
+              value: oiautorest6685
+        - description: Name of the Log Analytics Cluster.
+          in: path
+          name: clusterName
+          required: true
+          schema:
+            type: string
+          examples:
+            ClustersDelete:
+              value: oiautorest6685
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK response definition.
+        "204":
+          description: NoContent response definition.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Clusters
+    get:
+      description: Gets a Log Analytics cluster instance.
+      operationId: Clusters_Get
+      parameters:
+        - description: The resource group name of the Log Analytics cluster.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            ClustersGet:
+              value: oiautorest6685
+        - description: Name of the Log Analytics Cluster.
+          in: path
+          name: clusterName
+          required: true
+          schema:
+            type: string
+          examples:
+            ClustersGet:
+              value: oiautorest6685
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cluster"
+              examples:
+                ClustersGet:
+                  $ref: "#/components/examples/ClustersGet"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Clusters
+    patch:
+      description: Updates a Log Analytics cluster.
+      operationId: Clusters_Update
+      parameters:
+        - description: The resource group name of the cluster.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            ClustersPatch:
+              value: oiautorest6685
+        - description: The name of the cluster.
+          in: path
+          name: clusterName
+          required: true
+          schema:
+            type: string
+            minLength: 4
+            maxLength: 63
+            pattern: ^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$
+          examples:
+            ClustersPatch:
+              value: oiautorest6685
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClusterPatch"
+        description: The parameters required to patch a Log Analytics cluster.
+        required: true
+      responses:
+        "200":
+          description: The existing cluster was successfully updated. Check
+            provisioningStatus to see detailed status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cluster"
+              examples:
+                ClustersPatch:
+                  $ref: "#/components/examples/ClustersPatch"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Clusters
+    put:
+      description: Create or update a Log Analytics cluster.
+      operationId: Clusters_CreateOrUpdate
+      parameters:
+        - description: The resource group name of the Log Analytics cluster.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            ClustersCreate:
+              value: oiautorest6685
+        - description: The name of the Log Analytics cluster.
+          in: path
+          name: clusterName
+          required: true
+          schema:
+            type: string
+            minLength: 4
+            maxLength: 63
+            pattern: ^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$
+          examples:
+            ClustersCreate:
+              value: oiautorest6685
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Cluster"
+        description: The parameters required to create or update a Log Analytics cluster.
+        required: true
+      responses:
+        "200":
+          description: OK response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cluster"
+              examples:
+                ClustersCreate:
+                  $ref: "#/components/examples/ClustersCreate"
+        "201":
+          description: Created response definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cluster"
+              examples:
+                ClustersCreate:
+                  $ref: "#/components/examples/ClustersCreate"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Clusters
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ClustersSubscriptionList:
+      value:
+        - id: /subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/calbot-rg/providers/microsoft.operationalinsights/clusters/testresourcelock
+          identity:
+            principalId: 356d057d-cba5-44dd-8a30-b2e547bc416b
+            tenantId: 72f988bf-86f1-41af-91ab-2d7cd011db47
+            type: SystemAssigned
+          location: eastus
+          name: TestResourceLock
+          properties:
+            clusterId: 5b02755b-5bf4-430c-9487-45502a2a7e62
+            encryptionKeyUri: https://aztest2170.vault.azure.net/certificates/aztest2170cert/654ft6c4e63845cbb50fd6fg51540429
+            provisioningState: Succeeded
+          type: Microsoft.OperationalInsights/clusters
+    ClustersGet:
+      value:
+        - id: /subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/calbot-rg/providers/microsoft.operationalinsights/clusters/testresourcelock
+          identity:
+            principalId: 356d057d-cba5-44dd-8a30-b2e547bc416b
+            tenantId: 72f988bf-86f1-41af-91ab-2d7cd011db47
+            type: SystemAssigned
+          location: eastus
+          name: TestResourceLock
+          properties:
+            clusterId: 5b02755b-5bf4-430c-9487-45502a2a7e62
+            encryptionKeyUri: https://aztest2170.vault.azure.net/certificates/aztest2170cert/654ft6c4e63845cbb50fd6fg51540429
+            provisioningState: Succeeded
+          type: Microsoft.OperationalInsights/clusters
+        - id: /subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/mms-eus/providers/microsoft.operationalinsights/clusters/southukws
+          identity:
+            principalId: 356d057d-cba5-44dd-8a30-b2e547bc416b
+            tenantId: 72f988bf-86f1-41af-91ab-2d7cd011db47
+            type: SystemAssigned
+          location: East US
+          name: SouthUKWS
+          properties:
+            clusterId: 5b02755b-5bf4-430c-9487-45502a2a7e62
+            encryptionKeyUri: https://aztest2170.vault.azure.net/certificates/aztest2170cert/654ft6c4e63845cbb50fd6fg51540429
+            provisioningState: Succeeded
+          type: Microsoft.OperationalInsights/clusters
+    ClustersPatch:
+      value:
+        location: australiasoutheast
+        properties:
+          encryptionKeyUri: https://aztest2170.vault.azure.net/certificates/aztest2170cert/654ft6c4e63845cbb50fd6fg51540429
+        tags:
+          tag1: val1
+    ClustersCreate:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000005/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/aztest2170
+        identity:
+          principalId: 356d057d-cba5-44dd-8a30-b2e547bc416b
+          tenantId: 72f988bf-86f1-41af-91ab-2d7cd011db47
+          type: SystemAssigned
+        location: australiasoutheast
+        name: AzTest2170
+        properties:
+          clusterId: bc089d7b-485c-4aff-a71e-c00f362d8d2f
+          encryptionKeyUri: https://aztest2170.vault.azure.net/certificates/aztest2170cert/654ft6c4e63845cbb50fd6fg51540429
+          provisioningState: Creating
+        tags:
+          tag1: val1
+        type: Microsoft.OperationalInsights/clusters
+  parameters:
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        ClustersSubscriptionList:
+          value: 2019-08-01-preview
+        ClustersGet:
+          value: 2019-08-01-preview
+        ClustersDelete:
+          value: 2019-08-01-preview
+        ClustersPatch:
+          value: 2019-08-01-preview
+        ClustersCreate:
+          value: 2019-08-01-preview
+    ResourceGroupNameParameter:
+      description: The name of the resource group to get. The name is case insensitive.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\._\(\)]+$
+      examples:
+        ClustersGet:
+          value: oiautorest6685
+    SubscriptionIdParameter:
+      description: Gets subscription credentials which uniquely identify Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        ClustersSubscriptionList:
+          value: 00000000-0000-0000-0000-00000000000
+        ClustersGet:
+          value: 00000000-0000-0000-0000-00000000000
+        ClustersDelete:
+          value: 00000000-0000-0000-0000-00000000000
+        ClustersPatch:
+          value: 00000000-0000-0000-0000-00000000000
+        ClustersCreate:
+          value: 00000000-0000-0000-0000-00000000000
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Cluster:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The top level Log Analytics cluster resource container.
+      properties:
+        identity:
+          $ref: "#/components/schemas/Identity"
+        properties:
+          $ref: "#/components/schemas/ClusterProperties"
+      x-ms-azure-resource: true
+    ClusterListResult:
+      description: The list clusters operation response.
+      properties:
+        nextLink:
+          description: The link used to get the next page of recommendations.
+          type: string
+        value:
+          description: A list of Log Analytics clusters.
+          items:
+            $ref: "#/components/schemas/Cluster"
+          type: array
+    ClusterPatch:
+      description: The top level Log Analytics cluster resource container.
+      properties:
+        properties:
+          $ref: "#/components/schemas/ClusterPatchProperties"
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags
+          type: object
+      x-ms-azure-resource: true
+    ClusterPatchProperties:
+      description: Log Analytics cluster patch properties.
+      properties:
+        encryptionKeyUri:
+          description: The Key Vault key or certificate path associated with the Log
+            Analytics cluster.
+          type: string
+    ClusterProperties:
+      description: Cluster properties.
+      properties:
+        clusterId:
+          description: The ID associated with the cluster.
+          readOnly: true
+          type: string
+        encryptionKeyUri:
+          description: The Key Vault key or certificate path associated with the Log
+            Analytics cluster.
+          type: string
+        nextLink:
+          description: The link used to get the next page of recommendations.
+          type: string
+        provisioningState:
+          description: The provisioning state of the cluster.
+          enum:
+            - Creating
+            - Succeeded
+            - Failed
+            - Canceled
+            - Deleting
+            - ProvisioningAccount
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: EntityStatus
+    ErrorDetails:
+      description: The details of the error.
+      properties:
+        code:
+          description: Error code.
+          readOnly: true
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          readOnly: true
+          type: string
+        target:
+          description: The target of the particular error.
+          readOnly: true
+          type: string
+    ErrorResponse:
+      description: Error response indicates that the service is not able to process the
+        incoming request. The reason is provided in the error message.
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorDetails"
+      type: object
+    Identity:
+      description: Identity for the resource.
+      properties:
+        principalId:
+          description: The principal ID of resource identity.
+          readOnly: true
+          type: string
+        tenantId:
+          description: The tenant ID of resource.
+          readOnly: true
+          type: string
+        type:
+          description: The identity type.
+          enum:
+            - SystemAssigned
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: IdentityType
+      required:
+        - type
+    Resource:
+      description: The resource definition.
+      properties:
+        id:
+          description: Resource Id
+          readOnly: true
+          type: string
+        location:
+          description: Resource location
+          type: string
+        name:
+          description: Resource name
+          readOnly: true
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags
+          type: object
+        type:
+          description: Resource type
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true

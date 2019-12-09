@@ -1,0 +1,1520 @@
+openapi: 3.0.0
+info:
+  description: Azure Blueprints Client provides access to blueprint definitions,
+    assignments, and artifacts, and related blueprint operations.
+  title: BlueprintClient
+  version: 2018-11-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/blueprintDefinition.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: blueprint-blueprintDefinition
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/{scope}/providers/Microsoft.Blueprint/blueprints":
+    get:
+      description: List blueprint definitions.
+      operationId: Blueprints_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+      responses:
+        "200":
+          description: OK -- retrieved list of blueprint definitions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlueprintList"
+              examples:
+                ManagementGroupBlueprint:
+                  $ref: "#/components/examples/ManagementGroupBlueprint"
+                SubscriptionBlueprint:
+                  $ref: "#/components/examples/SubscriptionBlueprint"
+      tags:
+        - Blueprint
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}":
+    delete:
+      description: Delete a blueprint definition.
+      operationId: Blueprints_Delete
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+      responses:
+        "200":
+          description: OK -- blueprint definition deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Blueprint"
+              examples:
+                ManagementGroupBlueprint:
+                  $ref: "#/components/examples/ManagementGroupBlueprint"
+                SubscriptionBlueprint:
+                  $ref: "#/components/examples/SubscriptionBlueprint"
+        "204":
+          description: No Content
+      tags:
+        - Blueprint
+    get:
+      description: Get a blueprint definition.
+      operationId: Blueprints_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+      responses:
+        "200":
+          description: OK -- blueprint definition retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Blueprint"
+              examples:
+                ManagementGroupBlueprint:
+                  $ref: "#/components/examples/ManagementGroupBlueprint"
+                SubscriptionBlueprint:
+                  $ref: "#/components/examples/SubscriptionBlueprint"
+      tags:
+        - Blueprint
+    put:
+      description: Create or update a blueprint definition.
+      operationId: Blueprints_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Blueprint"
+        description: Blueprint definition.
+        required: true
+      responses:
+        "201":
+          description: Created -- blueprint definition saved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Blueprint"
+              examples:
+                ManagementGroupBlueprint:
+                  $ref: "#/components/examples/ManagementGroupBlueprint"
+                ResourceGroupWithTags:
+                  $ref: "#/components/examples/ResourceGroupWithTags"
+                SubscriptionBlueprint:
+                  $ref: "#/components/examples/SubscriptionBlueprint"
+      tags:
+        - Blueprint
+  "/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts":
+    get:
+      description: List artifacts for a given blueprint definition.
+      operationId: Artifacts_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+      responses:
+        "200":
+          description: OK -- blueprint artifacts retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArtifactList"
+              examples:
+                MG-ArtifactList:
+                  $ref: "#/components/examples/MG-ArtifactList"
+                Sub-ArtifactList:
+                  $ref: "#/components/examples/Sub-ArtifactList"
+      tags:
+        - Artifact
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}":
+    delete:
+      description: Delete a blueprint artifact.
+      operationId: Artifacts_Delete
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+        - $ref: "#/components/parameters/ArtifactNameParameter"
+      responses:
+        "200":
+          description: OK -- blueprint artifact deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artifact"
+              examples:
+                MG-ARMTemplateArtifact:
+                  $ref: "#/components/examples/MG-ARMTemplateArtifact"
+                MG-PolicyAssignmentArtifact:
+                  $ref: "#/components/examples/MG-PolicyAssignmentArtifact"
+                MG-RoleAssignmentArtifact:
+                  $ref: "#/components/examples/MG-RoleAssignmentArtifact"
+                Sub-ARMTemplateArtifact:
+                  $ref: "#/components/examples/Sub-ARMTemplateArtifact"
+                Sub-PolicyAssignmentArtifact:
+                  $ref: "#/components/examples/Sub-PolicyAssignmentArtifact"
+                Sub-RoleAssignmentArtifact:
+                  $ref: "#/components/examples/Sub-RoleAssignmentArtifact"
+        "204":
+          description: No Content
+      tags:
+        - Artifact
+    get:
+      description: Get a blueprint artifact.
+      operationId: Artifacts_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+        - $ref: "#/components/parameters/ArtifactNameParameter"
+      responses:
+        "200":
+          description: OK -- blueprint artifact retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artifact"
+              examples:
+                MG-ARMTemplateArtifact:
+                  $ref: "#/components/examples/MG-ARMTemplateArtifact"
+                MG-PolicyAssignmentArtifact:
+                  $ref: "#/components/examples/MG-PolicyAssignmentArtifact"
+                MG-RoleAssignmentArtifact:
+                  $ref: "#/components/examples/MG-RoleAssignmentArtifact"
+                Sub-ARMTemplateArtifact:
+                  $ref: "#/components/examples/Sub-ARMTemplateArtifact"
+                Sub-PolicyAssignmentArtifact:
+                  $ref: "#/components/examples/Sub-PolicyAssignmentArtifact"
+                Sub-RoleAssignmentArtifact:
+                  $ref: "#/components/examples/Sub-RoleAssignmentArtifact"
+      tags:
+        - Artifact
+    put:
+      description: Create or update blueprint artifact.
+      operationId: Artifacts_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+        - $ref: "#/components/parameters/ArtifactNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Artifact"
+        description: Blueprint artifact to create or update.
+        required: true
+      responses:
+        "201":
+          description: Created -- blueprint artifact created/updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artifact"
+              examples:
+                MG-ARMTemplateArtifact:
+                  $ref: "#/components/examples/MG-ARMTemplateArtifact"
+                MG-PolicyAssignmentArtifact:
+                  $ref: "#/components/examples/MG-PolicyAssignmentArtifact"
+                MG-RoleAssignmentArtifact:
+                  $ref: "#/components/examples/MG-RoleAssignmentArtifact"
+                Sub-ARMTemplateArtifact:
+                  $ref: "#/components/examples/Sub-ARMTemplateArtifact"
+                Sub-PolicyAssignmentArtifact:
+                  $ref: "#/components/examples/Sub-PolicyAssignmentArtifact"
+                Sub-RoleAssignmentArtifact:
+                  $ref: "#/components/examples/Sub-RoleAssignmentArtifact"
+      tags:
+        - Artifact
+  "/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions":
+    get:
+      description: List published versions of given blueprint definition.
+      operationId: PublishedBlueprints_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+      responses:
+        "200":
+          description: OK -- all published versions of blueprint definition retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedBlueprintList"
+              examples:
+                PublishedManagementGroupBlueprint:
+                  $ref: "#/components/examples/PublishedManagementGroupBlueprint"
+                PublishedSubscriptionBlueprint:
+                  $ref: "#/components/examples/PublishedSubscriptionBlueprint"
+      tags:
+        - PublishedBlueprint
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}":
+    delete:
+      description: Delete a published version of a blueprint definition.
+      operationId: PublishedBlueprints_Delete
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+        - $ref: "#/components/parameters/PublishedBlueprintVersionIdParameter"
+      responses:
+        "200":
+          description: OK -- published version of blueprint definition deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedBlueprint"
+              examples:
+                PublishedManagementGroupBlueprint:
+                  $ref: "#/components/examples/PublishedManagementGroupBlueprint"
+                PublishedSubscriptionBlueprint:
+                  $ref: "#/components/examples/PublishedSubscriptionBlueprint"
+        "204":
+          description: No Content
+      tags:
+        - PublishedBlueprint
+    get:
+      description: Get a published version of a blueprint definition.
+      operationId: PublishedBlueprints_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+        - $ref: "#/components/parameters/PublishedBlueprintVersionIdParameter"
+      responses:
+        "200":
+          description: OK -- published blueprint definition retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedBlueprint"
+              examples:
+                PublishedManagementGroupBlueprint:
+                  $ref: "#/components/examples/PublishedManagementGroupBlueprint"
+                PublishedSubscriptionBlueprint:
+                  $ref: "#/components/examples/PublishedSubscriptionBlueprint"
+      tags:
+        - PublishedBlueprint
+    put:
+      description: Publish a new version of the blueprint definition with the latest
+        artifacts. Published blueprint definitions are immutable.
+      operationId: PublishedBlueprints_Create
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+        - $ref: "#/components/parameters/PublishedBlueprintVersionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PublishedBlueprint"
+        description: Published Blueprint to create or update.
+      responses:
+        "201":
+          description: Created -- blueprint definition published.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublishedBlueprint"
+              examples:
+                PublishedManagementGroupBlueprint_Publish:
+                  $ref: "#/components/examples/PublishedManagementGroupBlueprint_Pu\
+                    blish"
+                PublishedSubscriptionBlueprint_Publish:
+                  $ref: "#/components/examples/PublishedSubscriptionBlueprint_Publi\
+                    sh"
+      tags:
+        - PublishedBlueprint
+  "/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts":
+    get:
+      description: List artifacts for a version of a published blueprint definition.
+      operationId: PublishedArtifacts_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+        - $ref: "#/components/parameters/PublishedBlueprintVersionIdParameter"
+      responses:
+        "200":
+          description: OK -- artifacts of a version of published blueprint definition
+            retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArtifactList"
+              examples:
+                MG-ArtifactList:
+                  $ref: "#/components/examples/MG-ArtifactList"
+                Sub-ArtifactList:
+                  $ref: "#/components/examples/Sub-ArtifactList"
+      tags:
+        - PublishedArtifact
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/{scope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts/{artifactName}":
+    get:
+      description: Get an artifact for a published blueprint definition.
+      operationId: PublishedArtifacts_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/ScopeParameter"
+        - $ref: "#/components/parameters/BlueprintNameParameter"
+        - $ref: "#/components/parameters/PublishedBlueprintVersionIdParameter"
+        - $ref: "#/components/parameters/ArtifactNameParameter"
+      responses:
+        "200":
+          description: OK -- artifact of published blueprint definition retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artifact"
+              examples:
+                MG-ARMTemplateArtifact:
+                  $ref: "#/components/examples/MG-ARMTemplateArtifact"
+                MG-PolicyAssignmentArtifact:
+                  $ref: "#/components/examples/MG-PolicyAssignmentArtifact"
+                MG-RoleAssignmentArtifact:
+                  $ref: "#/components/examples/MG-RoleAssignmentArtifact"
+                Sub-ARMTemplateArtifact:
+                  $ref: "#/components/examples/Sub-ARMTemplateArtifact"
+                Sub-PolicyAssignmentArtifact:
+                  $ref: "#/components/examples/Sub-PolicyAssignmentArtifact"
+                Sub-RoleAssignmentArtifact:
+                  $ref: "#/components/examples/Sub-RoleAssignmentArtifact"
+      tags:
+        - PublishedArtifact
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ManagementGroupBlueprint:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint
+        name: simpleBlueprint
+        properties:
+          description: blueprint contains all artifact kinds {'template', 'rbac', 'policy'}
+          parameters:
+            costCenter:
+              metadata:
+                displayName: force cost center tag for all resources under given
+                  subscription.
+              type: string
+            owners:
+              metadata:
+                displayName: assign owners to subscription along with blueprint assignment.
+              type: array
+            storageAccountType:
+              metadata:
+                displayName: storage account type.
+              type: string
+          resourceGroups:
+            storageRG:
+              metadata:
+                description: Contains storageAccounts that collect all shoebox logs.
+                displayName: storage resource group
+          targetScope: subscription
+        type: Microsoft.Blueprint/blueprints
+    SubscriptionBlueprint:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Blueprint/blueprints/simpleBlueprint
+        name: simpleBlueprint
+        properties:
+          description: blueprint contains all artifact kinds {'template', 'rbac', 'policy'}
+          parameters:
+            costCenter:
+              metadata:
+                displayName: force cost center tag for all resources under given
+                  subscription.
+              type: string
+            owners:
+              metadata:
+                displayName: assign owners to subscription along with blueprint assignment.
+              type: array
+            storageAccountType:
+              metadata:
+                displayName: storage account type.
+              type: string
+          resourceGroups:
+            storageRG:
+              metadata:
+                description: Contains storageAccounts that collect all shoebox logs.
+                displayName: storage resource group
+          targetScope: subscription
+        type: Microsoft.Blueprint/blueprints
+    ResourceGroupWithTags:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/{ManagementGroupId}/providers/Microsoft.Blueprint/blueprints/RGTaggingExample
+        name: RGTaggingExample
+        properties:
+          description: An example blueprint containing an RG with two tags.
+          parameters: {}
+          resourceGroups:
+            myRGName:
+              dependsOn: []
+              location: westus
+              metadata:
+                displayName: My Resource Group
+              name: myRGName
+              tags:
+                costcenter: "123456"
+                tagWithNoValue: ""
+          status:
+            lastModified: 2019-04-29T20:52:56+00:00
+            timeCreated: 2019-04-29T20:52:56+00:00
+          targetScope: subscription
+        type: Microsoft.Blueprint/blueprints
+    MG-ArtifactList:
+      value:
+        value:
+          - id: /providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/ownerAssignment
+            kind: roleAssignment
+            name: ownerAssignment
+            properties:
+              displayName: enforce owners of given subscription
+              principalIds: "[parameters('owners')]"
+              roleDefinitionId: /providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7
+            type: Microsoft.Blueprint/blueprints/versions/artifacts
+          - id: /providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/costCenterPolicy
+            kind: policyAssignment
+            name: costCenterPolicy
+            properties:
+              displayName: force costCenter tag on all resources
+              parameters:
+                tagName:
+                  value: costCenter
+                tagValue:
+                  value: "[parameter('costCenter')]"
+              policyDefinitionId: /providers/Microsoft.Authorization/policyDefinitions/1e30110a-5ceb-460c-a204-c1c3969c6d62
+            type: Microsoft.Blueprint/blueprints/versions/artifacts
+          - id: /providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/storageTemplate
+            kind: template
+            name: storageTemplate
+            properties:
+              parameters:
+                storageAccountType:
+                  value: "[parameters('storageAccountType')]"
+              resourceGroup: storageRG
+              template:
+                contentVersion: 1.0.0.0
+                outputs:
+                  storageAccountName:
+                    type: string
+                    value: "[variables('storageAccountName')]"
+                parameters:
+                  storageAccountType:
+                    allowedValues:
+                      - Standard_LRS
+                      - Standard_GRS
+                      - Standard_ZRS
+                      - Premium_LRS
+                    defaultValue: Standard_LRS
+                    metadata:
+                      description: Storage Account type
+                    type: string
+                resources:
+                  - apiVersion: 2016-01-01
+                    kind: Storage
+                    location: "[resourceGroup().location]"
+                    name: "[variables('storageAccountName')]"
+                    properties: {}
+                    sku:
+                      name: "[parameters('storageAccountType')]"
+                    type: Microsoft.Storage/storageAccounts
+                variables:
+                  storageAccountName: "[concat(uniquestring(resourceGroup().id), 'standardsa')]"
+            type: Microsoft.Blueprint/blueprints/versions/artifacts
+    Sub-ArtifactList:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/ownerAssignment
+            kind: roleAssignment
+            name: ownerAssignment
+            properties:
+              displayName: enforce owners of given subscription
+              principalIds: "[parameters('owners')]"
+              roleDefinitionId: /providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7
+            type: Microsoft.Blueprint/blueprints/versions/artifacts
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/costCenterPolicy
+            kind: policyAssignment
+            name: costCenterPolicy
+            properties:
+              displayName: force costCenter tag on all resources
+              parameters:
+                tagName:
+                  value: costCenter
+                tagValue:
+                  value: "[parameter('costCenter')]"
+              policyDefinitionId: /providers/Microsoft.Authorization/policyDefinitions/1e30110a-5ceb-460c-a204-c1c3969c6d62
+            type: Microsoft.Blueprint/blueprints/versions/artifacts
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/storageTemplate
+            kind: template
+            name: storageTemplate
+            properties:
+              parameters:
+                storageAccountType:
+                  value: "[parameters('storageAccountType')]"
+              resourceGroup: storageRG
+              template:
+                contentVersion: 1.0.0.0
+                outputs:
+                  storageAccountName:
+                    type: string
+                    value: "[variables('storageAccountName')]"
+                parameters:
+                  storageAccountType:
+                    allowedValues:
+                      - Standard_LRS
+                      - Standard_GRS
+                      - Standard_ZRS
+                      - Premium_LRS
+                    defaultValue: Standard_LRS
+                    metadata:
+                      description: Storage Account type
+                    type: string
+                resources:
+                  - apiVersion: 2016-01-01
+                    kind: Storage
+                    location: "[resourceGroup().location]"
+                    name: "[variables('storageAccountName')]"
+                    properties: {}
+                    sku:
+                      name: "[parameters('storageAccountType')]"
+                    type: Microsoft.Storage/storageAccounts
+                variables:
+                  storageAccountName: "[concat(uniquestring(resourceGroup().id), 'standardsa')]"
+            type: Microsoft.Blueprint/blueprints/versions/artifacts
+    MG-ARMTemplateArtifact:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/storageTemplate
+        kind: template
+        name: storageTemplate
+        properties:
+          parameters:
+            storageAccountType:
+              value: "[parameters('storageAccountType')]"
+          resourceGroup: storageRG
+          template:
+            contentVersion: 1.0.0.0
+            outputs:
+              storageAccountName:
+                type: string
+                value: "[variables('storageAccountName')]"
+            parameters:
+              storageAccountType:
+                allowedValues:
+                  - Standard_LRS
+                  - Standard_GRS
+                  - Standard_ZRS
+                  - Premium_LRS
+                defaultValue: Standard_LRS
+                metadata:
+                  description: Storage Account type
+                type: string
+            resources:
+              - apiVersion: 2016-01-01
+                kind: Storage
+                location: "[resourceGroup().location]"
+                name: "[variables('storageAccountName')]"
+                properties: {}
+                sku:
+                  name: "[parameters('storageAccountType')]"
+                type: Microsoft.Storage/storageAccounts
+            variables:
+              storageAccountName: "[concat(uniquestring(resourceGroup().id), 'standardsa')]"
+        type: Microsoft.Blueprint/blueprints/versions/artifacts
+    MG-PolicyAssignmentArtifact:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/costCenterPolicy
+        kind: policyAssignment
+        name: costCenterPolicy
+        properties:
+          displayName: force costCenter tag on all resources
+          parameters:
+            tagName:
+              value: costCenter
+            tagValue:
+              value: "[parameter('costCenter')]"
+          policyDefinitionId: /providers/Microsoft.Authorization/policyDefinitions/1e30110a-5ceb-460c-a204-c1c3969c6d62
+        type: Microsoft.Blueprint/blueprints/versions/artifacts
+    MG-RoleAssignmentArtifact:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/ownerAssignment
+        kind: roleAssignment
+        name: ownerAssignment
+        properties:
+          displayName: enforce owners of given subscription
+          principalIds: "[parameters('owners')]"
+          roleDefinitionId: /providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7
+        type: Microsoft.Blueprint/blueprints/versions/artifacts
+    Sub-ARMTemplateArtifact:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/storageTemplate
+        kind: template
+        name: storageTemplate
+        properties:
+          parameters:
+            storageAccountType:
+              value: "[parameters('storageAccountType')]"
+          resourceGroup: storageRG
+          template:
+            contentVersion: 1.0.0.0
+            outputs:
+              storageAccountName:
+                type: string
+                value: "[variables('storageAccountName')]"
+            parameters:
+              storageAccountType:
+                allowedValues:
+                  - Standard_LRS
+                  - Standard_GRS
+                  - Standard_ZRS
+                  - Premium_LRS
+                defaultValue: Standard_LRS
+                metadata:
+                  description: Storage Account type
+                type: string
+            resources:
+              - apiVersion: 2016-01-01
+                kind: Storage
+                location: "[resourceGroup().location]"
+                name: "[variables('storageAccountName')]"
+                properties: {}
+                sku:
+                  name: "[parameters('storageAccountType')]"
+                type: Microsoft.Storage/storageAccounts
+            variables:
+              storageAccountName: "[concat(uniquestring(resourceGroup().id), 'standardsa')]"
+        type: Microsoft.Blueprint/blueprints/versions/artifacts
+    Sub-PolicyAssignmentArtifact:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/costCenterPolicy
+        kind: policyAssignment
+        name: costCenterPolicy
+        properties:
+          displayName: force costCenter tag on all resources
+          parameters:
+            tagName:
+              value: costCenter
+            tagValue:
+              value: "[parameter('costCenter')]"
+          policyDefinitionId: /providers/Microsoft.Authorization/policyDefinitions/1e30110a-5ceb-460c-a204-c1c3969c6d62
+        type: Microsoft.Blueprint/blueprints/versions/artifacts
+    Sub-RoleAssignmentArtifact:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Blueprint/blueprints/simpleBlueprint/versions/V2/artifacts/ownerAssignment
+        kind: roleAssignment
+        name: ownerAssignment
+        properties:
+          displayName: enforce owners of given subscription
+          principalIds: "[parameters('owners')]"
+          roleDefinitionId: /providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7
+        type: Microsoft.Blueprint/blueprints/versions/artifacts
+    PublishedManagementGroupBlueprint:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint
+        name: v2
+        properties:
+          blueprintName: simpleBlueprint
+          description: blueprint contains all artifact kinds {'template', 'rbac', 'policy'}
+          parameters:
+            costCenter:
+              metadata:
+                displayName: force cost center tag for all resources under given
+                  subscription.
+              type: string
+            owners:
+              metadata:
+                displayName: assign owners to subscription along with blueprint assignment.
+              type: array
+            storageAccountType:
+              metadata:
+                displayName: storage account type.
+              type: string
+          resourceGroups:
+            storageRG:
+              metadata:
+                description: Contains storageAccounts that collect all shoebox logs.
+                displayName: storage resource group
+          targetScope: subscription
+        type: Microsoft.Blueprint/blueprints/versions
+    PublishedSubscriptionBlueprint:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Blueprint/blueprints/simpleBlueprint
+        name: v2
+        properties:
+          blueprintName: simpleBlueprint
+          description: blueprint contains all artifact kinds {'template', 'rbac', 'policy'}
+          parameters:
+            costCenter:
+              metadata:
+                displayName: force cost center tag for all resources under given
+                  subscription.
+              type: string
+            owners:
+              metadata:
+                displayName: assign owners to subscription along with blueprint assignment.
+              type: array
+            storageAccountType:
+              metadata:
+                displayName: storage account type.
+              type: string
+          resourceGroups:
+            storageRG:
+              metadata:
+                description: Contains storageAccounts that collect all shoebox logs.
+                displayName: storage resource group
+          targetScope: subscription
+        type: Microsoft.Blueprint/blueprints/versions
+    PublishedManagementGroupBlueprint_Publish:
+      value:
+        id: /providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint
+        name: v2
+        properties:
+          blueprintName: simpleBlueprint
+          description: blueprint contains all artifact kinds {'template', 'rbac', 'policy'}
+          parameters:
+            costCenter:
+              metadata:
+                displayName: force cost center tag for all resources under given
+                  subscription.
+              type: string
+            owners:
+              metadata:
+                displayName: assign owners to subscription along with blueprint assignment.
+              type: array
+            storageAccountType:
+              metadata:
+                displayName: storage account type.
+              type: string
+          resourceGroups:
+            storageRG:
+              metadata:
+                description: Contains storageAccounts that collect all shoebox logs.
+                displayName: storage resource group
+          targetScope: subscription
+        type: Microsoft.Blueprint/blueprints/versions
+    PublishedSubscriptionBlueprint_Publish:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Blueprint/blueprints/simpleBlueprint
+        name: v2
+        properties:
+          blueprintName: simpleBlueprint
+          description: blueprint contains all artifact kinds {'template', 'rbac', 'policy'}
+          parameters:
+            costCenter:
+              metadata:
+                displayName: force cost center tag for all resources under given
+                  subscription.
+              type: string
+            owners:
+              metadata:
+                displayName: assign owners to subscription along with blueprint assignment.
+              type: array
+            storageAccountType:
+              metadata:
+                displayName: storage account type.
+              type: string
+          resourceGroups:
+            storageRG:
+              metadata:
+                description: Contains storageAccounts that collect all shoebox logs.
+                displayName: storage resource group
+          targetScope: subscription
+        type: Microsoft.Blueprint/blueprints/versions
+  parameters:
+    ApiVersionParameter:
+      description: Client API Version.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        ManagementGroupBlueprint:
+          value: 2018-11-01-preview
+        SubscriptionBlueprint:
+          value: 2018-11-01-preview
+        ResourceGroupWithTags:
+          value: 2018-11-01-preview
+        MG-ArtifactList:
+          value: 2018-11-01-preview
+        Sub-ArtifactList:
+          value: 2018-11-01-preview
+        MG-ARMTemplateArtifact:
+          value: 2018-11-01-preview
+        MG-PolicyAssignmentArtifact:
+          value: 2018-11-01-preview
+        MG-RoleAssignmentArtifact:
+          value: 2018-11-01-preview
+        Sub-ARMTemplateArtifact:
+          value: 2018-11-01-preview
+        Sub-PolicyAssignmentArtifact:
+          value: 2018-11-01-preview
+        Sub-RoleAssignmentArtifact:
+          value: 2018-11-01-preview
+        PublishedManagementGroupBlueprint:
+          value: 2018-11-01-preview
+        PublishedSubscriptionBlueprint:
+          value: 2018-11-01-preview
+        PublishedManagementGroupBlueprint_Publish:
+          value: 2018-11-01-preview
+        PublishedSubscriptionBlueprint_Publish:
+          value: 2018-11-01-preview
+    ArtifactNameParameter:
+      description: Name of the blueprint artifact.
+      in: path
+      name: artifactName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        MG-ARMTemplateArtifact:
+          value: storageTemplate
+        MG-PolicyAssignmentArtifact:
+          value: costCenterPolicy
+        MG-RoleAssignmentArtifact:
+          value: ownerAssignment
+        Sub-ARMTemplateArtifact:
+          value: storageTemplate
+        Sub-PolicyAssignmentArtifact:
+          value: costCenterPolicy
+        Sub-RoleAssignmentArtifact:
+          value: ownerAssignment
+    BlueprintNameParameter:
+      description: Name of the blueprint definition.
+      in: path
+      name: blueprintName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        ManagementGroupBlueprint:
+          value: simpleBlueprint
+        SubscriptionBlueprint:
+          value: simpleBlueprint
+        ResourceGroupWithTags:
+          value: simpleBlueprint
+        MG-ArtifactList:
+          value: simpleBlueprint
+        Sub-ArtifactList:
+          value: simpleBlueprint
+        MG-ARMTemplateArtifact:
+          value: simpleBlueprint
+        MG-PolicyAssignmentArtifact:
+          value: simpleBlueprint
+        MG-RoleAssignmentArtifact:
+          value: simpleBlueprint
+        Sub-ARMTemplateArtifact:
+          value: simpleBlueprint
+        Sub-PolicyAssignmentArtifact:
+          value: simpleBlueprint
+        Sub-RoleAssignmentArtifact:
+          value: simpleBlueprint
+        PublishedManagementGroupBlueprint:
+          value: simpleBlueprint
+        PublishedSubscriptionBlueprint:
+          value: simpleBlueprint
+        PublishedManagementGroupBlueprint_Publish:
+          value: simpleBlueprint
+        PublishedSubscriptionBlueprint_Publish:
+          value: simpleBlueprint
+    PublishedBlueprintVersionIdParameter:
+      description: Version of the published blueprint definition.
+      in: path
+      name: versionId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        PublishedManagementGroupBlueprint:
+          value: v2
+        PublishedSubscriptionBlueprint:
+          value: v2
+        PublishedManagementGroupBlueprint_Publish:
+          value: v2
+        PublishedSubscriptionBlueprint_Publish:
+          value: v2
+        MG-ArtifactList:
+          value: V2
+        Sub-ArtifactList:
+          value: V2
+        MG-ARMTemplateArtifact:
+          value: V2
+        MG-PolicyAssignmentArtifact:
+          value: V2
+        MG-RoleAssignmentArtifact:
+          value: V2
+        Sub-ARMTemplateArtifact:
+          value: V2
+        Sub-PolicyAssignmentArtifact:
+          value: V2
+        Sub-RoleAssignmentArtifact:
+          value: V2
+    ScopeParameter:
+      description: "The scope of the resource. Valid scopes are: management group (format:
+        '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+        subscription (format: '/subscriptions/{subscriptionId}'). For blueprint
+        assignments management group scope is reserved for future use."
+      in: path
+      name: scope
+      required: true
+      x-ms-parameter-location: method
+      x-ms-skip-url-encoding: true
+      schema:
+        type: string
+      examples:
+        ManagementGroupBlueprint:
+          value: providers/Microsoft.Management/managementGroups/ContosoOnlineGroup
+        SubscriptionBlueprint:
+          value: subscriptions/00000000-0000-0000-0000-000000000000
+        ResourceGroupWithTags:
+          value: providers/Microsoft.Management/managementGroups/{ManagementGroupId}
+        MG-ArtifactList:
+          value: providers/Microsoft.Management/managementGroups/ContosoOnlineGroup
+        Sub-ArtifactList:
+          value: subscriptions/00000000-0000-0000-0000-000000000000
+        MG-ARMTemplateArtifact:
+          value: providers/Microsoft.Management/managementGroups/ContosoOnlineGroup
+        MG-PolicyAssignmentArtifact:
+          value: providers/Microsoft.Management/managementGroups/ContosoOnlineGroup
+        MG-RoleAssignmentArtifact:
+          value: providers/Microsoft.Management/managementGroups/ContosoOnlineGroup
+        Sub-ARMTemplateArtifact:
+          value: subscriptions/00000000-0000-0000-0000-000000000000
+        Sub-PolicyAssignmentArtifact:
+          value: subscriptions/00000000-0000-0000-0000-000000000000
+        Sub-RoleAssignmentArtifact:
+          value: subscriptions/00000000-0000-0000-0000-000000000000
+        PublishedManagementGroupBlueprint:
+          value: providers/Microsoft.Management/managementGroups/ContosoOnlineGroup
+        PublishedSubscriptionBlueprint:
+          value: subscriptions/00000000-0000-0000-0000-000000000000
+        PublishedManagementGroupBlueprint_Publish:
+          value: providers/Microsoft.Management/managementGroups/ContosoOnlineGroup
+        PublishedSubscriptionBlueprint_Publish:
+          value: subscriptions/00000000-0000-0000-0000-000000000000
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Artifact:
+      allOf:
+        - $ref: "#/components/schemas/AzureResourceBase"
+      description: Represents a blueprint artifact.
+      discriminator:
+        propertyName: kind
+      properties:
+        kind:
+          description: Specifies the kind of blueprint artifact.
+          enum:
+            - template
+            - roleAssignment
+            - policyAssignment
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ArtifactKind
+      required:
+        - kind
+      type: object
+    ArtifactList:
+      description: List of blueprint artifacts.
+      properties:
+        nextLink:
+          description: Link to the next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: List of blueprint artifacts.
+          items:
+            $ref: "#/components/schemas/Artifact"
+          type: array
+      type: object
+    ArtifactPropertiesBase:
+      description: Common properties shared by different artifacts.
+      properties:
+        dependsOn:
+          description: Artifacts which need to be deployed before the specified artifact.
+          items:
+            description: ID of peer artifact.
+            type: string
+          type: array
+      type: object
+      x-ms-external: true
+    AzureResourceBase:
+      description: Common properties for all Azure resources.
+      properties:
+        id:
+          description: String Id used to locate any resource on Azure.
+          readOnly: true
+          type: string
+        name:
+          description: Name of this resource.
+          readOnly: true
+          type: string
+        type:
+          description: Type of this resource.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    Blueprint:
+      allOf:
+        - $ref: "#/components/schemas/AzureResourceBase"
+      description: Represents a Blueprint definition.
+      properties:
+        properties:
+          $ref: "#/components/schemas/BlueprintProperties"
+      required:
+        - properties
+      type: object
+    BlueprintList:
+      description: List of blueprint definitions.
+      properties:
+        nextLink:
+          description: Link to the next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: List of blueprint definitions.
+          items:
+            $ref: "#/components/schemas/Blueprint"
+          type: array
+      title: BlueprintList
+      type: object
+    BlueprintProperties:
+      allOf:
+        - $ref: "#/components/schemas/SharedBlueprintProperties"
+      description: Schema for blueprint definition properties.
+      properties:
+        layout:
+          description: Layout view of the blueprint definition for UI reference.
+          type: object
+        versions:
+          description: Published versions of this blueprint definition.
+          type: object
+      required:
+        - targetScope
+      type: object
+      x-ms-external: true
+    BlueprintResourcePropertiesBase:
+      description: Shared properties between all blueprint resources.
+      properties:
+        description:
+          description: Multi-line explain this resource.
+          maxLength: 500
+          type: string
+        displayName:
+          description: One-liner string explain this resource.
+          maxLength: 256
+          type: string
+      type: object
+      x-ms-external: true
+    BlueprintResourceStatusBase:
+      description: Shared status properties between all blueprint resources.
+      properties:
+        lastModified:
+          description: Last modified time of this blueprint definition.
+          format: date-time
+          readOnly: true
+          type: string
+        timeCreated:
+          description: Creation time of this blueprint definition.
+          format: date-time
+          readOnly: true
+          type: string
+      type: object
+    BlueprintStatus:
+      allOf:
+        - $ref: "#/components/schemas/BlueprintResourceStatusBase"
+      description: The status of the blueprint. This field is readonly.
+      properties: {}
+      type: object
+    ParameterDefinition:
+      description: Represent a parameter with constrains and metadata.
+      properties:
+        allowedValues:
+          description: Array of allowed values for this parameter.
+          items:
+            description: Allowed value.
+          type: array
+        defaultValue:
+          description: Default Value for this parameter.
+        metadata:
+          $ref: "#/components/schemas/ParameterDefinitionMetadata"
+        type:
+          description: Allowed data types for Resource Manager template parameters.
+          enum:
+            - string
+            - array
+            - bool
+            - int
+            - object
+            - secureObject
+            - secureString
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: TemplateParameterType
+      required:
+        - type
+      type: object
+    ParameterDefinitionCollection:
+      additionalProperties:
+        $ref: "#/components/schemas/ParameterDefinition"
+      description: A dictionary hold parameter name and its metadata.
+      properties: {}
+      type: object
+    ParameterDefinitionMetadata:
+      description: User-friendly properties for this parameter.
+      properties:
+        description:
+          description: Description of this parameter/resourceGroup.
+          maxLength: 500
+          type: string
+        displayName:
+          description: DisplayName of this parameter/resourceGroup.
+          maxLength: 256
+          type: string
+        strongType:
+          description: StrongType for UI to render rich experience during blueprint
+            assignment.
+          maxLength: 64
+          type: string
+      type: object
+    ParameterValue:
+      allOf:
+        - $ref: "#/components/schemas/ParameterValueBase"
+      description: Value for the specified parameter.
+      properties:
+        value:
+          description: Actual value.
+      required:
+        - value
+      type: object
+    ParameterValueBase:
+      description: Base class for ParameterValue.
+      properties:
+        description:
+          description: Optional property. Establishes ParameterValueBase as a BaseClass.
+          type: string
+      type: object
+    ParameterValueCollection:
+      additionalProperties:
+        $ref: "#/components/schemas/ParameterValueBase"
+      description: A dictionary for parameters and their corresponding values.
+      properties: {}
+      type: object
+    PolicyAssignmentArtifact:
+      allOf:
+        - $ref: "#/components/schemas/Artifact"
+      description: Blueprint artifact that applies a Policy assignment.
+      properties:
+        properties:
+          $ref: "#/components/schemas/PolicyAssignmentArtifactProperties"
+      required:
+        - properties
+      type: object
+      x-ms-discriminator-value: policyAssignment
+    PolicyAssignmentArtifactProperties:
+      allOf:
+        - $ref: "#/components/schemas/BlueprintResourcePropertiesBase"
+        - $ref: "#/components/schemas/ArtifactPropertiesBase"
+      description: Properties of a Policy assignment blueprint artifact.
+      properties:
+        parameters:
+          $ref: "#/components/schemas/ParameterValueCollection"
+        policyDefinitionId:
+          description: Azure resource ID of the policy definition.
+          type: string
+        resourceGroup:
+          description: Name of the resource group placeholder to which the policy will be
+            assigned.
+          type: string
+      required:
+        - policyDefinitionId
+        - parameters
+      type: object
+    PublishedBlueprint:
+      allOf:
+        - $ref: "#/components/schemas/AzureResourceBase"
+      description: Represents a published blueprint.
+      properties:
+        properties:
+          $ref: "#/components/schemas/PublishedBlueprintProperties"
+      required:
+        - properties
+      type: object
+    PublishedBlueprintList:
+      description: List of published blueprint definitions.
+      properties:
+        nextLink:
+          description: Link to the next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: List of published blueprint definitions.
+          items:
+            $ref: "#/components/schemas/PublishedBlueprint"
+          type: array
+      title: BlueprintList
+      type: object
+    PublishedBlueprintProperties:
+      allOf:
+        - $ref: "#/components/schemas/SharedBlueprintProperties"
+      description: Schema for published blueprint definition properties.
+      properties:
+        blueprintName:
+          description: Name of the published blueprint definition.
+          type: string
+        changeNotes:
+          description: Version-specific change notes.
+          maxLength: 500
+          type: string
+      type: object
+      x-ms-external: true
+    ResourceGroupDefinition:
+      description: Represents an Azure resource group in a blueprint definition.
+      properties:
+        dependsOn:
+          description: Artifacts which need to be deployed before this resource group.
+          items:
+            description: Name of peer artifact.
+            type: string
+          type: array
+        location:
+          description: Location of this resourceGroup. Leave empty if the resource group
+            location will be specified during the blueprint assignment.
+          maxLength: 90
+          type: string
+        metadata:
+          $ref: "#/components/schemas/ParameterDefinitionMetadata"
+        name:
+          description: Name of this resourceGroup. Leave empty if the resource group name
+            will be specified during the blueprint assignment.
+          maxLength: 90
+          minLength: 1
+          type: string
+        tags:
+          $ref: "#/components/schemas/ResourceGroupTagCollection"
+      type: object
+    ResourceGroupDefinitionCollection:
+      additionalProperties:
+        $ref: "#/components/schemas/ResourceGroupDefinition"
+      description: A dictionary which maps resource group placeholders to the resource
+        groups which will be created.
+      properties: {}
+      type: object
+    ResourceGroupTagCollection:
+      additionalProperties:
+        type: string
+      description: A dictionary of resource group tag values.
+      properties: {}
+      type: object
+    ResourceGroupValue:
+      description: Represents an Azure resource group.
+      properties:
+        location:
+          description: Location of the resource group.
+          type: string
+        name:
+          description: Name of the resource group.
+          maxLength: 90
+          minLength: 1
+          type: string
+      type: object
+    ResourceGroupValueCollection:
+      additionalProperties:
+        $ref: "#/components/schemas/ResourceGroupValue"
+      description: A dictionary which maps resource group placeholders to the resource
+        groups which will be created.
+      properties: {}
+      type: object
+    ResourceProviderOperation:
+      description: Supported operations of this resource provider.
+      properties:
+        display:
+          description: Display metadata associated with the operation.
+          properties:
+            description:
+              description: Description of this operation.
+              type: string
+            operation:
+              description: "Type of operation: get, read, delete, etc."
+              type: string
+            provider:
+              description: "Resource provider: Microsoft Blueprint."
+              type: string
+            resource:
+              description: Resource on which the operation is performed.
+              type: string
+        name:
+          description: Operation name, in format of {provider}/{resource}/{operation}
+          type: string
+      readOnly: true
+    ResourceProviderOperationList:
+      description: Results of the request to list operations.
+      properties:
+        value:
+          description: List of operations supported by this resource provider.
+          items:
+            $ref: "#/components/schemas/ResourceProviderOperation"
+          type: array
+      readOnly: true
+    RoleAssignmentArtifact:
+      allOf:
+        - $ref: "#/components/schemas/Artifact"
+      description: Blueprint artifact that applies a Role assignment.
+      properties:
+        properties:
+          $ref: "#/components/schemas/RoleAssignmentArtifactProperties"
+      required:
+        - properties
+      type: object
+      x-ms-discriminator-value: roleAssignment
+    RoleAssignmentArtifactProperties:
+      allOf:
+        - $ref: "#/components/schemas/BlueprintResourcePropertiesBase"
+        - $ref: "#/components/schemas/ArtifactPropertiesBase"
+      description: Properties of a Role assignment blueprint artifact.
+      properties:
+        principalIds:
+          description: Array of user or group identities in Azure Active Directory. The
+            roleDefinition will apply to each identity.
+        resourceGroup:
+          description: RoleAssignment will be scope to this resourceGroup. If empty, it
+            scopes to the subscription.
+          type: string
+        roleDefinitionId:
+          description: Azure resource ID of the RoleDefinition.
+          type: string
+      required:
+        - roleDefinitionId
+        - principalIds
+      type: object
+    SecretReferenceParameterValue:
+      allOf:
+        - $ref: "#/components/schemas/ParameterValueBase"
+      description: The reference to a secret, if the parameter should be protected.
+      properties:
+        reference:
+          $ref: "#/components/schemas/SecretValueReference"
+      required:
+        - reference
+      type: object
+    SecretValueReference:
+      description: Reference to a Key Vault secret.
+      properties:
+        keyVault:
+          $ref: "#/components/schemas/keyVaultReference"
+        secretName:
+          description: Name of the secret.
+          type: string
+        secretVersion:
+          description: The version of the secret to use. If left blank, the latest version
+            of the secret is used.
+          type: string
+      required:
+        - keyVault
+        - secretName
+      type: object
+    SharedBlueprintProperties:
+      allOf:
+        - $ref: "#/components/schemas/BlueprintResourcePropertiesBase"
+      description: Shared Schema for both blueprintProperties and
+        publishedBlueprintProperties.
+      properties:
+        parameters:
+          $ref: "#/components/schemas/ParameterDefinitionCollection"
+        resourceGroups:
+          $ref: "#/components/schemas/ResourceGroupDefinitionCollection"
+        status:
+          $ref: "#/components/schemas/BlueprintStatus"
+        targetScope:
+          description: The scope where this blueprint definition can be assigned.
+          enum:
+            - subscription
+            - managementGroup
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: BlueprintTargetScope
+            values:
+              - description: The blueprint targets a subscription during blueprint
+                  assignment.
+                value: subscription
+              - description: The blueprint targets a management group during blueprint
+                  assignment. This is reserved for future use.
+                value: managementGroup
+      type: object
+      x-ms-external: true
+    TemplateArtifact:
+      allOf:
+        - $ref: "#/components/schemas/Artifact"
+      description: Blueprint artifact that deploys a Resource Manager template.
+      properties:
+        properties:
+          $ref: "#/components/schemas/TemplateArtifactProperties"
+      required:
+        - properties
+      type: object
+      x-ms-discriminator-value: template
+    TemplateArtifactProperties:
+      allOf:
+        - $ref: "#/components/schemas/BlueprintResourcePropertiesBase"
+        - $ref: "#/components/schemas/ArtifactPropertiesBase"
+      description: Properties of a Resource Manager template blueprint artifact.
+      properties:
+        parameters:
+          $ref: "#/components/schemas/ParameterValueCollection"
+        resourceGroup:
+          description: If applicable, the name of the resource group placeholder to which
+            the Resource Manager template blueprint artifact will be deployed.
+          type: string
+        template:
+          description: The Resource Manager template blueprint artifact body.
+          type: object
+      required:
+        - template
+        - parameters
+      type: object
+    keyVaultReference:
+      description: Specifies the link to a Key Vault.
+      properties:
+        id:
+          description: Azure resource ID of the Key Vault.
+          type: string
+      required:
+        - id
+      type: object

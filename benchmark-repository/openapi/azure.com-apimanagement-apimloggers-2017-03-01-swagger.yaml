@@ -1,0 +1,545 @@
+openapi: 3.0.0
+info:
+  description: Use these REST APIs for performing operations on logger entity Azure API
+    Management deployment.The Logger entity in API Management represents an
+    event sink that you can use to log API Management events. Currently the
+    Logger entity supports logging API Management events to Azure EventHub.
+  title: ApiManagementClient
+  version: 2017-03-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/control-plane/Microsoft.ApiManagement/preview/2017-03-01/apimloggers.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: apimanagement-apimloggers
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - apim_key: []
+paths:
+  /loggers:
+    get:
+      description: Lists a collection of loggers in the specified service instance.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-log-event-hubs
+      operationId: Logger_List
+      parameters:
+        - description: >-
+            | Field | Supported operators    | Supported
+            functions                         |
+
+            |-------|------------------------|---------------------------------------------|
+
+            | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | type  | eq                     |                                             |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListLoggers:
+              value: 2017-03-01
+      responses:
+        "200":
+          description: Lists a collection of Logger entities.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggerCollection"
+              examples:
+                ApiManagementListLoggers:
+                  $ref: "#/components/examples/ApiManagementListLoggers"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Loggers
+      x-ms-odata: "#/components/schemas/LoggerContract"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/loggers/{loggerid}":
+    delete:
+      description: Deletes the specified logger.
+      operationId: Logger_Delete
+      parameters:
+        - $ref: "#/components/parameters/LoggerIdParameter"
+        - description: The entity state (Etag) version of the logger to delete. A value of
+            "*" can be used for If-Match to unconditionally apply the operation.
+          in: header
+          name: If-Match
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteLoggers:
+              value: '"AAAAAAAAF30="'
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteLoggers:
+              value: 2017-03-01
+      responses:
+        "204":
+          description: The logger was successfully deleted.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Loggers
+    get:
+      description: Gets the details of the logger specified by its identifier.
+      operationId: Logger_Get
+      parameters:
+        - $ref: "#/components/parameters/LoggerIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetLoggers:
+              value: 2017-03-01
+      responses:
+        "200":
+          description: The response body contains the specified Logger entity.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggerContract"
+              examples:
+                ApiManagementGetLoggers:
+                  $ref: "#/components/examples/ApiManagementGetLoggers"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Loggers
+    patch:
+      description: Updates an existing logger.
+      operationId: Logger_Update
+      parameters:
+        - $ref: "#/components/parameters/LoggerIdParameter"
+        - description: The entity state (Etag) version of the logger to update. A value of
+            "*" can be used for If-Match to unconditionally apply the operation.
+          in: header
+          name: If-Match
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementPatchLoggers:
+              value: '"AAAAAAAAHDE="'
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementPatchLoggers:
+              value: 2017-03-01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoggerUpdateContract"
+        description: Update parameters.
+        required: true
+      responses:
+        "204":
+          description: The existing logger was successfully updated.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Loggers
+    put:
+      description: Creates or Updates a logger.
+      operationId: Logger_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/LoggerIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementPutLoggers:
+              value: 2017-03-01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoggerContract"
+        description: Create parameters.
+        required: true
+      responses:
+        "200":
+          description: The existing logger was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggerContract"
+              examples:
+                ApiManagementPutLoggers:
+                  $ref: "#/components/examples/ApiManagementPutLoggers"
+        "201":
+          description: Logger was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggerContract"
+              examples:
+                ApiManagementPutLoggers:
+                  $ref: "#/components/examples/ApiManagementPutLoggers"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Loggers
+servers:
+  - url: https://azure.local
+  - url: "{apimBaseUrl}"
+    variables:
+      apimBaseUrl:
+        description: The management endpoint of the API Management service, for example
+          https://myapimservice.management.azure-api.net.
+        x-ms-skip-url-encoding: true
+        default: ""
+components:
+  examples:
+    ApiManagementListLoggers:
+      value:
+        count: 2
+        value:
+          - credentials:
+              connectionString: "{{Logger-Credentials-5a58bc31a40f7e10489292a5}}"
+              name: testeventhub3
+            description: first eventhub logger
+            id: /loggers/5a58bc28a40f7e10489292a3
+            isBuffered: true
+            loggerType: azureEventHub
+          - credentials:
+              connectionString: "{{Logger-Credentials-5a58bc39a40f7e104892931b}}"
+              name: testeventhub3
+            description: first eventhub logger
+            id: /loggers/5a58bc37a40f7e1048929319
+            isBuffered: true
+            loggerType: azureEventHub
+    ApiManagementGetLoggers:
+      value:
+        credentials:
+          connectionString: "{{Logger-Credentials-5a58bc39a40f7e104892931b}}"
+          name: testeventhub3
+        description: first eventhub logger
+        id: /loggers/5a58bc37a40f7e1048929319
+        isBuffered: true
+        loggerType: azureEventHub
+    ApiManagementPutLoggers:
+      value:
+        credentials:
+          connectionString: "{{Logger-Credentials-5a58bc31a40f7e10489292a5}}"
+          name: testeventhub3
+        description: first eventhub logger
+        id: /loggers/5a58bc28a40f7e10489292a3
+        isBuffered: true
+        loggerType: azureEventHub
+  parameters:
+    LoggerIdParameter:
+      description: Logger identifier. Must be unique in the API Management service instance.
+      in: path
+      name: loggerid
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        maxLength: 256
+        pattern: ^[^*#&+:<>?]+$
+      examples:
+        ApiManagementDeleteLoggers:
+          value: 5a58bc70a40f7e1048929950
+        ApiManagementGetLoggers:
+          value: 5a58bc37a40f7e1048929319
+        ApiManagementPatchLoggers:
+          value: 5a58bd45a40f7e104892a3aa
+        ApiManagementPutLoggers:
+          value: 5a58bc28a40f7e10489292a3
+  securitySchemes:
+    apim_key:
+      in: header
+      name: Authorization
+      type: apiKey
+  schemas:
+    LoggerCollection:
+      description: Paged Logger list representation.
+      properties:
+        count:
+          description: Total record count number across all pages.
+          format: int64
+          type: integer
+        nextLink:
+          description: Next page link if any.
+          type: string
+        value:
+          description: Logger values.
+          items:
+            $ref: "#/components/schemas/LoggerContract"
+          type: array
+    LoggerContract:
+      allOf:
+        - $ref: "#/components/schemas/LoggerContractProperties"
+      description: Logger details.
+      properties:
+        id:
+          description: Identifier of the Logger Entity.
+          type: string
+    LoggerContractProperties:
+      description: The Logger entity in API Management represents an event sink that you
+        can use to log API Management events. Currently the Logger entity
+        supports logging API Management events to Azure Event Hubs.
+      properties:
+        credentials:
+          additionalProperties:
+            type: string
+          description: The name and SendRule connection string of the event hub.
+          example:
+            connectionString: Endpoint=sb://contoso-ns.servicebus.windows.net/;SharedAccessKeyName=Sender;SharedAccessKey=...
+            name: apim
+          type: object
+        description:
+          description: Logger description.
+          maxLength: 256
+          type: string
+        isBuffered:
+          description: Whether records are buffered in the logger before publishing.
+            Default is assumed to be true.
+          type: boolean
+        loggerType:
+          description: Logger type.
+          enum:
+            - azureEventHub
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: LoggerType
+            values:
+              - description: Azure Event Hub as log destination.
+                value: azureEventHub
+      required:
+        - loggerType
+        - credentials
+    LoggerUpdateContract:
+      description: Parameters supplied to the Update Logger operation.
+      properties:
+        credentials:
+          additionalProperties:
+            type: string
+          description: Logger credentials.
+          type: object
+        description:
+          description: Logger description.
+          type: string
+        isBuffered:
+          description: Whether records are buffered in the logger before publishing.
+            Default is assumed to be true.
+          type: boolean
+        loggerType:
+          description: Logger type.
+          enum:
+            - azureEventHub
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: LoggerType
+            values:
+              - description: Azure Event Hub as log destination.
+                value: azureEventHub

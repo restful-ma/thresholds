@@ -1,0 +1,182 @@
+openapi: 3.0.0
+info:
+  description: The Admin Storage Management Client.
+  title: StorageManagementClient
+  version: 2015-12-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/azsadmin/resource-manager/storage/Microsoft.Storage.Admin/preview/2015-12-01/acquisitions.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: azsadmin-acquisitions
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Storage.Admin/farms/{farmId}/acquisitions":
+    get:
+      description: Returns a list of BLOB acquisitions.
+      operationId: Acquisitions_List
+      parameters:
+        - description: Subscription Id.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Returns a list of page BLOB acquisitions.:
+              value: 9ad61516-995c-4873-a21f-7e44904f0ed2
+        - description: Resource group name.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Returns a list of page BLOB acquisitions.:
+              value: System.local
+        - description: Farm Id.
+          in: path
+          name: farmId
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Returns a list of page BLOB acquisitions.:
+              value: 3cf03497-c44a-4e51-a56f-3987d88c70af
+        - description: REST Api Version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Returns a list of page BLOB acquisitions.:
+              value: 2015-12-01-preview
+        - description: Filter string
+          in: query
+          name: $filter
+          x-ms-parameter-location: method
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK -- The list of acquisitions has been returned.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcquisitionList"
+              examples:
+                Returns a list of page BLOB acquisitions.:
+                  $ref: "#/components/examples/Returns_a_list_of_page_BLOB_acquisit\
+                    ions."
+        "404":
+          description: NOT FOUND -- The specified farm cannot be found.
+      tags:
+        - Acquisitions
+      x-ms-pageable: {}
+servers:
+  - url: https://adminmanagement.local.azurestack.external
+components:
+  examples:
+    Returns_a_list_of_page_BLOB_acquisitions.:
+      value: []
+  securitySchemes:
+    azure_auth:
+      description: Authorization uses an Azure Active Directory OAuth2 flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Acquisition:
+      allOf:
+        - description: Base resource object.
+          properties:
+            id:
+              description: Resource ID.
+              type: string
+            location:
+              description: Resource location.
+              type: string
+            name:
+              description: Resource Name.
+              type: string
+            tags:
+              additionalProperties:
+                type: string
+              description: Resource tags.
+              type: object
+            type:
+              description: Resource type.
+              type: string
+          type: object
+          x-ms-azure-resource: true
+      description: The acquisition of the page BLOB.
+      properties:
+        properties:
+          $ref: "#/components/schemas/AcquisitionProperties"
+      type: object
+    AcquisitionList:
+      description: The list of page BLOB acquisitions.
+      items:
+        $ref: "#/components/schemas/Acquisition"
+      type: array
+    AcquisitionProperties:
+      description: The Properties of page BLOB acquisition.
+      properties:
+        acquisitionid:
+          description: The ID of page BLOB acquisition.
+          readOnly: true
+          type: string
+        blob:
+          description: The name of the page BLOB.
+          readOnly: true
+          type: string
+        container:
+          description: The container associated with the page BLOB.
+          readOnly: true
+          type: string
+        filePath:
+          description: The file path of the page BLOB file on storage cluster.
+          readOnly: true
+          type: string
+        maximumblobsize:
+          description: The maximum size of the page BLOB.
+          format: int64
+          readOnly: true
+          type: integer
+        status:
+          $ref: "#/components/schemas/AcquisitionStatus"
+        storageaccount:
+          description: The storage account that holds the page BLOB.
+          readOnly: true
+          type: string
+        susbcriptionid:
+          description: ID of the subscription associated with the page BLOB.
+          readOnly: true
+          type: string
+      type: object
+    AcquisitionStatus:
+      description: The status of page BLOB acquisition.
+      enum:
+        - InProgress
+        - Success
+        - Failed
+      type: string
+      x-ms-enum:
+        modelAsString: true
+        name: AcquisitionStatus

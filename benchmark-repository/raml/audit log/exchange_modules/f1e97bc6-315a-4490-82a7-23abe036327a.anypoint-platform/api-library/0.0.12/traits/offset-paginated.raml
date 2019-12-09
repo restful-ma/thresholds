@@ -1,0 +1,38 @@
+#%RAML 1.0 Trait
+  
+queryParameters: 
+  offset: 
+    required: false 
+    description: Used to retrieve the results based on a particular resource offset
+    type: integer
+    default: 0
+  limit: 
+    required: true
+    description: Maximum records to retrieve per request.
+    type: integer
+responses: 
+  200:
+    headers: 
+      Link: 
+        description: |
+          This Link response header contains one or more Hypermedia link relations, some of               which may require expansion as URI templates.
+
+          The possible rel values are:
+
+          next?: The link relation for the immediate next page of results. If not present then the end of the list has been reached.
+
+          last?: The link relation for the last page of results.
+
+          first?: The link relation for the first page of results.
+
+          prev?: The link relation for the immediate previous page of results.
+
+        examples:
+          next-only: |
+             <https://<<offset-uri>>?offset=4&limit=100>; rel="next"
+          full-links: |
+            <https://<<offset-uri>>?offset=4&limit=100>; rel="next",
+            <https://<<offset-uri>>?offset=2&limit=100>; rel="prev",
+            <https://<<offset-uri>>?offset=8&limit=100>; rel="last",
+            <https://<<offset-uri>>?offset=1&limit=100>; rel="first"
+        

@@ -1,0 +1,1763 @@
+openapi: 3.0.0
+info:
+  version: 2016-06-02
+  x-release: v4
+  title: AWS Shield
+  description: <fullname>AWS Shield Advanced</fullname> <p>This is the <i>AWS Shield
+    Advanced API Reference</i>. This guide is for developers who need detailed
+    information about the AWS Shield Advanced API actions, data types, and
+    errors. For detailed information about AWS WAF and AWS Shield Advanced
+    features and an overview of how to use the AWS WAF and AWS Shield Advanced
+    APIs, see the <a
+    href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF and
+    AWS Shield Developer Guide</a>.</p>
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: shield
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/shield-2016-06-02.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/shield/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  /#X-Amz-Target=AWSShield_20160616.AssociateDRTLogBucket:
+    post:
+      operationId: AssociateDRTLogBucket
+      description: <p>Authorizes the DDoS Response team (DRT) to access the specified
+        Amazon S3 bucket containing your AWS WAF logs. You can associate up to
+        10 Amazon S3 buckets with your subscription.</p> <p>To use the services
+        of the DRT and make an <code>AssociateDRTLogBucket</code> request, you
+        must be subscribed to the <a
+        href="https://aws.amazon.com/premiumsupport/business-support/">Business
+        Support plan</a> or the <a
+        href="https://aws.amazon.com/premiumsupport/enterprise-support/">Enterprise
+        Support plan</a>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssociateDRTLogBucketResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: InvalidOperationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidOperationException"
+        "482":
+          description: NoAssociatedRoleException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAssociatedRoleException"
+        "483":
+          description: LimitsExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitsExceededException"
+        "484":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "485":
+          description: AccessDeniedForDependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedForDependencyException"
+        "486":
+          description: OptimisticLockException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptimisticLockException"
+        "487":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.AssociateDRTLogBucket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssociateDRTLogBucketRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.AssociateDRTRole:
+    post:
+      operationId: AssociateDRTRole
+      description: '<p>Authorizes the DDoS Response team (DRT), using the specified role,
+        to access your AWS account to assist with DDoS attack mitigation during
+        potential attacks. This enables the DRT to inspect your AWS WAF
+        configuration and create or update AWS WAF rules and web ACLs.</p>
+        <p>You can associate only one <code>RoleArn</code> with your
+        subscription. If you submit an <code>AssociateDRTRole</code> request for
+        an account that already has an associated role, the new
+        <code>RoleArn</code> will replace the existing <code>RoleArn</code>.
+        </p> <p>Prior to making the <code>AssociateDRTRole</code> request, you
+        must attach the <a
+        href="https://console.aws.amazon.com/iam/home?#/policies/arn:aws:iam::aws:policy/service-role/AWSShieldDRTAccessPolicy">AWSShieldDRTAccessPolicy</a>
+        managed policy to the role you will specify in the request. For more
+        information see <a href="
+        https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html">Attaching
+        and Detaching IAM Policies</a>. The role must also trust the service
+        principal <code> drt.shield.amazonaws.com</code>. For more information,
+        see <a
+        href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html">IAM
+        JSON Policy Elements: Principal</a>.</p> <p>The DRT will have access
+        only to your AWS WAF and Shield resources. By submitting this request,
+        you authorize the DRT to inspect your AWS WAF and Shield configuration
+        and create and update AWS WAF rules and web ACLs on your behalf. The DRT
+        takes these actions only if explicitly authorized by you.</p> <p>You
+        must have the <code>iam:PassRole</code> permission to make an
+        <code>AssociateDRTRole</code> request. For more information, see <a
+        href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html">Granting
+        a User Permissions to Pass a Role to an AWS Service</a>. </p> <p>To use
+        the services of the DRT and make an <code>AssociateDRTRole</code>
+        request, you must be subscribed to the <a
+        href="https://aws.amazon.com/premiumsupport/business-support/">Business
+        Support plan</a> or the <a
+        href="https://aws.amazon.com/premiumsupport/enterprise-support/">Enterprise
+        Support plan</a>.</p>'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssociateDRTRoleResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: InvalidOperationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidOperationException"
+        "482":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "483":
+          description: AccessDeniedForDependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedForDependencyException"
+        "484":
+          description: OptimisticLockException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptimisticLockException"
+        "485":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.AssociateDRTRole
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssociateDRTRoleRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.CreateProtection:
+    post:
+      operationId: CreateProtection
+      description: <p>Enables AWS Shield Advanced for a specific AWS resource. The resource
+        can be an Amazon CloudFront distribution, Elastic Load Balancing load
+        balancer, AWS Global Accelerator accelerator, Elastic IP Address, or an
+        Amazon Route 53 hosted zone.</p> <p>You can add protection to only a
+        single resource with each CreateProtection request. If you want to add
+        protection to multiple resources at once, use the <a
+        href="https://console.aws.amazon.com/waf/">AWS WAF console</a>. For more
+        information see <a
+        href="https://docs.aws.amazon.com/waf/latest/developerguide/getting-started-ddos.html">Getting
+        Started with AWS Shield Advanced</a> and <a
+        href="https://docs.aws.amazon.com/waf/latest/developerguide/configure-new-protection.html">Add
+        AWS Shield Advanced Protection to more AWS Resources</a>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateProtectionResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: InvalidResourceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResourceException"
+        "482":
+          description: InvalidOperationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidOperationException"
+        "483":
+          description: LimitsExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitsExceededException"
+        "484":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "485":
+          description: OptimisticLockException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptimisticLockException"
+        "486":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.CreateProtection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProtectionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.CreateSubscription:
+    post:
+      operationId: CreateSubscription
+      description: <p>Activates AWS Shield Advanced for an account.</p> <p>As part of this
+        request you can specify <code>EmergencySettings</code> that automaticaly
+        grant the DDoS response team (DRT) needed permissions to assist you
+        during a suspected DDoS attack. For more information see <a
+        href="https://docs.aws.amazon.com/waf/latest/developerguide/authorize-DRT.html">Authorize
+        the DDoS Response Team to Create Rules and Web ACLs on Your
+        Behalf</a>.</p> <p>To use the services of the DRT, you must be
+        subscribed to the <a
+        href="https://aws.amazon.com/premiumsupport/business-support/">Business
+        Support plan</a> or the <a
+        href="https://aws.amazon.com/premiumsupport/enterprise-support/">Enterprise
+        Support plan</a>.</p> <p>When you initally create a subscription, your
+        subscription is set to be automatically renewed at the end of the
+        existing subscription period. You can change this by submitting an
+        <code>UpdateSubscription</code> request. </p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateSubscriptionResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.CreateSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSubscriptionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.DeleteProtection:
+    post:
+      operationId: DeleteProtection
+      description: Deletes an AWS Shield Advanced <a>Protection</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteProtectionResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: OptimisticLockException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptimisticLockException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.DeleteProtection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteProtectionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.DeleteSubscription:
+    post:
+      deprecated: true
+      operationId: DeleteSubscription
+      description: "Removes AWS Shield Advanced from an account. AWS Shield Advanced
+        requires a 1-year subscription commitment. You cannot delete a
+        subscription prior to the completion of that commitment. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteSubscriptionResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: LockedSubscriptionException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LockedSubscriptionException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.DeleteSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteSubscriptionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.DescribeAttack:
+    post:
+      operationId: DescribeAttack
+      description: "Describes the details of a DDoS attack. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeAttackResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.DescribeAttack
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeAttackRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.DescribeDRTAccess:
+    post:
+      operationId: DescribeDRTAccess
+      description: Returns the current role and list of Amazon S3 log buckets used by the
+        DDoS Response team (DRT) to access your AWS account while assisting with
+        attack mitigation.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeDRTAccessResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.DescribeDRTAccess
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeDRTAccessRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.DescribeEmergencyContactSettings:
+    post:
+      operationId: DescribeEmergencyContactSettings
+      description: Lists the email addresses that the DRT can use to contact you during a
+        suspected attack.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeEmergencyContactSettingsResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.DescribeEmergencyContactSettings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeEmergencyContactSettingsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.DescribeProtection:
+    post:
+      operationId: DescribeProtection
+      description: Lists the details of a <a>Protection</a> object.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeProtectionResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.DescribeProtection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeProtectionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.DescribeSubscription:
+    post:
+      operationId: DescribeSubscription
+      description: Provides details about the AWS Shield Advanced subscription for an
+        account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeSubscriptionResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.DescribeSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DescribeSubscriptionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.DisassociateDRTLogBucket:
+    post:
+      operationId: DisassociateDRTLogBucket
+      description: <p>Removes the DDoS Response team's (DRT) access to the specified Amazon
+        S3 bucket containing your AWS WAF logs.</p> <p>To make a
+        <code>DisassociateDRTLogBucket</code> request, you must be subscribed to
+        the <a
+        href="https://aws.amazon.com/premiumsupport/business-support/">Business
+        Support plan</a> or the <a
+        href="https://aws.amazon.com/premiumsupport/enterprise-support/">Enterprise
+        Support plan</a>. However, if you are not subscribed to one of these
+        support plans, but had been previously and had granted the DRT access to
+        your account, you can submit a <code>DisassociateDRTLogBucket</code>
+        request to remove this access.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisassociateDRTLogBucketResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: InvalidOperationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidOperationException"
+        "482":
+          description: NoAssociatedRoleException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAssociatedRoleException"
+        "483":
+          description: AccessDeniedForDependencyException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessDeniedForDependencyException"
+        "484":
+          description: OptimisticLockException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptimisticLockException"
+        "485":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.DisassociateDRTLogBucket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisassociateDRTLogBucketRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.DisassociateDRTRole:
+    post:
+      operationId: DisassociateDRTRole
+      description: <p>Removes the DDoS Response team's (DRT) access to your AWS
+        account.</p> <p>To make a <code>DisassociateDRTRole</code> request, you
+        must be subscribed to the <a
+        href="https://aws.amazon.com/premiumsupport/business-support/">Business
+        Support plan</a> or the <a
+        href="https://aws.amazon.com/premiumsupport/enterprise-support/">Enterprise
+        Support plan</a>. However, if you are not subscribed to one of these
+        support plans, but had been previously and had granted the DRT access to
+        your account, you can submit a <code>DisassociateDRTRole</code> request
+        to remove this access.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisassociateDRTRoleResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: InvalidOperationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidOperationException"
+        "482":
+          description: OptimisticLockException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptimisticLockException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.DisassociateDRTRole
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisassociateDRTRoleRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.GetSubscriptionState:
+    post:
+      operationId: GetSubscriptionState
+      description: Returns the <code>SubscriptionState</code>, either <code>Active</code>
+        or <code>Inactive</code>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSubscriptionStateResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.GetSubscriptionState
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetSubscriptionStateRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.ListAttacks:
+    post:
+      operationId: ListAttacks
+      description: Returns all ongoing DDoS attacks or all DDoS attacks during a specified
+        time period.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListAttacksResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InvalidOperationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidOperationException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.ListAttacks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListAttacksRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.ListProtections:
+    post:
+      operationId: ListProtections
+      description: Lists all <a>Protection</a> objects for the account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListProtectionsResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: InvalidPaginationTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidPaginationTokenException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.ListProtections
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListProtectionsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.UpdateEmergencyContactSettings:
+    post:
+      operationId: UpdateEmergencyContactSettings
+      description: Updates the details of the list of email addresses that the DRT can use
+        to contact you during a suspected attack.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateEmergencyContactSettingsResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: OptimisticLockException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptimisticLockException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.UpdateEmergencyContactSettings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEmergencyContactSettingsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=AWSShield_20160616.UpdateSubscription:
+    post:
+      operationId: UpdateSubscription
+      description: Updates the details of an existing subscription. Only enter values for
+        parameters you want to change. Empty parameters are not updated.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateSubscriptionResponse"
+        "480":
+          description: InternalErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalErrorException"
+        "481":
+          description: LockedSubscriptionException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LockedSubscriptionException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "484":
+          description: OptimisticLockException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptimisticLockException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - AWSShield_20160616.UpdateSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSubscriptionRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://shield.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Shield multi-region endpoint
+  - url: https://shield.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS Shield multi-region endpoint
+  - url: http://shield.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Shield endpoint for China (Beijing) and China (Ningxia)
+  - url: https://shield.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS Shield endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    AssociateDRTLogBucketResponse:
+      type: object
+      properties: {}
+    AssociateDRTLogBucketRequest:
+      type: object
+      required:
+        - LogBucket
+      properties:
+        LogBucket:
+          $ref: "#/components/schemas/LogBucket"
+    InternalErrorException: {}
+    InvalidOperationException: {}
+    NoAssociatedRoleException: {}
+    LimitsExceededException: {}
+    InvalidParameterException: {}
+    AccessDeniedForDependencyException: {}
+    OptimisticLockException: {}
+    ResourceNotFoundException: {}
+    AssociateDRTRoleResponse:
+      type: object
+      properties: {}
+    AssociateDRTRoleRequest:
+      type: object
+      required:
+        - RoleArn
+      properties:
+        RoleArn:
+          $ref: "#/components/schemas/RoleArn"
+    CreateProtectionResponse:
+      type: object
+      properties:
+        ProtectionId:
+          $ref: "#/components/schemas/ProtectionId"
+    CreateProtectionRequest:
+      type: object
+      required:
+        - Name
+        - ResourceArn
+      properties:
+        Name:
+          $ref: "#/components/schemas/ProtectionName"
+        ResourceArn:
+          $ref: "#/components/schemas/ResourceArn"
+    InvalidResourceException: {}
+    ResourceAlreadyExistsException: {}
+    CreateSubscriptionResponse:
+      type: object
+      properties: {}
+    CreateSubscriptionRequest:
+      type: object
+      properties: {}
+    DeleteProtectionResponse:
+      type: object
+      properties: {}
+    DeleteProtectionRequest:
+      type: object
+      required:
+        - ProtectionId
+      properties:
+        ProtectionId:
+          $ref: "#/components/schemas/ProtectionId"
+    DeleteSubscriptionResponse:
+      type: object
+      properties: {}
+    DeleteSubscriptionRequest:
+      type: object
+      properties: {}
+    LockedSubscriptionException: {}
+    DescribeAttackResponse:
+      type: object
+      properties:
+        Attack:
+          $ref: "#/components/schemas/AttackDetail"
+    DescribeAttackRequest:
+      type: object
+      required:
+        - AttackId
+      properties:
+        AttackId:
+          $ref: "#/components/schemas/AttackId"
+    AccessDeniedException: {}
+    DescribeDRTAccessResponse:
+      type: object
+      properties:
+        RoleArn:
+          $ref: "#/components/schemas/RoleArn"
+        LogBucketList:
+          $ref: "#/components/schemas/LogBucketList"
+    DescribeDRTAccessRequest:
+      type: object
+      properties: {}
+    DescribeEmergencyContactSettingsResponse:
+      type: object
+      properties:
+        EmergencyContactList:
+          $ref: "#/components/schemas/EmergencyContactList"
+    DescribeEmergencyContactSettingsRequest:
+      type: object
+      properties: {}
+    DescribeProtectionResponse:
+      type: object
+      properties:
+        Protection:
+          $ref: "#/components/schemas/Protection"
+    DescribeProtectionRequest:
+      type: object
+      properties:
+        ProtectionId:
+          $ref: "#/components/schemas/ProtectionId"
+        ResourceArn:
+          $ref: "#/components/schemas/ResourceArn"
+    DescribeSubscriptionResponse:
+      type: object
+      properties:
+        Subscription:
+          $ref: "#/components/schemas/Subscription"
+    DescribeSubscriptionRequest:
+      type: object
+      properties: {}
+    DisassociateDRTLogBucketResponse:
+      type: object
+      properties: {}
+    DisassociateDRTLogBucketRequest:
+      type: object
+      required:
+        - LogBucket
+      properties:
+        LogBucket:
+          $ref: "#/components/schemas/LogBucket"
+    DisassociateDRTRoleResponse:
+      type: object
+      properties: {}
+    DisassociateDRTRoleRequest:
+      type: object
+      properties: {}
+    GetSubscriptionStateResponse:
+      type: object
+      required:
+        - SubscriptionState
+      properties:
+        SubscriptionState:
+          $ref: "#/components/schemas/SubscriptionState"
+    GetSubscriptionStateRequest:
+      type: object
+      properties: {}
+    ListAttacksResponse:
+      type: object
+      properties:
+        AttackSummaries:
+          $ref: "#/components/schemas/AttackSummaries"
+        NextToken:
+          $ref: "#/components/schemas/Token"
+    ListAttacksRequest:
+      type: object
+      properties:
+        ResourceArns:
+          $ref: "#/components/schemas/ResourceArnFilterList"
+        StartTime:
+          $ref: "#/components/schemas/TimeRange"
+        EndTime:
+          $ref: "#/components/schemas/TimeRange"
+        NextToken:
+          $ref: "#/components/schemas/Token"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+    ListProtectionsResponse:
+      type: object
+      properties:
+        Protections:
+          $ref: "#/components/schemas/Protections"
+        NextToken:
+          $ref: "#/components/schemas/Token"
+    ListProtectionsRequest:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/Token"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+    InvalidPaginationTokenException: {}
+    UpdateEmergencyContactSettingsResponse:
+      type: object
+      properties: {}
+    UpdateEmergencyContactSettingsRequest:
+      type: object
+      properties:
+        EmergencyContactList:
+          $ref: "#/components/schemas/EmergencyContactList"
+    UpdateSubscriptionResponse:
+      type: object
+      properties: {}
+    UpdateSubscriptionRequest:
+      type: object
+      properties:
+        AutoRenew:
+          $ref: "#/components/schemas/AutoRenew"
+    LogBucket:
+      type: string
+      pattern: ^([a-z]|(\d(?!\d{0,2}\.\d{1,3}\.\d{1,3}\.\d{1,3})))([a-z\d]|(\.(?!(\.|-)))|(-(?!\.))){1,61}[a-z\d]$
+      minLength: 3
+      maxLength: 63
+    RoleArn:
+      type: string
+      pattern: ^arn:aws:iam::\d{12}:role/?[a-zA-Z_0-9+=,.@\-_/]+
+      minLength: 1
+      maxLength: 2048
+    AttackId:
+      type: string
+      pattern: "[a-zA-Z0-9\\\\-]*"
+      minLength: 1
+      maxLength: 128
+    ResourceArn:
+      type: string
+      pattern: ^arn:aws.*
+      minLength: 1
+      maxLength: 2048
+    SubResourceSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SubResourceSummary"
+    AttackTimestamp:
+      type: string
+      format: date-time
+    SummarizedCounterList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SummarizedCounter"
+    AttackProperties:
+      type: array
+      items:
+        $ref: "#/components/schemas/AttackProperty"
+    MitigationList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Mitigation"
+    AttackDetail:
+      type: object
+      properties:
+        AttackId:
+          $ref: "#/components/schemas/AttackId"
+        ResourceArn:
+          $ref: "#/components/schemas/ResourceArn"
+        SubResources:
+          $ref: "#/components/schemas/SubResourceSummaryList"
+        StartTime:
+          $ref: "#/components/schemas/AttackTimestamp"
+        EndTime:
+          $ref: "#/components/schemas/AttackTimestamp"
+        AttackCounters:
+          $ref: "#/components/schemas/SummarizedCounterList"
+        AttackProperties:
+          $ref: "#/components/schemas/AttackProperties"
+        Mitigations:
+          $ref: "#/components/schemas/MitigationList"
+      description: The details of a DDoS attack.
+    AttackLayer:
+      type: string
+      enum:
+        - NETWORK
+        - APPLICATION
+    AttackProperty:
+      type: object
+      properties:
+        AttackLayer:
+          $ref: "#/components/schemas/AttackLayer"
+        AttackPropertyIdentifier:
+          $ref: "#/components/schemas/AttackPropertyIdentifier"
+        TopContributors:
+          $ref: "#/components/schemas/TopContributors"
+        Unit:
+          $ref: "#/components/schemas/Unit"
+        Total:
+          $ref: "#/components/schemas/Long"
+      description: Details of the described attack.
+    AttackPropertyIdentifier:
+      type: string
+      enum:
+        - DESTINATION_URL
+        - REFERRER
+        - SOURCE_ASN
+        - SOURCE_COUNTRY
+        - SOURCE_IP_ADDRESS
+        - SOURCE_USER_AGENT
+        - WORDPRESS_PINGBACK_REFLECTOR
+        - WORDPRESS_PINGBACK_SOURCE
+    TopContributors:
+      type: array
+      items:
+        $ref: "#/components/schemas/Contributor"
+    Unit:
+      type: string
+      enum:
+        - BITS
+        - BYTES
+        - PACKETS
+        - REQUESTS
+    Long:
+      type: integer
+    AttackSummary:
+      type: object
+      properties:
+        AttackId:
+          $ref: "#/components/schemas/String"
+        ResourceArn:
+          $ref: "#/components/schemas/String"
+        StartTime:
+          $ref: "#/components/schemas/AttackTimestamp"
+        EndTime:
+          $ref: "#/components/schemas/AttackTimestamp"
+        AttackVectors:
+          $ref: "#/components/schemas/AttackVectorDescriptionList"
+      description: Summarizes all DDoS attacks for a specified time period.
+    AttackSummaries:
+      type: array
+      items:
+        $ref: "#/components/schemas/AttackSummary"
+    String:
+      type: string
+    AttackVectorDescriptionList:
+      type: array
+      items:
+        $ref: "#/components/schemas/AttackVectorDescription"
+    AttackVectorDescription:
+      type: object
+      required:
+        - VectorType
+      properties:
+        VectorType:
+          $ref: "#/components/schemas/String"
+      description: Describes the attack.
+    AutoRenew:
+      type: string
+      enum:
+        - ENABLED
+        - DISABLED
+    Contributor:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+        Value:
+          $ref: "#/components/schemas/Long"
+      description: A contributor to the attack and their contribution.
+    ProtectionName:
+      type: string
+      pattern: "[ a-zA-Z0-9_\\\\.\\\\-]*"
+      minLength: 1
+      maxLength: 128
+    ProtectionId:
+      type: string
+      pattern: "[a-zA-Z0-9\\\\-]*"
+      minLength: 1
+      maxLength: 36
+    LogBucketList:
+      type: array
+      items:
+        $ref: "#/components/schemas/LogBucket"
+      minItems: 0
+      maxItems: 10
+    EmergencyContactList:
+      type: array
+      items:
+        $ref: "#/components/schemas/EmergencyContact"
+      minItems: 0
+      maxItems: 10
+    Protection:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/ProtectionId"
+        Name:
+          $ref: "#/components/schemas/ProtectionName"
+        ResourceArn:
+          $ref: "#/components/schemas/ResourceArn"
+      description: An object that represents a resource that is under DDoS protection.
+    Subscription:
+      type: object
+      properties:
+        StartTime:
+          $ref: "#/components/schemas/Timestamp"
+        EndTime:
+          $ref: "#/components/schemas/Timestamp"
+        TimeCommitmentInSeconds:
+          $ref: "#/components/schemas/DurationInSeconds"
+        AutoRenew:
+          $ref: "#/components/schemas/AutoRenew"
+        Limits:
+          $ref: "#/components/schemas/Limits"
+      description: Information about the AWS Shield Advanced subscription for an account.
+    Double:
+      type: number
+      format: double
+    DurationInSeconds:
+      type: integer
+      minimum: 0
+    EmailAddress:
+      type: string
+      pattern: ^\S+@\S+\.\S+$
+      minLength: 1
+      maxLength: 150
+    EmergencyContact:
+      type: object
+      required:
+        - EmailAddress
+      properties:
+        EmailAddress:
+          $ref: "#/components/schemas/EmailAddress"
+      description: Contact information that the DRT can use to contact you during a
+        suspected attack.
+    SubscriptionState:
+      type: string
+      enum:
+        - ACTIVE
+        - INACTIVE
+    Integer:
+      type: integer
+    Limit:
+      type: object
+      properties:
+        Type:
+          $ref: "#/components/schemas/String"
+        Max:
+          $ref: "#/components/schemas/Long"
+      description: Specifies how many protections of a given type you can create.
+    Limits:
+      type: array
+      items:
+        $ref: "#/components/schemas/Limit"
+    ResourceArnFilterList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResourceArn"
+    TimeRange:
+      type: object
+      properties:
+        FromInclusive:
+          $ref: "#/components/schemas/AttackTimestamp"
+        ToExclusive:
+          $ref: "#/components/schemas/AttackTimestamp"
+      description: The time range.
+    Token:
+      type: string
+      pattern: ^.*$
+      minLength: 1
+      maxLength: 4096
+    MaxResults:
+      type: integer
+      minimum: 0
+      maximum: 10000
+    Protections:
+      type: array
+      items:
+        $ref: "#/components/schemas/Protection"
+    Mitigation:
+      type: object
+      properties:
+        MitigationName:
+          $ref: "#/components/schemas/String"
+      description: The mitigation applied to a DDoS attack.
+    SubResourceType:
+      type: string
+      enum:
+        - IP
+        - URL
+    SummarizedAttackVectorList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SummarizedAttackVector"
+    SubResourceSummary:
+      type: object
+      properties:
+        Type:
+          $ref: "#/components/schemas/SubResourceType"
+        Id:
+          $ref: "#/components/schemas/String"
+        AttackVectors:
+          $ref: "#/components/schemas/SummarizedAttackVectorList"
+        Counters:
+          $ref: "#/components/schemas/SummarizedCounterList"
+      description: The attack information for the specified SubResource.
+    Timestamp:
+      type: string
+      format: date-time
+    SummarizedAttackVector:
+      type: object
+      required:
+        - VectorType
+      properties:
+        VectorType:
+          $ref: "#/components/schemas/String"
+        VectorCounters:
+          $ref: "#/components/schemas/SummarizedCounterList"
+      description: A summary of information about the attack.
+    SummarizedCounter:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+        Max:
+          $ref: "#/components/schemas/Double"
+        Average:
+          $ref: "#/components/schemas/Double"
+        Sum:
+          $ref: "#/components/schemas/Double"
+        N:
+          $ref: "#/components/schemas/Integer"
+        Unit:
+          $ref: "#/components/schemas/String"
+      description: The counter that describes a DDoS attack.

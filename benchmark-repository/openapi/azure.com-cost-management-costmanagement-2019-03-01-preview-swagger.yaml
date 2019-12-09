@@ -1,0 +1,3805 @@
+openapi: 3.0.0
+info:
+  title: CostManagementClient
+  version: 2019-03-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cost-management/resource-manager/Microsoft.CostManagement/preview/2019-03-01-preview/costmanagement.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: cost-management-costmanagement
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}/providers/Microsoft.CostManagement/Forecast":
+    post:
+      description: Forecast the usage data for department.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Forecast_UsageByDepartment
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+        - $ref: "#/components/parameters/departmentIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                DepartmentForecast:
+                  $ref: "#/components/examples/DepartmentForecast"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Forecast
+      x-ms-pageable: {}
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}/providers/Microsoft.CostManagement/Query":
+    post:
+      description: Query the usage data for department.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Query_UsageByDepartment
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+        - $ref: "#/components/parameters/departmentIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                DepartmentQuery:
+                  $ref: "#/components/examples/DepartmentQuery"
+                DepartmentQueryGroupingUsage:
+                  $ref: "#/components/examples/DepartmentQueryGroupingUsage"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Query
+      x-ms-pageable: {}
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}/providers/Microsoft.CostManagement/dimensions":
+    get:
+      description: Lists the dimensions by Department Id.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Dimensions_ListByDepartment
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+        - $ref: "#/components/parameters/departmentIdParameter"
+        - description: May be used to filter dimensions by properties/category,
+            properties/usageStart, properties/usageEnd. Supported operators are
+            'eq','lt', 'gt', 'le', 'ge'.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+          examples:
+            DepartmentDimensionsListWithFilter:
+              value: properties/category eq 'resourceId'
+        - description: May be used to expand the properties/data within a dimension
+            category. By default, data is not included when listing dimensions.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+          examples:
+            DepartmentDimensionsListExpandAndTop:
+              value: properties/data
+            DepartmentDimensionsListWithFilter:
+              value: properties/data
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            dimension data.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+          examples:
+            DepartmentDimensionsListExpandAndTop:
+              value: 5
+            DepartmentDimensionsListWithFilter:
+              value: 5
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DimensionsListResult"
+              examples:
+                DepartmentDimensionsList:
+                  $ref: "#/components/examples/DepartmentDimensionsList"
+                DepartmentDimensionsListExpandAndTop:
+                  $ref: "#/components/examples/DepartmentDimensionsListExpandAndTop"
+                DepartmentDimensionsListWithFilter:
+                  $ref: "#/components/examples/DepartmentDimensionsListWithFilter"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Dimensions
+      x-ms-odata: "#/components/schemas/Dimension"
+      x-ms-pageable: {}
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}/providers/Microsoft.CostManagement/Forecast":
+    post:
+      description: Forecast the usage data for an enrollment account.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Forecast_UsageByEnrollmentAccount
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+        - $ref: "#/components/parameters/enrollmentAccountIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                EnrollmentAccountForecast:
+                  $ref: "#/components/examples/EnrollmentAccountForecast"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Forecast
+      x-ms-pageable: {}
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}/providers/Microsoft.CostManagement/Query":
+    post:
+      description: Query the usage data for an enrollment account.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Query_UsageByEnrollmentAccount
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+        - $ref: "#/components/parameters/enrollmentAccountIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                EnrollmentAccountQuery:
+                  $ref: "#/components/examples/EnrollmentAccountQuery"
+                EnrollmentAccountQueryGroupingUsage:
+                  $ref: "#/components/examples/EnrollmentAccountQueryGroupingUsage"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Query
+      x-ms-pageable: {}
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}/providers/Microsoft.CostManagement/dimensions":
+    get:
+      description: Lists the dimensions by Enrollment Account Id.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Dimensions_ListByEnrollmentAccount
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+        - $ref: "#/components/parameters/enrollmentAccountIdParameter"
+        - description: May be used to filter dimensions by properties/category,
+            properties/usageStart, properties/usageEnd. Supported operators are
+            'eq','lt', 'gt', 'le', 'ge'.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+          examples:
+            EnrollmentAccountDimensionsListWithFilter:
+              value: properties/category eq 'resourceId'
+        - description: May be used to expand the properties/data within a dimension
+            category. By default, data is not included when listing dimensions.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+          examples:
+            EnrollmentAccountDimensionsListExpandAndTop:
+              value: properties/data
+            EnrollmentAccountDimensionsListWithFilter:
+              value: properties/data
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            dimension data.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+          examples:
+            EnrollmentAccountDimensionsListExpandAndTop:
+              value: 5
+            EnrollmentAccountDimensionsListWithFilter:
+              value: 5
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DimensionsListResult"
+              examples:
+                EnrollmentAccountDimensionsList:
+                  $ref: "#/components/examples/EnrollmentAccountDimensionsList"
+                EnrollmentAccountDimensionsListExpandAndTop:
+                  $ref: "#/components/examples/EnrollmentAccountDimensionsListExpan\
+                    dAndTop"
+                EnrollmentAccountDimensionsListWithFilter:
+                  $ref: "#/components/examples/EnrollmentAccountDimensionsListWithF\
+                    ilter"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Dimensions
+      x-ms-odata: "#/components/schemas/Dimension"
+      x-ms-pageable: {}
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/Forecast":
+    post:
+      description: Forecast the usage data for billing account.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Forecast_UsageByBillingAccount
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                BillingAccountForecast:
+                  $ref: "#/components/examples/BillingAccountForecast"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Forecast
+      x-ms-pageable: {}
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/Query":
+    post:
+      description: Query the usage data for billing account.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Query_UsageByBillingAccount
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                BillingAccountQuery:
+                  $ref: "#/components/examples/BillingAccountQuery"
+                BillingAccountQueryGroupingUsage:
+                  $ref: "#/components/examples/BillingAccountQueryGroupingUsage"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Query
+      x-ms-pageable: {}
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/dimensions":
+    get:
+      description: Lists the dimensions by billingAccount Id.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Dimensions_ListByBillingAccount
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+        - description: May be used to filter dimensions by properties/category,
+            properties/usageStart, properties/usageEnd. Supported operators are
+            'eq','lt', 'gt', 'le', 'ge'.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+          examples:
+            BillingAccountDimensionsListWithFilter:
+              value: properties/category eq 'resourceId'
+        - description: May be used to expand the properties/data within a dimension
+            category. By default, data is not included when listing dimensions.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+          examples:
+            BillingAccountDimensionsListExpandAndTop:
+              value: properties/data
+            BillingAccountDimensionsListWithFilter:
+              value: properties/data
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            dimension data.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+          examples:
+            BillingAccountDimensionsListExpandAndTop:
+              value: 5
+            BillingAccountDimensionsListWithFilter:
+              value: 5
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DimensionsListResult"
+              examples:
+                BillingAccountDimensionsList:
+                  $ref: "#/components/examples/BillingAccountDimensionsList"
+                BillingAccountDimensionsListExpandAndTop:
+                  $ref: "#/components/examples/BillingAccountDimensionsListExpandAn\
+                    dTop"
+                BillingAccountDimensionsListWithFilter:
+                  $ref: "#/components/examples/BillingAccountDimensionsListWithFilt\
+                    er"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Dimensions
+      x-ms-odata: "#/components/schemas/Dimension"
+      x-ms-pageable: {}
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/showbackRules":
+    get:
+      description: Get list all Showback Rules.
+      operationId: ShowbackRules_List
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShowbackRuleListResult"
+              examples:
+                ShowbackRules_List:
+                  $ref: "#/components/examples/ShowbackRules_List"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ShowbackRules
+  "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/showbackRules/{ruleName}":
+    get:
+      description: Gets the showback rule by rule name.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: ShowbackRule_GetBillingAccountId
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+        - $ref: "#/components/parameters/ruleNameParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShowbackRule"
+              examples:
+                ShowbackRules:
+                  $ref: "#/components/examples/ShowbackRules"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ShowbackRules
+    put:
+      description: Create/Update showback rule for billing account.
+      operationId: ShowbackRule_CreateUpdateRule
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/billingAccountIdParameter"
+        - $ref: "#/components/parameters/ruleNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShowbackRule"
+        description: Showback rule to create or update.
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShowbackRule"
+              examples:
+                ShowbackRules:
+                  $ref: "#/components/examples/ShowbackRules"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ShowbackRules
+  /providers/Microsoft.CostManagement/cloudConnectors:
+    get:
+      description: List all cloud connector definitions
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: CloudConnector_List
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorDefinitionListResult"
+              examples:
+                CloudConnector_List:
+                  $ref: "#/components/examples/CloudConnector_List"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CloudConnectors
+      x-ms-pageable: {}
+  "/providers/Microsoft.CostManagement/cloudConnectors/{connectorName}":
+    delete:
+      description: Delete a cloud connector definition
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: CloudConnector_Delete
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/connectorNameParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CloudConnectors
+    get:
+      description: Get a cloud connector definition
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: CloudConnector_Get
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/connectorNameParameter"
+        - description: May be used to expand the collectionInfo property. By default,
+            collectionInfo is not included.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+          examples:
+            CloudConnector_Get_Expand:
+              value: collectionInfo
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorDefinition"
+              examples:
+                CloudConnector_Get:
+                  $ref: "#/components/examples/CloudConnector_Get"
+                CloudConnector_Get_Expand:
+                  $ref: "#/components/examples/CloudConnector_Get_Expand"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CloudConnectors
+    patch:
+      description: Update a cloud connector definition
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: CloudConnector_Update
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/connectorNameParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ConnectorDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorDefinition"
+              examples:
+                CloudConnector_Update:
+                  $ref: "#/components/examples/CloudConnector_Update"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CloudConnectors
+    put:
+      description: Create or update a cloud connector definition
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: CloudConnector_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/connectorNameParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ConnectorDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorDefinition"
+              examples:
+                CloudConnector_Put:
+                  $ref: "#/components/examples/CloudConnector_Put"
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConnectorDefinition"
+              examples:
+                CloudConnector_Put:
+                  $ref: "#/components/examples/CloudConnector_Put"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CloudConnectors
+  /providers/Microsoft.CostManagement/externalBillingAccounts:
+    get:
+      description: List all ExternalBillingAccount definitions
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: ExternalBillingAccount_List
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalBillingAccountDefinitionListRes\
+                  ult"
+              examples:
+                ExternalBillingAccount_List:
+                  $ref: "#/components/examples/ExternalBillingAccount_List"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ExternalBillingAccounts
+      x-ms-pageable: {}
+  "/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}":
+    get:
+      description: Get a ExternalBillingAccount definition
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: ExternalBillingAccount_Get
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/externalBillingAccountNameParameter"
+        - description: May be used to expand the collectionInfo property. By default,
+            collectionInfo is not included.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+          examples:
+            ExternalBillingAccount_Get_Expand:
+              value: collectionInfo
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalBillingAccountDefinition"
+              examples:
+                ExternalBillingAccount_Get:
+                  $ref: "#/components/examples/ExternalBillingAccount_Get"
+                ExternalBillingAccount_Get_Expand:
+                  $ref: "#/components/examples/ExternalBillingAccount_Get_Expand"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ExternalBillingAccounts
+  "/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}/Forecast":
+    post:
+      description: Forecast the usage data for external billing account.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Forecast_UsageByExternalBillingAccount
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/externalBillingAccountNameParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                ExternalBillingAccountForecast:
+                  $ref: "#/components/examples/ExternalBillingAccountForecast"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Forecast
+      x-ms-pageable: {}
+  "/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}/externalSubscriptions":
+    get:
+      description: List all ExternalSubscriptions by ExternalBillingAccount definitions
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: ExternalSubscription_ListByExternalBillingAccount
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/externalBillingAccountNameParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalSubscriptionDefinitionListResult"
+              examples:
+                ExternalBillingAccountExternalSubscription_List:
+                  $ref: "#/components/examples/ExternalBillingAccountExternalSubscr\
+                    iption_List"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ExternalSubscriptions
+      x-ms-pageable: {}
+  /providers/Microsoft.CostManagement/externalSubscriptions:
+    get:
+      description: List all ExternalSubscription definitions
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: ExternalSubscription_List
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalSubscriptionDefinitionListResult"
+              examples:
+                ExternalSubscription_List:
+                  $ref: "#/components/examples/ExternalSubscription_List"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ExternalSubscriptions
+      x-ms-pageable: {}
+  "/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}":
+    get:
+      description: Get an ExternalSubscription definition
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: ExternalSubscription_Get
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/externalSubscriptionNameParameter"
+        - description: May be used to expand the collectionInfo property. By default,
+            collectionInfo is not included.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+          examples:
+            ExternalSubscription_Get_Expand:
+              value: collectionInfo
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalSubscriptionDefinition"
+              examples:
+                ExternalSubscription_Get:
+                  $ref: "#/components/examples/ExternalSubscription_Get"
+                ExternalSubscription_Get_Expand:
+                  $ref: "#/components/examples/ExternalSubscription_Get_Expand"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ExternalSubscriptions
+  /providers/Microsoft.CostManagement/operations:
+    get:
+      description: Lists all of the available consumption REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.CostManagement/Forecast":
+    post:
+      description: Lists the usage data for management group.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Forecast_UsageByManagementGroup
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/managementGroupIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                ManagementGroupForecast:
+                  $ref: "#/components/examples/ManagementGroupForecast"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Forecast
+      x-ms-pageable: {}
+  "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.CostManagement/Query":
+    post:
+      description: Lists the usage data for management group.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Query_UsageByManagementGroup
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/managementGroupIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                ManagementGroupQuery:
+                  $ref: "#/components/examples/ManagementGroupQuery"
+                ManagementGroupQueryGroupingUsage:
+                  $ref: "#/components/examples/ManagementGroupQueryGroupingUsage"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Query
+      x-ms-pageable: {}
+  "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.CostManagement/dimensions":
+    get:
+      description: Lists the dimensions by managementGroup Id.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Dimensions_ListByManagementGroup
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/managementGroupIdParameter"
+        - description: May be used to filter dimensions by properties/category,
+            properties/usageStart, properties/usageEnd. Supported operators are
+            'eq','lt', 'gt', 'le', 'ge'.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+          examples:
+            ManagementGroupDimensionsListWithFilter:
+              value: properties/category eq 'resourceId'
+        - description: May be used to expand the properties/data within a dimension
+            category. By default, data is not included when listing dimensions.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+          examples:
+            ManagementGroupDimensionsListExpandAndTop:
+              value: properties/data
+            ManagementGroupDimensionsListWithFilter:
+              value: properties/data
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            dimension data.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+          examples:
+            ManagementGroupDimensionsListExpandAndTop:
+              value: 5
+            ManagementGroupDimensionsListWithFilter:
+              value: 5
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DimensionsListResult"
+              examples:
+                ManagementGroupDimensionsList:
+                  $ref: "#/components/examples/ManagementGroupDimensionsList"
+                ManagementGroupDimensionsListExpandAndTop:
+                  $ref: "#/components/examples/ManagementGroupDimensionsListExpandA\
+                    ndTop"
+                ManagementGroupDimensionsListWithFilter:
+                  $ref: "#/components/examples/ManagementGroupDimensionsListWithFil\
+                    ter"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Dimensions
+      x-ms-odata: "#/components/schemas/Dimension"
+      x-ms-pageable: {}
+  "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.CostManagement/externalSubscriptions":
+    get:
+      description: List all ExternalSubscription definitions for Management Group
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: ExternalSubscription_ListByManagementGroup
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/managementGroupIdParameter"
+        - description: The $recurse=true query string parameter allows returning
+            externalSubscriptions associated with the specified managementGroup,
+            or any of its descendants.
+          in: query
+          name: $recurse
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalSubscriptionDefinitionListResult"
+              examples:
+                ExternalSubscription_List:
+                  $ref: "#/components/examples/ExternalSubscription_List"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ExternalSubscriptions
+      x-ms-pageable: {}
+  "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}":
+    put:
+      description: Updates the management group of an ExternalSubscription
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: ExternalSubscription_UpdateManagementGroup
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/managementGroupIdParameter"
+        - $ref: "#/components/parameters/externalSubscriptionNameParameter"
+      responses:
+        "204":
+          description: NoContent
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ExternalSubscriptions
+  "/subscriptions/{subscriptionId}/providers/Microsoft.CostManagement/Forecast":
+    post:
+      description: Forecast the usage data for subscriptionId.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Forecast_UsageBySubscription
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                SubscriptionForecast:
+                  $ref: "#/components/examples/SubscriptionForecast"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Forecast
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/providers/Microsoft.CostManagement/Query":
+    post:
+      description: Query the usage data for subscriptionId.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Query_UsageBySubscription
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                SubscriptionQuery:
+                  $ref: "#/components/examples/SubscriptionQuery"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Query
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/providers/Microsoft.CostManagement/dimensions":
+    get:
+      description: Lists the dimensions by subscription Id.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Dimensions_ListBySubscription
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - description: May be used to filter dimensions by properties/category,
+            properties/usageStart, properties/usageEnd. Supported operators are
+            'eq','lt', 'gt', 'le', 'ge'.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: May be used to expand the properties/data within a dimension
+            category. By default, data is not included when listing dimensions.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+          examples:
+            SubscriptionDimensionsList:
+              value: properties/data
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            dimension data.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+          examples:
+            SubscriptionDimensionsList:
+              value: 5
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DimensionsListResult"
+              examples:
+                SubscriptionDimensionsList:
+                  $ref: "#/components/examples/SubscriptionDimensionsList"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Dimensions
+      x-ms-odata: "#/components/schemas/Dimension"
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CostManagement/dimensions":
+    get:
+      description: Lists the dimensions by resource group Id.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Dimensions_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: May be used to filter dimensions by properties/category,
+            properties/usageStart, properties/usageEnd. Supported operators are
+            'eq','lt', 'gt', 'le', 'ge'.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: May be used to expand the properties/data within a dimension
+            category. By default, data is not included when listing dimensions.
+          in: query
+          name: $expand
+          required: false
+          schema:
+            type: string
+          examples:
+            ResourceGroupDimensionsList:
+              value: properties/data
+        - description: Skiptoken is only used if a previous operation returned a partial
+            result. If a previous response contains a nextLink element, the
+            value of the nextLink element will include a skiptoken parameter
+            that specifies a starting point to use for subsequent calls.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+        - description: May be used to limit the number of results to the most recent N
+            dimension data.
+          in: query
+          name: $top
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+          examples:
+            ResourceGroupDimensionsList:
+              value: 5
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DimensionsListResult"
+              examples:
+                ResourceGroupDimensionsList:
+                  $ref: "#/components/examples/ResourceGroupDimensionsList"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Dimensions
+      x-ms-odata: "#/components/schemas/Dimension"
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.CostManagement/Forecast":
+    post:
+      description: Forecast the usage data for subscriptionId and resource group.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Forecast_UsageByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                ResourceGroupForecast:
+                  $ref: "#/components/examples/ResourceGroupForecast"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Forecast
+      x-ms-pageable: {}
+  "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.CostManagement/Query":
+    post:
+      description: Query the usage data for subscriptionId and resource group.
+      externalDocs:
+        url: https://docs.microsoft.com/en-us/rest/api/costmanagement/
+      operationId: Query_UsageByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportConfigDefinition"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+              examples:
+                ResourceGroupQuery:
+                  $ref: "#/components/examples/ResourceGroupQuery"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Query
+      x-ms-pageable: {}
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    DepartmentForecast:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/70664866/departments/123/providers/Microsoft.CostManagement/Forecast/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: CostStatus
+                  type: String
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Billing/billingAccounts/70664866/departments/123/providers/Microsoft.CostManagement/Forecast?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 19.545363672276512
+                  - 20181026
+                  - Actual
+                  - USD
+                - - 20.41179241293923
+                  - 20181027
+                  - Actual
+                  - USD
+                - - 21.35941656262545
+                  - 20181028
+                  - Actual
+                  - USD
+                - - 22.545363672276512
+                  - 20181029
+                  - Forecast
+                  - USD
+                - - 23.41979241290323
+                  - 20181030
+                  - Forecast
+                  - USD
+                - - 24.35941656262545
+                  - 20181031
+                  - Forecast
+                  - USD
+            type: microsoft.costmanagement/Forecast
+    DepartmentQuery:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/70664866/departments/123/providers/Microsoft.CostManagement/Query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Billing/billingAccounts/70664866/departments/123/providers/Microsoft.CostManagement/Query?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 19.545363672276512
+                  - 20181031
+                  - USD
+                - - 173.41979241290323
+                  - 20181031
+                  - USD
+                - - 20.35941656262545
+                  - 20181031
+                  - USD
+            type: microsoft.costmanagement/Query
+    DepartmentQueryGroupingUsage:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/70664866/departments/123/providers/Microsoft.CostManagement/Query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: AccountName
+                  type: String
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Billing/billingAccounts/70664866/departments/123/providers/Microsoft.CostManagement/Query?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 19.545363672276512
+                  - Azure Dev Account
+                  - USD
+                - - 173.41979241290323
+                  - Azure PPE Account
+                  - USD
+                - - 20.35941656262545
+                  - Azure Prod Account
+                  - USD
+            type: microsoft.costmanagement/Query
+    DepartmentDimensionsList:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/100/departments/123/providers/microsoft.consumption/dimensions_ResourceGroup_2018-12-01_2018-12-31
+            name: dimensions_ResourceGroup_2018-12-01_2018-12-31
+            properties:
+              category: ResourceGroup
+              data: []
+              description: Resource group
+              filterEnabled: true
+              groupingEnabled: true
+              total: 377
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+          - id: providers/Microsoft.Billing/billingAccounts/100/departments/123/providers/microsoft.consumption/dimensions_ResourceType_2018-12-01_2018-12-31
+            name: dimensions_ResourceType_2018-12-01_2018-12-31
+            properties:
+              category: ResourceType
+              data: []
+              description: Resource type
+              filterEnabled: true
+              groupingEnabled: true
+              total: 37
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    DepartmentDimensionsListExpandAndTop:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/100/departments/123/providers/microsoft.consumption/dimensions_ResourceGroup_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceGroup_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceGroup
+              data:
+                - thoroetrg01
+                - default-notificationhubs-westus
+                - jedikeyvaultrg
+                - contosocodeflow8d4a
+                - noobaa
+              description: Resource group
+              filterEnabled: true
+              groupingEnabled: true
+              total: 377
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+          - id: providers/Microsoft.Billing/billingAccounts/100/departments/123/providers/microsoft.consumption/dimensions_ResourceType_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceType_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceType
+              data:
+                - microsoft.automation/automationaccounts
+                - microsoft.databricks/workspaces
+                - microsoft.dbformysql/servers
+                - microsoft.containerregistry/registries
+                - microsoft.search/searchservices
+              description: Resource type
+              filterEnabled: true
+              groupingEnabled: true
+              total: 37
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    DepartmentDimensionsListWithFilter:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/100/departments/123/providers/microsoft.consumption/dimensions_ResourceId_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceId_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceId
+              data:
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/urphealthaccount
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/srphytenaccount
+                - /subscriptions/67e24f6b-1ec2-4c90-993a-dc2d25b00b6c/resourcegroups/defaultresourcegroup-eus/providers/microsoft.operationalinsights/workspaces/defaultworkspace-67e24f6b-1ec2-4c90-993a-dc2d25b00b6c-eus
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg-sql-ha/providers/microsoft.compute/virtualmachines/sql-4qqp1
+                - /subscriptions/a98d6dc5-eb8f-46cf-8938-f1fb08f03706/resourcegroups/databricks-rg-testwsp-xijmsdubneexm/providers/microsoft.compute/disks/488cdb42bf74474a98075415be3f806c-containerrootvolume
+              description: Resource Id
+              filterEnabled: true
+              groupingEnabled: true
+              nextLink: https://management.azure.com/providers/Microsoft.Billing/billingAccounts/100/departments/123/providers/Microsoft.Consumption/Dimensions?$filter=properties/category
+                eq
+                'resourceId'&$top=5&api-version=2019-03-01-preview&$expand=properties/data&$skiptoken=AQAAAA%3D%3D
+              total: 1409
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    EnrollmentAccountForecast:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/70664866/enrollmentAccounts/456/providers/Microsoft.CostManagement/Forecast/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: CostStatus
+                  type: String
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Billing/billingAccounts/70664866/enrollmentAccounts/456/providers/Microsoft.CostManagement/Forecast?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 168.54532346722763
+                  - 20180826
+                  - Actual
+                  - USD
+                - - 169.41979241290343
+                  - 20180927
+                  - Actual
+                  - USD
+                - - 170.35941656233845
+                  - 20181028
+                  - Actual
+                  - USD
+                - - 172.54536323427652
+                  - 20180829
+                  - Forecast
+                  - USD
+                - - 173.41979241290323
+                  - 20180930
+                  - Forecast
+                  - USD
+                - - 174.35941656262546
+                  - 20181031
+                  - Forecast
+                  - USD
+            type: microsoft.costmanagement/Forecast
+    EnrollmentAccountQuery:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/70664866/enrollmentAccounts/456/providers/Microsoft.CostManagement/Query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Billing/billingAccounts/70664866/enrollmentAccounts/456/providers/Microsoft.CostManagement/Query?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 19.545363672276512
+                  - 20180831
+                  - USD
+                - - 173.41979241290323
+                  - 20180930
+                  - USD
+                - - 20.35941656262545
+                  - 20181031
+                  - USD
+            type: microsoft.costmanagement/Query
+    EnrollmentAccountQueryGroupingUsage:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/70664866/enrollmentAccounts/456/providers/Microsoft.CostManagement/Query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: SubscriptionName
+                  type: String
+                - name: UsageDate
+                  type: Number
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Billing/billingAccounts/70664866/enrollmentAccounts/456/providers/Microsoft.CostManagement/Query?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 19.545363672276512
+                  - Azure Dev Subscription
+                  - 20180831
+                  - USD
+                - - 173.41979241290323
+                  - Azure PPE Subscription
+                  - 20180930
+                  - USD
+                - - 20.35941656262545
+                  - Azure Prod Subscription
+                  - 20181031
+                  - USD
+            type: microsoft.costmanagement/Query
+    EnrollmentAccountDimensionsList:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456/providers/microsoft.consumption/dimensions_ResourceGroup_2018-12-01_2018-12-31
+            name: dimensions_ResourceGroup_2018-12-01_2018-12-31
+            properties:
+              category: ResourceGroup
+              data: []
+              description: Resource group
+              filterEnabled: true
+              groupingEnabled: true
+              total: 377
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+          - id: providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456/providers/microsoft.consumption/dimensions_ResourceType_2018-12-01_2018-12-31
+            name: dimensions_ResourceType_2018-12-01_2018-12-31
+            properties:
+              category: ResourceType
+              data: []
+              description: Resource type
+              filterEnabled: true
+              groupingEnabled: true
+              total: 37
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    EnrollmentAccountDimensionsListExpandAndTop:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456/providers/microsoft.consumption/dimensions_ResourceGroup_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceGroup_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceGroup
+              data:
+                - thoroetrg01
+                - default-notificationhubs-westus
+                - jedikeyvaultrg
+                - contosocodeflow8d4a
+                - noobaa
+              description: Resource group
+              filterEnabled: true
+              groupingEnabled: true
+              total: 377
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+          - id: providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456/providers/microsoft.consumption/dimensions_ResourceType_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceType_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceType
+              data:
+                - microsoft.automation/automationaccounts
+                - microsoft.databricks/workspaces
+                - microsoft.dbformysql/servers
+                - microsoft.containerregistry/registries
+                - microsoft.search/searchservices
+              description: Resource type
+              filterEnabled: true
+              groupingEnabled: true
+              total: 37
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    EnrollmentAccountDimensionsListWithFilter:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456/providers/microsoft.consumption/dimensions_ResourceId_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceId_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceId
+              data:
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/urphealthaccount
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/srphytenaccount
+                - /subscriptions/67e24f6b-1ec2-4c90-993a-dc2d25b00b6c/resourcegroups/defaultresourcegroup-eus/providers/microsoft.operationalinsights/workspaces/defaultworkspace-67e24f6b-1ec2-4c90-993a-dc2d25b00b6c-eus
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg-sql-ha/providers/microsoft.compute/virtualmachines/sql-4qqp1
+                - /subscriptions/a98d6dc5-eb8f-46cf-8938-f1fb08f03706/resourcegroups/databricks-rg-testwsp-xijmsdubneexm/providers/microsoft.compute/disks/488cdb42bf74474a98075415be3f806c-containerrootvolume
+              description: Resource Id
+              filterEnabled: true
+              groupingEnabled: true
+              nextLink: https://management.azure.com/providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456/providers/Microsoft.Consumption/Dimensions?$filter=properties/category
+                eq
+                'resourceId'&$top=5&api-version=2019-03-01-preview&$expand=properties/data&$skiptoken=AQAAAA%3D%3D
+              total: 1409
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    BillingAccountForecast:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/70664866/providers/Microsoft.CostManagement/Forecast/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: CostStatus
+                  type: String
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Billing/billingAccounts/70664866/providers/Microsoft.CostManagement/Forecast?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 19.545363672276512
+                  - 20180831
+                  - Actual
+                  - USD
+                - - 20.41979233490323
+                  - 20180930
+                  - Actual
+                  - USD
+                - - 21.322216562625453
+                  - 20181031
+                  - Actual
+                  - USD
+                - - 22.545363672276533
+                  - 20180831
+                  - Actual
+                  - USD
+                - - 23.41979675590323
+                  - 20180930
+                  - Forecast
+                  - USD
+                - - 24.359416562626652
+                  - 20181031
+                  - Forecast
+                  - USD
+            type: microsoft.costmanagement/Forecast
+    BillingAccountQuery:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/70664866/providers/Microsoft.CostManagement/Query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Billing/billingAccounts/70664866/providers/Microsoft.CostManagement/Query?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 19.545363672276512
+                  - 20180831
+                  - USD
+                - - 173.41979241290323
+                  - 20180930
+                  - USD
+                - - 20.35941656262545
+                  - 20181031
+                  - USD
+            type: microsoft.costmanagement/Query
+    BillingAccountQueryGroupingUsage:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/70664866/providers/Microsoft.CostManagement/Query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: SubscriptionName
+                  type: String
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Billing/billingAccounts/70664866/providers/Microsoft.CostManagement/Query?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 19.545363672276512
+                  - Trial Subscription
+                  - USD
+                - - 173.41979241290323
+                  - DEV Subscription
+                  - USD
+                - - 20.35941656262545
+                  - Cost Management Subscrioption
+                  - USD
+            type: microsoft.costmanagement/Query
+    BillingAccountDimensionsList:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/100/providers/microsoft.consumption/dimensions_ResourceGroup_2018-12-01_2018-12-31
+            name: dimensions_ResourceGroup_2018-12-01_2018-12-31
+            properties:
+              category: SubscriptionGuid
+              data: []
+              description: Subscription Guid
+              filterEnabled: true
+              groupingEnabled: true
+              total: 3
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+          - id: providers/Microsoft.Billing/billingAccounts/100/providers/microsoft.consumption/dimensions_ResourceType_2018-12-01_2018-12-31
+            name: dimensions_ResourceType_2018-12-01_2018-12-31
+            properties:
+              category: Account Name
+              data: []
+              description: Resource type
+              filterEnabled: true
+              groupingEnabled: true
+              total: 37
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    BillingAccountDimensionsListExpandAndTop:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/100/providers/microsoft.consumption/dimensions_ResourceGroup_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceGroup_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceGroup
+              data:
+                - thoroetrg01
+                - default-notificationhubs-westus
+                - jedikeyvaultrg
+                - contosocodeflow8d4a
+                - noobaa
+              description: Resource group
+              filterEnabled: true
+              groupingEnabled: true
+              total: 377
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+          - id: providers/Microsoft.Billing/billingAccounts/100/providers/microsoft.consumption/dimensions_ResourceType_2018-12-31_2018-12-31_5
+            name: dimensions_ResourceType_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceType
+              data:
+                - microsoft.automation/automationaccounts
+                - microsoft.databricks/workspaces
+                - microsoft.dbformysql/servers
+                - microsoft.containerregistry/registries
+                - microsoft.search/searchservices
+              description: Resource type
+              filterEnabled: true
+              groupingEnabled: true
+              total: 37
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    BillingAccountDimensionsListWithFilter:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/100/providers/microsoft.consumption/dimensions_ResourceId_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceId_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceId
+              data:
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/urphealthaccount
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/srphytenaccount
+                - /subscriptions/67e24f6b-1ec2-4c90-993a-dc2d25b00b6c/resourcegroups/defaultresourcegroup-eus/providers/microsoft.operationalinsights/workspaces/defaultworkspace-67e24f6b-1ec2-4c90-993a-dc2d25b00b6c-eus
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg-sql-ha/providers/microsoft.compute/virtualmachines/sql-4qqp1
+                - /subscriptions/a98d6dc5-eb8f-46cf-8938-f1fb08f03706/resourcegroups/databricks-rg-testwsp-xijmsdubneexm/providers/microsoft.compute/disks/488cdb42bf74474a98075415be3f806c-containerrootvolume
+              description: Resource Id
+              filterEnabled: true
+              groupingEnabled: true
+              nextLink: http://management.azure.com/ccmapi/providers/Microsoft.Billing/billingAccounts/100/providers/Microsoft.Consumption/Dimensions?$filter=properties/category
+                eq
+                'resourceId'&$top=5&api-version=2019-03-01-preview&$expand=properties/data&$skiptoken=AQAAAA%3D%3D
+              total: 1409
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    ShowbackRules_List:
+      value:
+        value:
+          - id: providers/Microsoft.Billing/billingAccounts/100/providers/Microsoft.CostManagement/showbackRules/testRule
+            name: testRule
+            properties:
+              creationTime: 2019-01-16T09:18:20.8665509Z
+              deprecationTime: 2019-03-16T09:18:20.8665509Z
+              description: This is a testRule
+              details:
+                benefits:
+                  - None
+                pricesheet: Pay-As-You-Go (0003P)
+              modificationTime: 2019-01-17T09:18:20.8665509Z
+              ruleType: CustomPrice
+              status: NotActive
+              version: 1
+            type: Microsoft.CostManagement/showbackRules
+    ShowbackRules:
+      value:
+        id: providers/Microsoft.Billing/billingAccounts/71824150/providers/Microsoft.CostManagement/showbackRules/demo
+        name: demo
+        properties:
+          creationTime: 2019-01-16T09:18:20.8665509Z
+          deprecationTime: 2019-03-16T09:18:20.8665509Z
+          description: Welcome to Showback demo
+          details:
+            benefits:
+              - None
+            markups:
+              - percentage: "1.1"
+            pricesheet: Pay-As-You-Go (0003P)
+          modificationTime: 2019-01-17T09:18:20.8665509Z
+          ruleType: CustomPrice
+          status: NotActive
+          version: 999
+        type: Microsoft.CostManagement/showbackRules
+    CloudConnector_List:
+      value:
+        value:
+          - id: /providers/Microsoft.CostManagement/cloudConnectors/aws-123456789012
+            kind: aws
+            name: aws-123456789012
+            properties:
+              billingModel: autoUpgrade
+              createdOn: 2018-05-15T13:25:48Z
+              credentialsKey: arn:aws:iam::123456789012:role/AzureCostManagementRole
+              daysTrialRemaining: 62
+              defaultManagementGroupId: /providers/Microsoft.Management/managementGroups/XYZ
+              displayName: AWS-Consolidated-1
+              externalBillingAccountId: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+              modifiedOn: 2018-05-23T09:21:11Z
+              providerBillingAccountDisplayName: MyCompany Consolidated
+              providerBillingAccountId: "123456789012"
+              reportId: HourlyWithResources
+              status: active
+              subscriptionId: 22222222-3333-4444-1111-777777777777
+            type: Microsoft.CostManagement/cloudConnectors
+          - id: /providers/Microsoft.CostManagement/cloudConnectors/aws-100000000007
+            kind: aws
+            name: aws-100000000007
+            properties:
+              billingModel: premium
+              createdOn: 2018-06-16T11:23:44Z
+              credentialsKey: arn:aws:iam::100000000007:role/AzureCostManagementRole
+              defaultManagementGroupId: /providers/Microsoft.Management/managementGroups/XYZ
+              displayName: AWS-Consolidated-2
+              externalBillingAccountId: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-100000000007
+              modifiedOn: 2018-06-21T17:33:28Z
+              providerBillingAccountId: "100000000007"
+              reportId: CURHourlyWithResources
+              status: active
+              subscriptionId: 22222222-3333-4444-1111-777777777777
+            type: Microsoft.CostManagement/cloudConnectors
+    CloudConnector_Get:
+      value:
+        id: /providers/Microsoft.CostManagement/cloudConnectors/aws-123456789012
+        kind: aws
+        name: aws-123456789012
+        properties:
+          billingModel: autoUpgrade
+          createdOn: 2018-05-15T13:25:48Z
+          credentialsKey: arn:aws:iam::123456789012:role/AzureCostManagementRole
+          daysTrialRemaining: 62
+          defaultManagementGroupId: /providers/Microsoft.Management/managementGroups/XYZ
+          displayName: AWS-Consolidated-1
+          externalBillingAccountId: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+          modifiedOn: 2018-05-23T09:21:11Z
+          providerBillingAccountDisplayName: MyCompany Consolidated
+          providerBillingAccountId: "123456789012"
+          reportId: HourlyWithResources
+          status: active
+          subscriptionId: 22222222-3333-4444-1111-777777777777
+        type: Microsoft.CostManagement/cloudConnectors
+    CloudConnector_Get_Expand:
+      value:
+        id: /providers/Microsoft.CostManagement/cloudConnectors/aws-123456789012
+        kind: aws
+        name: aws-123456789012
+        properties:
+          billingModel: autoUpgrade
+          collectionInfo:
+            error:
+              errorCode: FailedToAssumeRole
+              errorInnerMessage: Insufficient access to assume role
+                arn:aws:iam::123456789012:role/AzureCostManagementRole
+              errorMessage: Failed to assume role
+              errorStartTime: 2018-06-12T21:41:03Z
+            lastChecked: 2018-06-15T03:21:08Z
+            lastUpdated: 2018-06-12T17:25:28Z
+            sourceLastUpdated: 2018-06-12T16:41:28Z
+          createdOn: 2018-05-15T13:25:48Z
+          credentialsKey: arn:aws:iam::123456789012:role/AzureCostManagementRole
+          daysTrialRemaining: 62
+          defaultManagementGroupId: /providers/Microsoft.Management/managementGroups/XYZ
+          displayName: AWS-Consolidated-1
+          externalBillingAccountId: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+          modifiedOn: 2018-05-23T09:21:11Z
+          providerBillingAccountDisplayName: MyCompany Consolidated
+          providerBillingAccountId: "123456789012"
+          reportId: HourlyWithResources
+          status: warning
+          subscriptionId: 22222222-3333-4444-1111-777777777777
+        type: Microsoft.CostManagement/cloudConnectors
+    CloudConnector_Update:
+      value:
+        id: /providers/Microsoft.CostManagement/cloudConnectors/aws-123456789012
+        kind: aws
+        name: aws-123456789012
+        properties:
+          billingModel: autoUpgrade
+          createdOn: 2018-05-15T13:25:48Z
+          credentialsKey: arn:aws:iam::123456789012:role/AzureCostManagementRole
+          daysTrialRemaining: 62
+          defaultManagementGroupId: /providers/Microsoft.Management/managementGroups/XYZ
+          displayName: AWS-Consolidated-3
+          externalBillingAccountId: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+          modifiedOn: 2018-05-23T09:21:11Z
+          providerBillingAccountId: "123456789012"
+          reportId: HourlyWithResources
+          status: active
+          subscriptionId: 22222222-3333-4444-1111-777777777777
+        type: Microsoft.CostManagement/cloudConnectors
+    CloudConnector_Put:
+      value:
+        id: /providers/Microsoft.CostManagement/cloudConnectors/aws-123456789012
+        kind: aws
+        name: aws-123456789012
+        properties:
+          billingModel: autoUpgrade
+          createdOn: 2018-05-15T13:25:48Z
+          credentialsKey: arn:aws:iam::123456789012:role/AzureCostManagementRole
+          daysTrialRemaining: 62
+          defaultManagementGroupId: /providers/Microsoft.Management/managementGroups/XYZ
+          displayName: AWS-Consolidated-1
+          externalBillingAccountId: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+          modifiedOn: 2018-05-23T09:21:11Z
+          providerBillingAccountId: "123456789012"
+          reportId: HourlyWithResources
+          status: active
+          subscriptionId: 22222222-3333-4444-1111-777777777777
+        type: Microsoft.CostManagement/cloudConnectors
+    ExternalBillingAccount_List:
+      value:
+        value:
+          - id: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+            kind: aws
+            name: aws-123456789012
+            properties:
+              connectorId: /providers/Microsoft.CostManagement/cloudConnectors/12345678-9012-3456-7890-111111111111
+              displayName: MyCompany Consolidated
+              providerBillingAccountId: "123456789012"
+            type: Microsoft.CostManagement/externalBillingAccounts
+          - id: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-112233445566
+            kind: aws
+            name: aws-112233445566
+            properties:
+              connectorId: /providers/Microsoft.CostManagement/cloudConnectors/11111111-2222-3333-4444-555555555555
+              displayName: MyCompany Consolidated2
+              providerBillingAccountId: "112233445566"
+            type: Microsoft.CostManagement/externalBillingAccounts
+    ExternalBillingAccount_Get:
+      value:
+        id: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+        kind: aws
+        name: aws-123456789012
+        properties:
+          connectorId: /providers/Microsoft.CostManagement/cloudConnectors/aws-123456789012
+          displayName: MyCompany Consolidated
+          providerBillingAccountId: "123456789012"
+        type: Microsoft.CostManagement/externalBillingAccounts
+    ExternalBillingAccount_Get_Expand:
+      value:
+        id: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+        kind: aws
+        name: aws-123456789012
+        properties:
+          collectionInfo:
+            lastUpdated: 2018-06-12T17:25:28Z
+            sourceLastUpdated: 2018-06-12T16:41:28Z
+          connectorId: /providers/Microsoft.CostManagement/cloudConnectors/aws-123456789012
+          displayName: MyCompany Consolidated
+          providerBillingAccountId: "123456789012"
+        type: Microsoft.CostManagement/externalBillingAccounts
+    ExternalBillingAccountForecast:
+      value:
+        value:
+          - id: providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012/Forecast/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: CostStatus
+                  type: String
+                - name: Currency
+                  type: String
+              rows:
+                - - 19.545363672276512
+                  - 20180831
+                  - Actual
+                  - USD
+                - - 20.41979233490323
+                  - 20180930
+                  - Actual
+                  - USD
+                - - 21.322216562625453
+                  - 20181031
+                  - Actual
+                  - USD
+                - - 22.545363672276533
+                  - 20180831
+                  - Actual
+                  - USD
+                - - 23.41979675590323
+                  - 20180930
+                  - Forecast
+                  - USD
+                - - 24.359416562626652
+                  - 20181031
+                  - Forecast
+                  - USD
+            type: Microsoft.CostManagement/forecast
+    ExternalBillingAccountExternalSubscription_List:
+      value:
+        value:
+          - id: /providers/Microsoft.CostManagement/externalSubscriptions/aws-654321654321
+            kind: aws
+            name: aws-654321654321
+            properties:
+              displayName: MyUsageAccount1
+              externalBillingAccountId: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+              managementGroupId: /providers/Microsoft.Management/managementGroups/XYZ
+              providerAccountId: "654321654321"
+              providerBillingAccountId: "123456789012"
+            type: Microsoft.CostManagement/externalSubscriptions
+    ExternalSubscription_List:
+      value:
+        value:
+          - id: /providers/Microsoft.CostManagement/externalSubscriptions/aws-654321654321
+            name: aws-654321654321
+            properties:
+              displayName: MyUsageAccount1
+              externalBillingAccountId: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+              managementGroupId: /providers/Microsoft.Management/managementGroups/XYZ
+              providerAccountId: "654321654321"
+              providerBillingAccountId: "123456789012"
+            type: Microsoft.CostManagement/externalSubscriptions
+          - id: /providers/Microsoft.CostManagement/externalSubscriptions/aws-110011001100
+            name: aws-110011001100
+            properties:
+              displayName: MyUsageAccount2
+              externalBillingAccountId: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-112233445566
+              managementGroupId: /providers/Microsoft.Management/managementGroups/XYZ
+              providerAccountId: "110011001100"
+              providerBillingAccountId: "112233445566"
+            type: Microsoft.CostManagement/externalSubscriptions
+    ExternalSubscription_Get:
+      value:
+        id: /providers/Microsoft.CostManagement/externalSubscriptions/aws-654321654321
+        kind: aws
+        name: aws-654321654321
+        properties:
+          displayName: MyUsageAccount1
+          externalBillingAccountId: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+          managementGroupId: /providers/Microsoft.Management/managementGroups/XYZ
+          providerAccountId: "654321654321"
+          providerBillingAccountId: "123456789012"
+        type: Microsoft.CostManagement/externalSubscriptions
+    ExternalSubscription_Get_Expand:
+      value:
+        id: /providers/Microsoft.CostManagement/externalSubscriptions/aws-654321654321
+        kind: aws
+        name: aws-654321654321
+        properties:
+          collectionInfo:
+            lastUpdated: 2018-06-12T17:25:28Z
+            sourceLastUpdated: 2018-06-12T16:41:28Z
+          displayName: MyUsageAccount1
+          externalBillingAccountId: /providers/Microsoft.CostManagement/externalBillingAccounts/aws-123456789012
+          managementGroupId: /providers/Microsoft.Management/managementGroups/XYZ
+          providerAccountId: "654321654321"
+          providerBillingAccountId: "123456789012"
+        type: Microsoft.CostManagement/externalSubscriptions
+    ManagementGroupForecast:
+      value:
+        value:
+          - id: providers/Microsoft.Management/managementGroups/MyMgId/providers/Microsoft.CostManagement/Forecast/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: CostStatus
+                  type: String
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Management/managementGroups/MyMgId/providers/Microsoft.CostManagement/Forecast?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 19.045363672276512
+                  - 20190126
+                  - Actual
+                  - USD
+                - - 19.41979241290323
+                  - 20190127
+                  - Actual
+                  - USD
+                - - 20.35941656262545
+                  - 20190128
+                  - Actual
+                  - USD
+                - - 19.045363672276512
+                  - 20190129
+                  - Forecast
+                  - USD
+                - - 19.41979241290323
+                  - 20190130
+                  - Forecast
+                  - USD
+                - - 20.35941656262545
+                  - 20190131
+                  - Forecast
+                  - USD
+            type: microsoft.costmanagement/Forecast
+    ManagementGroupQuery:
+      value:
+        value:
+          - id: providers/Microsoft.Management/managementGroups/MyMgId/providers/Microsoft.CostManagement/Query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Management/managementGroups/MyMgId/providers/Microsoft.CostManagement/Query?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 19.545363672276512
+                  - 20181131
+                  - USD
+                - - 173.41979241290323
+                  - 20181231
+                  - USD
+                - - 20.35941656262545
+                  - 20190131
+                  - USD
+            type: microsoft.costmanagement/Query
+    ManagementGroupQueryGroupingUsage:
+      value:
+        value:
+          - id: providers/Microsoft.Management/managementGroups/MyMgId/providers/Microsoft.CostManagement/Query/ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            name: ad67fd91-c131-4bda-9ba9-7187ecb1cebd
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: SubscriptionName
+                  type: String
+                - name: Currency
+                  type: String
+              nextLink: https://management.azure.com/providers/Microsoft.Management/managementGroups/MyMgId/providers/Microsoft.CostManagement/Query?api-version=2019-03-01-preview&$skiptoken=AQAAAA%3D%3D
+              rows:
+                - - 19.545363672276512
+                  - Trial Subscription
+                  - USD
+                - - 173.41979241290323
+                  - DEV Subscription
+                  - USD
+                - - 20.35941656262545
+                  - Cost Management Subscrioption
+                  - USD
+            type: microsoft.costmanagement/Query
+    ManagementGroupDimensionsList:
+      value:
+        value:
+          - id: providers/Microsoft.Management/managementGroups/MyMgId/providers/microsoft.consumption/dimensions_ResourceGroup_2018-12-01_2018-12-31
+            name: dimensions_ResourceGroup_2018-12-01_2018-12-31
+            properties:
+              category: ResourceGroup
+              data: []
+              description: Resource group
+              filterEnabled: true
+              groupingEnabled: true
+              total: 377
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+          - id: providers/Microsoft.Management/managementGroups/MyMgId/providers/microsoft.consumption/dimensions_ResourceType_2018-12-01_2018-12-31
+            name: dimensions_ResourceType_2018-12-01_2018-12-31
+            properties:
+              category: ResourceType
+              data: []
+              description: Resource type
+              filterEnabled: true
+              groupingEnabled: true
+              total: 37
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    ManagementGroupDimensionsListExpandAndTop:
+      value:
+        value:
+          - id: providers/Microsoft.Management/managementGroups/MyMgId/providers/microsoft.consumption/dimensions_ResourceGroup_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceGroup_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceGroup
+              data:
+                - thoroetrg01
+                - default-notificationhubs-westus
+                - jedikeyvaultrg
+                - contosocodeflow8d4a
+                - noobaa
+              description: Resource group
+              filterEnabled: true
+              groupingEnabled: true
+              total: 377
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+          - id: providers/Microsoft.Management/managementGroups/MyMgId/providers/microsoft.consumption/dimensions_ResourceType_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceType_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceType
+              data:
+                - microsoft.automation/automationaccounts
+                - microsoft.databricks/workspaces
+                - microsoft.dbformysql/servers
+                - microsoft.containerregistry/registries
+                - microsoft.search/searchservices
+              description: Resource type
+              filterEnabled: true
+              groupingEnabled: true
+              total: 37
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    ManagementGroupDimensionsListWithFilter:
+      value:
+        value:
+          - id: providers/Microsoft.Management/managementGroups/MyMgId/providers/microsoft.consumption/dimensions_ResourceId_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceId_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceId
+              data:
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/urphealthaccount
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/srphytenaccount
+                - /subscriptions/67e24f6b-1ec2-4c90-993a-dc2d25b00b6c/resourcegroups/defaultresourcegroup-eus/providers/microsoft.operationalinsights/workspaces/defaultworkspace-67e24f6b-1ec2-4c90-993a-dc2d25b00b6c-eus
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg-sql-ha/providers/microsoft.compute/virtualmachines/sql-4qqp1
+                - /subscriptions/a98d6dc5-eb8f-46cf-8938-f1fb08f03706/resourcegroups/databricks-rg-testwsp-xijmsdubneexm/providers/microsoft.compute/disks/488cdb42bf74474a98075415be3f806c-containerrootvolume
+              description: Resource Id
+              filterEnabled: true
+              groupingEnabled: true
+              nextLink: http://management.azure.com/providers/Microsoft.Management/managementGroups/MyMgId/providers/Microsoft.Consumption/Dimensions?$filter=properties/category
+                eq
+                'resourceId'&$top=5&api-version=2018-12-31-preview&$expand=properties/data&$skiptoken=AQAAAA%3D%3D
+              total: 1409
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    SubscriptionForecast:
+      value:
+        value:
+          - id: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/Forecast/00000000-0000-0000-0000-000000000000
+            name: 55312978-ba1b-415c-9304-cfd9c43c0481
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: CostStatus
+                  type: String
+                - name: Currency
+                  type: String
+              rows:
+                - - 214.68795741935486
+                  - 20181222
+                  - Actual
+                  - USD
+                - - 215.68795741935486
+                  - 20181223
+                  - Actual
+                  - USD
+                - - 216.68795741935486
+                  - 20181224
+                  - Actual
+                  - USD
+                - - 217.68795741935486
+                  - 20181225
+                  - Actual
+                  - USD
+                - - 218.68795741935486
+                  - 20181226
+                  - Actual
+                  - USD
+                - - 219.14384914358166
+                  - 20181227
+                  - Actual
+                  - USD
+                - - 220.14384914358877
+                  - 20181228
+                  - Forecast
+                  - USD
+                - - 221.14343314358877
+                  - 20181229
+                  - Forecast
+                  - USD
+                - - 222.14343355558876
+                  - 20181230
+                  - Forecast
+                  - USD
+                - - 223.14343355558876
+                  - 20181231
+                  - Forecast
+                  - USD
+            type: microsoft.costmanagement/Forecast
+    SubscriptionQuery:
+      value:
+        value:
+          - id: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CostManagement/Query/00000000-0000-0000-0000-000000000000
+            name: 55312978-ba1b-415c-9304-cfd9c43c0481
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: Currency
+                  type: String
+              rows:
+                - - 2.10333307059661
+                  - 20181017
+                  - USD
+                - - 218.68795741935486
+                  - 20181018
+                  - USD
+                - - 0.14384913581657052
+                  - 20181019
+                  - USD
+            type: microsoft.costmanagement/Query
+    SubscriptionDimensionsList:
+      value:
+        value:
+          - id: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/dimensions_ResourceGroup_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceGroup_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceGroup
+              data:
+                - dcrg
+                - rg
+                - offlinegalleryrg
+                - system.orlando.adminkeyvault
+                - system.orlando.keyvault
+              description: Resource group
+              filterEnabled: true
+              groupingEnabled: true
+              total: 68
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+          - id: subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/dimensions_ResourceType_2018-12-01_2018-12-31_5
+            name: dimensions_ResourceType_2018-12-01_2018-12-31_5
+            properties:
+              category: ResourceType
+              data:
+                - microsoft.storage/storageaccounts
+                - microsoft.web.admin/role
+                - microsoft.sql/servers
+                - microsoft.compute/virtualmachines
+              description: Resource type
+              filterEnabled: true
+              groupingEnabled: true
+              total: 4
+              usageEnd: 2018-12-31T00:00:00-07:00
+              usageStart: 2018-12-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    ResourceGroupDimensionsList:
+      value:
+        value:
+          - id: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/system.orlando/providers/microsoft.consumption/dimensions_ResourceType_2018-05-01_2018-05-31_5
+            name: dimensions_ResourceType_2018-05-01_2018-05-31_5
+            properties:
+              category: ResourceType
+              data:
+                - microsoft.storage/storageaccounts
+              description: Resource type
+              filterEnabled: true
+              groupingEnabled: true
+              total: 1
+              usageEnd: 2018-05-31T00:00:00-07:00
+              usageStart: 2018-05-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+          - id: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/system.orlando/providers/microsoft.consumption/dimensions_ResourceId_2018-05-01_2018-05-31_5
+            name: dimensions_ResourceId_2018-05-01_2018-05-31_5
+            properties:
+              category: ResourceId
+              data:
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/authprod
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/systemevents
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/armadminprod
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/srphytenaccount
+                - /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/system.orlando/providers/microsoft.storage/storageaccounts/publicsystemportal
+              description: Resource Id
+              filterEnabled: true
+              groupingEnabled: true
+              total: 27
+              usageEnd: 2018-05-31T00:00:00-07:00
+              usageStart: 2018-05-01T00:00:00-07:00
+            type: microsoft.consumption/dimensions
+    ResourceGroupForecast:
+      value:
+        value:
+          - id: subscriptions/55312978-ba1b-415c-9304-c4b9c43c0481/resourcegroups/ScreenSharingTest-peer/providers/Microsoft.CostManagement/Forecast/9af9459d-441d-4055-9ed0-83d4c4a363fb
+            name: 9af9459d-441d-4055-9ed0-83d4c4a363fb
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: CostStatus
+                  type: String
+                - name: Currency
+                  type: String
+              rows:
+                - - 19.10333307059661
+                  - 20180417
+                  - Actual
+                  - USD
+                - - 20.10333307059661
+                  - 20180418
+                  - Actual
+                  - USD
+                - - 21.10333307059661
+                  - 20180419
+                  - Forecast
+                  - USD
+                - - 22.10333307059661
+                  - 20180420
+                  - Forecast
+                  - USD
+            type: microsoft.costmanagement/Forecast
+    ResourceGroupQuery:
+      value:
+        value:
+          - id: subscriptions/55312978-ba1b-415c-9304-c4b9c43c0481/resourcegroups/ScreenSharingTest-peer/providers/Microsoft.CostManagement/Query/9af9459d-441d-4055-9ed0-83d4c4a363fb
+            name: 9af9459d-441d-4055-9ed0-83d4c4a363fb
+            properties:
+              columns:
+                - name: PreTaxCost
+                  type: Number
+                - name: UsageDate
+                  type: Number
+                - name: Currency
+                  type: String
+              rows:
+                - - 2.10333307059661
+                  - 20180417
+                  - USD
+                - - 20.10333307059661
+                  - 20180418
+                  - USD
+            type: microsoft.costmanagement/Query
+  parameters:
+    apiVersionParameter:
+      description: Version of the API to be used with the client request. The current
+        version is 2019-03-01-preview
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        DepartmentForecast:
+          value: 2019-03-01-preview
+        DepartmentQuery:
+          value: 2019-03-01-preview
+        DepartmentQueryGroupingUsage:
+          value: 2019-03-01-preview
+        DepartmentDimensionsList:
+          value: 2019-03-01-preview
+        DepartmentDimensionsListExpandAndTop:
+          value: 2019-03-01-preview
+        DepartmentDimensionsListWithFilter:
+          value: 2019-03-01-preview
+        EnrollmentAccountForecast:
+          value: 2019-03-01-preview
+        EnrollmentAccountQuery:
+          value: 2019-03-01-preview
+        EnrollmentAccountQueryGroupingUsage:
+          value: 2019-03-01-preview
+        EnrollmentAccountDimensionsList:
+          value: 2019-03-01-preview
+        EnrollmentAccountDimensionsListExpandAndTop:
+          value: 2019-03-01-preview
+        EnrollmentAccountDimensionsListWithFilter:
+          value: 2019-03-01-preview
+        BillingAccountForecast:
+          value: 2019-03-01-preview
+        BillingAccountQuery:
+          value: 2019-03-01-preview
+        BillingAccountQueryGroupingUsage:
+          value: 2019-03-01-preview
+        BillingAccountDimensionsList:
+          value: 2019-03-01-preview
+        BillingAccountDimensionsListExpandAndTop:
+          value: 2019-03-01-preview
+        BillingAccountDimensionsListWithFilter:
+          value: 2019-03-01-preview
+        ShowbackRules_List:
+          value: 2019-03-01-preview
+        ShowbackRules:
+          value: 2019-03-01-preview
+        CloudConnector_List:
+          value: 2019-03-01-preview
+        CloudConnector_Delete:
+          value: 2019-03-01-preview
+        CloudConnector_Get:
+          value: 2019-03-01-preview
+        CloudConnector_Get_Expand:
+          value: 2019-03-01-preview
+        CloudConnector_Update:
+          value: 2019-03-01-preview
+        CloudConnector_Put:
+          value: 2019-03-01-preview
+        ExternalBillingAccount_List:
+          value: 2019-03-01-preview
+        ExternalBillingAccount_Get:
+          value: 2019-03-01-preview
+        ExternalBillingAccount_Get_Expand:
+          value: 2019-03-01-preview
+        ExternalBillingAccountForecast:
+          value: 2019-03-01-preview
+        ExternalBillingAccountExternalSubscription_List:
+          value: 2019-03-01-preview
+        ExternalSubscription_List:
+          value: 2019-03-01-preview
+        ExternalSubscription_Get:
+          value: 2019-03-01-preview
+        ExternalSubscription_Get_Expand:
+          value: 2019-03-01-preview
+        ManagementGroupForecast:
+          value: 2019-03-01-preview
+        ManagementGroupQuery:
+          value: 2019-03-01-preview
+        ManagementGroupQueryGroupingUsage:
+          value: 2019-03-01-preview
+        ManagementGroupDimensionsList:
+          value: 2019-03-01-preview
+        ManagementGroupDimensionsListExpandAndTop:
+          value: 2019-03-01-preview
+        ManagementGroupDimensionsListWithFilter:
+          value: 2019-03-01-preview
+        ManagementGroupExternalSubscription_Put:
+          value: 2019-03-01-preview
+        SubscriptionForecast:
+          value: 2019-03-01-preview
+        SubscriptionQuery:
+          value: 2019-03-01-preview
+        SubscriptionDimensionsList:
+          value: 2019-03-01-preview
+        ResourceGroupDimensionsList:
+          value: 2019-03-01-preview
+        ResourceGroupForecast:
+          value: 2019-03-01-preview
+        ResourceGroupQuery:
+          value: 2019-03-01-preview
+    billingAccountIdParameter:
+      description: BillingAccount ID
+      in: path
+      name: billingAccountId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        DepartmentForecast:
+          value: "70664866"
+        DepartmentQuery:
+          value: "70664866"
+        DepartmentQueryGroupingUsage:
+          value: "70664866"
+        DepartmentDimensionsList:
+          value: "100"
+        DepartmentDimensionsListExpandAndTop:
+          value: "100"
+        DepartmentDimensionsListWithFilter:
+          value: "100"
+        EnrollmentAccountForecast:
+          value: "70664866"
+        EnrollmentAccountQuery:
+          value: "70664866"
+        EnrollmentAccountQueryGroupingUsage:
+          value: "70664866"
+        EnrollmentAccountDimensionsList:
+          value: "100"
+        EnrollmentAccountDimensionsListExpandAndTop:
+          value: "100"
+        EnrollmentAccountDimensionsListWithFilter:
+          value: "100"
+        BillingAccountForecast:
+          value: "70664866"
+        BillingAccountQuery:
+          value: "70664866"
+        BillingAccountQueryGroupingUsage:
+          value: "70664866"
+        BillingAccountDimensionsList:
+          value: "100"
+        BillingAccountDimensionsListExpandAndTop:
+          value: "100"
+        BillingAccountDimensionsListWithFilter:
+          value: "100"
+        ShowbackRules_List:
+          value: "100"
+        ShowbackRules:
+          value: "100"
+    connectorNameParameter:
+      description: Connector Name.
+      in: path
+      name: connectorName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        CloudConnector_Delete:
+          value: aws-123456789012
+        CloudConnector_Get:
+          value: aws-123456789012
+        CloudConnector_Get_Expand:
+          value: aws-123456789012
+        CloudConnector_Update:
+          value: aws-123456789012
+        CloudConnector_Put:
+          value: aws-123456789012
+    departmentIdParameter:
+      description: Department ID
+      in: path
+      name: departmentId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        DepartmentForecast:
+          value: "123"
+        DepartmentQuery:
+          value: "123"
+        DepartmentQueryGroupingUsage:
+          value: "123"
+        DepartmentDimensionsList:
+          value: "123"
+        DepartmentDimensionsListExpandAndTop:
+          value: "123"
+        DepartmentDimensionsListWithFilter:
+          value: "123"
+    enrollmentAccountIdParameter:
+      description: Enrollment Account ID
+      in: path
+      name: enrollmentAccountId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        EnrollmentAccountForecast:
+          value: "456"
+        EnrollmentAccountQuery:
+          value: "456"
+        EnrollmentAccountQueryGroupingUsage:
+          value: "456"
+        EnrollmentAccountDimensionsList:
+          value: "456"
+        EnrollmentAccountDimensionsListExpandAndTop:
+          value: "456"
+        EnrollmentAccountDimensionsListWithFilter:
+          value: "456"
+    externalBillingAccountNameParameter:
+      description: External Billing Account Name. (eg 'aws-{PayerAccountId}')
+      in: path
+      name: externalBillingAccountName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        ExternalBillingAccount_Get:
+          value: aws-123456789012
+        ExternalBillingAccount_Get_Expand:
+          value: aws-123456789012
+        ExternalBillingAccountForecast:
+          value: aws-123456789012
+        ExternalBillingAccountExternalSubscription_List:
+          value: aws-123456789012
+    externalSubscriptionNameParameter:
+      description: External Subscription Name. (eg 'aws-{UsageAccountId}')
+      in: path
+      name: externalSubscriptionName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        ExternalSubscription_Get:
+          value: aws-654321654321
+        ExternalSubscription_Get_Expand:
+          value: aws-654321654321
+        ManagementGroupExternalSubscription_Put:
+          value: aws-654321654321
+    managementGroupIdParameter:
+      description: ManagementGroup ID
+      in: path
+      name: managementGroupId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        ManagementGroupForecast:
+          value: MyMgId
+        ManagementGroupQuery:
+          value: MyMgId
+        ManagementGroupQueryGroupingUsage:
+          value: MyMgId
+        ManagementGroupDimensionsList:
+          value: MyMgId
+        ManagementGroupDimensionsListExpandAndTop:
+          value: MyMgId
+        ManagementGroupDimensionsListWithFilter:
+          value: MyMgId
+        ExternalSubscription_List:
+          value: XYZ
+        ManagementGroupExternalSubscription_Put:
+          value: XYZ
+    resourceGroupNameParameter:
+      description: Azure Resource Group Name.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        ResourceGroupDimensionsList:
+          value: system.orlando
+        ResourceGroupForecast:
+          value: ScreenSharingTest-peer
+        ResourceGroupQuery:
+          value: ScreenSharingTest-peer
+    ruleNameParameter:
+      description: Showback rule name
+      in: path
+      name: ruleName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        ShowbackRules:
+          value: testRule
+    subscriptionIdParameter:
+      description: Azure Subscription ID.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        SubscriptionForecast:
+          value: 00000000-0000-0000-0000-000000000000
+        SubscriptionQuery:
+          value: 00000000-0000-0000-0000-000000000000
+        SubscriptionDimensionsList:
+          value: 00000000-0000-0000-0000-000000000000
+        ResourceGroupDimensionsList:
+          value: 00000000-0000-0000-0000-000000000000
+        ResourceGroupForecast:
+          value: 55312978-ba1b-415c-9304-c4b9c43c0481
+        ResourceGroupQuery:
+          value: 55312978-ba1b-415c-9304-c4b9c43c0481
+  requestBodies:
+    ReportConfigDefinition:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ReportConfigDefinition"
+      description: Parameters supplied to the CreateOrUpdate Report Config operation.
+      required: true
+    ConnectorDefinition:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ConnectorDefinition"
+      description: Connector details
+      required: true
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ConnectorCollectionErrorInfo:
+      description: Details of any error encountered on last collection attempt
+      properties:
+        errorCode:
+          description: Short error code
+          readOnly: true
+          type: string
+        errorInnerMessage:
+          description: External Provider error message
+          readOnly: true
+          type: string
+        errorMessage:
+          description: Detailed error message
+          readOnly: true
+          type: string
+        errorStartTime:
+          description: Time the error started occurring (Last time error occurred in
+            lastChecked)
+          format: date-time
+          readOnly: true
+          type: string
+      type: object
+    ConnectorCollectionInfo:
+      description: Collection and ingestion information
+      properties:
+        error:
+          $ref: "#/components/schemas/ConnectorCollectionErrorInfo"
+        lastChecked:
+          description: Last time the data acquisition process initiated connecting to the
+            external provider
+          format: date-time
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        lastUpdated:
+          description: Last time the external data was updated into Azure
+          format: date-time
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        sourceLastUpdated:
+          description: Source timestamp of external data currently available in Azure (eg
+            AWS last processed CUR file timestamp)
+          format: date-time
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+      type: object
+    ConnectorDefinition:
+      description: The Connector model definition
+      properties:
+        id:
+          description: Connector id
+          readOnly: true
+          type: string
+        kind:
+          description: Connector kind (eg aws)
+          type: string
+        name:
+          description: Connector name
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/ConnectorProperties"
+        type:
+          description: Connector type
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    ConnectorDefinitionListResult:
+      description: Result of listing connector definitions. It contains a list of available
+        connector definitions in the scope provided.
+      properties:
+        value:
+          description: The list of connector definitions.
+          items:
+            $ref: "#/components/schemas/ConnectorDefinition"
+          readOnly: true
+          type: array
+    ConnectorProperties:
+      description: The properties of a Connector
+      properties:
+        billingModel:
+          description: Connector billing model
+          enum:
+            - trial
+            - autoUpgrade
+            - premium
+            - expired
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ConnectorBillingModel
+          x-ms-mutability:
+            - read
+            - create
+            - update
+        collectionInfo:
+          $ref: "#/components/schemas/ConnectorCollectionInfo"
+        createdOn:
+          description: Connector definition creation datetime
+          format: date-time
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        credentialsKey:
+          description: Credentials authentication key (eg AWS ARN)
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+            - update
+        credentialsSecret:
+          description: Credentials secret (eg AWS ExternalId)
+          type: string
+          x-ms-mutability:
+            - create
+            - update
+        daysTrialRemaining:
+          description: Number of days remaining of trial
+          readOnly: true
+          type: integer
+          x-ms-mutability:
+            - read
+          nullable: true
+        defaultManagementGroupId:
+          description: Default ManagementGroupId
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+            - update
+        displayName:
+          description: Connector DisplayName
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+            - update
+        externalBillingAccountId:
+          description: Associated ExternalBillingAccountId
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        modifiedOn:
+          description: Connector last modified datetime
+          format: date-time
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        providerBillingAccountDisplayName:
+          description: The display name of the providerBillingAccountId as defined on the
+            external provider
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        providerBillingAccountId:
+          description: Connector providerBillingAccountId, determined from credentials (eg
+            AWS Consolidated account number)
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        reportId:
+          description: Identifying source report. (For AWS this is a CUR report name,
+            defined with Daily and with Resources)
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+            - update
+        status:
+          description: Connector status
+          enum:
+            - active
+            - error
+            - expired
+            - warning
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ConnectorStatus
+          x-ms-mutability:
+            - read
+        subscriptionId:
+          description: Billing SubscriptionId
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+            - update
+      type: object
+    CostAllocationDetails:
+      description: Represents CostAllocation showback rule model
+      properties:
+        policy:
+          description: Cost allocation policy.
+          enum:
+            - Proportional
+            - Evenly
+            - Fixed
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: CostAllocationPolicy
+    CostAllocationDetailsKind:
+      allOf:
+        - $ref: "#/components/schemas/ShowbackRuleProperties"
+      description: Represents CostAllocation showback rule model
+      properties:
+        details:
+          $ref: "#/components/schemas/CostAllocationDetails"
+      x-ms-discriminator-value: CostAllocation
+    CustomPriceDetails:
+      description: Represents Custom price showback rule model
+      properties:
+        benefits:
+          description: Array of benefits.
+          items:
+            enum:
+              - None
+              - All
+              - AHUB
+              - Reservations
+            type: string
+            x-ms-enum:
+              modelAsString: true
+              name: FunctionType
+          type: array
+        markups:
+          description: List of markups.
+          items:
+            $ref: "#/components/schemas/Markup"
+          type: array
+        pricesheet:
+          type: string
+    CustomPriceDetailsKind:
+      allOf:
+        - $ref: "#/components/schemas/ShowbackRuleProperties"
+      description: Represents Custom price showback rule model
+      properties:
+        details:
+          $ref: "#/components/schemas/CustomPriceDetails"
+      x-ms-discriminator-value: CustomPrice
+    Dimension:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      properties:
+        properties:
+          $ref: "#/components/schemas/DimensionProperties"
+      type: object
+    DimensionProperties:
+      properties:
+        category:
+          type: string
+        data:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+        filterEnabled:
+          type: boolean
+        groupingEnabled:
+          type: boolean
+        nextLink:
+          type: string
+        total:
+          format: int32
+          type: integer
+        usageEnd:
+          format: date-time
+          type: string
+        usageStart:
+          format: date-time
+          type: string
+      type: object
+    DimensionsListResult:
+      description: Result of listing dimensions. It contains a list of available dimensions.
+      properties:
+        value:
+          description: The list of dimensions.
+          items:
+            $ref: "#/components/schemas/Dimension"
+          readOnly: true
+          type: array
+      type: object
+    ErrorBase:
+      description: The details of the error.
+      properties:
+        code:
+          description: A machine readable error code.
+          readOnly: true
+          type: string
+        message:
+          description: A human readable error message.
+          readOnly: true
+          type: string
+        target:
+          description: Indicates which property in the request is responsible for the error.
+          readOnly: true
+          type: string
+    ErrorDetails:
+      description: The details of the error.
+      properties:
+        code:
+          description: A machine readable error code.
+          readOnly: true
+          type: string
+        details:
+          description: error details.
+          items:
+            $ref: "#/components/schemas/ErrorBase"
+          type: array
+        message:
+          description: A human readable error message.
+          readOnly: true
+          type: string
+        target:
+          description: Indicates which property in the request is responsible for the error.
+          type: string
+    ErrorResponse:
+      description: Error response indicates that the service is not able to process the
+        incoming request. The reason is provided in the error message.
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorDetails"
+      type: object
+    ExternalBillingAccountDefinition:
+      description: The ExternalBillingAccount model definition
+      properties:
+        id:
+          description: ExternalBillingAccount id
+          readOnly: true
+          type: string
+        kind:
+          description: ExternalBillingAccount kind (eg aws)
+          readOnly: true
+          type: string
+        name:
+          description: ExternalBillingAccount name
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/ExternalBillingAccountProperties"
+        type:
+          description: ExternalBillingAccount type
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    ExternalBillingAccountDefinitionListResult:
+      description: Result of listing ExternalBillingAccount definitions. It contains a list
+        of available ExternalBillingAccount definitions in the scope provided.
+      properties:
+        value:
+          description: The list of ExternalBillingAccount definitions.
+          items:
+            $ref: "#/components/schemas/ExternalBillingAccountDefinition"
+          readOnly: true
+          type: array
+    ExternalBillingAccountProperties:
+      description: The properties of a ExternalBillingAccount
+      properties:
+        collectionInfo:
+          $ref: "#/components/schemas/ConnectorCollectionInfo"
+        connectorId:
+          description: Underlying ConnectorId
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        displayName:
+          description: ExternalBillingAccount DisplayName
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        providerBillingAccountId:
+          description: Provider BillingAccountId (eg AWS Consolidated Account number)
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+      type: object
+    ExternalSubscriptionDefinition:
+      description: The ExternalSubscription model definition
+      properties:
+        id:
+          description: ExternalSubscription id
+          readOnly: true
+          type: string
+        kind:
+          description: ExternalSubscription kind (eg aws)
+          readOnly: true
+          type: string
+        name:
+          description: ExternalSubscription name
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/ExternalSubscriptionProperties"
+        type:
+          description: ExternalSubscription type
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    ExternalSubscriptionDefinitionListResult:
+      description: Result of listing ExternalSubscription definitions. It contains a list
+        of available ExternalSubscription definitions in the scope provided.
+      properties:
+        value:
+          description: The list of ExternalSubscription definitions.
+          items:
+            $ref: "#/components/schemas/ExternalSubscriptionDefinition"
+          readOnly: true
+          type: array
+    ExternalSubscriptionIdListRequest:
+      description: The list of ExternalSubscriptionIds operation request.
+      properties:
+        value:
+          description: The list of ExternalSubscriptionIds.
+          items:
+            type: string
+          type: array
+    ExternalSubscriptionProperties:
+      description: The properties of a ExternalSubscription
+      properties:
+        collectionInfo:
+          $ref: "#/components/schemas/ConnectorCollectionInfo"
+        displayName:
+          description: ExternalSubscription DisplayName
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        externalBillingAccountId:
+          description: Parent ExternalBillingAccountId
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        managementGroupId:
+          description: Assigned ManagementGroupId
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        providerAccountId:
+          description: Provider AccountId (eg AWS Linked Account number)
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+        providerBillingAccountId:
+          description: Provider BillingAccountId (eg AWS Consolidated Account number)
+          readOnly: true
+          type: string
+          x-ms-mutability:
+            - read
+      type: object
+    Markup:
+      description: The Markup model definition
+      properties:
+        percentage:
+          type: string
+      type: object
+    Operation:
+      description: A Cost management REST API operation.
+      properties:
+        display:
+          description: The object that represents the operation.
+          properties:
+            operation:
+              description: "Operation type: Read, write, delete, etc."
+              readOnly: true
+              type: string
+            provider:
+              description: "Service provider: Microsoft.CostManagement."
+              readOnly: true
+              type: string
+            resource:
+              description: "Resource on which the operation is performed: Dimensions,
+                Query."
+              readOnly: true
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}."
+          readOnly: true
+          type: string
+      type: object
+    OperationListResult:
+      description: Result of listing cost management operations. It contains a list of
+        operations and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          readOnly: true
+          type: string
+        value:
+          description: List of cost management operations supported by the
+            Microsoft.CostManagement resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          readOnly: true
+          type: array
+    Query:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      properties:
+        properties:
+          $ref: "#/components/schemas/QueryProperties"
+      type: object
+    QueryColumn:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    QueryProperties:
+      properties:
+        columns:
+          description: Array of columns
+          items:
+            $ref: "#/components/schemas/QueryColumn"
+          type: array
+        nextLink:
+          type: string
+        rows:
+          items:
+            items: {}
+            type: array
+          type: array
+      type: object
+    QueryResult:
+      description: Result of query. It contains all columns listed under groupings and
+        aggregation.
+      properties:
+        value:
+          description: The list of usage data.
+          items:
+            $ref: "#/components/schemas/Query"
+          readOnly: true
+          type: array
+      type: object
+    ReportConfigAggregation:
+      description: The aggregation expression to be used in the report.
+      properties:
+        function:
+          description: The name of the aggregation function to use.
+          enum:
+            - Sum
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: FunctionType
+        name:
+          description: The name of the column to aggregate.
+          type: string
+      required:
+        - name
+        - function
+    ReportConfigColumnType:
+      description: The type of the column in the report.
+      enum:
+        - Tag
+        - Dimension
+      type: string
+      x-ms-enum:
+        modelAsString: true
+        name: ReportConfigColumnType
+    ReportConfigComparisonExpression:
+      description: The comparison expression to be used in the report.
+      properties:
+        name:
+          description: The name of the column to use in comparison.
+          type: string
+        operator:
+          description: The operator to use for comparison.
+          enum:
+            - In
+            - Contains
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: OperatorType
+        values:
+          description: Array of values to use for comparison
+          items:
+            type: string
+          minItems: 1
+          type: array
+      required:
+        - name
+        - operator
+        - values
+    ReportConfigDataset:
+      description: The definition of data present in the report.
+      properties:
+        aggregation:
+          additionalProperties:
+            $ref: "#/components/schemas/ReportConfigAggregation"
+          description: Dictionary of aggregation expression to use in the report. The key
+            of each item in the dictionary is the alias for the aggregated
+            column. Report can have up to 2 aggregation clauses.
+          maxItems: 2
+          type: object
+        configuration:
+          $ref: "#/components/schemas/ReportConfigDatasetConfiguration"
+        filter:
+          $ref: "#/components/schemas/ReportConfigFilter"
+        granularity:
+          description: The granularity of rows in the report.
+          enum:
+            - Daily
+            - Monthly
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: GranularityType
+        grouping:
+          description: Array of group by expression to use in the report. Report can have
+            up to 2 group by clauses.
+          items:
+            $ref: "#/components/schemas/ReportConfigGrouping"
+          maxItems: 2
+          type: array
+        sorting:
+          description: Array of order by expression to use in the report.
+          items:
+            $ref: "#/components/schemas/ReportConfigSorting"
+          type: array
+    ReportConfigDatasetConfiguration:
+      description: The configuration of dataset in the report.
+      properties:
+        columns:
+          description: Array of column names to be included in the report. Any valid report
+            column name is allowed. If not provided, then report includes all
+            columns.
+          items:
+            type: string
+          type: array
+    ReportConfigDefinition:
+      description: The definition of a report config.
+      properties:
+        dataset:
+          $ref: "#/components/schemas/ReportConfigDataset"
+        timePeriod:
+          $ref: "#/components/schemas/ReportConfigTimePeriod"
+        timeframe:
+          description: The time frame for pulling data for the report. If custom, then a
+            specific time period must be provided.
+          enum:
+            - WeekToDate
+            - MonthToDate
+            - YearToDate
+            - Custom
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: TimeframeType
+        type:
+          description: The type of the report. Usage represents actual usage, forecast
+            represents forecasted data and UsageAndForecast represents both
+            usage and forecasted data. Actual usage and forecasted data can be
+            differentiated based on dates.
+          enum:
+            - Usage
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ReportType
+      required:
+        - type
+        - timeframe
+    ReportConfigFilter:
+      description: The filter expression to be used in the report.
+      properties:
+        and:
+          description: The logical "AND" expression. Must have at least 2 items.
+          items:
+            $ref: "#/components/schemas/ReportConfigFilter"
+          minItems: 2
+          type: array
+        dimension:
+          $ref: "#/components/schemas/ReportConfigComparisonExpression"
+        not:
+          $ref: "#/components/schemas/ReportConfigFilter"
+        or:
+          description: The logical "OR" expression. Must have at least 2 items.
+          items:
+            $ref: "#/components/schemas/ReportConfigFilter"
+          minItems: 2
+          type: array
+        tag:
+          $ref: "#/components/schemas/ReportConfigComparisonExpression"
+    ReportConfigGrouping:
+      description: The group by expression to be used in the report.
+      properties:
+        name:
+          description: The name of the column to group. This version supports subscription
+            lowest possible grain.
+          type: string
+        type:
+          $ref: "#/components/schemas/ReportConfigColumnType"
+      required:
+        - type
+        - name
+    ReportConfigSorting:
+      description: The order by expression to be used in the report.
+      properties:
+        direction:
+          description: Direction of sort.
+          enum:
+            - Ascending
+            - Descending
+          type: string
+        name:
+          description: The name of the column to sort.
+          type: string
+      required:
+        - name
+    ReportConfigTimePeriod:
+      description: The start and end date for pulling data for the report.
+      properties:
+        from:
+          description: The start date to pull data from.
+          format: date-time
+          type: string
+        to:
+          description: The end date to pull data to.
+          format: date-time
+          type: string
+      required:
+        - from
+        - to
+    Resource:
+      description: The Resource model definition.
+      properties:
+        id:
+          description: Resource Id.
+          readOnly: true
+          type: string
+        name:
+          description: Resource name.
+          readOnly: true
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          readOnly: true
+          type: object
+        type:
+          description: Resource type.
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    Scope:
+      description: The Scope model definition
+      properties:
+        childScope:
+          $ref: "#/components/schemas/Scope"
+        id:
+          description: Scope id
+          type: string
+        name:
+          description: Scope name
+          type: string
+        type:
+          description: Scope type
+          type: string
+      type: object
+    ShowbackRule:
+      description: The showback rule model definition
+      properties:
+        id:
+          description: Rule id
+          readOnly: true
+          type: string
+        name:
+          description: Rule name
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/ShowbackRuleProperties"
+        type:
+          description: Rule type
+          readOnly: true
+          type: string
+      type: object
+    ShowbackRuleListResult:
+      description: Result of listing showback rules. It contains a list of available rules
+        in the scope provided.
+      properties:
+        value:
+          description: The list of showback rules.
+          items:
+            $ref: "#/components/schemas/ShowbackRule"
+          readOnly: true
+          type: array
+    ShowbackRuleProperties:
+      description: The properties of a showback rule.
+      discriminator:
+        propertyName: ruleType
+      properties:
+        creationTime:
+          description: The time when the showback rule was created.
+          format: date-time
+          readOnly: true
+          type: string
+        deprecationTime:
+          description: The current time when showback rule was deprecate.
+          format: date-time
+          readOnly: true
+          type: string
+        description:
+          description: Description of a showback rule.
+          type: string
+        modificationTime:
+          description: The current status when showback rule was modified.
+          format: date-time
+          readOnly: true
+          type: string
+        ruleType:
+          description: The rule type of the showback rule solution.
+          enum:
+            - CustomPrice
+            - CostAllocation
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: RuleType
+        scopes:
+          description: List of authorized assigned scopes.
+          items:
+            $ref: "#/components/schemas/Scope"
+          type: array
+        status:
+          description: The current status of the showback rule.
+          enum:
+            - NotActive
+            - Active
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ShowbackRuleStatus
+        version:
+          description: The current version of showback rule.
+          readOnly: true
+          type: integer
+      required:
+        - ruleType

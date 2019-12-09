@@ -1,0 +1,1954 @@
+openapi: 3.0.0
+info:
+  version: 2018-07-27
+  x-release: v4
+  title: AWS IoT Events
+  description: AWS IoT Events monitors your equipment or device fleets for failures or
+    changes in operation, and triggers actions when such events occur. AWS IoT
+    Events API commands enable you to create, read, update and delete inputs and
+    detector models, and to list their versions.
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: iotevents
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/iotevents-2018-07-27.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/iotevents/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  /detector-models:
+    post:
+      operationId: CreateDetectorModel
+      description: Creates a detector model.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateDetectorModelResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+        "482":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+        "483":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "485":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "486":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - detectorModelName
+                - detectorModelDefinition
+                - roleArn
+              properties:
+                detectorModelName:
+                  description: The name of the detector model.
+                  type: string
+                  pattern: ^[a-zA-Z0-9_-]+$
+                  minLength: 1
+                  maxLength: 128
+                detectorModelDefinition:
+                  description: Information that defines how a detector operates.
+                  type: object
+                  properties:
+                    states:
+                      $ref: "#/components/schemas/States"
+                    initialStateName:
+                      $ref: "#/components/schemas/StateName"
+                detectorModelDescription:
+                  description: A brief description of the detector model.
+                  type: string
+                  maxLength: 128
+                key:
+                  description: The input attribute key used to identify a device or system
+                    in order to create a detector (an instance of the detector
+                    model) and then to route each input received to the
+                    appropriate detector (instance). This parameter uses a
+                    JSON-path expression to specify the attribute-value pair in
+                    the message payload of each input that is used to identify
+                    the device associated with the input.
+                  type: string
+                  pattern: ^((`[\w\- ]+`)|([\w\-]+))(\.((`[\w- ]+`)|([\w\-]+)))*$
+                  minLength: 1
+                  maxLength: 128
+                roleArn:
+                  description: The ARN of the role that grants permission to AWS IoT Events
+                    to perform its operations.
+                  type: string
+                  minLength: 1
+                  maxLength: 2048
+                tags:
+                  description: Metadata that can be used to manage the detector model.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Tag"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListDetectorModels
+      description: Lists the detector models you have created. Only the metadata associated
+        with each detector model is returned.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListDetectorModelsResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "482":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: nextToken
+          in: query
+          required: false
+          description: The token for the next set of results.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of results to return at one time.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 250
+  /inputs:
+    post:
+      operationId: CreateInput
+      description: Creates an input.
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateInputResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "482":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "484":
+          description: ResourceAlreadyExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAlreadyExistsException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - inputName
+                - inputDefinition
+              properties:
+                inputName:
+                  description: The name you want to give to the input.
+                  type: string
+                  pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
+                  minLength: 1
+                  maxLength: 128
+                inputDescription:
+                  description: A brief description of the input.
+                  type: string
+                  maxLength: 128
+                inputDefinition:
+                  description: The definition of the input.
+                  type: object
+                  properties:
+                    attributes:
+                      $ref: "#/components/schemas/Attributes"
+                tags:
+                  description: Metadata that can be used to manage the input.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Tag"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListInputs
+      description: Lists the inputs you have created.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListInputsResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "482":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: nextToken
+          in: query
+          required: false
+          description: The token for the next set of results.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of results to return at one time.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 250
+  "/detector-models/{detectorModelName}":
+    delete:
+      operationId: DeleteDetectorModel
+      description: Deletes a detector model. Any active instances of the detector model are
+        also deleted.
+      responses:
+        "204":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteDetectorModelResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "485":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: detectorModelName
+          in: path
+          required: true
+          description: The name of the detector model to be deleted.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 128
+            pattern: ^[a-zA-Z0-9_-]+$
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeDetectorModel
+      description: Describes a detector model. If the <code>"version"</code> parameter is
+        not specified, information about the latest version is returned.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeDetectorModelResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "483":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: detectorModelName
+          in: path
+          required: true
+          description: The name of the detector model.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 128
+            pattern: ^[a-zA-Z0-9_-]+$
+        - name: version
+          in: query
+          required: false
+          description: The version of the detector model.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 128
+    post:
+      operationId: UpdateDetectorModel
+      description: Updates a detector model. Detectors (instances) spawned by the previous
+        version are deleted and then re-created as new inputs arrive.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateDetectorModelResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "485":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: detectorModelName
+          in: path
+          required: true
+          description: The name of the detector model that is updated.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 128
+            pattern: ^[a-zA-Z0-9_-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - detectorModelDefinition
+                - roleArn
+              properties:
+                detectorModelDefinition:
+                  description: Information that defines how a detector operates.
+                  type: object
+                  properties:
+                    states:
+                      $ref: "#/components/schemas/States"
+                    initialStateName:
+                      $ref: "#/components/schemas/StateName"
+                detectorModelDescription:
+                  description: A brief description of the detector model.
+                  type: string
+                  maxLength: 128
+                roleArn:
+                  description: The ARN of the role that grants permission to AWS IoT Events
+                    to perform its operations.
+                  type: string
+                  minLength: 1
+                  maxLength: 2048
+        required: true
+  "/inputs/{inputName}":
+    delete:
+      operationId: DeleteInput
+      description: Deletes an input.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteInputResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "483":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: inputName
+          in: path
+          required: true
+          description: The name of the input to delete.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 128
+            pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeInput
+      description: Describes an input.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeInputResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "483":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: inputName
+          in: path
+          required: true
+          description: The name of the input.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 128
+            pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
+    put:
+      operationId: UpdateInput
+      description: Updates an input.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateInputResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      parameters:
+        - name: inputName
+          in: path
+          required: true
+          description: The name of the input you want to update.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 128
+            pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - inputDefinition
+              properties:
+                inputDescription:
+                  description: A brief description of the input.
+                  type: string
+                  maxLength: 128
+                inputDefinition:
+                  description: The definition of the input.
+                  type: object
+                  properties:
+                    attributes:
+                      $ref: "#/components/schemas/Attributes"
+        required: true
+  /logging:
+    get:
+      operationId: DescribeLoggingOptions
+      description: Retrieves the current settings of the AWS IoT Events logging options.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeLoggingOptionsResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "482":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: UnsupportedOperationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnsupportedOperationException"
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    put:
+      operationId: PutLoggingOptions
+      description: <p>Sets or updates the AWS IoT Events logging options.</p> <p>If you
+        update the value of any <code>"loggingOptions"</code> field, it takes up
+        to one minute for the change to take effect. Also, if you change the
+        policy attached to the role you specified in the <code>"roleArn"</code>
+        field (for example, to correct an invalid policy) it takes up to five
+        minutes for that change to take effect.</p>
+      responses:
+        "200":
+          description: Success
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "482":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "483":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "484":
+          description: UnsupportedOperationException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnsupportedOperationException"
+        "485":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - loggingOptions
+              properties:
+                loggingOptions:
+                  description: The values of the AWS IoT Events logging options.
+                  type: object
+                  properties:
+                    roleArn:
+                      $ref: "#/components/schemas/AmazonResourceName"
+                    level:
+                      $ref: "#/components/schemas/LoggingLevel"
+                    enabled:
+                      $ref: "#/components/schemas/LoggingEnabled"
+                    detectorDebugOptions:
+                      $ref: "#/components/schemas/DetectorDebugOptions"
+        required: true
+  "/detector-models/{detectorModelName}/versions":
+    get:
+      operationId: ListDetectorModelVersions
+      description: Lists all the versions of a detector model. Only the metadata associated
+        with each detector model version is returned.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListDetectorModelVersionsResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "483":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: detectorModelName
+          in: path
+          required: true
+          description: The name of the detector model whose versions are returned.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 128
+            pattern: ^[a-zA-Z0-9_-]+$
+        - name: nextToken
+          in: query
+          required: false
+          description: The token for the next set of results.
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of results to return at one time.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 250
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /tags#resourceArn:
+    get:
+      operationId: ListTagsForResource
+      description: Lists the tags (metadata) you have assigned to the resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTagsForResourceResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+      parameters:
+        - name: resourceArn
+          in: query
+          required: true
+          description: The ARN of the resource.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 2048
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    post:
+      operationId: TagResource
+      description: Adds to or modifies the tags of the given resource. Tags are metadata
+        that can be used to manage a resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagResourceResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+      parameters:
+        - name: resourceArn
+          in: query
+          required: true
+          description: The ARN of the resource.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 2048
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tags
+              properties:
+                tags:
+                  description: The new or modified tags for the resource.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Tag"
+        required: true
+  /tags#resourceArn&tagKeys:
+    delete:
+      operationId: UntagResource
+      description: Removes the given tags (metadata) from the resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UntagResourceResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+        "484":
+          description: InternalFailureException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalFailureException"
+      parameters:
+        - name: resourceArn
+          in: query
+          required: true
+          description: The ARN of the resource.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 2048
+        - name: tagKeys
+          in: query
+          required: true
+          description: A list of the keys of the tags to be removed from the resource.
+          schema:
+            type: array
+            items:
+              type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://iotevents.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS IoT Events multi-region endpoint
+  - url: https://iotevents.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS IoT Events multi-region endpoint
+  - url: http://iotevents.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS IoT Events endpoint for China (Beijing) and China (Ningxia)
+  - url: https://iotevents.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS IoT Events endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    CreateDetectorModelResponse:
+      type: object
+      properties:
+        detectorModelConfiguration:
+          $ref: "#/components/schemas/DetectorModelConfiguration"
+    States:
+      type: array
+      items:
+        $ref: "#/components/schemas/State"
+      minItems: 1
+    StateName:
+      type: string
+      minLength: 1
+      maxLength: 128
+    Tag:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          $ref: "#/components/schemas/TagKey"
+        value:
+          $ref: "#/components/schemas/TagValue"
+      description: Metadata that can be used to manage the resource.
+    InvalidRequestException: {}
+    ResourceInUseException: {}
+    ResourceAlreadyExistsException: {}
+    LimitExceededException: {}
+    ThrottlingException: {}
+    InternalFailureException: {}
+    ServiceUnavailableException: {}
+    CreateInputResponse:
+      type: object
+      properties:
+        inputConfiguration:
+          $ref: "#/components/schemas/InputConfiguration"
+    Attributes:
+      type: array
+      items:
+        $ref: "#/components/schemas/Attribute"
+      minItems: 1
+      maxItems: 200
+    DeleteDetectorModelResponse:
+      type: object
+      properties: {}
+    ResourceNotFoundException: {}
+    DeleteInputResponse:
+      type: object
+      properties: {}
+    DescribeDetectorModelResponse:
+      type: object
+      properties:
+        detectorModel:
+          $ref: "#/components/schemas/DetectorModel"
+    DescribeInputResponse:
+      type: object
+      properties:
+        input:
+          $ref: "#/components/schemas/Input"
+    DescribeLoggingOptionsResponse:
+      type: object
+      properties:
+        loggingOptions:
+          $ref: "#/components/schemas/LoggingOptions"
+    UnsupportedOperationException: {}
+    ListDetectorModelVersionsResponse:
+      type: object
+      properties:
+        detectorModelVersionSummaries:
+          $ref: "#/components/schemas/DetectorModelVersionSummaries"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListDetectorModelsResponse:
+      type: object
+      properties:
+        detectorModelSummaries:
+          $ref: "#/components/schemas/DetectorModelSummaries"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListInputsResponse:
+      type: object
+      properties:
+        inputSummaries:
+          $ref: "#/components/schemas/InputSummaries"
+        nextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListTagsForResourceResponse:
+      type: object
+      properties:
+        tags:
+          $ref: "#/components/schemas/Tags"
+    AmazonResourceName:
+      type: string
+      minLength: 1
+      maxLength: 2048
+    LoggingLevel:
+      type: string
+      enum:
+        - ERROR
+        - INFO
+        - DEBUG
+    LoggingEnabled:
+      type: boolean
+    DetectorDebugOptions:
+      type: array
+      items:
+        $ref: "#/components/schemas/DetectorDebugOption"
+      minItems: 1
+    TagResourceResponse:
+      type: object
+      properties: {}
+    UntagResourceResponse:
+      type: object
+      properties: {}
+    TagKey:
+      type: string
+      minLength: 1
+      maxLength: 128
+    UpdateDetectorModelResponse:
+      type: object
+      properties:
+        detectorModelConfiguration:
+          $ref: "#/components/schemas/DetectorModelConfiguration"
+    UpdateInputResponse:
+      type: object
+      properties:
+        inputConfiguration:
+          $ref: "#/components/schemas/InputConfiguration"
+    SetVariableAction:
+      type: object
+      required:
+        - variableName
+        - value
+      properties:
+        variableName:
+          $ref: "#/components/schemas/VariableName"
+        value:
+          $ref: "#/components/schemas/VariableValue"
+      description: Information about the variable and its new value.
+    SNSTopicPublishAction:
+      type: object
+      required:
+        - targetArn
+      properties:
+        targetArn:
+          $ref: "#/components/schemas/AmazonResourceName"
+      description: Information required to publish the Amazon SNS message.
+    IotTopicPublishAction:
+      type: object
+      required:
+        - mqttTopic
+      properties:
+        mqttTopic:
+          $ref: "#/components/schemas/MQTTTopic"
+      description: Information required to publish the MQTT message via the AWS IoT message
+        broker.
+    SetTimerAction:
+      type: object
+      required:
+        - timerName
+        - seconds
+      properties:
+        timerName:
+          $ref: "#/components/schemas/TimerName"
+        seconds:
+          $ref: "#/components/schemas/Seconds"
+      description: Information needed to set the timer.
+    ClearTimerAction:
+      type: object
+      required:
+        - timerName
+      properties:
+        timerName:
+          $ref: "#/components/schemas/TimerName"
+      description: Information needed to clear the timer.
+    ResetTimerAction:
+      type: object
+      required:
+        - timerName
+      properties:
+        timerName:
+          $ref: "#/components/schemas/TimerName"
+      description: Information needed to reset the timer.
+    LambdaAction:
+      type: object
+      required:
+        - functionArn
+      properties:
+        functionArn:
+          $ref: "#/components/schemas/AmazonResourceName"
+      description: Calls a Lambda function, passing in information about the detector model
+        instance and the event which triggered the action.
+    IotEventsAction:
+      type: object
+      required:
+        - inputName
+      properties:
+        inputName:
+          $ref: "#/components/schemas/InputName"
+      description: Sends an IoT Events input, passing in information about the detector
+        model instance and the event which triggered the action.
+    SqsAction:
+      type: object
+      required:
+        - queueUrl
+      properties:
+        queueUrl:
+          $ref: "#/components/schemas/QueueUrl"
+        useBase64:
+          $ref: "#/components/schemas/UseBase64"
+      description: Sends information about the detector model instance and the event which
+        triggered the action to an AWS SQS queue.
+    FirehoseAction:
+      type: object
+      required:
+        - deliveryStreamName
+      properties:
+        deliveryStreamName:
+          $ref: "#/components/schemas/DeliveryStreamName"
+        separator:
+          $ref: "#/components/schemas/FirehoseSeparator"
+      description: Sends information about the detector model instance and the event which
+        triggered the action to a Kinesis Data Firehose stream.
+    Action:
+      type: object
+      properties:
+        setVariable:
+          $ref: "#/components/schemas/SetVariableAction"
+        sns:
+          $ref: "#/components/schemas/SNSTopicPublishAction"
+        iotTopicPublish:
+          $ref: "#/components/schemas/IotTopicPublishAction"
+        setTimer:
+          $ref: "#/components/schemas/SetTimerAction"
+        clearTimer:
+          $ref: "#/components/schemas/ClearTimerAction"
+        resetTimer:
+          $ref: "#/components/schemas/ResetTimerAction"
+        lambda:
+          $ref: "#/components/schemas/LambdaAction"
+        iotEvents:
+          $ref: "#/components/schemas/IotEventsAction"
+        sqs:
+          $ref: "#/components/schemas/SqsAction"
+        firehose:
+          $ref: "#/components/schemas/FirehoseAction"
+      description: An action to be performed when the <code>"condition"</code> is TRUE.
+    Actions:
+      type: array
+      items:
+        $ref: "#/components/schemas/Action"
+    AttributeJsonPath:
+      type: string
+      pattern: ^((`[\w\- ]+`)|([\w\-]+))(\.((`[\w- ]+`)|([\w\-]+)))*$
+      minLength: 1
+      maxLength: 128
+    Attribute:
+      type: object
+      required:
+        - jsonPath
+      properties:
+        jsonPath:
+          $ref: "#/components/schemas/AttributeJsonPath"
+      description: "The attributes from the JSON payload that are made available by the
+        input. Inputs are derived from messages sent to the AWS IoT Events
+        system using <code>BatchPutMessage</code>. Each such message contains a
+        JSON payload, and those attributes (and their paired values) specified
+        here are available for use in the <code>condition</code> expressions
+        used by detectors. "
+    TimerName:
+      type: string
+      minLength: 1
+      maxLength: 128
+    Condition:
+      type: string
+      maxLength: 512
+    DetectorModelName:
+      type: string
+      pattern: ^[a-zA-Z0-9_-]+$
+      minLength: 1
+      maxLength: 128
+    DetectorModelDefinition:
+      type: object
+      required:
+        - states
+        - initialStateName
+      properties:
+        states:
+          $ref: "#/components/schemas/States"
+        initialStateName:
+          $ref: "#/components/schemas/StateName"
+      description: Information that defines how a detector operates.
+    DetectorModelDescription:
+      type: string
+      maxLength: 128
+    Tags:
+      type: array
+      items:
+        $ref: "#/components/schemas/Tag"
+    CreateDetectorModelRequest:
+      type: object
+      required:
+        - detectorModelName
+        - detectorModelDefinition
+        - roleArn
+      properties:
+        detectorModelName:
+          $ref: "#/components/schemas/DetectorModelName"
+        detectorModelDefinition:
+          $ref: "#/components/schemas/DetectorModelDefinition"
+        detectorModelDescription:
+          $ref: "#/components/schemas/DetectorModelDescription"
+        key:
+          $ref: "#/components/schemas/AttributeJsonPath"
+        roleArn:
+          $ref: "#/components/schemas/AmazonResourceName"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    DetectorModelConfiguration:
+      type: object
+      properties:
+        detectorModelName:
+          $ref: "#/components/schemas/DetectorModelName"
+        detectorModelVersion:
+          $ref: "#/components/schemas/DetectorModelVersion"
+        detectorModelDescription:
+          $ref: "#/components/schemas/DetectorModelDescription"
+        detectorModelArn:
+          $ref: "#/components/schemas/DetectorModelArn"
+        roleArn:
+          $ref: "#/components/schemas/AmazonResourceName"
+        creationTime:
+          $ref: "#/components/schemas/Timestamp"
+        lastUpdateTime:
+          $ref: "#/components/schemas/Timestamp"
+        status:
+          $ref: "#/components/schemas/DetectorModelVersionStatus"
+        key:
+          $ref: "#/components/schemas/AttributeJsonPath"
+      description: Information about how the detector model is configured.
+    InputName:
+      type: string
+      pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
+      minLength: 1
+      maxLength: 128
+    InputDescription:
+      type: string
+      maxLength: 128
+    InputDefinition:
+      type: object
+      required:
+        - attributes
+      properties:
+        attributes:
+          $ref: "#/components/schemas/Attributes"
+      description: The definition of the input.
+    CreateInputRequest:
+      type: object
+      required:
+        - inputName
+        - inputDefinition
+      properties:
+        inputName:
+          $ref: "#/components/schemas/InputName"
+        inputDescription:
+          $ref: "#/components/schemas/InputDescription"
+        inputDefinition:
+          $ref: "#/components/schemas/InputDefinition"
+        tags:
+          $ref: "#/components/schemas/Tags"
+    InputConfiguration:
+      type: object
+      required:
+        - inputName
+        - inputArn
+        - creationTime
+        - lastUpdateTime
+        - status
+      properties:
+        inputName:
+          $ref: "#/components/schemas/InputName"
+        inputDescription:
+          $ref: "#/components/schemas/InputDescription"
+        inputArn:
+          $ref: "#/components/schemas/InputArn"
+        creationTime:
+          $ref: "#/components/schemas/Timestamp"
+        lastUpdateTime:
+          $ref: "#/components/schemas/Timestamp"
+        status:
+          $ref: "#/components/schemas/InputStatus"
+      description: Information about the configuration of an input.
+    DeleteDetectorModelRequest:
+      type: object
+      properties: {}
+    DeleteInputRequest:
+      type: object
+      properties: {}
+    DeliveryStreamName:
+      type: string
+    DetectorModelVersion:
+      type: string
+      minLength: 1
+      maxLength: 128
+    DescribeDetectorModelRequest:
+      type: object
+      properties: {}
+    DetectorModel:
+      type: object
+      properties:
+        detectorModelDefinition:
+          $ref: "#/components/schemas/DetectorModelDefinition"
+        detectorModelConfiguration:
+          $ref: "#/components/schemas/DetectorModelConfiguration"
+      description: Information about the detector model.
+    DescribeInputRequest:
+      type: object
+      properties: {}
+    Input:
+      type: object
+      properties:
+        inputConfiguration:
+          $ref: "#/components/schemas/InputConfiguration"
+        inputDefinition:
+          $ref: "#/components/schemas/InputDefinition"
+      description: Information about the input.
+    DescribeLoggingOptionsRequest:
+      type: object
+      properties: {}
+    LoggingOptions:
+      type: object
+      required:
+        - roleArn
+        - level
+        - enabled
+      properties:
+        roleArn:
+          $ref: "#/components/schemas/AmazonResourceName"
+        level:
+          $ref: "#/components/schemas/LoggingLevel"
+        enabled:
+          $ref: "#/components/schemas/LoggingEnabled"
+        detectorDebugOptions:
+          $ref: "#/components/schemas/DetectorDebugOptions"
+      description: The values of the AWS IoT Events logging options.
+    KeyValue:
+      type: string
+      pattern: ^[a-zA-Z0-9\-_:]+$
+      minLength: 1
+      maxLength: 128
+    DetectorDebugOption:
+      type: object
+      required:
+        - detectorModelName
+      properties:
+        detectorModelName:
+          $ref: "#/components/schemas/DetectorModelName"
+        keyValue:
+          $ref: "#/components/schemas/KeyValue"
+      description: The detector model and the specific detectors (instances) for which the
+        logging level is given.
+    DetectorModelArn:
+      type: string
+    Timestamp:
+      type: string
+      format: date-time
+    DetectorModelVersionStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - ACTIVATING
+        - INACTIVE
+        - DEPRECATED
+        - DRAFT
+        - PAUSED
+        - FAILED
+    DetectorModelSummary:
+      type: object
+      properties:
+        detectorModelName:
+          $ref: "#/components/schemas/DetectorModelName"
+        detectorModelDescription:
+          $ref: "#/components/schemas/DetectorModelDescription"
+        creationTime:
+          $ref: "#/components/schemas/Timestamp"
+      description: Information about the detector model.
+    DetectorModelSummaries:
+      type: array
+      items:
+        $ref: "#/components/schemas/DetectorModelSummary"
+    DetectorModelVersionSummary:
+      type: object
+      properties:
+        detectorModelName:
+          $ref: "#/components/schemas/DetectorModelName"
+        detectorModelVersion:
+          $ref: "#/components/schemas/DetectorModelVersion"
+        detectorModelArn:
+          $ref: "#/components/schemas/DetectorModelArn"
+        roleArn:
+          $ref: "#/components/schemas/AmazonResourceName"
+        creationTime:
+          $ref: "#/components/schemas/Timestamp"
+        lastUpdateTime:
+          $ref: "#/components/schemas/Timestamp"
+        status:
+          $ref: "#/components/schemas/DetectorModelVersionStatus"
+      description: Information about the detector model version.
+    DetectorModelVersionSummaries:
+      type: array
+      items:
+        $ref: "#/components/schemas/DetectorModelVersionSummary"
+    EventName:
+      type: string
+      maxLength: 128
+    Event:
+      type: object
+      required:
+        - eventName
+      properties:
+        eventName:
+          $ref: "#/components/schemas/EventName"
+        condition:
+          $ref: "#/components/schemas/Condition"
+        actions:
+          $ref: "#/components/schemas/Actions"
+      description: Specifies the <code>"actions"</code> to be performed when the
+        <code>"condition"</code> evaluates to TRUE.
+    Events:
+      type: array
+      items:
+        $ref: "#/components/schemas/Event"
+    FirehoseSeparator:
+      type: string
+      pattern: ([\n\t])|(\r\n)|(,)
+    InputArn:
+      type: string
+    InputStatus:
+      type: string
+      enum:
+        - CREATING
+        - UPDATING
+        - ACTIVE
+        - DELETING
+    InputSummary:
+      type: object
+      properties:
+        inputName:
+          $ref: "#/components/schemas/InputName"
+        inputDescription:
+          $ref: "#/components/schemas/InputDescription"
+        inputArn:
+          $ref: "#/components/schemas/InputArn"
+        creationTime:
+          $ref: "#/components/schemas/Timestamp"
+        lastUpdateTime:
+          $ref: "#/components/schemas/Timestamp"
+        status:
+          $ref: "#/components/schemas/InputStatus"
+      description: Information about the input.
+    InputSummaries:
+      type: array
+      items:
+        $ref: "#/components/schemas/InputSummary"
+    MQTTTopic:
+      type: string
+      minLength: 1
+      maxLength: 128
+    NextToken:
+      type: string
+    MaxResults:
+      type: integer
+      minimum: 1
+      maximum: 250
+    ListDetectorModelVersionsRequest:
+      type: object
+      properties: {}
+    ListDetectorModelsRequest:
+      type: object
+      properties: {}
+    ListInputsRequest:
+      type: object
+      properties: {}
+    ListTagsForResourceRequest:
+      type: object
+      properties: {}
+    OnEnterLifecycle:
+      type: object
+      properties:
+        events:
+          $ref: "#/components/schemas/Events"
+      description: When entering this state, perform these <code>actions</code> if the
+        <code>condition</code> is TRUE.
+    OnExitLifecycle:
+      type: object
+      properties:
+        events:
+          $ref: "#/components/schemas/Events"
+      description: When exiting this state, perform these <code>"actions"</code> if the
+        specified <code>"condition"</code> is TRUE.
+    TransitionEvents:
+      type: array
+      items:
+        $ref: "#/components/schemas/TransitionEvent"
+    OnInputLifecycle:
+      type: object
+      properties:
+        events:
+          $ref: "#/components/schemas/Events"
+        transitionEvents:
+          $ref: "#/components/schemas/TransitionEvents"
+      description: Specifies the actions performed when the <code>"condition"</code>
+        evaluates to TRUE.
+    PutLoggingOptionsRequest:
+      type: object
+      required:
+        - loggingOptions
+      properties:
+        loggingOptions:
+          $ref: "#/components/schemas/LoggingOptions"
+    QueueUrl:
+      type: string
+    Seconds:
+      type: integer
+    VariableName:
+      type: string
+      pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
+      minLength: 1
+      maxLength: 128
+    VariableValue:
+      type: string
+      minLength: 1
+      maxLength: 1024
+    UseBase64:
+      type: boolean
+    State:
+      type: object
+      required:
+        - stateName
+      properties:
+        stateName:
+          $ref: "#/components/schemas/StateName"
+        onInput:
+          $ref: "#/components/schemas/OnInputLifecycle"
+        onEnter:
+          $ref: "#/components/schemas/OnEnterLifecycle"
+        onExit:
+          $ref: "#/components/schemas/OnExitLifecycle"
+      description: Information that defines a state of a detector.
+    TagValue:
+      type: string
+      minLength: 0
+      maxLength: 256
+    TagKeys:
+      type: array
+      items:
+        $ref: "#/components/schemas/TagKey"
+    TagResourceRequest:
+      type: object
+      required:
+        - tags
+      properties:
+        tags:
+          $ref: "#/components/schemas/Tags"
+    TransitionEvent:
+      type: object
+      required:
+        - eventName
+        - condition
+        - nextState
+      properties:
+        eventName:
+          $ref: "#/components/schemas/EventName"
+        condition:
+          $ref: "#/components/schemas/Condition"
+        actions:
+          $ref: "#/components/schemas/Actions"
+        nextState:
+          $ref: "#/components/schemas/StateName"
+      description: Specifies the actions performed and the next state entered when a
+        <code>"condition"</code> evaluates to TRUE.
+    UntagResourceRequest:
+      type: object
+      properties: {}
+    UpdateDetectorModelRequest:
+      type: object
+      required:
+        - detectorModelDefinition
+        - roleArn
+      properties:
+        detectorModelDefinition:
+          $ref: "#/components/schemas/DetectorModelDefinition"
+        detectorModelDescription:
+          $ref: "#/components/schemas/DetectorModelDescription"
+        roleArn:
+          $ref: "#/components/schemas/AmazonResourceName"
+    UpdateInputRequest:
+      type: object
+      required:
+        - inputDefinition
+      properties:
+        inputDescription:
+          $ref: "#/components/schemas/InputDescription"
+        inputDefinition:
+          $ref: "#/components/schemas/InputDefinition"

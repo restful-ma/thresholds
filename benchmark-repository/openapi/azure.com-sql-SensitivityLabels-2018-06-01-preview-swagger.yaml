@@ -1,0 +1,674 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2018-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/sensitivityLabels.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: sql-sensitivityLabels
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/currentSensitivityLabels":
+    get:
+      description: Gets the sensitivity labels of a given database
+      operationId: SensitivityLabels_ListCurrentByDatabase
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/DatabaseNameParameter"
+        - description: An OData filter expression that filters elements in the collection.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the sensitivity labels.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SensitivityLabelListResult"
+              examples:
+                Gets the current sensitivity labels of a given database:
+                  $ref: "#/components/examples/Gets_the_current_sensitivity_labels_\
+                    of_a_given_database"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 SensitivityLabelsInvalidODataQuery - The specified OData query is either not valid or not supported
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+      tags:
+        - SensitivityLabels
+      x-ms-odata: "#/components/schemas/SensitivityLabel"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/recommendedSensitivityLabels":
+    get:
+      description: Gets the sensitivity labels of a given database
+      operationId: SensitivityLabels_ListRecommendedByDatabase
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/DatabaseNameParameter"
+        - description: An OData filter expression that filters elements in the collection.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the sensitivity labels.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SensitivityLabelListResult"
+              examples:
+                Gets the recommended sensitivity labels of a given database:
+                  $ref: "#/components/examples/Gets_the_recommended_sensitivity_lab\
+                    els_of_a_given_database"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 SensitivityLabelsInvalidODataQuery - The specified OData query is either not valid or not supported
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+      tags:
+        - SensitivityLabels
+      x-ms-odata: "#/components/schemas/SensitivityLabel"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}":
+    delete:
+      description: Deletes the sensitivity label of a given column
+      operationId: SensitivityLabels_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/DatabaseNameParameter"
+        - description: The name of the schema.
+          in: path
+          name: schemaName
+          required: true
+          schema:
+            type: string
+          examples:
+            Deletes the sensitivity label of a given column:
+              value: dbo
+        - description: The name of the table.
+          in: path
+          name: tableName
+          required: true
+          schema:
+            type: string
+          examples:
+            Deletes the sensitivity label of a given column:
+              value: myTable
+        - description: The name of the column.
+          in: path
+          name: columnName
+          required: true
+          schema:
+            type: string
+          examples:
+            Deletes the sensitivity label of a given column:
+              value: myColumn
+        - description: The source of the sensitivity label.
+          in: path
+          name: sensitivityLabelSource
+          required: true
+          x-ms-enum:
+            modelAsString: false
+            name: WritableSensitivityLabelSource
+          schema:
+            type: string
+            enum:
+              - current
+          examples:
+            Deletes the sensitivity label of a given column:
+              value: current
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully deleted the sensitivity label.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 SensitivityLabelSourceNameNotSupported - The specified sensitivity label source is not valid
+
+             * 404 SensitivityLabelsColumnNotFound - The specified schema/table/column could not be found
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 404 SensitivityLabelsLabelNotFound - The specified sensitivity label could not be found
+
+             * 501 SensitivityLabelRecommendedSourceNameNotSupported - 'Recommended' sensitivity label source is not supported yet
+      tags:
+        - SensitivityLabels
+    get:
+      description: Gets the sensitivity label of a given column
+      operationId: SensitivityLabels_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/DatabaseNameParameter"
+        - description: The name of the schema.
+          in: path
+          name: schemaName
+          required: true
+          schema:
+            type: string
+          examples:
+            Gets the sensitivity label of a given column:
+              value: dbo
+        - description: The name of the table.
+          in: path
+          name: tableName
+          required: true
+          schema:
+            type: string
+          examples:
+            Gets the sensitivity label of a given column:
+              value: myTable
+        - description: The name of the column.
+          in: path
+          name: columnName
+          required: true
+          schema:
+            type: string
+          examples:
+            Gets the sensitivity label of a given column:
+              value: myColumn
+        - description: The source of the sensitivity label.
+          in: path
+          name: sensitivityLabelSource
+          required: true
+          x-ms-enum:
+            modelAsString: false
+            name: SensitivityLabelSource
+          schema:
+            type: string
+            enum:
+              - current
+              - recommended
+          examples:
+            Gets the sensitivity label of a given column:
+              value: current
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the sensitivity label.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SensitivityLabel"
+              examples:
+                Gets the sensitivity label of a given column:
+                  $ref: "#/components/examples/Gets_the_sensitivity_label_of_a_give\
+                    n_column"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 SensitivityLabelSourceNameNotSupported - The specified sensitivity label source is not valid
+
+             * 404 SensitivityLabelsColumnNotFound - The specified schema/table/column could not be found
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 404 SensitivityLabelsLabelNotFound - The specified sensitivity label could not be found
+
+             * 501 SensitivityLabelRecommendedSourceNameNotSupported - 'Recommended' sensitivity label source is not supported yet
+      tags:
+        - SensitivityLabels
+    put:
+      description: Creates or updates the sensitivity label of a given column
+      operationId: SensitivityLabels_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/DatabaseNameParameter"
+        - description: The name of the schema.
+          in: path
+          name: schemaName
+          required: true
+          schema:
+            type: string
+          examples:
+            Updates the sensitivity label of a given column with all parameters:
+              value: dbo
+        - description: The name of the table.
+          in: path
+          name: tableName
+          required: true
+          schema:
+            type: string
+          examples:
+            Updates the sensitivity label of a given column with all parameters:
+              value: myTable
+        - description: The name of the column.
+          in: path
+          name: columnName
+          required: true
+          schema:
+            type: string
+          examples:
+            Updates the sensitivity label of a given column with all parameters:
+              value: myColumn
+        - description: The source of the sensitivity label.
+          in: path
+          name: sensitivityLabelSource
+          required: true
+          x-ms-enum:
+            modelAsString: false
+            name: WritableSensitivityLabelSource
+          schema:
+            type: string
+            enum:
+              - current
+          examples:
+            Updates the sensitivity label of a given column with all parameters:
+              value: current
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SensitivityLabel"
+        description: The column sensitivity label resource.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the sensitivity label.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SensitivityLabel"
+              examples:
+                Updates the sensitivity label of a given column with all parameters:
+                  $ref: "#/components/examples/Updates_the_sensitivity_label_of_a_g\
+                    iven_column_with_all_parameters"
+        "201":
+          description: Successfully created the sensitivity label.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SensitivityLabel"
+              examples:
+                Updates the sensitivity label of a given column with all parameters:
+                  $ref: "#/components/examples/Updates_the_sensitivity_label_of_a_g\
+                    iven_column_with_all_parameters"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 SensitivityLabelSourceNameNotSupported - The specified sensitivity label source is not valid
+
+             * 400 InvalidSensitivityLabelResource - The specified sensitivity label resource is not valid
+
+             * 400 SensitivityLabelLabelNameAndInfoTypeNotProvided - At least one of LabelName and InformationType must be specified
+
+             * 400 LabelNameTooLong - Label name cannot exceed {0} characters
+
+             * 400 InformationTypeTooLong - Information type cannot exceed {0} characters
+
+             * 404 SensitivityLabelsColumnNotFound - The specified schema/table/column could not be found
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+
+             * 404 SensitivityLabelsLabelNotFound - The specified sensitivity label could not be found
+
+             * 501 SensitivityLabelRecommendedSourceNameNotSupported - 'Recommended' sensitivity label source is not supported yet
+      tags:
+        - SensitivityLabels
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/sensitivityLabels":
+    get:
+      description: Gets the sensitivity labels of a given database
+      operationId: SensitivityLabels_ListByDatabase
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/ServerNameParameter"
+        - $ref: "#/components/parameters/DatabaseNameParameter"
+        - description: An OData filter expression that filters elements in the collection.
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the sensitivity labels.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SensitivityLabelListResult"
+              examples:
+                Gets the current and recommended sensitivity labels of a given database:
+                  $ref: "#/components/examples/Gets_the_current_and_recommended_sen\
+                    sitivity_labels_of_a_given_database"
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 SensitivityLabelsInvalidODataQuery - The specified OData query is either not valid or not supported
+
+             * 404 SubscriptionDoesNotHaveServer - The requested server was not found
+
+             * 404 DatabaseDoesNotExist - User has specified a database name that does not exist on this server instance.
+      tags:
+        - SensitivityLabels
+      x-ms-odata: "#/components/schemas/SensitivityLabel"
+      x-ms-pageable:
+        nextLinkName: nextLink
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Gets_the_current_sensitivity_labels_of_a_given_database:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myRG/providers/Microsoft.Sql/servers/myServer/databases/myDatabase/schemas/dbo/tables/myTable/columns/myColumn3/sensitivityLabels/current
+            name: current
+            properties:
+              informationType: Financial
+              labelName: Sensitive
+            type: Microsoft.Sql/servers/databases/schemas/tables/columns/sensitivityLabels
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myRG/providers/Microsoft.Sql/servers/myServer/databases/myDatabase/schemas/dbo/tables/myTable/columns/myColumn4/sensitivityLabels/current
+            name: current
+            properties:
+              informationType: Email
+              labelName: PII
+            type: Microsoft.Sql/servers/databases/schemas/tables/columns/sensitivityLabels
+    Gets_the_recommended_sensitivity_labels_of_a_given_database:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myRG/providers/Microsoft.Sql/servers/myServer/databases/myDatabase/schemas/dbo/tables/myTable/columns/myColumn/sensitivityLabels/recommended
+            name: recommended
+            properties:
+              informationType: Financial
+              labelName: Sensitive
+            type: Microsoft.Sql/servers/databases/schemas/tables/columns/sensitivityLabels
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myRG/providers/Microsoft.Sql/servers/myServer/databases/myDatabase/schemas/dbo/tables/myTable/columns/myColumn2/sensitivityLabels/recommended
+            name: recommended
+            properties:
+              informationType: Email
+              labelName: PII
+            type: Microsoft.Sql/servers/databases/schemas/tables/columns/sensitivityLabels
+    Gets_the_sensitivity_label_of_a_given_column:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myRG/providers/Microsoft.Sql/servers/myServer/databases/myDatabase/schemas/dbo/tables/myTable/columns/myColumn/sensitivityLabels/current
+        name: current
+        properties:
+          informationType: PhoneNumber
+          labelName: PII
+        type: Microsoft.Sql/servers/databases/schemas/tables/columns/sensitivityLabels
+    Updates_the_sensitivity_label_of_a_given_column_with_all_parameters:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myRG/providers/Microsoft.Sql/servers/myServer/databases/myDatabase/schemas/dbo/tables/myTable/columns/myColumn/sensitivityLabels/current
+        name: current
+        properties:
+          informationType: PhoneNumber
+          labelName: PII
+        type: Microsoft.Sql/servers/databases/schemas/tables/columns/sensitivityLabels
+    Gets_the_current_and_recommended_sensitivity_labels_of_a_given_database:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myRG/providers/Microsoft.Sql/servers/myServer/databases/myDatabase/schemas/dbo/tables/myTable/columns/myColumn/sensitivityLabels/current
+            name: current
+            properties:
+              informationType: Financial
+              labelName: Sensitive
+            type: Microsoft.Sql/servers/databases/schemas/tables/columns/sensitivityLabels
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myRG/providers/Microsoft.Sql/servers/myServer/databases/myDatabase/schemas/dbo/tables/myTable/columns/myColumn2/sensitivityLabels/recommended
+            name: recommended
+            properties:
+              informationType: Email
+              labelName: PII
+            type: Microsoft.Sql/servers/databases/schemas/tables/columns/sensitivityLabels
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Gets the current sensitivity labels of a given database:
+          value: 2017-03-01-preview
+        Gets the recommended sensitivity labels of a given database:
+          value: 2017-03-01-preview
+        Deletes the sensitivity label of a given column:
+          value: 2017-03-01-preview
+        Gets the sensitivity label of a given column:
+          value: 2017-03-01-preview
+        Updates the sensitivity label of a given column with all parameters:
+          value: 2017-03-01-preview
+        Gets the current and recommended sensitivity labels of a given database:
+          value: 2017-03-01-preview
+    BlobAuditingPolicyNameParameter:
+      description: The name of the blob auditing policy.
+      in: path
+      name: blobAuditingPolicyName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - default
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Gets the current sensitivity labels of a given database:
+          value: myDatabase
+        Gets the recommended sensitivity labels of a given database:
+          value: myDatabase
+        Deletes the sensitivity label of a given column:
+          value: myDatabase
+        Gets the sensitivity label of a given column:
+          value: myDatabase
+        Updates the sensitivity label of a given column with all parameters:
+          value: myDatabase
+        Gets the current and recommended sensitivity labels of a given database:
+          value: myDatabase
+    ManagedInstanceNameParameter:
+      description: The name of the managed instance.
+      in: path
+      name: managedInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Gets the current sensitivity labels of a given database:
+          value: myRG
+        Gets the recommended sensitivity labels of a given database:
+          value: myRG
+        Deletes the sensitivity label of a given column:
+          value: myRG
+        Gets the sensitivity label of a given column:
+          value: myRG
+        Updates the sensitivity label of a given column with all parameters:
+          value: myRG
+        Gets the current and recommended sensitivity labels of a given database:
+          value: myRG
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Gets the current sensitivity labels of a given database:
+          value: myServer
+        Gets the recommended sensitivity labels of a given database:
+          value: myServer
+        Deletes the sensitivity label of a given column:
+          value: myServer
+        Gets the sensitivity label of a given column:
+          value: myServer
+        Updates the sensitivity label of a given column with all parameters:
+          value: myServer
+        Gets the current and recommended sensitivity labels of a given database:
+          value: myServer
+    SqlVirtualMachineContainerNameParameter:
+      description: The name of the SqlVirtualMachineContainer.
+      in: path
+      name: sqlVirtualMachineContainerName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineInstanceNameParameter:
+      description: The name of the SqlVirtualMachineInstance.
+      in: path
+      name: sqlVirtualMachineInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Gets the current sensitivity labels of a given database:
+          value: 00000000-1111-2222-3333-444444444444
+        Gets the recommended sensitivity labels of a given database:
+          value: 00000000-1111-2222-3333-444444444444
+        Deletes the sensitivity label of a given column:
+          value: 00000000-1111-2222-3333-444444444444
+        Gets the sensitivity label of a given column:
+          value: 00000000-1111-2222-3333-444444444444
+        Updates the sensitivity label of a given column with all parameters:
+          value: 00000000-1111-2222-3333-444444444444
+        Gets the current and recommended sensitivity labels of a given database:
+          value: 00000000-1111-2222-3333-444444444444
+    VirtualClusterNameParameter:
+      description: The name of the virtual cluster.
+      in: path
+      name: virtualClusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    SensitivityLabel:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM proxy resource.
+          properties: {}
+          type: object
+      description: A sensitivity label.
+      properties:
+        properties:
+          $ref: "#/components/schemas/SensitivityLabelProperties"
+      type: object
+    SensitivityLabelListResult:
+      description: A list of sensitivity labels.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/SensitivityLabel"
+          readOnly: true
+          type: array
+      type: object
+    SensitivityLabelProperties:
+      description: Properties of a sensitivity label.
+      properties:
+        informationType:
+          description: The information type.
+          type: string
+        labelName:
+          description: The label name.
+          type: string
+      type: object

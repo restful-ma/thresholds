@@ -1,0 +1,714 @@
+openapi: 3.0.0
+info:
+  title: Execution Service
+  version: 2019-08-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/machinelearningservices/data-plane/Microsoft.MachineLearningServices/preview/2019-08-01/execution.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: machinelearningservices-execution
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+tags: []
+paths:
+  "/execution/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/experiments/{experimentName}/runId/{runId}/cancel":
+    post:
+      description: Cancels a run within an experiment.
+      operationId: Execution_CancelRunWithUri
+      parameters:
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/workspaceNameParameter"
+        - description: The experiment name.
+          in: path
+          name: experimentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Cancel a run with URI:
+              value: demo_experiment
+        - description: The id of the run to cancel.
+          in: path
+          name: runId
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9][\w-]{0,255}$
+          examples:
+            Cancel a run with URI:
+              value: demorun_15501234342_0
+      responses:
+        "200":
+          description: The run was successfully cancelled.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartRunResult"
+              examples:
+                Cancel a run with URI:
+                  $ref: "#/components/examples/Cancel_a_run_with_URI"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Cancel a run.
+      tags:
+        - Execution
+  "/execution/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/experiments/{experimentName}/snapshotrun":
+    post:
+      description: "Starts an experiment run on the remote compute target using the
+        provided definition.json file to define the run.\r
+
+        \            The code for the run is retrieved using the
+        snapshotId in definition.json."
+      operationId: Execution_StartSnapshotRun
+      parameters:
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/workspaceNameParameter"
+        - description: The experiment name.
+          in: path
+          name: experimentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Start a snapshot run:
+              value: demo_experiment
+        - description: A run id. If not supplied a run id will be created automatically.
+          in: query
+          name: runId
+          required: false
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9][\w-]{0,255}$
+      requestBody:
+        $ref: "#/components/requestBodies/RunDefinition"
+      responses:
+        "200":
+          description: A snapshot run was successfully started.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartRunResult"
+              examples:
+                Start a snapshot run:
+                  $ref: "#/components/examples/Start_a_snapshot_run"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Start a run from a snapshot on a remote compute target.
+      tags:
+        - Execution
+  "/execution/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/experiments/{experimentName}/startlocalrun":
+    post:
+      description: "Starts an experiment run using the provided definition.json file to
+        define the run.\r
+
+        \            The source code and configuration is defined in a
+        zip archive in project.zip."
+      operationId: Execution_StartLocalRun
+      parameters:
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/workspaceNameParameter"
+        - description: The experiment name.
+          in: path
+          name: experimentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Start a local run:
+              value: demo_experiment
+        - description: A run id. If not supplied a run id will be created automatically.
+          in: query
+          name: runId
+          required: false
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9][\w-]{0,255}$
+      requestBody:
+        $ref: "#/components/requestBodies/RunDefinition"
+      responses:
+        "200":
+          description: File Response
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+            application/octet-stream:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Start a run on a local machine.
+      tags:
+        - Execution
+  "/execution/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/experiments/{experimentName}/startrun":
+    post:
+      description: "Starts an experiment run using the provided definition.json file to
+        define the run.\r
+
+        \            The source code and configuration is defined in a
+        zip archive in project.zip."
+      operationId: Execution_StartRun
+      parameters:
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/workspaceNameParameter"
+        - description: The experiment name.
+          in: path
+          name: experimentName
+          required: true
+          schema:
+            type: string
+          examples:
+            Start a run:
+              value: demo_experiment
+        - description: A run id. If not supplied a run id will be created automatically.
+          in: query
+          name: runId
+          required: false
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9][\w-]{0,255}$
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                runDefinitionFile:
+                  description: The JSON file containing the RunDefinition
+                  type: string
+                  format: binary
+                projectZipFile:
+                  description: The zip archive of the project folder containing the source
+                    code to use for the run.
+                  type: string
+                  format: binary
+              required:
+                - runDefinitionFile
+                - projectZipFile
+      responses:
+        "200":
+          description: A run was successfully started.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartRunResult"
+              examples:
+                Start a run:
+                  $ref: "#/components/examples/Start_a_run"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: Start a run on a remote compute target.
+      tags:
+        - Execution
+servers:
+  - url: https://azure.local
+components:
+  examples:
+    Cancel_a_run_with_URI:
+      value:
+        runId: demorun_15501234342_0
+    Start_a_snapshot_run:
+      value:
+        runId: demorun_15501234342_0
+    Start_a_run:
+      value:
+        runId: demorun_15501234342_0
+  parameters:
+    resourceGroupNameParameter:
+      description: The Name of the resource group in which the workspace is located.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Cancel a run with URI:
+          value: demo_resource_group
+        Start a snapshot run:
+          value: demo_resource_group
+        Start a local run:
+          value: demo_resource_group
+        Start a run:
+          value: demo_resource_group
+    subscriptionIdParameter:
+      description: The Azure Subscription ID.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        format: uuid
+      examples:
+        Cancel a run with URI:
+          value: 00000000-0000-0000-0000-000000000000
+        Start a snapshot run:
+          value: 00000000-0000-0000-0000-000000000000
+        Start a local run:
+          value: 00000000-0000-0000-0000-000000000000
+        Start a run:
+          value: 00000000-0000-0000-0000-000000000000
+    workspaceNameParameter:
+      description: The name of the workspace.
+      in: path
+      name: workspaceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Cancel a run with URI:
+          value: demo_workspace
+        Start a snapshot run:
+          value: demo_workspace
+        Start a local run:
+          value: demo_workspace
+        Start a run:
+          value: demo_workspace
+  requestBodies:
+    RunDefinition:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RunDefinition"
+      description: A JSON run definition structure.
+      required: true
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ContainerRegistry:
+      properties:
+        address:
+          type: string
+        password:
+          type: string
+        username:
+          type: string
+      type: object
+    DataReferenceConfiguration:
+      description: A class for managing DataReferenceConfiguration.
+      properties:
+        dataStoreName:
+          description: The name of the data store.
+          example: myblobstore
+          type: string
+        mode:
+          description: Operation on the datastore, mount, download, upload.
+          enum:
+            - Mount
+            - Download
+            - Upload
+          example: Mount
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: DataStoreMode
+        overwrite:
+          description: Whether to overwrite the data if existing.
+          type: boolean
+        pathOnCompute:
+          description: The path on the compute target.
+          type: string
+        pathOnDataStore:
+          description: Relative path on the datastore.
+          example: /images/validation
+          type: string
+      type: object
+    DockerSection:
+      properties:
+        arguments:
+          description: Extra arguments to the Docker run command.
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        baseDockerfile:
+          description: Base Dockerfile used for Docker-based runs. Mutually exclusive with
+            BaseImage.
+          example: "FROM ubuntu:latest\r
+
+            RUN echo \"Hello world!\""
+          type: string
+        baseImage:
+          description: Base image used for Docker-based runs. Mutually exclusive with
+            BaseDockerfile.
+          example: ubuntu:latest
+          type: string
+        baseImageRegistry:
+          $ref: "#/components/schemas/ContainerRegistry"
+        enabled:
+          description: Set true to perform this run inside a Docker container.
+          type: boolean
+        sharedVolumes:
+          description: Set false to disable AzureML's usage of the Docker shared volumes
+            feature to work around bugs in certain versions of Docker for
+            Windows.
+          type: boolean
+      type: object
+    EnvironmentDefinition:
+      properties:
+        docker:
+          $ref: "#/components/schemas/DockerSection"
+        environmentVariables:
+          additionalProperties:
+            type: string
+          description: Definition of environment variables to be defined in the environment.
+          type: object
+        inferencingStackVersion:
+          description: 'The inferencing stack version added to the image. To avoid adding
+            an inferencing stack, do not set this value. Valid values:
+            "latest".'
+          example: latest
+          type: string
+        name:
+          description: The name of the environment.
+          example: mydevenvironment
+          type: string
+        python:
+          $ref: "#/components/schemas/PythonSection"
+        spark:
+          $ref: "#/components/schemas/SparkSection"
+        version:
+          description: The environment version.
+          example: "1"
+          type: string
+      type: object
+    ErrorDetails:
+      description: The error details.
+      properties:
+        code:
+          description: The error code.
+          type: string
+        message:
+          description: The error message.
+          type: string
+        target:
+          description: The target of the error (e.g., the name of the property in error).
+          type: string
+      type: object
+    ErrorResponse:
+      description: The error response.
+      properties:
+        correlation:
+          additionalProperties:
+            type: string
+          description: Dictionary containing correlation details for the error.
+          type: object
+        environment:
+          description: The hosting environment.
+          type: string
+        error:
+          $ref: "#/components/schemas/RootError"
+        location:
+          description: The Azure region.
+          type: string
+        time:
+          description: The time in UTC.
+          format: date-time
+          type: string
+      type: object
+    HdiConfiguration:
+      properties:
+        yarnDeployMode:
+          enum:
+            - None
+            - Client
+            - Cluster
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: YarnDeployMode
+      type: object
+    HistoryConfiguration:
+      properties:
+        directoriesToWatch:
+          description: The list of directories to monitor and upload files from.
+          example: '["logs", "outputs"]'
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        outputCollection:
+          description: Set to true to collect outputs and store in run history.
+          type: boolean
+      type: object
+    InnerErrorResponse:
+      description: A nested structure of errors.
+      properties:
+        code:
+          description: The error code.
+          type: string
+        innerError:
+          $ref: "#/components/schemas/InnerErrorResponse"
+      type: object
+    MpiConfiguration:
+      properties:
+        processCountPerNode:
+          description: Number of processes per node.
+          example: "2"
+          format: int32
+          type: integer
+      type: object
+    PythonSection:
+      properties:
+        baseCondaEnvironment:
+          type: string
+        condaDependencies:
+          type: object
+        interpreterPath:
+          description: The python interpreter path. This is only used when
+            user_managed_dependencies=True.
+          type: string
+        userManagedDependencies:
+          description: True means that AzureML reuses an existing python environment; False
+            means that AzureML will create a python environment based on the
+            Conda dependencies specification.
+          type: boolean
+      type: object
+    RootError:
+      description: The root error.
+      properties:
+        code:
+          description: "The service-defined error code. Supported error codes:
+            ServiceError, UserError, ValidationError, AzureStorageError,
+            TransientError, RequestThrottled."
+          type: string
+        details:
+          description: The related errors that occurred during the request.
+          items:
+            $ref: "#/components/schemas/ErrorDetails"
+          type: array
+          uniqueItems: false
+        innerError:
+          $ref: "#/components/schemas/InnerErrorResponse"
+        message:
+          description: A human-readable representation of the error.
+          type: string
+        target:
+          description: The target of the error (e.g., the name of the property in error).
+          type: string
+      type: object
+    RunConfiguration:
+      properties:
+        arguments:
+          description: Command line arguments for the python script file.
+          example: '["234"]'
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        communicator:
+          description: "The supported communicators are None, ParameterServer, OpenMpi, and
+            IntelMpi Keep in mind that OpenMpi requires a custom image with
+            OpenMpi installed.\r
+
+            Use ParameterServer or OpenMpi for AmlCompute clusters.
+            Use IntelMpi for distributed training jobs."
+          enum:
+            - None
+            - ParameterServer
+            - Gloo
+            - Mpi
+            - Nccl
+          example: None
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Communicator
+        dataReferences:
+          additionalProperties:
+            $ref: "#/components/schemas/DataReferenceConfiguration"
+          description: All the data sources are made available to the run during execution
+            based on each configuration.
+          type: object
+        environment:
+          $ref: "#/components/schemas/EnvironmentDefinition"
+        framework:
+          description: The supported frameworks are Python, PySpark, CNTK, TensorFlow, and
+            PyTorch. Use Tensorflow for AmlCompute clusters, and Python for
+            distributed training jobs.
+          enum:
+            - Python
+            - PySpark
+            - Cntk
+            - TensorFlow
+            - PyTorch
+          example: Python
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: Framework
+        hdi:
+          $ref: "#/components/schemas/HdiConfiguration"
+        history:
+          $ref: "#/components/schemas/HistoryConfiguration"
+        jobName:
+          description: "This is primarily intended for notebooks to override the default
+            job name.\r
+
+            Defaults to ArgumentVector[0] if not specified."
+          example: FindSquaresJob
+          type: string
+        maxRunDurationSeconds:
+          description: "Maximum allowed time for the run. The system will attempt to
+            automatically cancel the run if it took longer than this value.\r
+
+            MaxRunDurationSeconds=null means infinite duration."
+          example: "84000"
+          format: int64
+          type: integer
+        mpi:
+          $ref: "#/components/schemas/MpiConfiguration"
+        nodeCount:
+          description: Number of compute nodes to run the job on. Only applies to
+            AMLCompute.
+          example: "1"
+          format: int32
+          type: integer
+        script:
+          description: The relative path to the python script file. The file path is
+            relative to the source_directory passed to submit run.
+          example: findsquare.py
+          type: string
+        spark:
+          $ref: "#/components/schemas/SparkConfiguration"
+        target:
+          description: Target refers to compute where the job is scheduled for execution.
+            The default target is "local" referring to the local machine.
+          example: amlcompute
+          type: string
+        tensorflow:
+          $ref: "#/components/schemas/TensorflowConfiguration"
+      type: object
+    RunDefinition:
+      properties:
+        configuration:
+          $ref: "#/components/schemas/RunConfiguration"
+        parentRunId:
+          description: "Specifies that the run history entry for this execution should be
+            scoped within\r
+
+            an existing run as a child. Defaults to null, meaning
+            the run has no parent.\r
+
+            This is intended for first-party service integration,
+            not third-party API users."
+          example: myexperiment_155000000001_0
+          type: string
+        runType:
+          description: Specifies the runsource property for this run. The default value is
+            "experiment" if not specified.
+          example: experiment
+          type: string
+        snapshotId:
+          description: "Snapshots are user project folders that have been uploaded to the
+            cloud for subsequent\r
+
+            execution. This field is required when executing against
+            cloud-based compute targets\r
+
+            unless the run submission was against the API endpoint
+            that takes a zipped project folder\r
+
+            inline with the request."
+          format: uuid
+          type: string
+      type: object
+    SparkConfiguration:
+      properties:
+        configuration:
+          additionalProperties:
+            type: string
+          type: object
+      type: object
+    SparkMavenPackage:
+      properties:
+        artifact:
+          type: string
+        group:
+          type: string
+        version:
+          type: string
+      type: object
+    SparkSection:
+      properties:
+        packages:
+          description: The Spark packages to use.
+          items:
+            $ref: "#/components/schemas/SparkMavenPackage"
+          type: array
+          uniqueItems: false
+        precachePackages:
+          description: Whether to precache the packages.
+          type: boolean
+        repositories:
+          description: The list of spark repositories.
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    StartRunResult:
+      description: Contains the details of a run.
+      properties:
+        runId:
+          description: The identifier for a run.
+          example: myexperiment_155000000001_0
+          type: string
+      required:
+        - runId
+      type: object
+    TensorflowConfiguration:
+      properties:
+        parameterServerCount:
+          description: Number of parameter servers.
+          example: "1"
+          format: int32
+          type: integer
+        workerCount:
+          description: The number of workers.
+          example: "2"
+          format: int32
+          type: integer
+      type: object

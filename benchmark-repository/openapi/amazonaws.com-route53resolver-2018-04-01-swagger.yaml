@@ -1,0 +1,2397 @@
+openapi: 3.0.0
+info:
+  version: 2018-04-01
+  x-release: v4
+  title: Amazon Route 53 Resolver
+  description: "<p>Here's how you set up to query an Amazon Route 53 private hosted zone
+    from your network:</p> <ol> <li> <p>Connect your network to a VPC using AWS
+    Direct Connect or a VPN.</p> </li> <li> <p>Run the following AWS CLI command
+    to create a Resolver endpoint:</p> <p> <code>create-resolver-endpoint --name
+    [endpoint_name] --direction INBOUND --creator-request-id [unique_string]
+    --security-group-ids [security_group_with_inbound_rules] --ip-addresses
+    SubnetId=[subnet_id] SubnetId=[subnet_id_in_different_AZ]</code> </p>
+    <p>Note the resolver endpoint ID that appears in the response. You'll use it
+    in step 3.</p> </li> <li> <p>Get the IP addresses for the Resolver
+    endpoints:</p> <p> <code>get-resolver-endpoint --resolver-endpoint-id
+    [resolver_endpoint_id]</code> </p> </li> <li> <p>In your network
+    configuration, define the IP addresses that you got in step 3 as DNS
+    servers.</p> <p>You can now query instance names in your VPCs and the names
+    of records in your private hosted zone.</p> </li> </ol> <p>You can also
+    perform the following operations using the AWS CLI:</p> <ul> <li> <p>
+    <code>list-resolver-endpoints</code>: List all endpoints. The syntax
+    includes options for pagination and filtering.</p> </li> <li> <p>
+    <code>update-resolver-endpoints</code>: Add IP addresses to an endpoint or
+    remove IP addresses from an endpoint. </p> </li> </ul> <p>To delete an
+    endpoint, use the following AWS CLI command:</p> <p>
+    <code>delete-resolver-endpoint --resolver-endpoint-id
+    [resolver_endpoint_id]</code> </p>"
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: route53resolver
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/route53resolver-2018-04-01.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/route53resolver/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  /#X-Amz-Target=Route53Resolver.AssociateResolverEndpointIpAddress:
+    post:
+      operationId: AssociateResolverEndpointIpAddress
+      description: <p>Adds IP addresses to an inbound or an outbound resolver endpoint. If
+        you want to adding more than one IP address, submit one
+        <code>AssociateResolverEndpointIpAddress</code> request for each IP
+        address.</p> <p>To remove an IP address from an endpoint, see
+        <a>DisassociateResolverEndpointIpAddress</a>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssociateResolverEndpointIpAddressRespo\
+                  nse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "483":
+          description: ResourceExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceExistsException"
+        "484":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "485":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "486":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.AssociateResolverEndpointIpAddress
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssociateResolverEndpointIpAddressRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.AssociateResolverRule:
+    post:
+      operationId: AssociateResolverRule
+      description: "Associates a resolver rule with a VPC. When you associate a rule with a
+        VPC, Resolver forwards all DNS queries for the domain name that is
+        specified in the rule and that originate in the VPC. The queries are
+        forwarded to the IP addresses for the DNS resolvers that are specified
+        in the rule. For more information about rules, see
+        <a>CreateResolverRule</a>. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssociateResolverRuleResponse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "482":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "483":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+        "484":
+          description: ResourceExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceExistsException"
+        "485":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "486":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.AssociateResolverRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssociateResolverRuleRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.CreateResolverEndpoint:
+    post:
+      operationId: CreateResolverEndpoint
+      description: <p>Creates a resolver endpoint. There are two types of resolver
+        endpoints, inbound and outbound:</p> <ul> <li> <p>An <i>inbound resolver
+        endpoint</i> forwards DNS queries to the DNS service for a VPC from your
+        network or another VPC.</p> </li> <li> <p>An <i>outbound resolver
+        endpoint</i> forwards DNS queries from the DNS service for a VPC to your
+        network or another VPC.</p> </li> </ul>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResolverEndpointResponse"
+        "480":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "483":
+          description: ResourceExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceExistsException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "486":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.CreateResolverEndpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateResolverEndpointRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.CreateResolverRule:
+    post:
+      operationId: CreateResolverRule
+      description: For DNS queries that originate in your VPCs, specifies which resolver
+        endpoint the queries pass through, one domain name that you want to
+        forward to your network, and the IP addresses of the DNS resolvers in
+        your network.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateResolverRuleResponse"
+        "480":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "481":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "482":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "483":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "484":
+          description: ResourceExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceExistsException"
+        "485":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+        "486":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "487":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.CreateResolverRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateResolverRuleRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.DeleteResolverEndpoint:
+    post:
+      operationId: DeleteResolverEndpoint
+      description: "<p>Deletes a resolver endpoint. The effect of deleting a resolver
+        endpoint depends on whether it's an inbound or an outbound resolver
+        endpoint:</p> <ul> <li> <p> <b>Inbound</b>: DNS queries from your
+        network or another VPC are no longer routed to the DNS service for the
+        specified VPC.</p> </li> <li> <p> <b>Outbound</b>: DNS queries from a
+        VPC are no longer routed to your network or to another VPC.</p> </li>
+        </ul>"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResolverEndpointResponse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.DeleteResolverEndpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteResolverEndpointRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.DeleteResolverRule:
+    post:
+      operationId: DeleteResolverRule
+      description: Deletes a resolver rule. Before you can delete a resolver rule, you must
+        disassociate it from all the VPCs that you associated the resolver rule
+        with. For more infomation, see <a>DisassociateResolverRule</a>.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResolverRuleResponse"
+        "480":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: ResourceInUseException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceInUseException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.DeleteResolverRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteResolverRuleRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.DisassociateResolverEndpointIpAddress:
+    post:
+      operationId: DisassociateResolverEndpointIpAddress
+      description: <p>Removes IP addresses from an inbound or an outbound resolver
+        endpoint. If you want to remove more than one IP address, submit one
+        <code>DisassociateResolverEndpointIpAddress</code> request for each IP
+        address.</p> <p>To add an IP address to an endpoint, see
+        <a>AssociateResolverEndpointIpAddress</a>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisassociateResolverEndpointIpAddressRe\
+                  sponse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "483":
+          description: ResourceExistsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceExistsException"
+        "484":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "485":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.DisassociateResolverEndpointIpAddress
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisassociateResolverEndpointIpAddressRequ\
+                est"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.DisassociateResolverRule:
+    post:
+      operationId: DisassociateResolverRule
+      description: <p>Removes the association between a specified resolver rule and a
+        specified VPC.</p> <important> <p>If you disassociate a resolver rule
+        from a VPC, Resolver stops forwarding DNS queries for the domain name
+        that you specified in the resolver rule. </p> </important>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisassociateResolverRuleResponse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.DisassociateResolverRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisassociateResolverRuleRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.GetResolverEndpoint:
+    post:
+      operationId: GetResolverEndpoint
+      description: Gets information about a specified resolver endpoint, such as whether
+        it's an inbound or an outbound resolver endpoint, and the current status
+        of the endpoint.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetResolverEndpointResponse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.GetResolverEndpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetResolverEndpointRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.GetResolverRule:
+    post:
+      operationId: GetResolverRule
+      description: Gets information about a specified resolver rule, such as the domain
+        name that the rule forwards DNS queries for and the ID of the outbound
+        resolver endpoint that the rule is associated with.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetResolverRuleResponse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.GetResolverRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetResolverRuleRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.GetResolverRuleAssociation:
+    post:
+      operationId: GetResolverRuleAssociation
+      description: "Gets information about an association between a specified resolver rule
+        and a VPC. You associate a resolver rule and a VPC using
+        <a>AssociateResolverRule</a>. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetResolverRuleAssociationResponse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.GetResolverRuleAssociation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetResolverRuleAssociationRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.GetResolverRulePolicy:
+    post:
+      operationId: GetResolverRulePolicy
+      description: "Gets information about a resolver rule policy. A resolver rule policy
+        specifies the Resolver operations and resources that you want to allow
+        another AWS account to be able to use. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetResolverRulePolicyResponse"
+        "480":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "481":
+          description: UnknownResourceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnknownResourceException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.GetResolverRulePolicy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetResolverRulePolicyRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.ListResolverEndpointIpAddresses:
+    post:
+      operationId: ListResolverEndpointIpAddresses
+      description: Gets the IP addresses for a specified resolver endpoint.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListResolverEndpointIpAddressesResponse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "483":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.ListResolverEndpointIpAddresses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListResolverEndpointIpAddressesRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.ListResolverEndpoints:
+    post:
+      operationId: ListResolverEndpoints
+      description: Lists all the resolver endpoints that were created using the current AWS
+        account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListResolverEndpointsResponse"
+        "480":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "481":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "482":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.ListResolverEndpoints
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListResolverEndpointsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.ListResolverRuleAssociations:
+    post:
+      operationId: ListResolverRuleAssociations
+      description: Lists the associations that were created between resolver rules and VPCs
+        using the current AWS account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListResolverRuleAssociationsResponse"
+        "480":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "481":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "482":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.ListResolverRuleAssociations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListResolverRuleAssociationsRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.ListResolverRules:
+    post:
+      operationId: ListResolverRules
+      description: Lists the resolver rules that were created using the current AWS account.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListResolverRulesResponse"
+        "480":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "481":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "482":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.ListResolverRules
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListResolverRulesRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.ListTagsForResource:
+    post:
+      operationId: ListTagsForResource
+      description: Lists the tags that you associated with the specified resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTagsForResourceResponse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InvalidNextTokenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidNextTokenException"
+        "483":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "484":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "485":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.ListTagsForResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListTagsForResourceRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.PutResolverRulePolicy:
+    post:
+      operationId: PutResolverRulePolicy
+      description: Specifies the Resolver operations and resources that you want to allow
+        another AWS account to be able to use.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutResolverRulePolicyResponse"
+        "480":
+          description: InvalidPolicyDocument
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidPolicyDocument"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: UnknownResourceException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnknownResourceException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.PutResolverRulePolicy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutResolverRulePolicyRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.TagResource:
+    post:
+      operationId: TagResource
+      description: Adds one or more tags to a specified resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagResourceResponse"
+        "480":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "481":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "482":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "483":
+          description: InvalidTagException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTagException"
+        "484":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "485":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.TagResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TagResourceRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.UntagResource:
+    post:
+      operationId: UntagResource
+      description: Removes one or more tags from a specified resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UntagResourceResponse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "483":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.UntagResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UntagResourceRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.UpdateResolverEndpoint:
+    post:
+      operationId: UpdateResolverEndpoint
+      description: "Updates the name of an inbound or an outbound resolver endpoint. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateResolverEndpointResponse"
+        "480":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "483":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "484":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.UpdateResolverEndpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateResolverEndpointRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /#X-Amz-Target=Route53Resolver.UpdateResolverRule:
+    post:
+      operationId: UpdateResolverRule
+      description: Updates settings for a specified resolver rule.
+        <code>ResolverRuleId</code> is required, and all other parameters are
+        optional. If you don't specify a parameter, it retains its current
+        value.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateResolverRuleResponse"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: InvalidParameterException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidParameterException"
+        "482":
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceNotFoundException"
+        "483":
+          description: ResourceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUnavailableException"
+        "484":
+          description: LimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitExceededException"
+        "485":
+          description: InternalServiceErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServiceErrorException"
+        "486":
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottlingException"
+      parameters:
+        - name: X-Amz-Target
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - Route53Resolver.UpdateResolverRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateResolverRuleRequest"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://route53resolver.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Route53Resolver multi-region endpoint
+  - url: https://route53resolver.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Route53Resolver multi-region endpoint
+  - url: http://route53resolver.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Route53Resolver endpoint for China (Beijing) and China (Ningxia)
+  - url: https://route53resolver.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Route53Resolver endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    AssociateResolverEndpointIpAddressResponse:
+      type: object
+      properties:
+        ResolverEndpoint:
+          $ref: "#/components/schemas/ResolverEndpoint"
+    AssociateResolverEndpointIpAddressRequest:
+      type: object
+      required:
+        - ResolverEndpointId
+        - IpAddress
+      properties:
+        ResolverEndpointId:
+          $ref: "#/components/schemas/ResourceId"
+        IpAddress:
+          $ref: "#/components/schemas/IpAddressUpdate"
+    ResourceNotFoundException: {}
+    InvalidParameterException: {}
+    InvalidRequestException: {}
+    ResourceExistsException: {}
+    InternalServiceErrorException: {}
+    LimitExceededException: {}
+    ThrottlingException: {}
+    AssociateResolverRuleResponse:
+      type: object
+      properties:
+        ResolverRuleAssociation:
+          $ref: "#/components/schemas/ResolverRuleAssociation"
+    AssociateResolverRuleRequest:
+      type: object
+      required:
+        - ResolverRuleId
+        - VPCId
+      properties:
+        ResolverRuleId:
+          $ref: "#/components/schemas/ResourceId"
+        Name:
+          $ref: "#/components/schemas/Name"
+        VPCId:
+          $ref: "#/components/schemas/ResourceId"
+    ResourceUnavailableException: {}
+    CreateResolverEndpointResponse:
+      type: object
+      properties:
+        ResolverEndpoint:
+          $ref: "#/components/schemas/ResolverEndpoint"
+    CreateResolverEndpointRequest:
+      type: object
+      required:
+        - CreatorRequestId
+        - SecurityGroupIds
+        - Direction
+        - IpAddresses
+      properties:
+        CreatorRequestId:
+          $ref: "#/components/schemas/CreatorRequestId"
+        Name:
+          $ref: "#/components/schemas/Name"
+        SecurityGroupIds:
+          $ref: "#/components/schemas/SecurityGroupIds"
+        Direction:
+          $ref: "#/components/schemas/ResolverEndpointDirection"
+        IpAddresses:
+          $ref: "#/components/schemas/IpAddressesRequest"
+        Tags:
+          $ref: "#/components/schemas/TagList"
+    CreateResolverRuleResponse:
+      type: object
+      properties:
+        ResolverRule:
+          $ref: "#/components/schemas/ResolverRule"
+    CreateResolverRuleRequest:
+      type: object
+      required:
+        - CreatorRequestId
+        - RuleType
+        - DomainName
+      properties:
+        CreatorRequestId:
+          $ref: "#/components/schemas/CreatorRequestId"
+        Name:
+          $ref: "#/components/schemas/Name"
+        RuleType:
+          $ref: "#/components/schemas/RuleTypeOption"
+        DomainName:
+          $ref: "#/components/schemas/DomainName"
+        TargetIps:
+          $ref: "#/components/schemas/TargetList"
+        ResolverEndpointId:
+          $ref: "#/components/schemas/ResourceId"
+        Tags:
+          $ref: "#/components/schemas/TagList"
+    DeleteResolverEndpointResponse:
+      type: object
+      properties:
+        ResolverEndpoint:
+          $ref: "#/components/schemas/ResolverEndpoint"
+    DeleteResolverEndpointRequest:
+      type: object
+      required:
+        - ResolverEndpointId
+      properties:
+        ResolverEndpointId:
+          $ref: "#/components/schemas/ResourceId"
+    DeleteResolverRuleResponse:
+      type: object
+      properties:
+        ResolverRule:
+          $ref: "#/components/schemas/ResolverRule"
+    DeleteResolverRuleRequest:
+      type: object
+      required:
+        - ResolverRuleId
+      properties:
+        ResolverRuleId:
+          $ref: "#/components/schemas/ResourceId"
+    ResourceInUseException: {}
+    DisassociateResolverEndpointIpAddressResponse:
+      type: object
+      properties:
+        ResolverEndpoint:
+          $ref: "#/components/schemas/ResolverEndpoint"
+    DisassociateResolverEndpointIpAddressRequest:
+      type: object
+      required:
+        - ResolverEndpointId
+        - IpAddress
+      properties:
+        ResolverEndpointId:
+          $ref: "#/components/schemas/ResourceId"
+        IpAddress:
+          $ref: "#/components/schemas/IpAddressUpdate"
+    DisassociateResolverRuleResponse:
+      type: object
+      properties:
+        ResolverRuleAssociation:
+          $ref: "#/components/schemas/ResolverRuleAssociation"
+    DisassociateResolverRuleRequest:
+      type: object
+      required:
+        - VPCId
+        - ResolverRuleId
+      properties:
+        VPCId:
+          $ref: "#/components/schemas/ResourceId"
+        ResolverRuleId:
+          $ref: "#/components/schemas/ResourceId"
+    GetResolverEndpointResponse:
+      type: object
+      properties:
+        ResolverEndpoint:
+          $ref: "#/components/schemas/ResolverEndpoint"
+    GetResolverEndpointRequest:
+      type: object
+      required:
+        - ResolverEndpointId
+      properties:
+        ResolverEndpointId:
+          $ref: "#/components/schemas/ResourceId"
+    GetResolverRuleResponse:
+      type: object
+      properties:
+        ResolverRule:
+          $ref: "#/components/schemas/ResolverRule"
+    GetResolverRuleRequest:
+      type: object
+      required:
+        - ResolverRuleId
+      properties:
+        ResolverRuleId:
+          $ref: "#/components/schemas/ResourceId"
+    GetResolverRuleAssociationResponse:
+      type: object
+      properties:
+        ResolverRuleAssociation:
+          $ref: "#/components/schemas/ResolverRuleAssociation"
+    GetResolverRuleAssociationRequest:
+      type: object
+      required:
+        - ResolverRuleAssociationId
+      properties:
+        ResolverRuleAssociationId:
+          $ref: "#/components/schemas/ResourceId"
+    GetResolverRulePolicyResponse:
+      type: object
+      properties:
+        ResolverRulePolicy:
+          $ref: "#/components/schemas/ResolverRulePolicy"
+    GetResolverRulePolicyRequest:
+      type: object
+      required:
+        - Arn
+      properties:
+        Arn:
+          $ref: "#/components/schemas/Arn"
+    UnknownResourceException: {}
+    ListResolverEndpointIpAddressesResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        IpAddresses:
+          $ref: "#/components/schemas/IpAddressesResponse"
+    ListResolverEndpointIpAddressesRequest:
+      type: object
+      required:
+        - ResolverEndpointId
+      properties:
+        ResolverEndpointId:
+          $ref: "#/components/schemas/ResourceId"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    InvalidNextTokenException: {}
+    ListResolverEndpointsResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        ResolverEndpoints:
+          $ref: "#/components/schemas/ResolverEndpoints"
+    ListResolverEndpointsRequest:
+      type: object
+      properties:
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        Filters:
+          $ref: "#/components/schemas/Filters"
+    ListResolverRuleAssociationsResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        ResolverRuleAssociations:
+          $ref: "#/components/schemas/ResolverRuleAssociations"
+    ListResolverRuleAssociationsRequest:
+      type: object
+      properties:
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        Filters:
+          $ref: "#/components/schemas/Filters"
+    ListResolverRulesResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        ResolverRules:
+          $ref: "#/components/schemas/ResolverRules"
+    ListResolverRulesRequest:
+      type: object
+      properties:
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+        Filters:
+          $ref: "#/components/schemas/Filters"
+    ListTagsForResourceResponse:
+      type: object
+      properties:
+        Tags:
+          $ref: "#/components/schemas/TagList"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    ListTagsForResourceRequest:
+      type: object
+      required:
+        - ResourceArn
+      properties:
+        ResourceArn:
+          $ref: "#/components/schemas/Arn"
+        MaxResults:
+          $ref: "#/components/schemas/MaxResults"
+        NextToken:
+          $ref: "#/components/schemas/NextToken"
+    PutResolverRulePolicyResponse:
+      type: object
+      properties:
+        ReturnValue:
+          $ref: "#/components/schemas/Boolean"
+      description: The response to a <code>PutResolverRulePolicy</code> request.
+    PutResolverRulePolicyRequest:
+      type: object
+      required:
+        - Arn
+        - ResolverRulePolicy
+      properties:
+        Arn:
+          $ref: "#/components/schemas/Arn"
+        ResolverRulePolicy:
+          $ref: "#/components/schemas/ResolverRulePolicy"
+    InvalidPolicyDocument: {}
+    TagResourceResponse:
+      type: object
+      properties: {}
+    TagResourceRequest:
+      type: object
+      required:
+        - ResourceArn
+        - Tags
+      properties:
+        ResourceArn:
+          $ref: "#/components/schemas/Arn"
+        Tags:
+          $ref: "#/components/schemas/TagList"
+    InvalidTagException: {}
+    UntagResourceResponse:
+      type: object
+      properties: {}
+    UntagResourceRequest:
+      type: object
+      required:
+        - ResourceArn
+        - TagKeys
+      properties:
+        ResourceArn:
+          $ref: "#/components/schemas/Arn"
+        TagKeys:
+          $ref: "#/components/schemas/TagKeyList"
+    UpdateResolverEndpointResponse:
+      type: object
+      properties:
+        ResolverEndpoint:
+          $ref: "#/components/schemas/ResolverEndpoint"
+    UpdateResolverEndpointRequest:
+      type: object
+      required:
+        - ResolverEndpointId
+      properties:
+        ResolverEndpointId:
+          $ref: "#/components/schemas/ResourceId"
+        Name:
+          $ref: "#/components/schemas/Name"
+    UpdateResolverRuleResponse:
+      type: object
+      properties:
+        ResolverRule:
+          $ref: "#/components/schemas/ResolverRule"
+    UpdateResolverRuleRequest:
+      type: object
+      required:
+        - ResolverRuleId
+        - Config
+      properties:
+        ResolverRuleId:
+          $ref: "#/components/schemas/ResourceId"
+        Config:
+          $ref: "#/components/schemas/ResolverRuleConfig"
+    AccountId:
+      type: string
+      minLength: 12
+      maxLength: 32
+    Arn:
+      type: string
+      minLength: 1
+      maxLength: 255
+    ResourceId:
+      type: string
+      minLength: 1
+      maxLength: 64
+    IpAddressUpdate:
+      type: object
+      properties:
+        IpId:
+          $ref: "#/components/schemas/ResourceId"
+        SubnetId:
+          $ref: "#/components/schemas/SubnetId"
+        Ip:
+          $ref: "#/components/schemas/Ip"
+      description: In an <a>UpdateResolverEndpoint</a> request, information about an IP
+        address to update.
+    ResolverEndpoint:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/ResourceId"
+        CreatorRequestId:
+          $ref: "#/components/schemas/CreatorRequestId"
+        Arn:
+          $ref: "#/components/schemas/Arn"
+        Name:
+          $ref: "#/components/schemas/Name"
+        SecurityGroupIds:
+          $ref: "#/components/schemas/SecurityGroupIds"
+        Direction:
+          $ref: "#/components/schemas/ResolverEndpointDirection"
+        IpAddressCount:
+          $ref: "#/components/schemas/IpAddressCount"
+        HostVPCId:
+          $ref: "#/components/schemas/ResourceId"
+        Status:
+          $ref: "#/components/schemas/ResolverEndpointStatus"
+        StatusMessage:
+          $ref: "#/components/schemas/StatusMessage"
+        CreationTime:
+          $ref: "#/components/schemas/Rfc3339TimeString"
+        ModificationTime:
+          $ref: "#/components/schemas/Rfc3339TimeString"
+      description: In the response to a <a>CreateResolverEndpoint</a>,
+        <a>DeleteResolverEndpoint</a>, <a>GetResolverEndpoint</a>,
+        <a>ListResolverEndpoints</a>, or <a>UpdateResolverEndpoint</a> request,
+        a complex type that contains settings for an existing inbound or
+        outbound resolver endpoint.
+    Name:
+      type: string
+      pattern: (?!^[0-9]+$)([a-zA-Z0-9-_' ']+)
+      maxLength: 64
+    ResolverRuleAssociation:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/ResourceId"
+        ResolverRuleId:
+          $ref: "#/components/schemas/ResourceId"
+        Name:
+          $ref: "#/components/schemas/Name"
+        VPCId:
+          $ref: "#/components/schemas/ResourceId"
+        Status:
+          $ref: "#/components/schemas/ResolverRuleAssociationStatus"
+        StatusMessage:
+          $ref: "#/components/schemas/StatusMessage"
+      description: In the response to an <a>AssociateResolverRule</a>,
+        <a>DisassociateResolverRule</a>, or <a>ListResolverRuleAssociations</a>
+        request, information about an association between a resolver rule and a
+        VPC.
+    Boolean:
+      type: boolean
+    CreatorRequestId:
+      type: string
+      minLength: 1
+      maxLength: 255
+    SecurityGroupIds:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResourceId"
+    ResolverEndpointDirection:
+      type: string
+      enum:
+        - INBOUND
+        - OUTBOUND
+    IpAddressesRequest:
+      type: array
+      items:
+        $ref: "#/components/schemas/IpAddressRequest"
+      minItems: 1
+      maxItems: 10
+    TagList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Tag"
+    RuleTypeOption:
+      type: string
+      enum:
+        - FORWARD
+        - SYSTEM
+        - RECURSIVE
+    DomainName:
+      type: string
+      minLength: 1
+      maxLength: 256
+    TargetList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TargetAddress"
+      minItems: 1
+    ResolverRule:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/ResourceId"
+        CreatorRequestId:
+          $ref: "#/components/schemas/CreatorRequestId"
+        Arn:
+          $ref: "#/components/schemas/Arn"
+        DomainName:
+          $ref: "#/components/schemas/DomainName"
+        Status:
+          $ref: "#/components/schemas/ResolverRuleStatus"
+        StatusMessage:
+          $ref: "#/components/schemas/StatusMessage"
+        RuleType:
+          $ref: "#/components/schemas/RuleTypeOption"
+        Name:
+          $ref: "#/components/schemas/Name"
+        TargetIps:
+          $ref: "#/components/schemas/TargetList"
+        ResolverEndpointId:
+          $ref: "#/components/schemas/ResourceId"
+        OwnerId:
+          $ref: "#/components/schemas/AccountId"
+        ShareStatus:
+          $ref: "#/components/schemas/ShareStatus"
+      description: For queries that originate in your VPC, detailed information about a
+        resolver rule, which specifies how to route DNS queries out of the VPC.
+        The <code>ResolverRule</code> parameter appears in the response to a
+        <a>CreateResolverRule</a>, <a>DeleteResolverRule</a>,
+        <a>GetResolverRule</a>, <a>ListResolverRules</a>, or
+        <a>UpdateResolverRule</a> request.
+    FilterName:
+      type: string
+      minLength: 1
+      maxLength: 64
+    FilterValues:
+      type: array
+      items:
+        $ref: "#/components/schemas/FilterValue"
+    Filter:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/FilterName"
+        Values:
+          $ref: "#/components/schemas/FilterValues"
+      description: For <code>List</code> operations, an optional specification to return a
+        subset of objects, such as resolver endpoints or resolver rules.
+    FilterValue:
+      type: string
+      minLength: 1
+      maxLength: 64
+    Filters:
+      type: array
+      items:
+        $ref: "#/components/schemas/Filter"
+    ResolverRulePolicy:
+      type: string
+      maxLength: 5000
+    Ip:
+      type: string
+      minLength: 7
+      maxLength: 36
+    IpAddressCount:
+      type: integer
+    SubnetId:
+      type: string
+      minLength: 1
+      maxLength: 32
+    IpAddressRequest:
+      type: object
+      required:
+        - SubnetId
+      properties:
+        SubnetId:
+          $ref: "#/components/schemas/SubnetId"
+        Ip:
+          $ref: "#/components/schemas/Ip"
+      description: In an <a>CreateResolverEndpoint</a> request, a subnet and IP address
+        that you want to use for DNS queries.
+    IpAddressStatus:
+      type: string
+      enum:
+        - CREATING
+        - FAILED_CREATION
+        - ATTACHING
+        - ATTACHED
+        - REMAP_DETACHING
+        - REMAP_ATTACHING
+        - DETACHING
+        - FAILED_RESOURCE_GONE
+        - DELETING
+        - DELETE_FAILED_FAS_EXPIRED
+    StatusMessage:
+      type: string
+      maxLength: 255
+    Rfc3339TimeString:
+      type: string
+      minLength: 20
+      maxLength: 40
+    IpAddressResponse:
+      type: object
+      properties:
+        IpId:
+          $ref: "#/components/schemas/ResourceId"
+        SubnetId:
+          $ref: "#/components/schemas/SubnetId"
+        Ip:
+          $ref: "#/components/schemas/Ip"
+        Status:
+          $ref: "#/components/schemas/IpAddressStatus"
+        StatusMessage:
+          $ref: "#/components/schemas/StatusMessage"
+        CreationTime:
+          $ref: "#/components/schemas/Rfc3339TimeString"
+        ModificationTime:
+          $ref: "#/components/schemas/Rfc3339TimeString"
+      description: In the response to a <a>GetResolverEndpoint</a> request, information
+        about the IP addresses that the resolver endpoint uses for DNS queries.
+    IpAddressesResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/IpAddressResponse"
+    MaxResults:
+      type: integer
+      minimum: 1
+      maximum: 100
+    NextToken:
+      type: string
+    ResolverEndpoints:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResolverEndpoint"
+    ResolverRuleAssociations:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResolverRuleAssociation"
+    ResolverRules:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResolverRule"
+    Port:
+      type: integer
+      minimum: 0
+      maximum: 65535
+    ResolverEndpointStatus:
+      type: string
+      enum:
+        - CREATING
+        - OPERATIONAL
+        - UPDATING
+        - AUTO_RECOVERING
+        - ACTION_NEEDED
+        - DELETING
+    ResolverRuleStatus:
+      type: string
+      enum:
+        - COMPLETE
+        - DELETING
+        - UPDATING
+        - FAILED
+    ShareStatus:
+      type: string
+      enum:
+        - NOT_SHARED
+        - SHARED_WITH_ME
+        - SHARED_BY_ME
+    ResolverRuleAssociationStatus:
+      type: string
+      enum:
+        - CREATING
+        - COMPLETE
+        - DELETING
+        - FAILED
+        - OVERRIDDEN
+    ResolverRuleConfig:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/Name"
+        TargetIps:
+          $ref: "#/components/schemas/TargetList"
+        ResolverEndpointId:
+          $ref: "#/components/schemas/ResourceId"
+      description: In an <a>UpdateResolverRule</a> request, information about the changes
+        that you want to make.
+    TagKey:
+      type: string
+    TagValue:
+      type: string
+    Tag:
+      type: object
+      properties:
+        Key:
+          $ref: "#/components/schemas/TagKey"
+        Value:
+          $ref: "#/components/schemas/TagValue"
+      description: One tag that you want to add to the specified resource. A tag consists
+        of a <code>Key</code> (a name for the tag) and a <code>Value</code>.
+    TagKeyList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TagKey"
+    TargetAddress:
+      type: object
+      required:
+        - Ip
+      properties:
+        Ip:
+          $ref: "#/components/schemas/Ip"
+        Port:
+          $ref: "#/components/schemas/Port"
+      description: In a <a>CreateResolverRule</a> request, an array of the IPs that you
+        want to forward DNS queries to.

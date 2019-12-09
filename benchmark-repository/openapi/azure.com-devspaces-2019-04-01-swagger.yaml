@@ -1,0 +1,776 @@
+openapi: 3.0.0
+info:
+  description: Dev Spaces REST API
+  title: DevSpacesManagement
+  version: 2019-04-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/devspaces/resource-manager/Microsoft.DevSpaces/stable/2019-04-01/devspaces.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: devspaces
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  /providers/Microsoft.DevSpaces/operations:
+    get:
+      description: Lists all the supported operations by the Microsoft.DevSpaces resource
+        provider along with their description.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The request was successful; response contains the list of operations
+            under Microsoft.DevSpaces resource provider.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceProviderOperationList"
+      summary: Lists operations for the resource provider.
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.DevSpaces/controllers":
+    get:
+      description: Lists all the Azure Dev Spaces Controllers with their properties in the
+        subscription.
+      operationId: Controllers_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: The request was successful; response contains the list of Azure Dev
+            Spaces Controllers in the subscription.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ControllerList"
+              examples:
+                ControllersList:
+                  $ref: "#/components/examples/ControllersList"
+        default:
+          description: Error response describing the reason for operation failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DevSpacesErrorResponse"
+      summary: Lists the Azure Dev Spaces Controllers in a subscription.
+      tags:
+        - Controllers
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevSpaces/controllers":
+    get:
+      description: Lists all the Azure Dev Spaces Controllers with their properties in the
+        specified resource group and subscription.
+      operationId: Controllers_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+      responses:
+        "200":
+          description: The request was successful; response contains the list of Azure Dev
+            Spaces Controllers in the resource group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ControllerList"
+              examples:
+                ControllersListByResourceGroup:
+                  $ref: "#/components/examples/ControllersListByResourceGroup"
+        default:
+          description: Error response describing the reason for operation failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DevSpacesErrorResponse"
+      summary: Lists the Azure Dev Spaces Controllers in a resource group.
+      tags:
+        - Controllers
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevSpaces/controllers/{name}":
+    delete:
+      description: Deletes an existing Azure Dev Spaces Controller.
+      operationId: Controllers_Delete
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/NameParameter"
+      responses:
+        "200":
+          description: The request was successful; the Azure Dev Spaces Controller is
+            deleted.
+        "202":
+          description: The request was successful; Azure Dev Spaces Controller is being
+            deleted.
+        "204":
+          description: The request was successful; Azure Dev Spaces Controller does not
+            exist.
+        default:
+          description: Error response describing the reason for operation failure. 409 -
+            Conflict(Azure Dev Spaces Controller is in a non-terminal state due
+            to an ongoing operation.)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DevSpacesErrorResponse"
+      summary: Deletes an Azure Dev Spaces Controller.
+      tags:
+        - Controllers
+      x-ms-long-running-operation: true
+    get:
+      description: Gets the properties for an Azure Dev Spaces Controller.
+      operationId: Controllers_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/NameParameter"
+      responses:
+        "200":
+          description: The request was successful; response contains the Azure Dev Spaces
+            Controller.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Controller"
+              examples:
+                ControllersGet:
+                  $ref: "#/components/examples/ControllersGet"
+        default:
+          description: Error response describing the reason for operation failure. 404 -
+            NotFound(Azure Dev Spaces Controller doesn't exist.)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DevSpacesErrorResponse"
+      summary: Gets an Azure Dev Spaces Controller.
+      tags:
+        - Controllers
+    patch:
+      description: Updates the properties of an existing Azure Dev Spaces Controller with
+        the specified update parameters.
+      operationId: Controllers_Update
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/NameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ControllerUpdateParameters"
+        description: Parameters for updating the Azure Dev Spaces Controller.
+        required: true
+      responses:
+        "200":
+          description: The request was successful; response contains the updated Azure Dev
+            Spaces Controller .
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Controller"
+              examples:
+                ControllersUpdate:
+                  $ref: "#/components/examples/ControllersUpdate"
+        "201":
+          description: The request was successful; Azure Dev Spaces Controller is being
+            updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Controller"
+              examples:
+                ControllersUpdate:
+                  $ref: "#/components/examples/ControllersUpdate"
+        default:
+          description: Error response describing the reason for operation failure. 404 -
+            NotFound(Azure Dev Spaces Controller doesn't exist.), 400 -
+            BadRequest(One or more update parameters are invalid.)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DevSpacesErrorResponse"
+      summary: Updates an Azure Dev Spaces Controller.
+      tags:
+        - Controllers
+    put:
+      description: Creates an Azure Dev Spaces Controller with the specified create
+        parameters.
+      operationId: Controllers_Create
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/NameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Controller"
+        description: Controller create parameters.
+        required: true
+      responses:
+        "200":
+          description: The request was successful; response contains the created Azure Dev
+            Spaces Controller .
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Controller"
+              examples:
+                ControllersCreate:
+                  $ref: "#/components/examples/ControllersCreate"
+        "201":
+          description: The request was successful; Azure Dev Spaces Controller is being
+            created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Controller"
+              examples:
+                ControllersCreate:
+                  $ref: "#/components/examples/ControllersCreate"
+        default:
+          description: Error response describing the reason for operation failure. 400 -
+            BadRequest(One or more creation parameters are invalid.), 409 -
+            Conflict(Target container host is not in a supported state.)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DevSpacesErrorResponse"
+      summary: Creates an Azure Dev Spaces Controller.
+      tags:
+        - Controllers
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevSpaces/controllers/{name}/listConnectionDetails":
+    post:
+      description: Lists connection details for the underlying container resources of an
+        Azure Dev Spaces Controller.
+      operationId: Controllers_ListConnectionDetails
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/NameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListConnectionDetailsParameters"
+        description: Parameters for listing connection details of Azure Dev Spaces
+          Controller.
+        required: true
+      responses:
+        "200":
+          description: The request was successful; response contains the list of connection
+            details for the Azure Dev Spaces Controller .
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ControllerConnectionDetailsList"
+              examples:
+                ControllersListConnectionDetails:
+                  $ref: "#/components/examples/ControllersListConnectionDetails"
+        default:
+          description: Error response describing the reason for operation failure. 404 -
+            NotFound(Azure Dev Spaces Controller doesn't exist.)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DevSpacesErrorResponse"
+      summary: Lists connection details for an Azure Dev Spaces Controller.
+      tags:
+        - Controllers
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevSpaces/locations/{location}/checkContainerHostMapping":
+    post:
+      operationId: ContainerHostMappings_GetContainerHostMapping
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - description: Location of the container host.
+          in: path
+          name: location
+          required: true
+          schema:
+            type: string
+          examples:
+            ContainerHostMappingsGetContainerHostMapping:
+              value: eastus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContainerHostMapping"
+        required: true
+      responses:
+        "200":
+          description: The request was successful; response contains the container host
+            mapping.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContainerHostMapping"
+              examples:
+                ContainerHostMappingsGetContainerHostMapping:
+                  $ref: "#/components/examples/ContainerHostMappingsGetContainerHos\
+                    tMapping"
+        "204":
+          description: The request was successful; container host mapping does not exist.
+        default:
+          description: Error response describing the reason for operation failure. 400 -
+            BadRequest(Invalid container host resource ID.)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DevSpacesErrorResponse"
+      summary: Returns container host mapping object for a container host resource ID
+        if an associated controller exists.
+      tags:
+        - ContainerHostMappings
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ControllersList:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DevSpaces/controllers/myControllerResource
+            location: eastus
+            name: myControllerResource
+            properties:
+              dataPlaneFqdn: dataplane.azds.io
+              provisioningState: Succeeded
+              targetContainerHostResourceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerService/managedClusters/myCluster
+            sku:
+              name: S1
+              tier: Standard
+            tags: {}
+            type: Microsoft.DevSpaces/controllers
+    ControllersListByResourceGroup:
+      value:
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DevSpaces/controllers/myControllerResource
+            location: eastus
+            name: myControllerResource
+            properties:
+              dataPlaneFqdn: dataplane.azds.io
+              provisioningState: Succeeded
+              targetContainerHostResourceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerService/managedClusters/myCluster
+            sku:
+              name: S1
+              tier: Standard
+            tags: {}
+            type: Microsoft.DevSpaces/controllers
+    ControllersGet:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DevSpaces/controllers/myControllerResource
+        location: eastus
+        name: myControllerResource
+        properties:
+          dataPlaneFqdn: dataplane.azds.io
+          provisioningState: Succeeded
+          targetContainerHostResourceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerService/managedClusters/myCluster
+        sku:
+          name: S1
+          tier: Standard
+        tags: {}
+        type: Microsoft.DevSpaces/controllers
+    ControllersUpdate:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DevSpaces/controllers/myControllerResource
+        location: eastus
+        name: myControllerResource
+        properties:
+          dataPlaneFqdn: dataplane.azds.io
+          provisioningState: Updating
+          targetContainerHostResourceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerService/managedClusters/myCluster
+        sku:
+          name: S1
+          tier: Standard
+        tags:
+          key: value
+        type: Microsoft.DevSpaces/controllers
+    ControllersCreate:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DevSpaces/controllers/myControllerResource
+        location: eastus
+        name: myControllerResource
+        properties:
+          provisioningState: Creating
+          targetContainerHostResourceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerService/managedClusters/myCluster
+        sku:
+          name: S1
+          tier: Standard
+        tags: {}
+        type: Microsoft.DevSpaces/controllers
+    ControllersListConnectionDetails:
+      value:
+        connectionDetailsList:
+          - orchestratorSpecificConnectionDetails:
+              instanceType: Kubernetes
+              kubeConfig: "00000000000000000000000000000000000000000000000000000000000000\
+                00000000000000000000000000"
+    ContainerHostMappingsGetContainerHostMapping:
+      value:
+        containerHostResourceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerService/managedClusters/myCluster
+        mappedControllerResourceId: /subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.DevSpaces/controllers/myController
+  parameters:
+    ApiVersionParameter:
+      description: Client API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        ControllersList:
+          value: 2019-04-01
+        ControllersListByResourceGroup:
+          value: 2019-04-01
+        ControllersDelete:
+          value: 2019-04-01
+        ControllersGet:
+          value: 2019-04-01
+        ControllersUpdate:
+          value: 2019-04-01
+        ControllersCreate:
+          value: 2019-04-01
+        ControllersListConnectionDetails:
+          value: 2019-04-01
+        ContainerHostMappingsGetContainerHostMapping:
+          value: 2019-04-01
+    NameParameter:
+      description: Name of the resource.
+      in: path
+      name: name
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 63
+        pattern: ^[a-zA-Z0-9]([_-]*[a-zA-Z0-9])*$
+      examples:
+        ControllersDelete:
+          value: myControllerResource
+        ControllersGet:
+          value: myControllerResource
+        ControllersUpdate:
+          value: myControllerResource
+        ControllersCreate:
+          value: myControllerResource
+        ControllersListConnectionDetails:
+          value: myControllerResource
+    ResourceGroupParameter:
+      description: Resource group to which the resource belongs.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+      examples:
+        ControllersListByResourceGroup:
+          value: myResourceGroup
+        ControllersDelete:
+          value: myResourceGroup
+        ControllersGet:
+          value: myResourceGroup
+        ControllersUpdate:
+          value: myResourceGroup
+        ControllersCreate:
+          value: myResourceGroup
+        ControllersListConnectionDetails:
+          value: myResourceGroup
+        ContainerHostMappingsGetContainerHostMapping:
+          value: myResourceGroup
+    SubscriptionIdParameter:
+      description: Azure subscription ID.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        ControllersList:
+          value: 00000000-0000-0000-0000-000000000000
+        ControllersListByResourceGroup:
+          value: 00000000-0000-0000-0000-000000000000
+        ControllersDelete:
+          value: 00000000-0000-0000-0000-000000000000
+        ControllersGet:
+          value: 00000000-0000-0000-0000-000000000000
+        ControllersUpdate:
+          value: 00000000-0000-0000-0000-000000000000
+        ControllersCreate:
+          value: 00000000-0000-0000-0000-000000000000
+        ControllersListConnectionDetails:
+          value: 00000000-0000-0000-0000-000000000000
+        ContainerHostMappingsGetContainerHostMapping:
+          value: 00000000-0000-0000-0000-000000000000
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ContainerHostMapping:
+      description: Container host mapping object specifying the Container host resource ID
+        and its associated Controller resource.
+      properties:
+        containerHostResourceId:
+          description: ARM ID of the Container Host resource
+          type: string
+        mappedControllerResourceId:
+          description: ARM ID of the mapped Controller resource
+          readOnly: true
+          type: string
+    Controller:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      properties:
+        properties:
+          $ref: "#/components/schemas/ControllerProperties"
+        sku:
+          $ref: "#/components/schemas/Sku"
+      required:
+        - properties
+        - sku
+        - location
+    ControllerConnectionDetails:
+      properties:
+        orchestratorSpecificConnectionDetails:
+          $ref: "#/components/schemas/OrchestratorSpecificConnectionDetails"
+    ControllerConnectionDetailsList:
+      properties:
+        connectionDetailsList:
+          description: List of Azure Dev Spaces Controller connection details.
+          items:
+            $ref: "#/components/schemas/ControllerConnectionDetails"
+          type: array
+    ControllerList:
+      properties:
+        nextLink:
+          description: The URI that can be used to request the next page for list of Azure
+            Dev Spaces Controllers.
+          readOnly: true
+          type: string
+        value:
+          description: List of Azure Dev Spaces Controllers.
+          items:
+            $ref: "#/components/schemas/Controller"
+          type: array
+    ControllerProperties:
+      properties:
+        dataPlaneFqdn:
+          description: DNS name for accessing DataPlane services
+          readOnly: true
+          type: string
+        hostSuffix:
+          description: DNS suffix for public endpoints running in the Azure Dev Spaces
+            Controller.
+          readOnly: true
+          type: string
+        provisioningState:
+          description: Provisioning state of the Azure Dev Spaces Controller.
+          enum:
+            - Succeeded
+            - Failed
+            - Canceled
+            - Updating
+            - Creating
+            - Deleting
+            - Deleted
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ProvisioningState
+        targetContainerHostCredentialsBase64:
+          description: Credentials of the target container host (base64).
+          type: string
+          x-ms-mutability:
+            - create
+        targetContainerHostResourceId:
+          description: Resource ID of the target container host
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+      required:
+        - targetContainerHostResourceId
+        - targetContainerHostCredentialsBase64
+    ControllerUpdateParameters:
+      description: Parameters for updating an Azure Dev Spaces Controller.
+      properties:
+        properties:
+          $ref: "#/components/schemas/ControllerUpdateParametersProperties"
+        tags:
+          additionalProperties:
+            type: string
+          description: Tags for the Azure Dev Spaces Controller.
+    ControllerUpdateParametersProperties:
+      properties:
+        targetContainerHostCredentialsBase64:
+          description: Credentials of the target container host (base64).
+          type: string
+    DevSpacesErrorResponse:
+      description: Error response indicates that the service is not able to process the
+        incoming request. The reason is provided in the error message.
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorDetails"
+    ErrorDetails:
+      properties:
+        code:
+          description: Status code for the error.
+          readOnly: true
+          type: string
+        message:
+          description: Error message describing the error in detail.
+          readOnly: true
+          type: string
+        target:
+          description: The target of the particular error.
+          readOnly: true
+          type: string
+    KubernetesConnectionDetails:
+      allOf:
+        - $ref: "#/components/schemas/OrchestratorSpecificConnectionDetails"
+      description: Contains information used to connect to a Kubernetes cluster
+      properties:
+        kubeConfig:
+          description: Gets the kubeconfig for the cluster.
+          type: string
+      x-ms-discriminator-value: Kubernetes
+    ListConnectionDetailsParameters:
+      description: Parameters for listing connection details of an Azure Dev Spaces
+        Controller.
+      properties:
+        targetContainerHostResourceId:
+          description: Resource ID of the target container host mapped to the Azure Dev
+            Spaces Controller.
+          type: string
+      required:
+        - targetContainerHostResourceId
+    OrchestratorSpecificConnectionDetails:
+      description: Base class for types that supply values used to connect to container
+        orchestrators
+      discriminator:
+        propertyName: instanceType
+      properties:
+        instanceType:
+          description: Gets the Instance type.
+          readOnly: true
+          type: string
+    Resource:
+      description: An Azure resource.
+      properties:
+        id:
+          description: Fully qualified resource Id for the resource.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the resource.
+          readOnly: true
+          type: string
+        type:
+          description: The type of the resource.
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    ResourceProviderOperationDefinition:
+      properties:
+        display:
+          $ref: "#/components/schemas/ResourceProviderOperationDisplay"
+        name:
+          description: Resource provider operation name.
+          type: string
+    ResourceProviderOperationDisplay:
+      properties:
+        description:
+          description: Description of the resource provider operation.
+          type: string
+        operation:
+          description: Name of the resource provider operation.
+          type: string
+        provider:
+          description: Name of the resource provider.
+          type: string
+        resource:
+          description: Name of the resource type.
+          type: string
+    ResourceProviderOperationList:
+      properties:
+        nextLink:
+          description: The URI that can be used to request the next page for list of Azure
+            operations.
+          readOnly: true
+          type: string
+        value:
+          description: Resource provider operations list.
+          items:
+            $ref: "#/components/schemas/ResourceProviderOperationDefinition"
+          type: array
+    Sku:
+      description: Model representing SKU for Azure Dev Spaces Controller.
+      properties:
+        name:
+          description: The name of the SKU for Azure Dev Spaces Controller.
+          enum:
+            - S1
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SkuName
+        tier:
+          description: The tier of the SKU for Azure Dev Spaces Controller.
+          enum:
+            - Standard
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SkuTier
+      required:
+        - name
+    TrackedResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The resource model definition for a ARM tracked top level resource.
+      properties:
+        location:
+          description: Region where the Azure resource is located.
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        tags:
+          additionalProperties:
+            type: string
+          description: Tags for the Azure resource.
+          type: object
+          x-ms-mutability:
+            - read
+            - create
+            - update

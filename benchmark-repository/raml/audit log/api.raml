@@ -1,0 +1,175 @@
+#%RAML 1.0
+title: Anypoint Platform Audit Log API
+baseUri: https://{anypointPlatformUri}/audit/{version}/
+version: v2
+baseUriParameters:
+  anypointPlatformUri:
+     description: MuleSoft Anypoint Platform Url
+     default: "anypoint.mulesoft.com"
+     enum: ["anypoint.mulesoft.com", "eu1.anypoint.mulesoft.com"]
+
+documentation:
+  - !include docs/usageExamples.raml
+  - !include docs/overview.raml
+  - !include docs/support.raml
+
+uses:
+  dataTypesLib: types/data-types.raml
+
+securedBy: [oauth_2_0]
+securitySchemes:
+  oauth_2_0: !include exchange_modules/f1e97bc6-315a-4490-82a7-23abe036327a.anypoint-platform/api-library/0.0.12/securitySchemes/oauth-2.raml
+
+types:
+  logQueryResult: dataTypesLib.logQueryResult
+  logQuery: dataTypesLib.logQuery
+  platforms: dataTypesLib.platforms
+  xmlLogQuery: dataTypesLib.xmlLogQuery
+
+/organizations:
+  /{id}:
+    description: The id of the organization whose data is being queried
+    /query{mediaTypeExtension}:
+      uriParameters:
+        mediaTypeExtension:
+          enum: [".json", ".csv"]
+          default: ".json"
+          required: false
+          type: string
+      post:
+        description: |
+          Searches for log entries. Query parameters are documented in the logQuery schema.
+          Entries returned will match the entries that were passed in, and are sorted in
+          ascending timestamp order (oldest to newest).
+        body:
+          application/x-www-form-urlencoded:
+            type: xmlLogQuery
+          application/json:
+            type: logQuery
+            examples:
+              example1: #Search all actions of a user
+                startDate: "2011-10-10T14:48:00"
+                userIds: ["abc-123", "def-456"]
+              example2: # Search all actions for resources in an organization
+                        # Only use the startDate since the organization is filtered
+                        #in the url
+                startDate: "2011-10-10T14:48:00"
+              example3: #Search all signin attempts
+                startDate: "2011-10-10T14:48:00"
+                actions: ["signin"]
+              example4: #Search all signin attempts of a list of users
+                startDate: "2011-10-10T14:48:00"
+                actions: ["signin"]
+                userIds: ["abc-123", "def-456"]
+              example5: # Search all actions made by a user to an object
+                startDate: "2011-10-10T14:48:00"
+                objectIds: ["zedconwvmjrfiewfmkhjejvwueeivtuxcqew"]
+                userIds: ["6030c6a7-9ed1-5351-97a4-1b7bfe328bbd"]
+        responses:
+            200:
+              body:
+                application/json:
+                  type: logQueryResult
+                text/csv:
+    /platforms:
+      get:
+        description: |
+          Gets all platforms of an organization
+        responses:
+          200:
+            body:
+              application/json:
+                type: platforms
+                example:
+                  {
+                  "data": [{"name":api-platform", "label":"cloudhub"}],
+                  "total": 2
+                  }
+
+
+    /objectTypes:
+      get:
+        description: |
+          Gets all objectTypes of an organization
+        responses:
+          200:
+            body:
+              application/json:
+                type: dataTypesLib.objectTypeResponse
+                example:
+                  {
+                    "data":
+                    [
+                      { "name": "api", "platforms": ["api-platform","cloudhub"]},
+                      { "name": "api version","platforms": ["api-platform"]},
+                      { "name": "contract","platforms": ["coreservices"]},
+                      { "name": "application","platforms": ["coreservices"]}
+                    ],
+                    "total": 4
+                  }
+
+    /objects:
+      get:
+        description: |
+          Query objects by objectTypes, platforms and search text passed as parameters
+            example: |
+              /organizations/{id}/objects?objectType=XX&object_type=YY&search=test-application
+              /organizations/{id}/objects?platform=A-111&platform=B-222&search=test-application
+              /organizations/{id}/objects?platform=A-111&platform=B-222&object_type=YY
+        queryParameters:
+          objectType:
+            description: "Object type name, supports multiple object types"
+            type: string[]
+            example: ["api", "application"]
+          platform:
+            description: "Platform name, supports multiple platforms"
+            type: string[]
+            example: ["api-platform", "cloudhub"]
+          search:
+            description: "The string to search for in object names"
+            type: string
+            example: "test-app-c"
+          objectId:
+            description: "Object Id, supports multiple object ids"
+            type: string[]
+          limit:
+            type: number
+            maximum: 200
+          offset:
+            type: number
+        responses:
+          200:
+            body:
+              application/json:
+                type: dataTypesLib.objects
+                example: |
+                  { "data":
+                    [
+                      { "objectId": "9898", "objectName": "Test API" },
+                      { "objectId": "2342", "objectName": "v1.0" },
+                      { "objectId": "5379", "objectName": "Test Application" }
+                    ],
+                    "total": 3
+                  }
+
+
+    /actions:
+      get:
+        description: |
+          Gets all actions of an organization
+        responses:
+          200:
+            body:
+              application/json:
+                type: dataTypesLib.actionResponse
+                example:
+                  {
+                    "data":
+                    [
+                      { "name": "create", "objectTypes": [ "api", "api version" ]},
+                      { "name": "start", "objectTypes": ["application"]},
+                      { "name": "delete", "objectTypes": ["page", "policy"]},
+                      { "name": "login", "objectTypes": ["user"]}
+                    ],
+                    "total": 3
+                  }

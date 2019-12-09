@@ -1,0 +1,625 @@
+openapi: 3.0.0
+info:
+  description: ARM Databricks
+  title: DatabricksClient
+  version: 2018-04-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/databricks/resource-manager/Microsoft.Databricks/stable/2018-04-01/databricks.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: databricks
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.Databricks/operations:
+    get:
+      description: Lists all of the available RP operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+              examples:
+                Operations:
+                  $ref: "#/components/examples/Operations"
+        default:
+          description: Resource Provider error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Databricks/workspaces":
+    get:
+      description: Gets all the workspaces within a subscription.
+      operationId: Workspaces_ListBySubscription
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK - Returns an array of workspaces.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceListResult"
+              examples:
+                Lists workspaces:
+                  $ref: "#/components/examples/Lists_workspaces"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces":
+    get:
+      description: Gets all the workspaces within a resource group.
+      operationId: Workspaces_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK - Returns an array of workspaces.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceListResult"
+              examples:
+                Lists workspaces:
+                  $ref: "#/components/examples/Lists_workspaces"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}":
+    delete:
+      description: Deletes the workspace.
+      operationId: Workspaces_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/WorkspaceName"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "202":
+          description: Accepted - Returns this status until the asynchronous operation has
+            completed.
+        "204":
+          description: NoContent
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+      x-ms-long-running-operation: true
+    get:
+      description: Gets the workspace.
+      operationId: Workspaces_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/WorkspaceName"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK - Returns the workspace.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
+              examples:
+                Get a workspace:
+                  $ref: "#/components/examples/Get_a_workspace"
+        "404":
+          description: Not Found
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+    patch:
+      description: Updates a workspace.
+      operationId: Workspaces_Update
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/WorkspaceName"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkspaceUpdate"
+        description: The update to the workspace.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the workspace.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
+              examples:
+                Update a workspace's tags.:
+                  $ref: "#/components/examples/Update_a_workspace_s_tags."
+        "202":
+          description: Accepted
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+      x-ms-long-running-operation: true
+    put:
+      description: Creates a new workspace.
+      operationId: Workspaces_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupName"
+        - $ref: "#/components/parameters/WorkspaceName"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Workspace"
+        description: Parameters supplied to the create or update a workspace.
+        required: true
+      responses:
+        "200":
+          description: Created - Returns information about the workspace, including
+            provisioning status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
+              examples:
+                Create or update workspace:
+                  $ref: "#/components/examples/Create_or_update_workspace"
+        "201":
+          description: Created - Returns information about the workspace, including
+            provisioning status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
+              examples:
+                Create or update workspace:
+                  $ref: "#/components/examples/Create_or_update_workspace"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Workspaces
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Operations:
+      value:
+        - display:
+            description: Retrieves a list of workspaces.
+            operation: List Workspaces
+            provider: Microsoft Databricks
+            resource: Workspace
+          name: Microsoft.Databricks/workspaces/read
+        - display:
+            description: Creates an workspace.
+            operation: Create Workspace
+            provider: Microsoft Databricks
+            resource: Workspace
+          name: Microsoft.Databricks/workspaces/write
+        - display:
+            description: Removes an workspace.
+            operation: Remove Workspace
+            provider: Microsoft Databricks
+            resource: Workspace
+          name: Microsoft.Databricks/workspaces/delete
+    Lists_workspaces:
+      value:
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg/providers/Microsoft.Databricks/workspaces/myWorkspace1
+            location: East US 2
+            name: myWorkspace1
+            properties:
+              managedResourceGroupId: /subscriptions/subid/resourceGroups/myManagedRG
+              provisioningState: Created
+              uiDefinitionUri: https://path/to/workspaceCreateUiDefinition.json
+            sku:
+              name: skuName
+            type: Microsoft.Databricks/workspaces
+          - id: /subscriptions/subid/resourceGroups/rg/providers/Microsoft.Databricks/workspaces/myWorkspace2
+            location: East US 2
+            name: myWorkspace2
+            properties:
+              managedResourceGroupId: /subscriptions/subid/resourceGroups/myManagedRG
+              provisioningState: Created
+              uiDefinitionUri: https://path/to/workspaceCreateUiDefinition.json
+            sku:
+              name: skuName
+            type: Microsoft.Databricks/workspaces
+    Get_a_workspace:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg/providers/Microsoft.Databricks/workspaces/myWorkspace
+        location: East US 2
+        name: myWorkspace
+        properties:
+          managedResourceGroupId: /subscriptions/subid/resourceGroups/myManagedRG
+          provisioningState: Created
+          uiDefinitionUri: https://path/to/workspaceCreateUiDefinition.json
+        type: Microsoft.Databricks/workspaces
+    Update_a_workspace_s_tags.:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg/providers/Microsoft.Databricks/workspaces/myWorkspace
+        location: East US 2
+        name: myWorkspace
+        properties:
+          managedResourceGroupId: /subscriptions/subid/resourceGroups/myManagedRG
+          provisioningState: Created
+          uiDefinitionUri: https://path/to/workspaceCreateUiDefinition.json
+        tags:
+          mytag1: myvalue1
+        type: Microsoft.Databricks/workspaces
+    Create_or_update_workspace:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg/providers/Microsoft.Databricks/workspaces/myWorkspace
+        location: East US 2
+        name: myWorkspace
+        properties:
+          managedResourceGroupId: /subscriptions/subid/resourceGroups/myManagedRG
+          provisioningState: Created
+          uiDefinitionUri: https://path/to/workspaceCreateUiDefinition.json
+        sku:
+          name: skuName
+        type: Microsoft.Databricks/workspaces
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for this operation.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Operations:
+          value: 2018-04-01
+        Lists workspaces:
+          value: 2018-04-01
+        Delete a workspace:
+          value: 2018-04-01
+        Get a workspace:
+          value: 2018-04-01
+        Update a workspace's tags.:
+          value: 2018-04-01
+        Create or update workspace:
+          value: 2018-04-01
+    ResourceGroupName:
+      description: The name of the resource group. The name is case insensitive.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\._\(\)]+$
+      examples:
+        Lists workspaces:
+          value: rg
+        Delete a workspace:
+          value: rg
+        Get a workspace:
+          value: rg
+        Update a workspace's tags.:
+          value: rg
+        Create or update workspace:
+          value: rg
+    SubscriptionIdParameter:
+      description: The ID of the target subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        Lists workspaces:
+          value: subid
+        Delete a workspace:
+          value: subid
+        Get a workspace:
+          value: subid
+        Update a workspace's tags.:
+          value: subid
+        Create or update workspace:
+          value: subid
+    WorkspaceName:
+      description: The name of the workspace.
+      in: path
+      name: workspaceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 64
+      examples:
+        Delete a workspace:
+          value: myWorkspace
+        Get a workspace:
+          value: myWorkspace
+        Update a workspace's tags.:
+          value: myWorkspace
+        Create or update workspace:
+          value: myWorkspace
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ErrorDetail:
+      properties:
+        code:
+          description: The error's code.
+          type: string
+        message:
+          description: A human readable error message.
+          type: string
+        target:
+          description: Indicates which property in the request is responsible for the error.
+          type: string
+      required:
+        - code
+        - message
+      title: Error details.
+      type: object
+    ErrorInfo:
+      properties:
+        code:
+          description: A machine readable error code.
+          type: string
+        details:
+          description: error details.
+          items:
+            $ref: "#/components/schemas/ErrorDetail"
+          type: array
+        innererror:
+          description: Inner error details if they exist.
+          type: string
+        message:
+          description: A human readable error message.
+          type: string
+      required:
+        - code
+        - message
+      title: The code and message for an error.
+      type: object
+    ErrorResponse:
+      description: Contains details when the response code indicates an error.
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorInfo"
+      required:
+        - error
+      title: Error response.
+      type: object
+    Operation:
+      description: REST API operation
+      properties:
+        display:
+          description: The object that represents the operation.
+          properties:
+            operation:
+              description: "Operation type: Read, write, delete, etc."
+              type: string
+            provider:
+              description: "Service provider: Microsoft.ResourceProvider"
+              type: string
+            resource:
+              description: Resource on which the operation is performed.
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}"
+          type: string
+      type: object
+    OperationListResult:
+      description: Result of the request to list Resource Provider operations. It contains
+        a list of operations and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          type: string
+        value:
+          description: List of Resource Provider operations supported by the Resource
+            Provider resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          type: array
+    ProvisioningState:
+      description: Provisioning status of the workspace.
+      enum:
+        - Accepted
+        - Running
+        - Ready
+        - Creating
+        - Created
+        - Deleting
+        - Deleted
+        - Canceled
+        - Failed
+        - Succeeded
+        - Updating
+      readOnly: true
+      type: string
+      x-ms-enum:
+        modelAsString: true
+        name: ProvisioningState
+    Resource:
+      description: The core properties of ARM resources
+      properties:
+        id:
+          description: Fully qualified resource Id for the resource. Ex -
+            /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+          readOnly: true
+          type: string
+        name:
+          description: The name of the resource
+          readOnly: true
+          type: string
+        type:
+          description: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
+            Microsoft.Storage/storageAccounts.
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    Sku:
+      description: SKU for the resource.
+      properties:
+        name:
+          description: The SKU name.
+          type: string
+        tier:
+          description: The SKU tier.
+          type: string
+      required:
+        - name
+    TrackedResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The resource model definition for a ARM tracked top level resource
+      properties:
+        location:
+          description: The geo-location where the resource lives
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+          x-ms-mutability:
+            - read
+            - create
+            - update
+      required:
+        - location
+    Workspace:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      description: Information about workspace.
+      properties:
+        properties:
+          $ref: "#/components/schemas/WorkspaceProperties"
+        sku:
+          $ref: "#/components/schemas/Sku"
+      required:
+        - properties
+    WorkspaceListResult:
+      description: List of workspaces.
+      properties:
+        nextLink:
+          description: The URL to use for getting the next set of results.
+          type: string
+        value:
+          description: The array of workspaces.
+          items:
+            $ref: "#/components/schemas/Workspace"
+          type: array
+    WorkspaceProperties:
+      description: The workspace properties.
+      properties:
+        authorizations:
+          description: The workspace provider authorizations.
+          items:
+            $ref: "#/components/schemas/WorkspaceProviderAuthorization"
+          type: array
+        managedResourceGroupId:
+          description: The managed resource group Id.
+          type: string
+        parameters:
+          description: Name and value pairs that define the workspace parameters.
+          type: object
+        provisioningState:
+          $ref: "#/components/schemas/ProvisioningState"
+        uiDefinitionUri:
+          description: The blob URI where the UI definition file is located.
+          type: string
+      required:
+        - managedResourceGroupId
+    WorkspaceProviderAuthorization:
+      description: The workspace provider authorization.
+      properties:
+        principalId:
+          description: The provider's principal identifier. This is the identity that the
+            provider will use to call ARM to manage the workspace resources.
+          format: uuid
+          type: string
+        roleDefinitionId:
+          description: The provider's role definition identifier. This role will define all
+            the permissions that the provider must have on the workspace's
+            container resource group. This role definition cannot have
+            permission to delete the resource group.
+          format: uuid
+          type: string
+      required:
+        - principalId
+        - roleDefinitionId
+    WorkspaceUpdate:
+      description: An update to a workspace.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+      type: object

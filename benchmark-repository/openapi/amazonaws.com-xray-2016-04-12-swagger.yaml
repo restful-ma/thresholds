@@ -1,0 +1,2558 @@
+openapi: 3.0.0
+info:
+  version: 2016-04-12
+  x-release: v4
+  title: AWS X-Ray
+  description: AWS X-Ray provides APIs for managing debug traces and retrieving service
+    maps and other data created by processing those traces.
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: xray
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/xray-2016-04-12.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/xray/
+security:
+  - hmac: []
+paths:
+  /Traces:
+    post:
+      operationId: BatchGetTraces
+      description: Retrieves a list of traces specified by ID. Each trace is a collection
+        of segment documents that originates from a single request. Use
+        <code>GetTraceSummaries</code> to get a list of trace IDs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BatchGetTracesResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      parameters:
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - TraceIds
+              properties:
+                TraceIds:
+                  description: Specify the trace IDs of requests for which to retrieve
+                    segments.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TraceId"
+                NextToken:
+                  description: Pagination token. Not used.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /CreateGroup:
+    post:
+      operationId: CreateGroup
+      description: "Creates a group resource with a name and a filter expression. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateGroupResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - GroupName
+              properties:
+                GroupName:
+                  description: The case-sensitive name of the new group. Default is a
+                    reserved name and names must be unique.
+                  type: string
+                  minLength: 1
+                  maxLength: 32
+                FilterExpression:
+                  description: The filter expression defining criteria by which to group
+                    traces.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /CreateSamplingRule:
+    post:
+      operationId: CreateSamplingRule
+      description: Creates a rule to control sampling behavior for instrumented
+        applications. Services retrieve rules with <a>GetSamplingRules</a>, and
+        evaluate each rule in ascending order of <i>priority</i> for each
+        request. If a rule matches, the service records a trace, borrowing it
+        from the reservoir size. After 10 seconds, the service reports back to
+        X-Ray with <a>GetSamplingTargets</a> to get updated versions of each
+        in-use rule. The updated rule contains a trace quota that the service
+        can use instead of borrowing from the reservoir.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateSamplingRuleResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+        "482":
+          description: RuleLimitExceededException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RuleLimitExceededException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - SamplingRule
+              properties:
+                SamplingRule:
+                  description: A sampling rule that services use to decide whether to
+                    instrument a request. Rule fields can match properties of
+                    the service, or properties of a request. The service can
+                    ignore rules that don't match its properties.
+                  type: object
+                  properties:
+                    RuleName:
+                      $ref: "#/components/schemas/RuleName"
+                    RuleARN:
+                      $ref: "#/components/schemas/String"
+                    ResourceARN:
+                      $ref: "#/components/schemas/ResourceARN"
+                    Priority:
+                      $ref: "#/components/schemas/Priority"
+                    FixedRate:
+                      $ref: "#/components/schemas/FixedRate"
+                    ReservoirSize:
+                      $ref: "#/components/schemas/ReservoirSize"
+                    ServiceName:
+                      $ref: "#/components/schemas/ServiceName"
+                    ServiceType:
+                      $ref: "#/components/schemas/ServiceType"
+                    Host:
+                      $ref: "#/components/schemas/Host"
+                    HTTPMethod:
+                      $ref: "#/components/schemas/HTTPMethod"
+                    URLPath:
+                      $ref: "#/components/schemas/URLPath"
+                    Version:
+                      $ref: "#/components/schemas/Version"
+                    Attributes:
+                      $ref: "#/components/schemas/AttributeMap"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /DeleteGroup:
+    post:
+      operationId: DeleteGroup
+      description: Deletes a group resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteGroupResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      requestBody:
+        $ref: "#/components/requestBodies/DeleteGroupBody"
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /DeleteSamplingRule:
+    post:
+      operationId: DeleteSamplingRule
+      description: Deletes a sampling rule.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteSamplingRuleResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                RuleName:
+                  description: The name of the sampling rule. Specify a rule by either name
+                    or ARN, but not both.
+                  type: string
+                RuleARN:
+                  description: The ARN of the sampling rule. Specify a rule by either name
+                    or ARN, but not both.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /EncryptionConfig:
+    post:
+      operationId: GetEncryptionConfig
+      description: Retrieves the current encryption configuration for X-Ray data.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetEncryptionConfigResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /GetGroup:
+    post:
+      operationId: GetGroup
+      description: Retrieves group resource details.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetGroupResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      requestBody:
+        $ref: "#/components/requestBodies/DeleteGroupBody"
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /Groups:
+    post:
+      operationId: GetGroups
+      description: Retrieves all active group details.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetGroupsResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      parameters:
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                NextToken:
+                  description: Pagination token. Not used.
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /GetSamplingRules:
+    post:
+      operationId: GetSamplingRules
+      description: Retrieves all sampling rules.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSamplingRulesResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      parameters:
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/GetSamplingRulesBody"
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /SamplingStatisticSummaries:
+    post:
+      operationId: GetSamplingStatisticSummaries
+      description: Retrieves information about recent sampling results for all sampling
+        rules.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSamplingStatisticSummariesResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      parameters:
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/GetSamplingRulesBody"
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /SamplingTargets:
+    post:
+      operationId: GetSamplingTargets
+      description: "Requests a sampling quota for rules that the service is using to sample
+        requests. "
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSamplingTargetsResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - SamplingStatisticsDocuments
+              properties:
+                SamplingStatisticsDocuments:
+                  description: Information about rules that the service is using to sample
+                    requests.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SamplingStatisticsDocument"
+                  maxItems: 25
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /ServiceGraph:
+    post:
+      operationId: GetServiceGraph
+      description: Retrieves a document that describes services that process incoming
+        requests, and downstream services that they call as a result. Root
+        services process incoming requests and make calls to downstream
+        services. Root services are applications that use the AWS X-Ray SDK.
+        Downstream services can be other applications, AWS resources, HTTP web
+        APIs, or SQL databases.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetServiceGraphResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      parameters:
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - StartTime
+                - EndTime
+              properties:
+                StartTime:
+                  description: The start of the time frame for which to generate a graph.
+                  type: string
+                  format: date-time
+                EndTime:
+                  description: The end of the timeframe for which to generate a graph.
+                  type: string
+                  format: date-time
+                GroupName:
+                  description: The name of a group to generate a graph based on.
+                  type: string
+                  minLength: 1
+                  maxLength: 32
+                GroupARN:
+                  description: The ARN of a group to generate a graph based on.
+                  type: string
+                  minLength: 1
+                  maxLength: 400
+                NextToken:
+                  description: Pagination token. Not used.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /TimeSeriesServiceStatistics:
+    post:
+      operationId: GetTimeSeriesServiceStatistics
+      description: Get an aggregation of service statistics defined by a specific time
+        range.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetTimeSeriesServiceStatisticsResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      parameters:
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - StartTime
+                - EndTime
+              properties:
+                StartTime:
+                  description: The start of the time frame for which to aggregate
+                    statistics.
+                  type: string
+                  format: date-time
+                EndTime:
+                  description: The end of the time frame for which to aggregate statistics.
+                  type: string
+                  format: date-time
+                GroupName:
+                  description: The case-sensitive name of the group for which to pull
+                    statistics from.
+                  type: string
+                  minLength: 1
+                  maxLength: 32
+                GroupARN:
+                  description: The ARN of the group for which to pull statistics from.
+                  type: string
+                  minLength: 1
+                  maxLength: 400
+                EntitySelectorExpression:
+                  description: "A filter expression defining entities that will be
+                    aggregated for statistics. Supports ID, service, and edge
+                    functions. If no selector expression is specified, edge
+                    statistics are returned. "
+                  type: string
+                  minLength: 1
+                  maxLength: 500
+                Period:
+                  description: Aggregation period in seconds.
+                  type: integer
+                NextToken:
+                  description: Pagination token. Not used.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /TraceGraph:
+    post:
+      operationId: GetTraceGraph
+      description: Retrieves a service graph for one or more specific trace IDs.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetTraceGraphResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      parameters:
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - TraceIds
+              properties:
+                TraceIds:
+                  description: Trace IDs of requests for which to generate a service graph.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TraceId"
+                NextToken:
+                  description: Pagination token. Not used.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /TraceSummaries:
+    post:
+      operationId: GetTraceSummaries
+      description: <p>Retrieves IDs and metadata for traces available for a specified time
+        frame using an optional filter. To get the full traces, pass the trace
+        IDs to <code>BatchGetTraces</code>.</p> <p>A filter expression can
+        target traced requests that hit specific service nodes or edges, have
+        errors, or come from a known user. For example, the following filter
+        expression targets traces that pass through
+        <code>api.example.com</code>:</p> <p>
+        <code>service("api.example.com")</code> </p> <p>This filter expression
+        finds traces that have an annotation named <code>account</code> with the
+        value <code>12345</code>:</p> <p> <code>annotation.account =
+        "12345"</code> </p> <p>For a full list of indexed fields and keywords
+        that you can use in filter expressions, see <a
+        href="https://docs.aws.amazon.com/xray/latest/devguide/xray-console-filters.html">Using
+        Filter Expressions</a> in the <i>AWS X-Ray Developer Guide</i>.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetTraceSummariesResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      parameters:
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - StartTime
+                - EndTime
+              properties:
+                StartTime:
+                  description: The start of the time frame for which to retrieve traces.
+                  type: string
+                  format: date-time
+                EndTime:
+                  description: The end of the time frame for which to retrieve traces.
+                  type: string
+                  format: date-time
+                TimeRangeType:
+                  description: A parameter to indicate whether to query trace summaries by
+                    TraceId or Event time.
+                  type: string
+                  enum:
+                    - TraceId
+                    - Event
+                Sampling:
+                  description: Set to <code>true</code> to get summaries for only a subset
+                    of available traces.
+                  type: boolean
+                SamplingStrategy:
+                  description: The name and value of a sampling rule to apply to a trace
+                    summary.
+                  type: object
+                  properties:
+                    Name:
+                      $ref: "#/components/schemas/SamplingStrategyName"
+                    Value:
+                      $ref: "#/components/schemas/NullableDouble"
+                FilterExpression:
+                  description: Specify a filter expression to retrieve trace summaries for
+                    services or requests that meet certain requirements.
+                  type: string
+                NextToken:
+                  description: Specify the pagination token returned by a previous request
+                    to retrieve the next page of results.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /PutEncryptionConfig:
+    post:
+      operationId: PutEncryptionConfig
+      description: Updates the encryption configuration for X-Ray data.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutEncryptionConfigResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Type
+              properties:
+                KeyId:
+                  description: <p>An AWS KMS customer master key (CMK) in one of the
+                    following formats:</p> <ul> <li> <p> <b>Alias</b> - The name
+                    of the key. For example, <code>alias/MyKey</code>.</p> </li>
+                    <li> <p> <b>Key ID</b> - The KMS key ID of the key. For
+                    example,
+                    <code>ae4aa6d49-a4d8-9df9-a475-4ff6d7898456</code>.</p>
+                    </li> <li> <p> <b>ARN</b> - The full Amazon Resource Name of
+                    the key ID or alias. For example,
+                    <code>arn:aws:kms:us-east-2:123456789012:key/ae4aa6d49-a4d8-9df9-a475-4ff6d7898456</code>.
+                    Use this format to specify a key in a different account.</p>
+                    </li> </ul> <p>Omit this key if you set <code>Type</code> to
+                    <code>NONE</code>.</p>
+                  type: string
+                  minLength: 1
+                  maxLength: 3000
+                Type:
+                  description: The type of encryption. Set to <code>KMS</code> to use your
+                    own key for encryption. Set to <code>NONE</code> for default
+                    encryption.
+                  type: string
+                  enum:
+                    - NONE
+                    - KMS
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /TelemetryRecords:
+    post:
+      operationId: PutTelemetryRecords
+      description: Used by the AWS X-Ray daemon to upload telemetry.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutTelemetryRecordsResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - TelemetryRecords
+              properties:
+                TelemetryRecords:
+                  description: <p/>
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TelemetryRecord"
+                EC2InstanceId:
+                  description: <p/>
+                  type: string
+                  maxLength: 20
+                Hostname:
+                  description: <p/>
+                  type: string
+                  maxLength: 255
+                ResourceARN:
+                  description: <p/>
+                  type: string
+                  maxLength: 500
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /TraceSegments:
+    post:
+      operationId: PutTraceSegments
+      description: <p>Uploads segment documents to AWS X-Ray. The X-Ray SDK generates
+        segment documents and sends them to the X-Ray daemon, which uploads them
+        in batches. A segment document can be a completed segment, an
+        in-progress segment, or an array of subsegments.</p> <p>Segments must
+        include the following fields. For the full segment document schema, see
+        <a
+        href="https://docs.aws.amazon.com/xray/latest/devguide/xray-api-segmentdocuments.html">AWS
+        X-Ray Segment Documents</a> in the <i>AWS X-Ray Developer Guide</i>.</p>
+        <p class="title"> <b>Required Segment Document Fields</b> </p> <ul> <li>
+        <p> <code>name</code> - The name of the service that handled the
+        request.</p> </li> <li> <p> <code>id</code> - A 64-bit identifier for
+        the segment, unique among segments in the same trace, in 16 hexadecimal
+        digits.</p> </li> <li> <p> <code>trace_id</code> - A unique identifier
+        that connects all segments and subsegments originating from a single
+        client request.</p> </li> <li> <p> <code>start_time</code> - Time the
+        segment or subsegment was created, in floating point seconds in epoch
+        time, accurate to milliseconds. For example, <code>1480615200.010</code>
+        or <code>1.480615200010E9</code>.</p> </li> <li> <p>
+        <code>end_time</code> - Time the segment or subsegment was closed. For
+        example, <code>1480615200.090</code> or <code>1.480615200090E9</code>.
+        Specify either an <code>end_time</code> or <code>in_progress</code>.</p>
+        </li> <li> <p> <code>in_progress</code> - Set to <code>true</code>
+        instead of specifying an <code>end_time</code> to record that a segment
+        has been started, but is not complete. Send an in progress segment when
+        your application receives a request that will take a long time to serve,
+        to trace the fact that the request was received. When the response is
+        sent, send the complete segment to overwrite the in-progress
+        segment.</p> </li> </ul> <p>A <code>trace_id</code> consists of three
+        numbers separated by hyphens. For example,
+        1-58406520-a006649127e371903a2de979. This includes:</p> <p
+        class="title"> <b>Trace ID Format</b> </p> <ul> <li> <p>The version
+        number, i.e. <code>1</code>.</p> </li> <li> <p>The time of the original
+        request, in Unix epoch time, in 8 hexadecimal digits. For example,
+        10:00AM December 2nd, 2016 PST in epoch time is <code>1480615200</code>
+        seconds, or <code>58406520</code> in hexadecimal.</p> </li> <li> <p>A
+        96-bit identifier for the trace, globally unique, in 24 hexadecimal
+        digits.</p> </li> </ul>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutTraceSegmentsResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - TraceSegmentDocuments
+              properties:
+                TraceSegmentDocuments:
+                  description: A string containing a JSON document defining one or more
+                    segments or subsegments.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TraceSegmentDocument"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /UpdateGroup:
+    post:
+      operationId: UpdateGroup
+      description: Updates a group resource.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateGroupResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                GroupName:
+                  description: The case-sensitive name of the group.
+                  type: string
+                  minLength: 1
+                  maxLength: 32
+                GroupARN:
+                  description: The ARN that was generated upon creation.
+                  type: string
+                  minLength: 1
+                  maxLength: 400
+                FilterExpression:
+                  description: The updated filter expression defining criteria by which to
+                    group traces.
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  /UpdateSamplingRule:
+    post:
+      operationId: UpdateSamplingRule
+      description: Modifies a sampling rule's configuration.
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateSamplingRuleResult"
+        "480":
+          description: InvalidRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidRequestException"
+        "481":
+          description: ThrottledException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThrottledException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - SamplingRuleUpdate
+              properties:
+                SamplingRuleUpdate:
+                  description: A document specifying changes to a sampling rule's
+                    configuration.
+                  type: object
+                  properties:
+                    RuleName:
+                      $ref: "#/components/schemas/RuleName"
+                    RuleARN:
+                      $ref: "#/components/schemas/String"
+                    ResourceARN:
+                      $ref: "#/components/schemas/ResourceARN"
+                    Priority:
+                      $ref: "#/components/schemas/NullableInteger"
+                    FixedRate:
+                      $ref: "#/components/schemas/NullableDouble"
+                    ReservoirSize:
+                      $ref: "#/components/schemas/NullableInteger"
+                    Host:
+                      $ref: "#/components/schemas/Host"
+                    ServiceName:
+                      $ref: "#/components/schemas/ServiceName"
+                    ServiceType:
+                      $ref: "#/components/schemas/ServiceType"
+                    HTTPMethod:
+                      $ref: "#/components/schemas/HTTPMethod"
+                    URLPath:
+                      $ref: "#/components/schemas/URLPath"
+                    Attributes:
+                      $ref: "#/components/schemas/AttributeMap"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://xray.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS X-Ray multi-region endpoint
+  - url: https://xray.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The AWS X-Ray multi-region endpoint
+  - url: http://xray.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS X-Ray endpoint for China (Beijing) and China (Ningxia)
+  - url: https://xray.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The AWS X-Ray endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  requestBodies:
+    DeleteGroupBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              GroupName:
+                description: The case-sensitive name of the group.
+                type: string
+                minLength: 1
+                maxLength: 32
+              GroupARN:
+                description: The ARN of the group that was generated on creation.
+                type: string
+                minLength: 1
+                maxLength: 400
+      required: true
+    GetSamplingRulesBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              NextToken:
+                description: Pagination token. Not used.
+                type: string
+      required: true
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    BatchGetTracesResult:
+      type: object
+      properties:
+        Traces:
+          $ref: "#/components/schemas/TraceList"
+        UnprocessedTraceIds:
+          $ref: "#/components/schemas/UnprocessedTraceIdList"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    TraceId:
+      type: string
+      minLength: 1
+      maxLength: 35
+    InvalidRequestException: {}
+    ThrottledException: {}
+    CreateGroupResult:
+      type: object
+      properties:
+        Group:
+          $ref: "#/components/schemas/Group"
+    CreateSamplingRuleResult:
+      type: object
+      properties:
+        SamplingRuleRecord:
+          $ref: "#/components/schemas/SamplingRuleRecord"
+    RuleName:
+      type: string
+      minLength: 1
+      maxLength: 32
+    String:
+      type: string
+    ResourceARN:
+      type: string
+      maxLength: 500
+    Priority:
+      type: integer
+      minimum: 1
+      maximum: 9999
+    FixedRate:
+      type: number
+      format: double
+      minimum: 0
+      maximum: 1
+    ReservoirSize:
+      type: integer
+      minimum: 0
+    ServiceName:
+      type: string
+      maxLength: 64
+    ServiceType:
+      type: string
+      maxLength: 64
+    Host:
+      type: string
+      maxLength: 64
+    HTTPMethod:
+      type: string
+      maxLength: 10
+    URLPath:
+      type: string
+      maxLength: 128
+    Version:
+      type: integer
+      minimum: 1
+    AttributeMap:
+      type: object
+      maxProperties: 5
+      additionalProperties:
+        $ref: "#/components/schemas/AttributeValue"
+    RuleLimitExceededException: {}
+    DeleteGroupResult:
+      type: object
+      properties: {}
+    DeleteSamplingRuleResult:
+      type: object
+      properties:
+        SamplingRuleRecord:
+          $ref: "#/components/schemas/SamplingRuleRecord"
+    GetEncryptionConfigResult:
+      type: object
+      properties:
+        EncryptionConfig:
+          $ref: "#/components/schemas/EncryptionConfig"
+    GetGroupResult:
+      type: object
+      properties:
+        Group:
+          $ref: "#/components/schemas/Group"
+    GetGroupsResult:
+      type: object
+      properties:
+        Groups:
+          $ref: "#/components/schemas/GroupSummaryList"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    GetSamplingRulesResult:
+      type: object
+      properties:
+        SamplingRuleRecords:
+          $ref: "#/components/schemas/SamplingRuleRecordList"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    GetSamplingStatisticSummariesResult:
+      type: object
+      properties:
+        SamplingStatisticSummaries:
+          $ref: "#/components/schemas/SamplingStatisticSummaryList"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    GetSamplingTargetsResult:
+      type: object
+      properties:
+        SamplingTargetDocuments:
+          $ref: "#/components/schemas/SamplingTargetDocumentList"
+        LastRuleModification:
+          $ref: "#/components/schemas/Timestamp"
+        UnprocessedStatistics:
+          $ref: "#/components/schemas/UnprocessedStatisticsList"
+    SamplingStatisticsDocument:
+      type: object
+      required:
+        - RuleName
+        - ClientID
+        - Timestamp
+        - RequestCount
+        - SampledCount
+      properties:
+        RuleName:
+          $ref: "#/components/schemas/RuleName"
+        ClientID:
+          $ref: "#/components/schemas/ClientID"
+        Timestamp:
+          $ref: "#/components/schemas/Timestamp"
+        RequestCount:
+          $ref: "#/components/schemas/RequestCount"
+        SampledCount:
+          $ref: "#/components/schemas/SampledCount"
+        BorrowCount:
+          $ref: "#/components/schemas/BorrowCount"
+      description: Request sampling results for a single rule from a service. Results are
+        for the last 10 seconds unless the service has been assigned a longer
+        reporting interval after a previous call to <a>GetSamplingTargets</a>.
+    GetServiceGraphResult:
+      type: object
+      properties:
+        StartTime:
+          $ref: "#/components/schemas/Timestamp"
+        EndTime:
+          $ref: "#/components/schemas/Timestamp"
+        Services:
+          $ref: "#/components/schemas/ServiceList"
+        ContainsOldGroupVersions:
+          $ref: "#/components/schemas/Boolean"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    GetTimeSeriesServiceStatisticsResult:
+      type: object
+      properties:
+        TimeSeriesServiceStatistics:
+          $ref: "#/components/schemas/TimeSeriesServiceStatisticsList"
+        ContainsOldGroupVersions:
+          $ref: "#/components/schemas/Boolean"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    GetTraceGraphResult:
+      type: object
+      properties:
+        Services:
+          $ref: "#/components/schemas/ServiceList"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    GetTraceSummariesResult:
+      type: object
+      properties:
+        TraceSummaries:
+          $ref: "#/components/schemas/TraceSummaryList"
+        ApproximateTime:
+          $ref: "#/components/schemas/Timestamp"
+        TracesProcessedCount:
+          $ref: "#/components/schemas/NullableLong"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    SamplingStrategyName:
+      type: string
+      enum:
+        - PartialScan
+        - FixedRate
+    NullableDouble:
+      type: number
+      format: double
+    PutEncryptionConfigResult:
+      type: object
+      properties:
+        EncryptionConfig:
+          $ref: "#/components/schemas/EncryptionConfig"
+    PutTelemetryRecordsResult:
+      type: object
+      properties: {}
+    TelemetryRecord:
+      type: object
+      required:
+        - Timestamp
+      properties:
+        Timestamp:
+          $ref: "#/components/schemas/Timestamp"
+        SegmentsReceivedCount:
+          $ref: "#/components/schemas/NullableInteger"
+        SegmentsSentCount:
+          $ref: "#/components/schemas/NullableInteger"
+        SegmentsSpilloverCount:
+          $ref: "#/components/schemas/NullableInteger"
+        SegmentsRejectedCount:
+          $ref: "#/components/schemas/NullableInteger"
+        BackendConnectionErrors:
+          $ref: "#/components/schemas/BackendConnectionErrors"
+      description: <p/>
+    PutTraceSegmentsResult:
+      type: object
+      properties:
+        UnprocessedTraceSegments:
+          $ref: "#/components/schemas/UnprocessedTraceSegmentList"
+    TraceSegmentDocument:
+      type: string
+    UpdateGroupResult:
+      type: object
+      properties:
+        Group:
+          $ref: "#/components/schemas/Group"
+    UpdateSamplingRuleResult:
+      type: object
+      properties:
+        SamplingRuleRecord:
+          $ref: "#/components/schemas/SamplingRuleRecord"
+    NullableInteger:
+      type: integer
+    AliasNames:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    Alias:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+        Names:
+          $ref: "#/components/schemas/AliasNames"
+        Type:
+          $ref: "#/components/schemas/String"
+      description: An alias for an edge.
+    AliasList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Alias"
+    AnnotationKey:
+      type: string
+    NullableBoolean:
+      type: boolean
+    AnnotationValue:
+      type: object
+      properties:
+        NumberValue:
+          $ref: "#/components/schemas/NullableDouble"
+        BooleanValue:
+          $ref: "#/components/schemas/NullableBoolean"
+        StringValue:
+          $ref: "#/components/schemas/String"
+      description: "Value of a segment annotation. Has one of three value types: Number,
+        Boolean or String."
+    ValuesWithServiceIds:
+      type: array
+      items:
+        $ref: "#/components/schemas/ValueWithServiceIds"
+    Annotations:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/ValuesWithServiceIds"
+    AttributeKey:
+      type: string
+      minLength: 1
+      maxLength: 32
+    AttributeValue:
+      type: string
+      minLength: 1
+      maxLength: 32
+    AvailabilityZoneDetail:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+      description: A list of availability zones corresponding to the segments in a trace.
+    BackendConnectionErrors:
+      type: object
+      properties:
+        TimeoutCount:
+          $ref: "#/components/schemas/NullableInteger"
+        ConnectionRefusedCount:
+          $ref: "#/components/schemas/NullableInteger"
+        HTTPCode4XXCount:
+          $ref: "#/components/schemas/NullableInteger"
+        HTTPCode5XXCount:
+          $ref: "#/components/schemas/NullableInteger"
+        UnknownHostCount:
+          $ref: "#/components/schemas/NullableInteger"
+        OtherCount:
+          $ref: "#/components/schemas/NullableInteger"
+      description: <p/>
+    TraceIdList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TraceId"
+    BatchGetTracesRequest:
+      type: object
+      required:
+        - TraceIds
+      properties:
+        TraceIds:
+          $ref: "#/components/schemas/TraceIdList"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    TraceList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Trace"
+    UnprocessedTraceIdList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TraceId"
+    Boolean:
+      type: boolean
+    BorrowCount:
+      type: integer
+      minimum: 0
+    ClientID:
+      type: string
+      minLength: 24
+      maxLength: 24
+    GroupName:
+      type: string
+      minLength: 1
+      maxLength: 32
+    FilterExpression:
+      type: string
+    CreateGroupRequest:
+      type: object
+      required:
+        - GroupName
+      properties:
+        GroupName:
+          $ref: "#/components/schemas/GroupName"
+        FilterExpression:
+          $ref: "#/components/schemas/FilterExpression"
+    Group:
+      type: object
+      properties:
+        GroupName:
+          $ref: "#/components/schemas/String"
+        GroupARN:
+          $ref: "#/components/schemas/String"
+        FilterExpression:
+          $ref: "#/components/schemas/String"
+      description: Details and metadata for a group.
+    SamplingRule:
+      type: object
+      required:
+        - ResourceARN
+        - Priority
+        - FixedRate
+        - ReservoirSize
+        - ServiceName
+        - ServiceType
+        - Host
+        - HTTPMethod
+        - URLPath
+        - Version
+      properties:
+        RuleName:
+          $ref: "#/components/schemas/RuleName"
+        RuleARN:
+          $ref: "#/components/schemas/String"
+        ResourceARN:
+          $ref: "#/components/schemas/ResourceARN"
+        Priority:
+          $ref: "#/components/schemas/Priority"
+        FixedRate:
+          $ref: "#/components/schemas/FixedRate"
+        ReservoirSize:
+          $ref: "#/components/schemas/ReservoirSize"
+        ServiceName:
+          $ref: "#/components/schemas/ServiceName"
+        ServiceType:
+          $ref: "#/components/schemas/ServiceType"
+        Host:
+          $ref: "#/components/schemas/Host"
+        HTTPMethod:
+          $ref: "#/components/schemas/HTTPMethod"
+        URLPath:
+          $ref: "#/components/schemas/URLPath"
+        Version:
+          $ref: "#/components/schemas/Version"
+        Attributes:
+          $ref: "#/components/schemas/AttributeMap"
+      description: A sampling rule that services use to decide whether to instrument a
+        request. Rule fields can match properties of the service, or properties
+        of a request. The service can ignore rules that don't match its
+        properties.
+    CreateSamplingRuleRequest:
+      type: object
+      required:
+        - SamplingRule
+      properties:
+        SamplingRule:
+          $ref: "#/components/schemas/SamplingRule"
+    SamplingRuleRecord:
+      type: object
+      properties:
+        SamplingRule:
+          $ref: "#/components/schemas/SamplingRule"
+        CreatedAt:
+          $ref: "#/components/schemas/Timestamp"
+        ModifiedAt:
+          $ref: "#/components/schemas/Timestamp"
+      description: A <a>SamplingRule</a> and its metadata.
+    GroupARN:
+      type: string
+      minLength: 1
+      maxLength: 400
+    DeleteGroupRequest:
+      type: object
+      properties:
+        GroupName:
+          $ref: "#/components/schemas/GroupName"
+        GroupARN:
+          $ref: "#/components/schemas/GroupARN"
+    DeleteSamplingRuleRequest:
+      type: object
+      properties:
+        RuleName:
+          $ref: "#/components/schemas/String"
+        RuleARN:
+          $ref: "#/components/schemas/String"
+    Double:
+      type: number
+      format: double
+    EC2InstanceId:
+      type: string
+      maxLength: 20
+    Timestamp:
+      type: string
+      format: date-time
+    EdgeStatistics:
+      type: object
+      properties:
+        OkCount:
+          $ref: "#/components/schemas/NullableLong"
+        ErrorStatistics:
+          $ref: "#/components/schemas/ErrorStatistics"
+        FaultStatistics:
+          $ref: "#/components/schemas/FaultStatistics"
+        TotalCount:
+          $ref: "#/components/schemas/NullableLong"
+        TotalResponseTime:
+          $ref: "#/components/schemas/NullableDouble"
+      description: Response statistics for an edge.
+    Histogram:
+      type: array
+      items:
+        $ref: "#/components/schemas/HistogramEntry"
+    Edge:
+      type: object
+      properties:
+        ReferenceId:
+          $ref: "#/components/schemas/NullableInteger"
+        StartTime:
+          $ref: "#/components/schemas/Timestamp"
+        EndTime:
+          $ref: "#/components/schemas/Timestamp"
+        SummaryStatistics:
+          $ref: "#/components/schemas/EdgeStatistics"
+        ResponseTimeHistogram:
+          $ref: "#/components/schemas/Histogram"
+        Aliases:
+          $ref: "#/components/schemas/AliasList"
+      description: Information about a connection between two services.
+    EdgeList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Edge"
+    NullableLong:
+      type: integer
+    ErrorStatistics:
+      type: object
+      properties:
+        ThrottleCount:
+          $ref: "#/components/schemas/NullableLong"
+        OtherCount:
+          $ref: "#/components/schemas/NullableLong"
+        TotalCount:
+          $ref: "#/components/schemas/NullableLong"
+      description: Information about requests that failed with a 4xx Client Error status
+        code.
+    FaultStatistics:
+      type: object
+      properties:
+        OtherCount:
+          $ref: "#/components/schemas/NullableLong"
+        TotalCount:
+          $ref: "#/components/schemas/NullableLong"
+      description: Information about requests that failed with a 5xx Server Error status
+        code.
+    EncryptionStatus:
+      type: string
+      enum:
+        - UPDATING
+        - ACTIVE
+    EncryptionType:
+      type: string
+      enum:
+        - NONE
+        - KMS
+    EncryptionConfig:
+      type: object
+      properties:
+        KeyId:
+          $ref: "#/components/schemas/String"
+        Status:
+          $ref: "#/components/schemas/EncryptionStatus"
+        Type:
+          $ref: "#/components/schemas/EncryptionType"
+      description: A configuration document that specifies encryption configuration
+        settings.
+    EncryptionKeyId:
+      type: string
+      minLength: 1
+      maxLength: 3000
+    EntitySelectorExpression:
+      type: string
+      minLength: 1
+      maxLength: 500
+    ErrorRootCauseServices:
+      type: array
+      items:
+        $ref: "#/components/schemas/ErrorRootCauseService"
+    ErrorRootCause:
+      type: object
+      properties:
+        Services:
+          $ref: "#/components/schemas/ErrorRootCauseServices"
+      description: The root cause of a trace summary error.
+    RootCauseExceptions:
+      type: array
+      items:
+        $ref: "#/components/schemas/RootCauseException"
+    ErrorRootCauseEntity:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+        Exceptions:
+          $ref: "#/components/schemas/RootCauseExceptions"
+        Remote:
+          $ref: "#/components/schemas/NullableBoolean"
+      description: A collection of segments and corresponding subsegments associated to a
+        trace summary error.
+    ErrorRootCauseEntityPath:
+      type: array
+      items:
+        $ref: "#/components/schemas/ErrorRootCauseEntity"
+    ServiceNames:
+      type: array
+      items:
+        $ref: "#/components/schemas/String"
+    ErrorRootCauseService:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+        Names:
+          $ref: "#/components/schemas/ServiceNames"
+        Type:
+          $ref: "#/components/schemas/String"
+        AccountId:
+          $ref: "#/components/schemas/String"
+        EntityPath:
+          $ref: "#/components/schemas/ErrorRootCauseEntityPath"
+        Inferred:
+          $ref: "#/components/schemas/NullableBoolean"
+      description: A collection of fields identifying the services in a trace summary error.
+    ErrorRootCauses:
+      type: array
+      items:
+        $ref: "#/components/schemas/ErrorRootCause"
+    FaultRootCauseServices:
+      type: array
+      items:
+        $ref: "#/components/schemas/FaultRootCauseService"
+    FaultRootCause:
+      type: object
+      properties:
+        Services:
+          $ref: "#/components/schemas/FaultRootCauseServices"
+      description: The root cause information for a trace summary fault.
+    FaultRootCauseEntity:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+        Exceptions:
+          $ref: "#/components/schemas/RootCauseExceptions"
+        Remote:
+          $ref: "#/components/schemas/NullableBoolean"
+      description: A collection of segments and corresponding subsegments associated to a
+        trace summary fault error.
+    FaultRootCauseEntityPath:
+      type: array
+      items:
+        $ref: "#/components/schemas/FaultRootCauseEntity"
+    FaultRootCauseService:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+        Names:
+          $ref: "#/components/schemas/ServiceNames"
+        Type:
+          $ref: "#/components/schemas/String"
+        AccountId:
+          $ref: "#/components/schemas/String"
+        EntityPath:
+          $ref: "#/components/schemas/FaultRootCauseEntityPath"
+        Inferred:
+          $ref: "#/components/schemas/NullableBoolean"
+      description: A collection of fields identifying the services in a trace summary fault.
+    FaultRootCauses:
+      type: array
+      items:
+        $ref: "#/components/schemas/FaultRootCause"
+    GetEncryptionConfigRequest:
+      type: object
+      properties: {}
+    GetGroupRequest:
+      type: object
+      properties:
+        GroupName:
+          $ref: "#/components/schemas/GroupName"
+        GroupARN:
+          $ref: "#/components/schemas/GroupARN"
+    GetGroupsNextToken:
+      type: string
+      minLength: 1
+      maxLength: 100
+    GetGroupsRequest:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/GetGroupsNextToken"
+    GroupSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/GroupSummary"
+    GetSamplingRulesRequest:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/String"
+    SamplingRuleRecordList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SamplingRuleRecord"
+    GetSamplingStatisticSummariesRequest:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/String"
+    SamplingStatisticSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SamplingStatisticSummary"
+    SamplingStatisticsDocumentList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SamplingStatisticsDocument"
+      maxItems: 25
+    GetSamplingTargetsRequest:
+      type: object
+      required:
+        - SamplingStatisticsDocuments
+      properties:
+        SamplingStatisticsDocuments:
+          $ref: "#/components/schemas/SamplingStatisticsDocumentList"
+    SamplingTargetDocumentList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SamplingTargetDocument"
+    UnprocessedStatisticsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/UnprocessedStatistics"
+    GetServiceGraphRequest:
+      type: object
+      required:
+        - StartTime
+        - EndTime
+      properties:
+        StartTime:
+          $ref: "#/components/schemas/Timestamp"
+        EndTime:
+          $ref: "#/components/schemas/Timestamp"
+        GroupName:
+          $ref: "#/components/schemas/GroupName"
+        GroupARN:
+          $ref: "#/components/schemas/GroupARN"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    ServiceList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Service"
+    GetTimeSeriesServiceStatisticsRequest:
+      type: object
+      required:
+        - StartTime
+        - EndTime
+      properties:
+        StartTime:
+          $ref: "#/components/schemas/Timestamp"
+        EndTime:
+          $ref: "#/components/schemas/Timestamp"
+        GroupName:
+          $ref: "#/components/schemas/GroupName"
+        GroupARN:
+          $ref: "#/components/schemas/GroupARN"
+        EntitySelectorExpression:
+          $ref: "#/components/schemas/EntitySelectorExpression"
+        Period:
+          $ref: "#/components/schemas/NullableInteger"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    TimeSeriesServiceStatisticsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TimeSeriesServiceStatistics"
+    GetTraceGraphRequest:
+      type: object
+      required:
+        - TraceIds
+      properties:
+        TraceIds:
+          $ref: "#/components/schemas/TraceIdList"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    TimeRangeType:
+      type: string
+      enum:
+        - TraceId
+        - Event
+    SamplingStrategy:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/SamplingStrategyName"
+        Value:
+          $ref: "#/components/schemas/NullableDouble"
+      description: The name and value of a sampling rule to apply to a trace summary.
+    GetTraceSummariesRequest:
+      type: object
+      required:
+        - StartTime
+        - EndTime
+      properties:
+        StartTime:
+          $ref: "#/components/schemas/Timestamp"
+        EndTime:
+          $ref: "#/components/schemas/Timestamp"
+        TimeRangeType:
+          $ref: "#/components/schemas/TimeRangeType"
+        Sampling:
+          $ref: "#/components/schemas/NullableBoolean"
+        SamplingStrategy:
+          $ref: "#/components/schemas/SamplingStrategy"
+        FilterExpression:
+          $ref: "#/components/schemas/FilterExpression"
+        NextToken:
+          $ref: "#/components/schemas/String"
+    TraceSummaryList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TraceSummary"
+    GroupSummary:
+      type: object
+      properties:
+        GroupName:
+          $ref: "#/components/schemas/String"
+        GroupARN:
+          $ref: "#/components/schemas/String"
+        FilterExpression:
+          $ref: "#/components/schemas/String"
+      description: Details for a group without metadata.
+    HistogramEntry:
+      type: object
+      properties:
+        Value:
+          $ref: "#/components/schemas/Double"
+        Count:
+          $ref: "#/components/schemas/Integer"
+      description: An entry in a histogram for a statistic. A histogram maps the range of
+        observed values on the X axis, and the prevalence of each value on the Y
+        axis.
+    Integer:
+      type: integer
+    Hostname:
+      type: string
+      maxLength: 255
+    Http:
+      type: object
+      properties:
+        HttpURL:
+          $ref: "#/components/schemas/String"
+        HttpStatus:
+          $ref: "#/components/schemas/NullableInteger"
+        HttpMethod:
+          $ref: "#/components/schemas/String"
+        UserAgent:
+          $ref: "#/components/schemas/String"
+        ClientIp:
+          $ref: "#/components/schemas/String"
+      description: Information about an HTTP request.
+    InstanceIdDetail:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/String"
+      description: "A list of EC2 instance IDs corresponding to the segments in a trace. "
+    PutEncryptionConfigRequest:
+      type: object
+      required:
+        - Type
+      properties:
+        KeyId:
+          $ref: "#/components/schemas/EncryptionKeyId"
+        Type:
+          $ref: "#/components/schemas/EncryptionType"
+    TelemetryRecordList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TelemetryRecord"
+    PutTelemetryRecordsRequest:
+      type: object
+      required:
+        - TelemetryRecords
+      properties:
+        TelemetryRecords:
+          $ref: "#/components/schemas/TelemetryRecordList"
+        EC2InstanceId:
+          $ref: "#/components/schemas/EC2InstanceId"
+        Hostname:
+          $ref: "#/components/schemas/Hostname"
+        ResourceARN:
+          $ref: "#/components/schemas/ResourceARN"
+    TraceSegmentDocumentList:
+      type: array
+      items:
+        $ref: "#/components/schemas/TraceSegmentDocument"
+    PutTraceSegmentsRequest:
+      type: object
+      required:
+        - TraceSegmentDocuments
+      properties:
+        TraceSegmentDocuments:
+          $ref: "#/components/schemas/TraceSegmentDocumentList"
+    UnprocessedTraceSegmentList:
+      type: array
+      items:
+        $ref: "#/components/schemas/UnprocessedTraceSegment"
+    RequestCount:
+      type: integer
+      minimum: 0
+    ResourceARNDetail:
+      type: object
+      properties:
+        ARN:
+          $ref: "#/components/schemas/String"
+      description: A list of resources ARNs corresponding to the segments in a trace.
+    ResponseTimeRootCauseServices:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResponseTimeRootCauseService"
+    ResponseTimeRootCause:
+      type: object
+      properties:
+        Services:
+          $ref: "#/components/schemas/ResponseTimeRootCauseServices"
+      description: The root cause information for a response time warning.
+    ResponseTimeRootCauseEntity:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+        Coverage:
+          $ref: "#/components/schemas/NullableDouble"
+        Remote:
+          $ref: "#/components/schemas/NullableBoolean"
+      description: A collection of segments and corresponding subsegments associated to a
+        response time warning.
+    ResponseTimeRootCauseEntityPath:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResponseTimeRootCauseEntity"
+    ResponseTimeRootCauseService:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+        Names:
+          $ref: "#/components/schemas/ServiceNames"
+        Type:
+          $ref: "#/components/schemas/String"
+        AccountId:
+          $ref: "#/components/schemas/String"
+        EntityPath:
+          $ref: "#/components/schemas/ResponseTimeRootCauseEntityPath"
+        Inferred:
+          $ref: "#/components/schemas/NullableBoolean"
+      description: A collection of fields identifying the service in a response time
+        warning.
+    ResponseTimeRootCauses:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResponseTimeRootCause"
+    RootCauseException:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+        Message:
+          $ref: "#/components/schemas/String"
+      description: The exception associated with a root cause.
+    SampledCount:
+      type: integer
+      minimum: 0
+    SamplingRuleUpdate:
+      type: object
+      properties:
+        RuleName:
+          $ref: "#/components/schemas/RuleName"
+        RuleARN:
+          $ref: "#/components/schemas/String"
+        ResourceARN:
+          $ref: "#/components/schemas/ResourceARN"
+        Priority:
+          $ref: "#/components/schemas/NullableInteger"
+        FixedRate:
+          $ref: "#/components/schemas/NullableDouble"
+        ReservoirSize:
+          $ref: "#/components/schemas/NullableInteger"
+        Host:
+          $ref: "#/components/schemas/Host"
+        ServiceName:
+          $ref: "#/components/schemas/ServiceName"
+        ServiceType:
+          $ref: "#/components/schemas/ServiceType"
+        HTTPMethod:
+          $ref: "#/components/schemas/HTTPMethod"
+        URLPath:
+          $ref: "#/components/schemas/URLPath"
+        Attributes:
+          $ref: "#/components/schemas/AttributeMap"
+      description: A document specifying changes to a sampling rule's configuration.
+    SamplingStatisticSummary:
+      type: object
+      properties:
+        RuleName:
+          $ref: "#/components/schemas/String"
+        Timestamp:
+          $ref: "#/components/schemas/Timestamp"
+        RequestCount:
+          $ref: "#/components/schemas/Integer"
+        BorrowCount:
+          $ref: "#/components/schemas/Integer"
+        SampledCount:
+          $ref: "#/components/schemas/Integer"
+      description: Aggregated request sampling data for a sampling rule across all services
+        for a 10 second window.
+    SamplingTargetDocument:
+      type: object
+      properties:
+        RuleName:
+          $ref: "#/components/schemas/String"
+        FixedRate:
+          $ref: "#/components/schemas/Double"
+        ReservoirQuota:
+          $ref: "#/components/schemas/NullableInteger"
+        ReservoirQuotaTTL:
+          $ref: "#/components/schemas/Timestamp"
+        Interval:
+          $ref: "#/components/schemas/NullableInteger"
+      description: Temporary changes to a sampling rule configuration. To meet the global
+        sampling target for a rule, X-Ray calculates a new reservoir for each
+        service based on the recent sampling results of all services that called
+        <a>GetSamplingTargets</a>.
+    SegmentId:
+      type: string
+    SegmentDocument:
+      type: string
+      minLength: 1
+    Segment:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/SegmentId"
+        Document:
+          $ref: "#/components/schemas/SegmentDocument"
+      description: <p>A segment from a trace that has been ingested by the X-Ray service.
+        The segment can be compiled from documents uploaded with
+        <a>PutTraceSegments</a>, or an <code>inferred</code> segment for a
+        downstream service, generated from a subsegment sent by the service that
+        called it.</p> <p>For the full segment document schema, see <a
+        href="https://docs.aws.amazon.com/xray/latest/devguide/xray-api-segmentdocuments.html">AWS
+        X-Ray Segment Documents</a> in the <i>AWS X-Ray Developer Guide</i>.</p>
+    SegmentList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Segment"
+    ServiceStatistics:
+      type: object
+      properties:
+        OkCount:
+          $ref: "#/components/schemas/NullableLong"
+        ErrorStatistics:
+          $ref: "#/components/schemas/ErrorStatistics"
+        FaultStatistics:
+          $ref: "#/components/schemas/FaultStatistics"
+        TotalCount:
+          $ref: "#/components/schemas/NullableLong"
+        TotalResponseTime:
+          $ref: "#/components/schemas/NullableDouble"
+      description: Response statistics for a service.
+    Service:
+      type: object
+      properties:
+        ReferenceId:
+          $ref: "#/components/schemas/NullableInteger"
+        Name:
+          $ref: "#/components/schemas/String"
+        Names:
+          $ref: "#/components/schemas/ServiceNames"
+        Root:
+          $ref: "#/components/schemas/NullableBoolean"
+        AccountId:
+          $ref: "#/components/schemas/String"
+        Type:
+          $ref: "#/components/schemas/String"
+        State:
+          $ref: "#/components/schemas/String"
+        StartTime:
+          $ref: "#/components/schemas/Timestamp"
+        EndTime:
+          $ref: "#/components/schemas/Timestamp"
+        Edges:
+          $ref: "#/components/schemas/EdgeList"
+        SummaryStatistics:
+          $ref: "#/components/schemas/ServiceStatistics"
+        DurationHistogram:
+          $ref: "#/components/schemas/Histogram"
+        ResponseTimeHistogram:
+          $ref: "#/components/schemas/Histogram"
+      description: Information about an application that processed requests, users that
+        made requests, or downstream services, resources and applications that
+        an application used.
+    ServiceId:
+      type: object
+      properties:
+        Name:
+          $ref: "#/components/schemas/String"
+        Names:
+          $ref: "#/components/schemas/ServiceNames"
+        AccountId:
+          $ref: "#/components/schemas/String"
+        Type:
+          $ref: "#/components/schemas/String"
+      description: <p/>
+    ServiceIds:
+      type: array
+      items:
+        $ref: "#/components/schemas/ServiceId"
+    TimeSeriesServiceStatistics:
+      type: object
+      properties:
+        Timestamp:
+          $ref: "#/components/schemas/Timestamp"
+        EdgeSummaryStatistics:
+          $ref: "#/components/schemas/EdgeStatistics"
+        ServiceSummaryStatistics:
+          $ref: "#/components/schemas/ServiceStatistics"
+        ResponseTimeHistogram:
+          $ref: "#/components/schemas/Histogram"
+      description: A list of TimeSeriesStatistic structures.
+    Trace:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/TraceId"
+        Duration:
+          $ref: "#/components/schemas/NullableDouble"
+        Segments:
+          $ref: "#/components/schemas/SegmentList"
+      description: A collection of segment documents with matching trace IDs.
+    TraceAvailabilityZones:
+      type: array
+      items:
+        $ref: "#/components/schemas/AvailabilityZoneDetail"
+    TraceInstanceIds:
+      type: array
+      items:
+        $ref: "#/components/schemas/InstanceIdDetail"
+    TraceResourceARNs:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResourceARNDetail"
+    TraceUsers:
+      type: array
+      items:
+        $ref: "#/components/schemas/TraceUser"
+    TraceSummary:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/TraceId"
+        Duration:
+          $ref: "#/components/schemas/NullableDouble"
+        ResponseTime:
+          $ref: "#/components/schemas/NullableDouble"
+        HasFault:
+          $ref: "#/components/schemas/NullableBoolean"
+        HasError:
+          $ref: "#/components/schemas/NullableBoolean"
+        HasThrottle:
+          $ref: "#/components/schemas/NullableBoolean"
+        IsPartial:
+          $ref: "#/components/schemas/NullableBoolean"
+        Http:
+          $ref: "#/components/schemas/Http"
+        Annotations:
+          $ref: "#/components/schemas/Annotations"
+        Users:
+          $ref: "#/components/schemas/TraceUsers"
+        ServiceIds:
+          $ref: "#/components/schemas/ServiceIds"
+        ResourceARNs:
+          $ref: "#/components/schemas/TraceResourceARNs"
+        InstanceIds:
+          $ref: "#/components/schemas/TraceInstanceIds"
+        AvailabilityZones:
+          $ref: "#/components/schemas/TraceAvailabilityZones"
+        EntryPoint:
+          $ref: "#/components/schemas/ServiceId"
+        FaultRootCauses:
+          $ref: "#/components/schemas/FaultRootCauses"
+        ErrorRootCauses:
+          $ref: "#/components/schemas/ErrorRootCauses"
+        ResponseTimeRootCauses:
+          $ref: "#/components/schemas/ResponseTimeRootCauses"
+        Revision:
+          $ref: "#/components/schemas/Integer"
+        MatchedEventTime:
+          $ref: "#/components/schemas/Timestamp"
+      description: Metadata generated from the segment documents in a trace.
+    TraceUser:
+      type: object
+      properties:
+        UserName:
+          $ref: "#/components/schemas/String"
+        ServiceIds:
+          $ref: "#/components/schemas/ServiceIds"
+      description: Information about a user recorded in segment documents.
+    UnprocessedStatistics:
+      type: object
+      properties:
+        RuleName:
+          $ref: "#/components/schemas/String"
+        ErrorCode:
+          $ref: "#/components/schemas/String"
+        Message:
+          $ref: "#/components/schemas/String"
+      description: Sampling statistics from a call to <a>GetSamplingTargets</a> that X-Ray
+        could not process.
+    UnprocessedTraceSegment:
+      type: object
+      properties:
+        Id:
+          $ref: "#/components/schemas/String"
+        ErrorCode:
+          $ref: "#/components/schemas/String"
+        Message:
+          $ref: "#/components/schemas/String"
+      description: Information about a segment that failed processing.
+    UpdateGroupRequest:
+      type: object
+      properties:
+        GroupName:
+          $ref: "#/components/schemas/GroupName"
+        GroupARN:
+          $ref: "#/components/schemas/GroupARN"
+        FilterExpression:
+          $ref: "#/components/schemas/FilterExpression"
+    UpdateSamplingRuleRequest:
+      type: object
+      required:
+        - SamplingRuleUpdate
+      properties:
+        SamplingRuleUpdate:
+          $ref: "#/components/schemas/SamplingRuleUpdate"
+    ValueWithServiceIds:
+      type: object
+      properties:
+        AnnotationValue:
+          $ref: "#/components/schemas/AnnotationValue"
+        ServiceIds:
+          $ref: "#/components/schemas/ServiceIds"
+      description: Information about a segment annotation.

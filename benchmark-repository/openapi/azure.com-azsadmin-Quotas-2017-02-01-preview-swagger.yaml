@@ -1,0 +1,145 @@
+openapi: 3.0.0
+info:
+  description: The Admin KeyVault Management Client.
+  title: KeyVaultManagementClient
+  version: 2017-02-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/azsadmin/resource-manager/keyvault/Microsoft.KeyVault.Admin/preview/2017-02-01-preview/Quotas.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: azsadmin-Quotas
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault.Admin/locations/{location}/quotas":
+    get:
+      description: Get a list of all quota objects for KeyVault at a location.
+      operationId: Quotas_List
+      parameters:
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription.The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            Get a list of all quota objects for KeyVault at a location.:
+              value: 20ff7fc3-e762-44dd-bd96-b71116dcdc23
+        - description: The location of the quota.
+          in: path
+          name: location
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            Get a list of all quota objects for KeyVault at a location.:
+              value: local
+        - description: Client Api Version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            default: 2017-02-01-preview
+          examples:
+            Get a list of all quota objects for KeyVault at a location.:
+              value: 2017-02-01-preview
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuotaList"
+              examples:
+                Get a list of all quota objects for KeyVault at a location.:
+                  $ref: "#/components/examples/Get_a_list_of_all_quota_objects_for_\
+                    KeyVault_at_a_location."
+      tags:
+        - KeyVault
+      x-ms-pageable: {}
+servers:
+  - url: https://management.local.azurestack.external
+components:
+  examples:
+    Get_a_list_of_all_quota_objects_for_KeyVault_at_a_location.:
+      value:
+        nextLink: ""
+        value:
+          - id: 20ff7fc3-e762-44dd-bd96-b71116dcdc23
+            location: local
+            name: local/Unlimited
+            properties: "null"
+            type: Microsoft.KeyVault/locations/quotas
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Quota:
+      allOf:
+        - description: Base Resource Object
+          properties:
+            id:
+              description: URI of the resource.
+              readOnly: true
+              type: string
+            location:
+              description: Location where resource is location.
+              readOnly: true
+              type: string
+            name:
+              description: Name of the resource.
+              readOnly: true
+              type: string
+            tags:
+              additionalProperties:
+                type: string
+              description: List of key value pairs.
+              readOnly: true
+              type: object
+            type:
+              description: Type of resource.
+              readOnly: true
+              type: string
+          type: object
+          x-ms-azure-resource: true
+      description: KeyVault Quota.
+      properties:
+        properties:
+          $ref: "#/components/schemas/QuotaProperties"
+      type: object
+    QuotaList:
+      description: List of keyvault quotas.
+      properties:
+        nextLink:
+          description: URI to the next page.
+          type: string
+        value:
+          description: List of keyvault quotas.
+          items:
+            $ref: "#/components/schemas/Quota"
+          type: array
+      type: object
+    QuotaProperties:
+      description: Properties for keyvault quotas.
+      properties: {}
+      type: object

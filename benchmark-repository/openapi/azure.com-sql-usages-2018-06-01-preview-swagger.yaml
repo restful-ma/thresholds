@@ -1,0 +1,350 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2018-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/usages.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: sql-usages
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/usages":
+    get:
+      description: Gets all instance pool usage metrics
+      operationId: Usages_ListByInstancePool
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - description: The name of the instance pool to be retrieved.
+          in: path
+          name: instancePoolName
+          required: true
+          schema:
+            type: string
+          examples:
+            List instance pool usages expanded with children.:
+              value: testIP
+            List instance pool usages.:
+              value: testIP
+        - description: Optional request parameter to include managed instance usages within
+            the instance pool.
+          in: query
+          name: expandChildren
+          required: false
+          schema:
+            type: boolean
+          examples:
+            List instance pool usages expanded with children.:
+              value: true
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the instance pool usages.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageListResult"
+              examples:
+                List instance pool usages expanded with children.:
+                  $ref: "#/components/examples/List_instance_pool_usages_expanded_w\
+                    ith_children."
+                List instance pool usages.:
+                  $ref: "#/components/examples/List_instance_pool_usages."
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InstancePoolWrongUsageName - Request for an instance pool's usage has an unsupported usage name
+
+             * 400 InstancePoolManagedInstanceInfoUnavailable - Information for managed instances inside this instance pool is not available
+
+             * 404 InstancePoolNotFound - An instance pool cannot be found
+      tags:
+        - Usages
+      x-ms-pageable:
+        nextLinkName: nextLink
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    List_instance_pool_usages_expanded_with_children.:
+      value:
+        value:
+          - currentValue: 12
+            id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/usages/vcore_utilization
+            limit: 16
+            name:
+              localizedValue: VCore utilization
+              value: VCore utilization
+            requestedLimit: 40
+            type: Microsoft.Sql/instancePools/usages
+            unit: VCores
+          - currentValue: 384
+            id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/usages/storage_utilization
+            limit: 8196
+            name:
+              localizedValue: Storage utilization
+              value: Storage utilization
+            type: Microsoft.Sql/instancePools/usages
+            unit: VCores
+          - currentValue: 5
+            id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/usages/database_utilization
+            limit: 100
+            name:
+              localizedValue: Database utilization
+              value: Database utilization
+            type: Microsoft.Sql/instancePools/usages
+            unit: Number Of Databases
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/managedInstances/managedInstance1/usages/vcore_utilization
+            limit: 4
+            name:
+              localizedValue: VCore utilization
+              value: VCore utilization
+            type: Microsoft.Sql/instancePools/managedInstances/usages
+            unit: VCores
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/managedInstances/managedInstance2/usages/vcore_utilization
+            limit: 4
+            name:
+              localizedValue: VCore utilization
+              value: VCore utilization
+            requestedLimit: 8
+            type: Microsoft.Sql/instancePools/managedInstances/usages
+            unit: VCores
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/managedInstances/managedInstance1/usages/storage_utilization
+            limit: 128
+            name:
+              localizedValue: Storage utilization
+              value: Storage utilization
+            type: Microsoft.Sql/instancePools/managedInstances/usages
+            unit: Gigabytes
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/managedInstances/managedInstance2/usages/storage_utilization
+            limit: 128
+            name:
+              localizedValue: VCore utilization
+              value: VCore utilization
+            requestedLimit: 256
+            type: Microsoft.Sql/instancePools/managedInstances/usages
+            unit: Gigabytes
+          - currentValue: 2
+            id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/managedInstances/managedInstance1/usages/database_utilization
+            limit: 100
+            name:
+              localizedValue: Database utilization
+              value: Database utilization
+            type: Microsoft.Sql/instancePools/managedInstances/usages
+            unit: Number Of Databases
+          - currentValue: 3
+            id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/managedInstances/managedInstance2/usages/database_utilization
+            limit: 100
+            name:
+              localizedValue: Database utilization
+              value: Database utilization
+            type: Microsoft.Sql/instancePools/managedInstances/usages
+            unit: Number Of Databases
+    List_instance_pool_usages.:
+      value:
+        value:
+          - currentValue: 12
+            id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/usages/vcore_utilization
+            limit: 16
+            name:
+              localizedValue: VCore utilization
+              value: VCore utilization
+            requestedLimit: 40
+            type: Microsoft.Sql/instancePools/usages
+            unit: VCores
+          - currentValue: 384
+            id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/usages/storage_utilization
+            limit: 8196
+            name:
+              localizedValue: Storage utilization
+              value: Storage utilization
+            type: Microsoft.Sql/instancePools/usages
+            unit: VCores
+          - currentValue: 5
+            id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP/usages/database_utilization
+            limit: 100
+            name:
+              localizedValue: Database utilization
+              value: Database utilization
+            type: Microsoft.Sql/instancePools/usages
+            unit: Number Of Databases
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        List instance pool usages expanded with children.:
+          value: 2018-06-01-preview
+        List instance pool usages.:
+          value: 2018-06-01-preview
+    BlobAuditingPolicyNameParameter:
+      description: The name of the blob auditing policy.
+      in: path
+      name: blobAuditingPolicyName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - default
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ManagedInstanceNameParameter:
+      description: The name of the managed instance.
+      in: path
+      name: managedInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        List instance pool usages expanded with children.:
+          value: group1
+        List instance pool usages.:
+          value: group1
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineContainerNameParameter:
+      description: The name of the SqlVirtualMachineContainer.
+      in: path
+      name: sqlVirtualMachineContainerName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineInstanceNameParameter:
+      description: The name of the SqlVirtualMachineInstance.
+      in: path
+      name: sqlVirtualMachineInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        List instance pool usages expanded with children.:
+          value: 00000000-1111-2222-3333-444444444444
+        List instance pool usages.:
+          value: 00000000-1111-2222-3333-444444444444
+    VirtualClusterNameParameter:
+      description: The name of the virtual cluster.
+      in: path
+      name: virtualClusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Name:
+      description: ARM Usage Name
+      properties:
+        localizedValue:
+          description: Usage name localized value.
+          type: string
+        value:
+          description: Usage name value
+          type: string
+      type: object
+    Usage:
+      description: ARM usage.
+      properties:
+        currentValue:
+          description: Usage current value.
+          format: int32
+          readOnly: true
+          type: integer
+        id:
+          description: Resource ID.
+          readOnly: true
+          type: string
+        limit:
+          description: Usage limit.
+          format: int32
+          readOnly: true
+          type: integer
+        name:
+          $ref: "#/components/schemas/Name"
+        requestedLimit:
+          description: Usage requested limit.
+          format: int32
+          readOnly: true
+          type: integer
+        type:
+          description: Resource type.
+          readOnly: true
+          type: string
+        unit:
+          description: Usage unit.
+          readOnly: true
+          type: string
+      type: object
+    UsageListResult:
+      description: A list of usages.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/Usage"
+          readOnly: true
+          type: array
+      type: object

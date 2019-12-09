@@ -1,0 +1,816 @@
+openapi: 3.0.0
+info:
+  description: Azure Resource Graph API Reference
+  title: Azure Resource Graph
+  version: 2019-04-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2019-04-01/resourcegraph.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: resourcegraph
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.ResourceGraph/operations:
+    get:
+      description: Lists all of the available REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+              examples:
+                OperationsList:
+                  $ref: "#/components/examples/OperationsList"
+      tags:
+        - Operations
+      x-ms-pageable: {}
+  /providers/Microsoft.ResourceGraph/resources:
+    post:
+      description: Queries the resources managed by Azure Resource Manager for all
+        subscriptions specified in the request.
+      externalDocs:
+        description: Learn more about the query syntax here
+        url: https://aka.ms/resource-graph/learntoquery
+      operationId: Resources
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryRequest"
+        description: Request specifying query and its options.
+        required: true
+      responses:
+        "200":
+          description: Result of the query operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResponse"
+              examples:
+                Access a properties field:
+                  $ref: "#/components/examples/Access_a_properties_field"
+                Access a properties field through alias:
+                  $ref: "#/components/examples/Access_a_properties_field_through_al\
+                    ias"
+                Basic query:
+                  $ref: "#/components/examples/Basic_query"
+                Complex query:
+                  $ref: "#/components/examples/Complex_query"
+                Filter resources:
+                  $ref: "#/components/examples/Filter_resources"
+                First page query:
+                  $ref: "#/components/examples/First_page_query"
+                Next page query:
+                  $ref: "#/components/examples/Next_page_query"
+                Query options:
+                  $ref: "#/components/examples/Query_options"
+                Query with a facet request:
+                  $ref: "#/components/examples/Query_with_a_facet_request"
+                Random page query:
+                  $ref: "#/components/examples/Random_page_query"
+                Summarize resources by location:
+                  $ref: "#/components/examples/Summarize_resources_by_location"
+        default:
+          description: An error occurred while processing the request. See the error.code
+            parameter to identify the specific error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Resources
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    OperationsList:
+      value:
+        value:
+          - display:
+              description: Submits a query on resources within specified subscriptions
+              operation: Query resources
+              provider: Microsoft Resource Graph
+              resource: Resources
+            name: Microsoft.ResourceGraph/resources/action
+    Access_a_properties_field:
+      value:
+        count: 2
+        data:
+          columns:
+            - name: properties_storageProfile_osDisk_osType
+              type: string
+            - name: count_
+              type: integer
+          rows:
+            - - Linux
+              - 7
+            - - Windows
+              - 23
+        resultTruncated: "false"
+        totalRecords: 2
+    Access_a_properties_field_through_alias:
+      value:
+        count: 3
+        data:
+          columns:
+            - name: skuName
+              type: string
+            - name: count_
+              type: integer
+          rows:
+            - - S2
+              - 1
+            - - Y1
+              - 3
+            - - S1
+              - 1
+        resultTruncated: "false"
+        totalRecords: 3
+    Basic_query:
+      value:
+        count: 3
+        data:
+          columns:
+            - name: id
+              type: string
+            - name: name
+              type: string
+            - name: type
+              type: string
+            - name: location
+              type: string
+            - name: tags
+              type: object
+          rows:
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG1/providers/Microsoft.Network/networkInterfaces/myNetworkInterface
+              - myNetworkInterface
+              - microsoft.network/networkinterfaces
+              - centralus
+              - tag1: Value1
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG2/providers/Microsoft.Network/virtualNetworks/myVnet
+              - myVnet
+              - microsoft.network/virtualnetworks
+              - westus
+              - {}
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG2/providers/Microsoft.Network/publicIPAddresses/myPublicIp
+              - myPublicIp
+              - microsoft.network/publicipaddresses
+              - westus
+              - {}
+        resultTruncated: "false"
+        totalRecords: 3
+    Complex_query:
+      value:
+        count: 3
+        data:
+          columns:
+            - name: location
+              type: string
+            - name: count_
+              type: integer
+          rows:
+            - - centralus
+              - 11
+            - - eastus
+              - 11
+            - - southcentralus
+              - 3
+        resultTruncated: "false"
+        totalRecords: 3
+    Filter_resources:
+      value:
+        count: 3
+        data:
+          columns:
+            - name: id
+              type: string
+            - name: name
+              type: string
+            - name: type
+              type: string
+            - name: location
+              type: string
+          rows:
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG1/providers/Microsoft.Compute/virtualMachines/myVm1
+              - myVm1
+              - microsoft.compute/virtualmachines
+              - centralus
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG2/providers/Microsoft.Compute/virtualMachines/myVirtualMachine
+              - myVirtualMachine
+              - microsoft.compute/virtualmachines
+              - eastus
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG3/providers/Microsoft.Compute/virtualMachines/testVm
+              - testVm
+              - microsoft.compute/virtualmachines
+              - eastus
+        resultTruncated: "false"
+        totalRecords: 3
+    First_page_query:
+      value:
+        $skipToken: eyAibm8iOiAibHVjayIsICJidXQiOiAibmljZSIsICJ0cnkiOiAiISIgfQ==
+        count: 3
+        data:
+          columns:
+            - name: id
+              type: string
+            - name: name
+              type: string
+            - name: type
+              type: string
+            - name: location
+              type: string
+          rows:
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG1/providers/Microsoft.Compute/disks/yetanothertest_OsDisk_1_f396cbcb625a457bb69fe2abf5975820
+              - yetanothertest_OsDisk_1_f396cbcb625a457bb69fe2abf5975820
+              - microsoft.compute/disks
+              - eastus
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG2/providers/Microsoft.Automation/automationAccounts/TestAA
+              - TestAA
+              - microsoft.automation/automationaccounts
+              - westcentralus
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG2/providers/Microsoft.Automation/automationAccounts/TestAA/runbooks/TestRB
+              - TestRB
+              - microsoft.automation/automationaccounts/runbooks
+              - westcentralus
+        resultTruncated: "false"
+        totalRecords: 386
+    Next_page_query:
+      value:
+        $skipToken: eyAibm8yIjogImx1Y2syIiwgImJ1dDIiOiAibmljZTIiLCAidHJ5MiI6ICIhIiB9
+        count: 3
+        data:
+          columns:
+            - name: id
+              type: string
+            - name: name
+              type: string
+            - name: type
+              type: string
+            - name: location
+              type: string
+          rows:
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG1/providers/Microsoft.Compute/disks/second_OsDisk_dddddbcb625a457bb69fe2abf5975820
+              - second_OsDisk_dddddbcb625a457bb69fe2abf5975820
+              - microsoft.compute/disks
+              - eastus
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG2/providers/Microsoft.Automation/automationAccounts/AATest
+              - AATest
+              - microsoft.automation/automationaccounts
+              - westcentralus
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG2/providers/Microsoft.Automation/automationAccounts/TestAA/runbooks/RBTest
+              - RBTest
+              - microsoft.automation/automationaccounts/runbooks
+              - westcentralus
+        resultTruncated: "false"
+        totalRecords: 386
+    Query_options:
+      value:
+        $skipToken: eyAibm8yIjogImx1Y2syIiwgImJ1dDIiOiAibmljZTIiLCAidHJ5MiI6ICIhIiB9
+        count: 3
+        data:
+          columns:
+            - name: id
+              type: string
+            - name: name
+              type: string
+            - name: type
+              type: string
+            - name: location
+              type: string
+          rows:
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG4/providers/Microsoft.Compute/disks/yetanothertest_OsDisk_1_f396cbcb625a457bb69fe2abf5975820
+              - yetanothertest_OsDisk_1_f396cbcb625a457bb69fe2abf5975820
+              - microsoft.compute/disks
+              - eastus
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG5/providers/Microsoft.Automation/automationAccounts/TestAA
+              - TestAA
+              - microsoft.automation/automationaccounts
+              - westcentralus
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG5/providers/Microsoft.Automation/automationAccounts/TestAA/runbooks/TestRB
+              - TestRB
+              - microsoft.automation/automationaccounts/runbooks
+              - westcentralus
+        resultTruncated: "false"
+        totalRecords: 386
+    Query_with_a_facet_request:
+      value:
+        count: 5
+        data:
+          columns:
+            - name: id
+              type: string
+            - name: name
+              type: string
+            - name: location
+              type: string
+            - name: resourceGroup
+              type: string
+            - name: properties_storageProfile_osDisk_osType
+              type: object
+          rows:
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/B-TEST-RG/providers/Microsoft.Compute/virtualMachines/myTestVm
+              - myTestVm
+              - eastus
+              - B-TEST-RG
+              - Windows
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/c-rg/providers/Microsoft.Compute/virtualMachines/myTestAccountVm
+              - myTestAccountVm
+              - westcentralus
+              - c-rg
+              - Windows
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/I-RG/providers/Microsoft.Compute/virtualMachines/yetanothertest
+              - yetanothertest
+              - eastus
+              - I-RG
+              - Linux
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/x-test-rg/providers/Microsoft.Compute/virtualMachines/drafttest1bux4cv7a7q3aw
+              - drafttest1bux4cv7a7q3aw
+              - southcentralus
+              - x-test-rg
+              - Linux
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/y-rg/providers/Microsoft.Compute/virtualMachines/testvmntp25370
+              - testvmntp25370
+              - eastus
+              - y-rg
+              - Windows
+        facets:
+          - count: 3
+            data:
+              columns:
+                - name: location
+                  type: string
+                - name: count
+                  type: integer
+              rows:
+                - - eastus
+                  - 3
+                - - southcentralus
+                  - 1
+                - - westcentralus
+                  - 1
+            expression: location
+            resultType: FacetResult
+            totalRecords: 3
+          - count: 2
+            data:
+              columns:
+                - name: properties_storageProfile_osDisk_osType
+                  type: string
+                - name: count
+                  type: integer
+              rows:
+                - - Linux
+                  - 2
+                - - Windows
+                  - 3
+            expression: properties.storageProfile.osDisk.osType
+            resultType: FacetResult
+            totalRecords: 2
+          - errors:
+              - code: NoValidColumns
+                message: No valid columns in facet expression.
+              - code: InvalidColumnNames
+                message: "Invalid column names: [nonExistingColumn]."
+            expression: nonExistingColumn
+            resultType: FacetError
+          - count: 3
+            data:
+              columns:
+                - name: resourceGroup
+                  type: string
+                - name: count
+                  type: integer
+              rows:
+                - - B-TEST-RG
+                  - 1
+                - - c-rg
+                  - 1
+                - - I-RG
+                  - 1
+            expression: resourceGroup
+            resultType: FacetResult
+            totalRecords: 5
+          - count: 2
+            data:
+              columns:
+                - name: resourceGroup
+                  type: string
+                - name: count
+                  type: integer
+              rows:
+                - - B-TEST-RG
+                  - 1
+                - - x-test-rg
+                  - 1
+            expression: resourceGroup
+            resultType: FacetResult
+            totalRecords: 2
+        resultTruncated: "false"
+        totalRecords: 5
+    Random_page_query:
+      value:
+        $skipToken: eyAibm8yIjogImx1Y2syIiwgImJ1dDIiOiAibmljZTIiLCAidHJ5MiI6ICIhIiB9
+        count: 2
+        data:
+          columns:
+            - name: id
+              type: string
+            - name: name
+              type: string
+            - name: type
+              type: string
+            - name: location
+              type: string
+          rows:
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG1/providers/Microsoft.Compute/disks/third_OsDisk_dddddbcb625a457bb69fe2abf5975820
+              - third_OsDisk_dddddbcb625a457bb69fe2abf5975820
+              - microsoft.compute/disks
+              - eastus
+            - - /subscriptions/cfbbd179-59d2-4052-aa06-9270a38aa9d6/resourceGroups/RG2/providers/Microsoft.Automation/automationAccounts/CCTest
+              - CCTest
+              - microsoft.automation/automationaccounts
+              - westcentralus
+        resultTruncated: "false"
+        totalRecords: 386
+    Summarize_resources_by_location:
+      value:
+        count: 3
+        data:
+          columns:
+            - name: location
+              type: string
+          rows:
+            - - centralus
+            - - eastus
+            - - westus
+        resultTruncated: "false"
+        totalRecords: 3
+  parameters:
+    ApiVersionParameter:
+      description: API version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        OperationsList:
+          value: 2019-04-01
+        Access a properties field:
+          value: 2019-04-01
+        Access a properties field through alias:
+          value: 2019-04-01
+        Basic query:
+          value: 2019-04-01
+        Complex query:
+          value: 2019-04-01
+        Filter resources:
+          value: 2019-04-01
+        First page query:
+          value: 2019-04-01
+        Next page query:
+          value: 2019-04-01
+        Query options:
+          value: 2019-04-01
+        Query with a facet request:
+          value: 2019-04-01
+        Random page query:
+          value: 2019-04-01
+        Summarize resources by location:
+          value: 2019-04-01
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Column:
+      description: Query result column descriptor.
+      properties:
+        name:
+          description: Column name.
+          type: string
+        type:
+          $ref: "#/components/schemas/ColumnDataType"
+      required:
+        - name
+        - type
+      type: object
+    ColumnDataType:
+      description: Data type of a column in a table.
+      enum:
+        - string
+        - integer
+        - number
+        - boolean
+        - object
+      type: string
+      x-ms-enum:
+        modelAsString: false
+        name: ColumnDataType
+    Error:
+      description: Error details.
+      properties:
+        code:
+          description: Error code identifying the specific error.
+          type: string
+        details:
+          description: Error details
+          items:
+            $ref: "#/components/schemas/ErrorDetails"
+          type: array
+        message:
+          description: A human readable error message.
+          type: string
+      required:
+        - code
+        - message
+      title: Error info.
+      type: object
+    ErrorDetails:
+      additionalProperties:
+        type: object
+      properties:
+        code:
+          description: Error code identifying the specific error.
+          type: string
+        message:
+          description: A human readable error message.
+          type: string
+      required:
+        - code
+        - message
+      title: Error details.
+      type: object
+    ErrorResponse:
+      description: An error response from the API.
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+      required:
+        - error
+      title: Error response.
+      type: object
+    Facet:
+      description: A facet containing additional statistics on the response of a query. Can
+        be either FacetResult or FacetError.
+      discriminator:
+        propertyName: resultType
+      properties:
+        expression:
+          description: Facet expression, same as in the corresponding facet request.
+          type: string
+        resultType:
+          description: Result type
+          type: string
+      required:
+        - expression
+        - resultType
+      type: object
+    FacetError:
+      allOf:
+        - $ref: "#/components/schemas/Facet"
+      description: A facet whose execution resulted in an error.
+      properties:
+        errors:
+          description: An array containing detected facet errors with details.
+          items:
+            $ref: "#/components/schemas/ErrorDetails"
+          type: array
+      required:
+        - errors
+      type: object
+      x-ms-discriminator-value: FacetError
+    FacetRequest:
+      description: A request to compute additional statistics (facets) over the query
+        results.
+      properties:
+        expression:
+          description: The column or list of columns to summarize by
+          type: string
+        options:
+          $ref: "#/components/schemas/FacetRequestOptions"
+      required:
+        - expression
+      type: object
+    FacetRequestOptions:
+      description: The options for facet evaluation
+      properties:
+        $top:
+          description: The maximum number of facet rows that should be returned.
+          format: int32
+          maximum: 1000
+          minimum: 1
+          type: integer
+        filter:
+          description: Specifies the filter condition for the 'where' clause which will be
+            run on main query's result, just before the actual faceting.
+          type: string
+        sortBy:
+          description: The column name or query expression to sort on. Defaults to count if
+            not present.
+          type: string
+        sortOrder:
+          default: desc
+          description: The sorting order by the selected column (count by default).
+          enum:
+            - asc
+            - desc
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: FacetSortOrder
+    FacetResult:
+      allOf:
+        - $ref: "#/components/schemas/Facet"
+      description: Successfully executed facet containing additional statistics on the
+        response of a query.
+      properties:
+        count:
+          description: Number of records returned in the facet response.
+          format: int32
+          type: integer
+        data:
+          description: A table containing the desired facets. Only present if the facet is
+            valid.
+        totalRecords:
+          description: Number of total records in the facet results.
+          format: int64
+          type: integer
+      required:
+        - totalRecords
+        - count
+        - data
+      type: object
+      x-ms-discriminator-value: FacetResult
+    Operation:
+      description: Resource Graph REST API operation definition.
+      properties:
+        display:
+          description: Display metadata associated with the operation.
+          properties:
+            description:
+              description: Description for the operation.
+              type: string
+            operation:
+              description: "Type of operation: get, read, delete, etc."
+              type: string
+            provider:
+              description: "Service provider: Microsoft Resource Graph."
+              type: string
+            resource:
+              description: Resource on which the operation is performed etc.
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}"
+          type: string
+        origin:
+          description: The origin of operations.
+          type: string
+    OperationListResult:
+      description: Result of the request to list Resource Graph operations. It contains a
+        list of operations and a URL link to get the next set of results.
+      properties:
+        value:
+          description: List of Resource Graph operations supported by the Resource Graph
+            resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          type: array
+    QueryRequest:
+      description: Describes a query to be executed.
+      properties:
+        facets:
+          description: An array of facet requests to be computed against the query result.
+          items:
+            $ref: "#/components/schemas/FacetRequest"
+          type: array
+        options:
+          $ref: "#/components/schemas/QueryRequestOptions"
+        query:
+          description: The resources query.
+          type: string
+        subscriptions:
+          description: Azure subscriptions against which to execute the query.
+          items:
+            description: Subscription Id.
+            type: string
+          type: array
+      required:
+        - subscriptions
+        - query
+      type: object
+    QueryRequestOptions:
+      description: The options for query evaluation
+      properties:
+        $skip:
+          description: The number of rows to skip from the beginning of the results.
+            Overrides the next page offset when ```$skipToken``` property is
+            present.
+          format: int32
+          minimum: 0
+          type: integer
+        $skipToken:
+          description: Continuation token for pagination, capturing the next page size and
+            offset, as well as the context of the query.
+          type: string
+        $top:
+          description: The maximum number of rows that the query should return. Overrides
+            the page size when ```$skipToken``` property is present.
+          format: int32
+          maximum: 1000
+          minimum: 1
+          type: integer
+        resultFormat:
+          description: Defines in which format query result returned.
+          enum:
+            - table
+            - objectArray
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: ResultFormat
+    QueryResponse:
+      description: Query result.
+      properties:
+        $skipToken:
+          description: When present, the value can be passed to a subsequent query call
+            (together with the same query and subscriptions used in the current
+            request) to retrieve the next page of data.
+          type: string
+        count:
+          description: Number of records returned in the current response. In the case of
+            paging, this is the number of records in the current page.
+          format: int64
+          type: integer
+        data:
+          description: Query output in tabular format.
+        facets:
+          description: Query facets.
+          items:
+            $ref: "#/components/schemas/Facet"
+          type: array
+        resultTruncated:
+          description: Indicates whether the query results are truncated.
+          enum:
+            - "true"
+            - "false"
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: ResultTruncated
+        totalRecords:
+          description: Number of total records matching the query.
+          format: int64
+          type: integer
+      required:
+        - totalRecords
+        - count
+        - resultTruncated
+        - data
+      type: object
+    Row:
+      description: Query result row.
+      items:
+        description: Cell value.
+        type: object
+      type: array
+    Table:
+      description: Query output in tabular format.
+      properties:
+        columns:
+          description: Query result column descriptors.
+          items:
+            $ref: "#/components/schemas/Column"
+          type: array
+        rows:
+          description: Query result rows.
+          items:
+            $ref: "#/components/schemas/Row"
+          type: array
+      required:
+        - columns
+        - rows
+      type: object

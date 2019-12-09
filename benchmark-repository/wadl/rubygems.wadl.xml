@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<application xmlns="http://wadl.dev.java.net/2009/02"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:apigee="http://api.apigee.com/wadl/2010/07/"
+             xsi:schemaLocation="http://wadl.dev.java.net/2009/02 http://apigee.com/schemas/wadl-schema.xsd http://api.apigee.com/wadl/2010/07/ http://apigee.com/schemas/apigee-wadl-extensions.xsd">
+
+	<resources base="https://rubygems.org/api/v1">
+		
+		<!-- Gem Methods -->
+
+		<resource path="gems/{name}.{format}">
+			<param name="name" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Gem name.]]></doc>
+			</param>
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getGem" name="GET" apigee:displayName="Get Gem">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="gems/{name}.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gem">
+					<![CDATA[Returns some basic information about the given gem.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="search.{format}">
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+			<param name="query" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Query to search for.]]></doc>
+			</param>
+
+			<method id="search" name="GET" apigee:displayName="Search Gem">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="search.{format}?query={query}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gem">
+					<![CDATA[Submit a search to Gemcutter for active gems, just like a search query on the site.]]>
+				</doc>
+			</method>
+		</resource>
+	
+		<resource path="gems.{format}">
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getGems" name="GET" apigee:displayName="Get Gems">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="gems.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gem">
+					<![CDATA[List all gems that you own.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="gems">
+			<method id="submitGem" name="POST" apigee:displayName="Submit Gem">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="gems" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gem">
+					<![CDATA[Submit a gem to RubyGems.org. Must post a built RubyGem in the request body.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="gems/yank">
+			<param name="gem_name" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Gem name.]]></doc>
+			</param>
+			<param name="version" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Gem version.]]></doc>
+			</param>
+			<param name="platform" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Gem platform.]]></doc>
+			</param>
+
+			<method id="removeGem" name="DELETE" apigee:displayName="Remove Gem">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="gems/yank?gem_name={gem_name}&amp;version={version}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gem">
+					<![CDATA[Remove a gem from RubyGems.org’s index.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="gems/unyank">
+			<param name="gem_name" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Gem name.]]></doc>
+			</param>
+			<param name="version" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Gem version.]]></doc>
+			</param>
+			<param name="platform" type="xsd:string" style="query" required="false">
+				<doc><![CDATA[Gem platform.]]></doc>
+			</param>
+
+			<method id="updateGem" name="PUT" apigee:displayName="Update Gem">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="gems/unyank?gem_name={gem_name}&amp;version={version}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gem">
+					<![CDATA[Update a previously yanked gem back into RubyGems.org’s index.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="gems/latest.{format}">
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getLatestGems" name="GET" apigee:displayName="Get Latest Gems">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="gems/latest.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gem">
+					<![CDATA[Pulls the 50 newest first-version gems added to RubyGems.org.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="gems/just_updated.{format}">
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getJustUpdatedGems" name="GET" apigee:displayName="Get Just Updated Gems">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="gems/just_updated.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gem">
+					<![CDATA[Pulls the 50 most recently updated gems.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<!-- Gem Version Methods -->
+
+		<resource path="versions/{name}.{format}">
+			<param name="name" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Gem name.]]></doc>
+			</param>
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getGemVersionDetails" name="GET" apigee:displayName="Get Gem Version Details">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="versions/{name}.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gemversion">
+					<![CDATA[Returns an array of gem version details.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<!-- Gem Download Methods -->
+
+		<resource path="downloads.{format}">
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getTotalGemsDownloads" name="GET" apigee:displayName="Get Total Gems Downloads">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="downloads.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gemdownloads">
+					<![CDATA[Returns an object containing the total number of downloads on RubyGems.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="downloads/top.{format}">
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getTodayTopGemVersionsDownloads" name="GET" apigee:displayName="Get Today Top Gem Versions Downloads">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="downloads/top.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gemdownloads">
+					<![CDATA[Returns an object containing the top 50 downloaded gem versions for today.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="downloads/all.{format}">
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getTopGemVersionsDownloads" name="GET" apigee:displayName="Get Top Gem Versions Downloads">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="downloads/all.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gemdownloads">
+					<![CDATA[Returns an object containing the top 50 downloaded gem versions of all time.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="downloads/{name}-{version}.{format}">
+			<param name="name" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Gem name.]]></doc>
+			</param>
+			<param name="version" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Gem version.]]></doc>
+			</param>
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getGemDownloads" name="GET" apigee:displayName="Get Gem Downloads">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="downloads/{name}-{version}.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gemdownloads">
+					<![CDATA[Returns an object containing the total number of downloads for a paritcular gem as well as the total number of downloads for the specified version.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="versions/{name}-{version}/downloads.{format}">
+			<param name="name" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Gem name.]]></doc>
+			</param>
+			<param name="version" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Gem version.]]></doc>
+			</param>
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getDailyGemDownloads" name="GET" apigee:displayName="Get Daily Gem Downloads">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="versions/{name}-{version}/downloads.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gemdownloads">
+					<![CDATA[Returns an object containing the number of downloads by day for a particular gem version for 90 days of data.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="versions/{name}-{version}/downloads/search.{format}">
+			<param name="name" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Gem name.]]></doc>
+			</param>
+			<param name="version" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Gem version.]]></doc>
+			</param>
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+			<param name="from" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Start date from where to search for. (YYYY-MM-DD)]]></doc>
+			</param>
+			<param name="to" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[End date to where to search for. (YYYY-MM-DD)]]></doc>
+			</param>
+
+			<method id="getDailyGemDownloadsWithinRange" name="GET" apigee:displayName="Get Daily Gem Downloads Within Range">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="versions/{name}-{version}/downloads/search.{format}?from={YYYY-MM-DD}&amp;to={YYYY-MM-DD}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#gemdownloads">
+					<![CDATA[Returns an object containing the number of downloads by day for a particular gem version between a date range, specified by the parameters from and to. Dates values should be specified in the format YYYY-MM-DD.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<!-- Owner Methods -->
+
+		<resource path="gems/{name}/owners.{format}">
+			<param name="name" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Gem name.]]></doc>
+			</param>
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getGemOwners" name="GET" apigee:displayName="Get Gem Owners">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="gems/{name}/owners.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#owner">
+					<![CDATA[View all owners of a gem. These users can all push to this gem.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="gems/{name}/owners">
+			<param name="name" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Gem name.]]></doc>
+			</param>
+			<param name="email" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Gem owner email.]]></doc>
+			</param>
+
+			<method id="addGemOwner" name="POST" apigee:displayName="Add Gem Owner">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="gems/{name}/owners?email={email}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#owner">
+					<![CDATA[Add an owner to a RubyGem you own, giving that user permission to manage it.]]>
+				</doc>
+			</method>
+
+			<method id="removeGemOwner" name="DELETE" apigee:displayName="Remove Gem Owner">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="gems/{name}/owners?email={email}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#owner">
+					<![CDATA[Remove a user’s permission to manage a RubyGem you own.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<!-- WebHook Methods -->
+
+		<resource path="web_hooks.{format}">
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getWebHooks" name="GET" apigee:displayName="Get WebHooks">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="web_hooks.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#webhook">
+					<![CDATA[List the webhooks registered under your account.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="web_hooks">
+			<param name="gem_name" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Gem name. Could specify * to apply the hook globally to all gems.]]></doc>
+			</param>
+			<param name="url" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[WebHook URL.]]></doc>
+			</param>
+
+			<method id="createWebHook" name="POST" apigee:displayName="Create WebHook">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="web_hooks?gem_name={gem_name}&amp;url={url}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#webhook">
+					<![CDATA[Create a webhook.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="web_hooks/remove">
+			<param name="gem_name" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Gem name. Could specify * to apply the hook globally to all gems.]]></doc>
+			</param>
+			<param name="url" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[WebHook URL.]]></doc>
+			</param>
+
+			<method id="removeWebHook" name="DELETE" apigee:displayName="Remove WebHook">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="web_hooks/remove?gem_name={gem_name}&amp;url={url}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#webhook">
+					<![CDATA[Remove a webhook.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="web_hooks/fire">
+			<param name="gem_name" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Gem name. Could specify * to apply the hook globally to all gems.]]></doc>
+			</param>
+			<param name="url" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[WebHook URL.]]></doc>
+			</param>
+
+			<method id="testFireWebHook" name="POST" apigee:displayName="Test Fire WebHook">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="true" />
+				
+				<apigee:example url="web_hooks/fire?gem_name={gem_name}&amp;url={url}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#webhook">
+					<![CDATA[Test fire a webhook. This can be used to test out an endpoint at any time, for example when you’re developing your application.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<!-- Misc Methods -->
+
+		<resource path="api_key.{format}">
+			<param name="format" type="xsd:string" style="template" required="true">
+				<doc><![CDATA[Response format.]]></doc>
+				<option value="json" mediaType="application/json" />
+				<option value="xml" mediaType="application/xml" />
+				<option value="yaml" mediaType="application/yaml" />
+			</param>
+
+			<method id="getApiKey" name="GET" apigee:displayName="Get API Key">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="api_key.{format}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#misc">
+					<![CDATA[Retrieve your API key using HTTP basic auth.]]>
+				</doc>
+			</method>
+		</resource>
+
+		<resource path="dependencies">
+			<param name="gems" type="xsd:string" style="query" required="true">
+				<doc><![CDATA[Comma delimited Gem names.]]></doc>
+			</param>
+
+			<method id="getGemsDependencies" name="GET" apigee:displayName="Get Gems Dependencies">
+				<apigee:tags>
+					<apigee:tag primary="true">Ruby Gems</apigee:tag>
+				</apigee:tags>
+				
+				<apigee:authentication required="false" />
+				
+				<apigee:example url="dependencies?gems={gem1,gem2,gemN}" />
+
+				<doc apigee:url="http://guides.rubygems.org/rubygems-org-api/#misc">
+					<![CDATA[Returns a marshalled array of hashes for all versions of given gems. Each hash contains a gem version with its dependencies making this useful for resolving dependencies.]]>
+				</doc>
+			</method>
+		</resource>
+
+	</resources>
+</application>

@@ -1,0 +1,465 @@
+openapi: 3.0.0
+info:
+  description: Use these REST APIs for performing operations on Certificate entity in your
+    Azure API Management deployment. Certificates can be used to setup mutual
+    authentication with your Backend in API Management. For more information
+    refer to [How to secure backend using Mutual Auth
+    Certificate](https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-mutual-certificates).
+  title: ApiManagementClient
+  version: 2017-03-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/control-plane/Microsoft.ApiManagement/preview/2017-03-01/apimcertificates.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: apimanagement-apimcertificates
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - apim_key: []
+paths:
+  /certificates:
+    get:
+      description: Lists a collection of all certificates in the specified service instance.
+      operationId: Certificate_List
+      parameters:
+        - description: >-
+            | Field          | Supported operators    | Supported
+            functions                         |
+
+            |----------------|------------------------|---------------------------------------------|
+
+            | id             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | subject        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | thumbprint     | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | expirationDate | ge, le, eq, ne, gt, lt | N/A                                         |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListCertificates:
+              value: 2017-03-01
+      responses:
+        "200":
+          description: Returns a collection of Certificate entity.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CertificateCollection"
+              examples:
+                ApiManagementListCertificates:
+                  $ref: "#/components/examples/ApiManagementListCertificates"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Certificates
+      x-ms-odata: "#/components/schemas/CertificateContract"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/certificates/{certificateId}":
+    delete:
+      description: Deletes specific certificate.
+      operationId: Certificate_Delete
+      parameters:
+        - $ref: "#/components/parameters/CertificateIdParameter"
+        - description: The entity state (Etag) version of the certificate to delete. A
+            value of "*" can be used for If-Match to unconditionally apply the
+            operation.
+          in: header
+          name: If-Match
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteCertificates:
+              value: "*"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteCertificates:
+              value: 2017-03-01
+      responses:
+        "204":
+          description: The certificate was successfully deleted.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Certificates
+    get:
+      description: Gets the details of the certificate specified by its identifier.
+      operationId: Certificate_Get
+      parameters:
+        - $ref: "#/components/parameters/CertificateIdParameter"
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetCertificates:
+              value: 2017-03-01
+      responses:
+        "200":
+          description: The response body contains the specified Certificate entity.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CertificateContract"
+              examples:
+                ApiManagementGetCertificates:
+                  $ref: "#/components/examples/ApiManagementGetCertificates"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Certificates
+    put:
+      description: Creates or updates the certificate being used for authentication with
+        the backend.
+      externalDocs:
+        description: How to secure back-end services using client certificate
+          authentication in Azure API Management
+        url: https://azure.microsoft.com/en-us/documentation/articles/api-management-howto-mutual-certificates/
+      operationId: Certificate_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/CertificateIdParameter"
+        - description: The entity state (Etag) version of the certificate to update. A
+            value of "*" can be used for If-Match to unconditionally apply the
+            operation..
+          in: header
+          name: If-Match
+          required: false
+          schema:
+            type: string
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementPutCertificates:
+              value: 2017-03-01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CertificateCreateOrUpdateParameters"
+        description: Create or Update parameters.
+        required: true
+      responses:
+        "200":
+          description: The certificate details were successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CertificateContract"
+              examples:
+                ApiManagementPutCertificates:
+                  $ref: "#/components/examples/ApiManagementPutCertificates"
+        "201":
+          description: The new certificate was successfully added.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CertificateContract"
+              examples:
+                ApiManagementPutCertificates:
+                  $ref: "#/components/examples/ApiManagementPutCertificates"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Body contract.
+                properties:
+                  code:
+                    description: Service-defined error code. This code serves as a
+                      sub-status for the HTTP error code specified in the
+                      response.
+                    type: string
+                  details:
+                    description: The list of invalid fields send in request, in case of
+                      validation error.
+                    items:
+                      description: Error Field contract.
+                      properties:
+                        code:
+                          description: Property level error code.
+                          type: string
+                        message:
+                          description: Human-readable representation of property-level
+                            error.
+                          type: string
+                        target:
+                          description: Property name.
+                          type: string
+                    type: array
+                  message:
+                    description: Human-readable representation of the error.
+                    type: string
+      tags:
+        - Certificates
+servers:
+  - url: https://azure.local
+  - url: "{apimBaseUrl}"
+    variables:
+      apimBaseUrl:
+        description: The management endpoint of the API Management service, for example
+          https://myapimservice.management.azure-api.net.
+        x-ms-skip-url-encoding: true
+        default: ""
+components:
+  examples:
+    ApiManagementListCertificates:
+      value:
+        count: 5
+        value:
+          - expirationDate: 2019-01-12T00:00:00Z
+            id: /certificates/5a58bad2a40f7ef2e05bcce2
+            subject: CN=localhost
+            thumbprint: C2728598048BE9C8BD559A159BD70525A4EA0367
+          - expirationDate: 2019-01-12T00:00:00Z
+            id: /certificates/5a58bb7ea40f7ef2e05be3d4
+            subject: CN=localhost
+            thumbprint: FB085F34A60C2AD8EED59C58B961BD5FBEFC38BE
+          - expirationDate: 2019-01-12T00:00:00Z
+            id: /certificates/5a58bc74a40f7e1048929958
+            subject: CN=localhost
+            thumbprint: 61EF1C104C1949E219995A2F0628F3D66D595F32
+          - expirationDate: 2019-01-12T00:00:00Z
+            id: /certificates/5a58bcd2a40f7e1048929a35
+            subject: CN=localhost
+            thumbprint: E359B9813314091B0EDED4AD804A9163D0FF3B84
+          - expirationDate: 2019-01-12T00:00:00Z
+            id: /certificates/5a58bcd2a40f7e1048929a36
+            subject: CN=localhost
+            thumbprint: 0997AAAF7DB834B9F5726F20FED2F3D3D086DA07
+    ApiManagementGetCertificates:
+      value:
+        expirationDate: 2019-01-12T00:00:00Z
+        id: /certificates/5a58be29a40f7e104892af64
+        subject: CN=localhost
+        thumbprint: F71A638FEC037AA826A30755DF2732DB5A4CB776
+    ApiManagementPutCertificates:
+      value:
+        expirationDate: 2019-01-12T08:00:00Z
+        id: /certificates/5a58bad2a40f7ef2e05bcce2
+        subject: CN=localhost
+        thumbprint: C2728598048BE9C8BD559A159BD70525A4EA0367
+  parameters:
+    CertificateIdParameter:
+      description: Identifier of the certificate entity. Must be unique in the current API
+        Management service instance.
+      in: path
+      name: certificateId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 256
+        pattern: ^[^*#&+:<>?]+$
+      examples:
+        ApiManagementDeleteCertificates:
+          value: 5a58bb04a40f7ef2e05bd3a6
+        ApiManagementGetCertificates:
+          value: 5a58be29a40f7e104892af64
+        ApiManagementPutCertificates:
+          value: 5a58bad2a40f7ef2e05bcce2
+  securitySchemes:
+    apim_key:
+      in: header
+      name: Authorization
+      type: apiKey
+  schemas:
+    CertificateCollection:
+      description: Paged Certificates list representation.
+      properties:
+        count:
+          description: Total number of entities
+          type: integer
+        nextLink:
+          description: Next page link if any.
+          type: string
+        value:
+          description: Page values.
+          items:
+            $ref: "#/components/schemas/CertificateContract"
+          type: array
+    CertificateContract:
+      allOf:
+        - $ref: "#/components/schemas/CertificateContractProperties"
+      description: Certificate details.
+      properties:
+        id:
+          description: Identifier of the Certificate entity.
+          type: string
+    CertificateContractProperties:
+      description: Properties of the Certificate contract.
+      properties:
+        expirationDate:
+          description: >
+            Expiration date of the certificate. The date conforms to the
+            following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO
+            8601 standard.
+          format: date-time
+          type: string
+        subject:
+          description: Subject attribute of the certificate.
+          type: string
+        thumbprint:
+          description: Thumbprint of the certificate.
+          type: string
+      required:
+        - subject
+        - thumbprint
+        - expirationDate
+    CertificateCreateOrUpdateParameters:
+      description: Parameters supplied to the CreateOrUpdate certificate operation.
+      properties:
+        data:
+          description: Base 64 encoded certificate using the application/x-pkcs12
+            representation.
+          type: string
+        password:
+          description: Password for the Certificate
+          type: string
+      required:
+        - data
+        - password

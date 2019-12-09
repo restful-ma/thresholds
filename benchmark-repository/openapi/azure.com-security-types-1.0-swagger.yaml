@@ -1,0 +1,179 @@
+openapi: 3.0.0
+info:
+  title: Common types
+  version: "1.0"
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/security/resource-manager/common/v1/types.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: security-types
+  x-tags:
+    - Azure
+    - Microsoft
+paths: {}
+servers:
+  - url: https://azure.local
+components:
+  parameters:
+    ApiVersion:
+      description: API version for the operation
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+    AscLocation:
+      description: The location where ASC stores the data of the subscription. can be
+        retrieved from Get locations
+      in: path
+      name: ascLocation
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+    ODataExpand:
+      description: OData expand. Optional.
+      in: query
+      name: $expand
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ODataFilter:
+      description: OData filter. Optional.
+      in: query
+      name: $filter
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ODataSelect:
+      description: OData select. Optional.
+      in: query
+      name: $select
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupName:
+      description: The name of the resource group within the user's subscription. The name
+        is case insensitive.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\._\(\)]+$
+    ResourceId:
+      description: The identifier of the resource.
+      in: path
+      name: resourceId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    Scope:
+      description: Scope of the query, can be subscription
+        (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management
+        group (/providers/Microsoft.Management/managementGroups/mgName).
+      in: path
+      name: scope
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionId:
+      description: Azure subscription ID
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+        pattern: ^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$
+  schemas:
+    AscLocation:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The ASC location of the subscription is in the "name" field
+      properties:
+        properties:
+          $ref: "#/components/schemas/AscLocationProperties"
+      type: object
+    AscLocationList:
+      description: List of locations where ASC saves your data
+      properties:
+        nextLink:
+          description: The URI to fetch the next page.
+          readOnly: true
+          type: string
+        value:
+          items:
+            $ref: "#/components/schemas/AscLocation"
+          readOnly: true
+          type: array
+      type: object
+    AscLocationProperties:
+      description: An empty set of properties
+      type: object
+    CloudError:
+      description: Error response structure.
+      properties:
+        error:
+          $ref: "#/components/schemas/CloudErrorBody"
+      type: object
+      x-ms-external: true
+    CloudErrorBody:
+      description: Error details.
+      properties:
+        code:
+          description: An identifier for the error. Codes are invariant and are intended to
+            be consumed programmatically.
+          readOnly: true
+          type: string
+        message:
+          description: A message describing the error, intended to be suitable for display
+            in a user interface.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-external: true
+    Kind:
+      description: Describes an Azure resource with kind
+      properties:
+        kind:
+          description: Kind of the resource
+          type: string
+      type: object
+    Location:
+      description: Describes an Azure resource with location
+      properties:
+        location:
+          description: Location where the resource is stored
+          readOnly: true
+          type: string
+      type: object
+    Resource:
+      description: Describes an Azure resource.
+      properties:
+        id:
+          description: Resource Id
+          readOnly: true
+          type: string
+        name:
+          description: Resource name
+          readOnly: true
+          type: string
+        type:
+          description: Resource type
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true

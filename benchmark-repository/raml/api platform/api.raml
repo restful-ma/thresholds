@@ -1,0 +1,1522 @@
+#%RAML 1.0
+version: v1
+title: API repository
+mediaType: application/json
+baseUri: https://anypoint.mulesoft.com/apiplatform/repository
+
+securitySchemes:
+  oauth_2_0: !include security/oauth_2_0.yaml
+
+traits:
+  searchable: !include traits/searchable.yaml
+  serverErrors: !include traits/serverErrors.yaml
+  clientErrors: !include traits/clientErrors.yaml
+
+resourceTypes:
+  base: {} 
+  crud:
+    usage: |
+      Use it when the user is able to make CRUD operations
+    get: &get
+      is: [ serverErrors, clientErrors ] 
+      responses:
+        404:
+        406:
+    post: &post
+      is: [ serverErrors, clientErrors ]
+      responses:
+        400:
+        404:
+        406:
+        409:
+        415:
+    put: &put
+      is: [ serverErrors, clientErrors ] 
+      responses:
+        400:
+        404:
+        406:
+        409:
+        415:
+    patch: &patch
+      is: [ serverErrors, clientErrors ] 
+      responses:
+        400:
+        404:
+        406:
+        409:
+        415:
+    delete: &delete 
+      is: [ serverErrors, clientErrors ] 
+      responses: 
+        400:
+        404:
+  retrievable:
+    type: <<inherits>> 
+    usage: |
+      Use it when the user is able to retrive data
+    get: *get
+  removable:
+    usage: |
+      Use it when the user is able to delete data
+    delete: *delete 
+  partialUpdate:
+    usage: |
+      Use it when the user is able to partially update data
+    patch: *patch
+    delete: *delete
+  updatable:
+    usage: |
+      Use it when the user is able to update data      
+    get: *get
+    put: *put
+    patch: *patch
+    delete: *delete
+  writable:     
+    usage: |
+      Use it when the user is able to write new data
+    post: *post
+
+securedBy: [ oauth_2_0 ]
+
+/apis:
+  description: A collection of APIs
+  type: 
+    retrievable:
+      inherits: writable 
+
+  get:
+    description: Retrieves a list of APIs.
+    is: [ searchable ]
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/apis.json
+
+  post:
+    description: Creates a new API
+    body:
+      application/json:
+        example: !include examples/api-new.json
+    responses:
+      201:
+        description: The new API has been successfully created
+        body:
+          application/json:
+            example: !include examples/api-new-response.json
+
+  /by-name:
+    type: 
+      retrievable:
+        inherits: base 
+      
+    get:
+      description: |
+        Returns a single api that matches the passed-in api name.
+        Returns null if no match is found.
+      queryParameters:
+        apiName:
+          type: string
+          required: true
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/api-by-name.json
+
+  /versions/by-endpoint:
+    type: 
+      retrievable:
+        inherits: base
+            
+    get:
+      description: Returns a list of API versions for a given list of endpoints
+      queryParameters:
+        uris:
+          type: string[]
+          required: true
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/api-version-by-endpoint.json
+
+  /versions/by-name:
+    type: 
+      retrievable:
+        inherits: base
+            
+    get:
+      description: |
+        Returns a single api that matches the passed-in api name
+        and api version name. Returns null if no match is found.
+      queryParameters:
+        apiName:
+          type: string
+          required: true
+        versionName:
+          type: string
+          required: true
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/api-version-by-name.json
+        404:
+
+  /versions/contracts/applications:
+    type: 
+      retrievable:
+        inherits: base
+        
+    get:
+      description: |
+        Returns permitted applications within an organization. It means every
+        applications that has a contract with an API version requesting user
+        has access to.
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/api-version-contract-applications.json
+
+  /versions/tiers:
+    type: 
+      retrievable:
+        inherits: base
+        
+    get:
+      description: |
+        Returns permitted SLA tiers within an organization. It means every
+        SLA tier that belongs to API version requesting user has access to.
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/api-version-tiers.json
+
+  /{apiId}:
+    description: An API
+    uriParameters:
+      apiId:
+        type: integer
+        minimum: 1
+        maximum: 2147483647
+    type: 
+      retrievable:
+        inherits: partialUpdate
+
+    get:
+      description: Returns an instance of a single api
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/api.json
+        404:
+
+    patch:
+      description: Patches a single api
+      body:
+        application/json:
+          example: !include examples/api-update-response.json
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/api-update-response.json
+        404:
+
+    delete:
+      description: Deletes the instance of the api specified
+      responses:
+        200:
+          description: The api has been deleted successfully
+
+    /permissions:
+      type: writable
+      
+      post:
+        description: Grant a user view access to this API
+        body:
+          application/json:
+
+    /portals:
+      description: A collection of API portals
+      type:  
+        retrievable:
+          inherits: base
+
+      get:
+        description: Returns a collection of API portals
+        responses:
+          200:
+            body:
+              application/json:
+                example: !include examples/api-portals.json
+
+    /versions:
+      description: A collection of API versions
+      type: writable
+
+      post:
+        description: Creates a new version
+        body:
+          application/json:
+            example: !include examples/api-version-new.json
+        responses:
+          201:
+            description: The new version has been successfully created
+            body:
+              application/json:
+                example: !include examples/api-version-response.json
+
+      /{apiVersionId}:
+        description: An API version
+        type: updatable
+        uriParameters:
+          apiVersionId:
+            type: integer
+            minimum: 1
+            maximum: 2147483647
+
+        get:
+          description: Returns an instance of a single api version
+          responses:
+            200:
+              body:
+                application/json:
+                  example: !include examples/api-version.json
+
+        put:
+          body:
+            application/json:
+              example: !include examples/api-version-update.json
+          description: Updates a single api version
+          responses:
+            200:
+              body:
+                application/json:
+                  example: !include examples/api-version-update-response.json
+            404:
+
+        patch:
+          body:
+            application/json:
+              example: !include examples/api-version-partial-update.json
+          description: Patches a single api version
+          responses:
+            200:
+              body:
+                application/json:
+                  example: !include examples/api-version-partial-update-response.json
+            404:
+
+        delete:
+          description: Deletes the instance of the api version specified
+          responses:
+            200:
+              description: The api version has been deleted successfully
+            404:
+              
+        /addRootRaml:
+          type: writable
+          
+          post:
+            description: Adds the root RAML for this API version
+            body:
+              application/json:
+                example: !include examples/api-version-root-raml-new.json
+            responses:
+              201:
+                description: The new API has been successfully created
+                body:
+                  application/json:
+                    example: !include examples/api-version-root-raml-response.json
+
+        /export:
+          type:
+            retrievable:
+              inherits: base
+          
+          get:
+            description: |
+              Retrieves a bundled containing information (name, version, description, RAML files, SLA tier definitions)
+              about the API version.
+            responses:
+              200:
+                body:
+                  application/octet-stream:
+
+        /contracts:
+          description: Contracts associated with the API version
+          type:
+            retrievable:
+              inherits: base
+
+          get:
+            description: Retrieves a list of applications with contracts with the API version
+            is: [ searchable ]
+            responses:
+              200:
+                body:
+                  application/json:
+                    example: !include examples/api-version-contracts.json
+
+          /{contractId}:
+            description: A particular contract associated with the API version.
+            type:
+              retrievable:
+                inherits: partialUpdate
+
+            get:
+              description: Returns an instance of a single contract
+              responses:
+                200:
+                  body:
+                    application/json:
+                     example: !include examples/api-version-contract.json
+                404:
+
+            patch:
+              description: Patches contract conditions
+              body:
+                application/json:
+                  example: !include examples/api-version-contract-update-response.json
+              responses:
+                200:
+                  body:
+                    application/json:
+                      example: !include examples/api-version-contract-update-response.json
+                404:
+
+            delete:
+              description: Deletes contract
+              responses:
+                200:
+                  description: Contract deleted
+                400:
+                404:
+
+            /approve:
+              description: Approves contract
+              type: writable
+  
+              post:
+                description: Approves contract.
+                body:
+                  application/json:
+                    example: |
+                      {}
+                responses:
+                  201:
+                    body:
+                      application/json:
+                        example: !include examples/api-version-contract-approve.json
+                  404:
+
+            /approveTierChange:
+              description: Approves contract tier change request
+              type: writable
+
+              post:
+                description: Approves contract tier change request
+                body:
+                  application/json:
+                    example: |
+                      {}
+                responses:
+                  201:
+                    body:
+                      application/json:
+                        example: !include examples/api-version-contract-approve-tier-change.json
+                  404:
+
+            /reject:
+              description: Rejects contract
+              type: writable
+
+              post:
+                description: Rejects contract
+                body:
+                  application/json:
+                    example: |
+                      {}
+                responses:
+                  201:
+                    body:
+                      application/json:
+                        example: !include examples/api-version-contract-reject.json
+                  404:
+
+            /rejectTierChange:
+              description: Rejects contract tier change request
+              type: writable
+
+              post:
+                description: Rejects contract tier change request
+                body:
+                  application/json:
+                    example: |
+                      {}
+                responses:
+                  201:
+                    body:
+                      application/json:
+                        example: !include examples/api-version-contract-reject-tier-change.json
+                  404:
+
+            /restore:
+              description: Restores contract
+              type: writable
+
+              post:
+                description: Restores contract
+                body:
+                  application/json:
+                    example: |
+                      {}
+                responses:
+                  201:
+                    body:
+                      application/json:
+                        example: !include examples/api-version-contract-restore.json
+                  404:
+
+            /revoke:
+              description: Revokes contract
+              type: writable
+
+              post:
+                description: Revokes contract
+                body:
+                  application/json:
+                    example: |
+                      {}
+                responses:
+                  201:
+                    body:
+                      application/json:
+                        example: !include examples/api-version-contract-revoke.json
+                  404:
+
+        /definition:
+          description: The fully resolved RAML spec for this version of the API
+          type: 
+            retrievable:
+              inherits: base
+
+          get:
+            description: Gets the RAML SPEC
+            responses:
+              200:
+                body:
+                  application/json:
+                    example: !include examples/api-version-definition.json
+              404:
+
+        /endpoint:
+          description: The endpoint associated with the API version
+          type: crud
+  
+          get:
+            description: Returns the endpoint associated with the API version
+            responses:
+              200:
+                description: Successful
+                body:
+                  application/json:
+                    example: !include examples/api-version-endpoint.json
+              404:
+
+          post:
+            description: Creates an endpoint for the API version
+            body:
+              application/json:
+                example: !include examples/api-version-endpoint-new.json
+            responses:
+              201:
+                description: The endpoint has been created
+                body:
+                  application/json:
+                    example: !include examples/api-version-endpoint-new-response.json
+              404:
+              409:
+
+          put:
+            description: Updates the endpoint associated with the API version
+            body:
+              application/json:
+                example: !include examples/api-version-endpoint-update.json
+            responses:
+              200:
+                description: The endpoint has been updated
+                body:
+                  application/json:
+                    example: !include examples/api-version-endpoint-update-response.json
+              404:
+              409:
+
+          patch:
+            body:
+              application/json:
+                example: !include examples/api-version-endpoint-partial-update.json
+            responses:
+              200:
+                description: The endpoint has been updated
+                body:
+                  application/json:
+                    example: !include examples/api-version-endpoint-partial-update-response.json
+              404:
+              409:
+
+          delete:
+            description: Deletes the endpoint associated with the API version
+            responses:
+              404:
+
+          /active:
+            type: writable
+            
+            post:
+              description: Records activity for an API version
+              body:
+                application/json:
+                  example: |
+                    {}
+              responses:
+                201:
+                  description: The API version activity has been recorded
+                  body:
+                    application/json:
+                      example: !include examples/api-version-endpoint-active.json
+                404:
+
+        /files:
+          description: A collection of API version RAML files and directories
+          type:
+            retrievable:
+              inherits: writable
+
+          get:
+            description: Returns a list of files
+            responses:
+              200:
+                description: Successful
+                body:
+                  application/json:
+                    example: !include examples/api-version-files.json
+              404:
+
+          post:
+            description: Creates a new file for the API version
+            body:
+              application/json:
+                example: !include examples/api-version-file-new.json
+            responses:
+              201:
+                description: The file has been created
+                body:
+                  application/json:
+                    example: !include examples/api-version-file-new-response.json
+              404:
+
+          /{apiVersionFileId}:
+            description: An API version RAML file (or directory)
+            uriParameters:
+              apiVersionFileId:
+                type: integer
+                minimum: 1
+                maximum: 2147483647
+
+            get:
+              description: Returns an instance of a single file
+              responses:
+                200:
+                  description: Successful
+                  body:
+                    application/json:
+                      example: !include examples/api-version-file.json
+                401:
+                  description: Unauthorized
+                404:
+                  description: No endpoint found for this API version
+                406:
+                  description: Not acceptable
+                500:
+                  description: An unknown error occurred
+
+            put:
+              description: Updates a single file
+              body:
+                application/json:
+                  example: !include examples/api-version-file-update.json
+              responses:
+                200:
+                  body:
+                    application/json:
+                      example: !include examples/api-version-file-update-response.json
+                400:
+                  description: Bad request
+                401:
+                  description: Unauthorized
+                404:
+                  description: Not found
+                406:
+                  description: Not acceptable
+                415:
+                  description: Unsupported media type
+                500:
+                  description: An unknown error occurred
+
+            delete:
+              description: Deletes the instance of the file specified
+              responses:
+                200:
+                  description: The file has been deleted successfully
+                401:
+                  description: Unauthorized
+                404:
+                  description: The contract cannot be found
+                500:
+                  description: An unknown error occurred
+
+          /export:
+            get:
+              description: Exports all files in the filesystem as a ZIP file
+              responses:
+                200:
+                  body:
+                    application/zip:
+                401:
+                  description: Unauthorized
+                404:
+                  description: No endpoint found for this API version
+                406:
+                  description: Not acceptable
+                500:
+                  description: An unknown error occurred
+
+        /permissions:
+          post:
+            description: Grant a user admin access to this API version
+            body:
+              application/json:
+                example: !include examples/api-version-permisions-new.json
+            responses:
+              201:
+                description: The file has been created
+              400:
+                description: Bad request
+              401:
+                description: Unauthorized
+              404:
+                description: Not found
+              415:
+                description: Unsupported media type
+              500:
+                description: An unknown error occurred
+
+          delete:
+            description: Revoke a user's admin access to this API version
+            queryParameters:
+              userId:
+                type: string
+                required: true
+            responses:
+              200:
+                description: The file has been deleted successfully
+              401:
+                description: Unauthorized
+              404:
+                description: The contract cannot be found
+              500:
+                description: An unknown error occurred
+
+        /policies:
+          description: A collection of API version policies
+
+          get:
+            description: Returns a list of policies
+            queryParameters:
+              standalone:
+                type: boolean
+              version:
+                type: string
+            responses:
+                200:
+                  description: Successful
+                  body:
+                    application/json:
+                      example: !include examples/api-version-policies.json
+                401:
+                  description: Unauthorized
+                404:
+                  description: No endpoint found for this API version
+                406:
+                  description: Not acceptable
+                500:
+                  description: An unknown error occurred
+
+          post:
+            body:
+              application/json:
+                example: !include examples/api-version-policy-new.json
+            responses:
+              201:
+                description: The file has been created
+                body:
+                  application/json:
+                    example: !include examples/api-version-policy-new-response.json
+              400:
+                description: Bad request
+              401:
+                description: Unauthorized
+              404:
+                description: Not found
+              406:
+                description: Not acceptable
+              415:
+                description: Unsupported media type
+              500:
+                description: An unknown error occurred
+
+          /{policyId}:
+            description: An API version policy
+            uriParameters:
+              policyId:
+                type: integer
+                minimum: 1
+                maximum: 2147483647
+
+            delete:
+              description: Deletes the instance of the policy specified
+              responses:
+                200:
+                  description: The policy has been deleted successfully
+                401:
+                  description: Unauthorized
+                404:
+                  description: The contract cannot be found
+                500:
+                  description: An unknown error occurred
+
+        /portal:
+          get:
+            responses:
+              200:
+                description: Successful
+                body:
+                  application/json:
+                    example: !include examples/api-version-portal.json
+              401:
+                description: Unauthorized
+              406:
+                description: Not acceptable
+              500:
+                description: An unknown error occurred
+
+          post:
+            description: Create a portal and associates it with an API version
+            body:
+              application/json:
+                example: |
+                  {}
+            responses:
+              201:
+                description: The file has been created
+                body:
+                  application/json:
+                    example: !include examples/api-version-portal-new-response.json
+              400:
+                description: Bad request
+              401:
+                description: Unauthorized
+              404:
+                description: Not found
+              406:
+                description: Not acceptable
+              415:
+                description: Unsupported media type
+              500:
+                description: An unknown error occurred
+
+          put:
+            description: Updates a single portal
+            body:
+              application/json:
+                example: !include examples/api-version-portal-update.json
+            responses:
+              200:
+                body:
+                  application/json:
+                    example: !include examples/api-version-portal-update-response.json
+              400:
+                description: Bad request
+              401:
+                description: Unauthorized
+              406:
+                description: Not acceptable
+              415:
+                description: Unsupported media type
+              500:
+                description: An unknown error occurred
+
+          patch:
+            description: Patches a single portal
+            body:
+              application/json:
+                example: !include examples/api-version-portal-partial-update.json
+            responses:
+              200:
+                body:
+                  application/json:
+                    example: !include examples/api-version-portal-partial-update-response.json
+              400:
+                description: Bad request
+              401:
+                description: Unauthorized
+              406:
+                description: Not acceptable
+              415:
+                description: Unsupported media type
+              500:
+                description: An unknown error occurred
+
+          /files/upload:
+            post:
+              description: Upload an api portal file.
+              body:
+                multipart/form-data:
+              responses:
+                200:
+                  description: Successful
+                400:
+                  description: Bad Request
+                500:
+                  description: An unknown error occurred
+
+          /pages:
+            post:
+              description: Creates a new page
+              body:
+                application/json:
+                  example: !include examples/api-version-portal-page-new.json
+              responses:
+                201:
+                  description: The new page has been successfully created
+                  body:
+                    application/json:
+                      example: !include examples/api-version-portal-page-new-response.json
+                400:
+                  description: Bad request
+                401:
+                  description: Unauthorized
+                406:
+                  description: Not acceptable
+                415:
+                  description: Unsupported media type
+                500:
+                  description: An unknown error occurred
+
+            /{pageId}:
+              uriParameters:
+                pageId:
+                  type: integer
+                  minimum: 1
+                  maximum: 2147483647
+
+              put:
+                description: Updates a single page
+                body:
+                  application/json:
+                    example: !include examples/api-version-portal-page-update.json
+                responses:
+                  200:
+                    body:
+                      application/json:
+                        example: !include examples/api-version-portal-page-update-response.json
+                  400:
+                    description: Bad request
+                  401:
+                    description: Unauthorized
+                  406:
+                    description: Not acceptable
+                  415:
+                    description: Unsupported media type
+                  500:
+                    description: An unknown error occurred
+
+              delete:
+                description: Deletes the instance of the page specified
+                responses:
+                  200:
+                    description: The page has been deleted successfully
+                  401:
+                    description: Unauthorized
+                  500:
+                    description: An unknown error occurred
+
+          /permissions:
+            post:
+              description: Grant a user view access to this portal
+              body:
+                application/json:
+                  example: !include examples/api-version-portal-permissions.json
+              responses:
+                201:
+                  description: The new page has been successfully created
+                400:
+                  description: Bad request
+                401:
+                  description: Unauthorized
+                406:
+                  description: Not acceptable
+                415:
+                  description: Unsupported media type
+                500:
+                  description: An unknown error occurred
+
+            delete:
+              description: Revoke a user's view access to portal
+              queryParameters:
+                userId:
+                  type: string
+                  required: true
+              responses:
+                401:
+                  description: Unauthorized
+                500:
+                  description: An unknown error occurred
+
+          /theme:
+            put:
+              description: Update the portal theme.
+              body:
+                application/json:
+                  example: !include examples/api-version-portal-theme-update.json
+              responses:
+                200:
+                  body:
+                    application/json:
+                      example: !include examples/api-version-portal-theme-update-response.json
+                400:
+                  description: Bad request
+                401:
+                  description: Unauthorized
+                406:
+                  description: Not acceptable
+                415:
+                  description: Unsupported media type
+                500:
+                  description: An unknown error occurred
+
+        /proxy:
+          description: Gets a proxy
+
+          get:
+            description: Gets a proxy
+            responses:
+              200:
+                body:
+                  application/zip:
+
+          /deployment:
+            patch:
+              body:
+                application/json:
+                  example: !include examples/api-version-proxy-deployment-update.json
+              responses:
+                200:
+                  body:
+                    application/json:
+                      example: !include examples/api-version-proxy-deployment-update-response.json
+                400:
+                  description: Bad request
+                401:
+                  description: Unauthorized
+                406:
+                  description: Not acceptable
+                415:
+                  description: Unsupported media type
+                500:
+                  description: An unknown error occurred
+
+            post:
+              body:
+                application/json:
+                  example: !include examples/api-version-proxy-deployment-update.json
+              responses:
+                200:
+                  body:
+                    application/json:
+                      example: !include examples/api-version-proxy-deployment-update-response.json
+                400:
+                  description: Bad request
+                401:
+                  description: Unauthorized
+                406:
+                  description: Not acceptable
+                415:
+                  description: Unsupported media type
+                500:
+                  description: An unknown error occurred
+
+        /tags/{tag}:
+          description: Manages an API version tags
+          uriParameters:
+            tag:
+              maxLength: 150
+
+          post:
+            description: Adds a tag to an API version
+            body:
+              application/json:
+            responses:
+              401:
+                description: Unauthorized
+              500:
+                description: An unknown error occurred
+
+          delete:
+            description: Removes a tag from an API version
+            responses:
+              200:
+                description: The tag has been deleted.
+              401:
+                description: Unauthorized
+              500:
+                description: An unknown error occurred
+
+        /tiers:
+          description: Manages API version tiers
+
+          get:
+            description: Retrieves a list of tiers for the supplied api version.
+            is: [ searchable ]
+            queryParameters:
+              active:
+                description: Retrieve only active tiers if set to true
+                type: boolean
+                required: false
+                example: true
+            responses:
+              200:
+                description: Successful
+                body:
+                  application/json:
+                    example: !include examples/api-version-tier-list.json
+              401:
+                description: Unauthorized
+              404:
+                description: No tiers found for this API version
+              406:
+                description: Not acceptable
+              500:
+                description: An unknown error occurred
+
+          post:
+            description: Creates a sla tier for the API version
+            body:
+              application/json:
+                example: !include examples/api-version-tier-new.json
+            responses:
+              201:
+                description: The tier has been created
+                body:
+                  application/json:
+                    example: !include examples/api-version-tier-new-response.json
+              400:
+                description: Bad request
+              401:
+                description: Unauthorized
+              406:
+                description: Not acceptable
+              409:
+                description: The tier URL already exists
+              415:
+                description: Unsupported media type
+              500:
+                description: An unknown error occurred
+
+          /{tierId}:
+            description: A particular tier associated with the API version.
+
+            put:
+              description: Update a tier associated with an API version.
+              body:
+                application/json:
+                  example: !include examples/api-version-tiers-new.json
+              responses:
+                200:
+                  description: The tier has been successfully updated.
+                  body:
+                    application/json:
+                      example: !include examples/api-version-tiers-new-response.json
+                400:
+                  description: Bad request
+                401:
+                  description: Unauthorized
+                406:
+                  description: Not acceptable
+                409:
+                  description: The tier URL already exists
+                415:
+                  description: Unsupported media type
+                500:
+                  description: An unknown error occurred
+
+            delete:
+              description: Delete a tier that has no active applications.
+              responses:
+                200:
+                  description: The tier has been deleted.
+                401:
+                  description: Unauthorized
+                500:
+                  description: An unknown error occurred
+
+        /users:
+          description: |
+            Proxy for core services that return users
+
+          get:
+            description: Search for users
+            queryParameters:
+              search:
+                type: string
+                required: true
+            responses:
+              200:
+                description: Successful
+                body:
+                  application/json:
+                    example: !include examples/api-version-users.json
+              401:
+                description: Unauthorized
+              406:
+                description: Not acceptable
+              500:
+                description: An unknown error occurred
+
+          /by-roles:
+            description: |
+              Proxy for core services that return users for a given set of roles and context parameters.
+              Users are returned with an extra "roles" property containing the core services id of
+              the subset of passed-in roles of which they are a member.
+
+            get:
+              description: Search for users
+              responses:
+                200:
+                  description: Successful
+                  body:
+                    application/json:
+                401:
+                  description: Unauthorized
+                500:
+                  description: An unknown error occurred
+                502:
+                  description: Bad gateway
+
+/auth/exchangeToken:
+  description: Exchanges an access token obtained from another authentication provider for an access token that can be used in the Anypoint Platform. The resulting token must be used to authenticate all other requests to the Anypoint Platform's Management API.
+  post:
+    description: Returns an authentication token for the Anypoint Platform by exchanging a token from another authentication provider. The response also contains information about the authenticated user.
+    body:
+      example: !include examples/exchange-token-new.json
+    responses:
+      200:
+        body:
+          example: !include examples/exchange-token-new-response.json
+
+/custom-policy-templates:
+  description: |
+    Custom Policy Templates are the basis for creating new policies.
+    The platform provides out of the box with several policies and new
+    ones can be added using this API.
+
+  get:
+    description: Retrieves a list of custom policy templates.
+    is: [ searchable ]
+    responses:
+      200:
+        description:
+        body:
+          application/json:
+
+  /{customPolicyTemplateId}:
+    description: A custom policy template
+    uriParameters:
+      customPolicyTemplateId:
+        type: integer
+        minimum: 1
+        maximum: 2147483647
+
+    get:
+      description: Returns an instance of a single custom policy template
+      responses:
+        200:
+          body:
+            application/json:
+
+    delete:
+      description: Deletes the instance of the custom policy template specified
+      responses:
+        204:
+          description: The custom policy template has been deleted successfully
+
+    /configuration:
+      get:
+        description: The XML configuration for the custom policy template
+        responses:
+          200:
+            body:
+              application/xml:
+                example: !include examples/policy-template.xml
+
+    /definition:
+      get:
+        description: The YAML definition for the custom policy template
+        responses:
+          200:
+            body:
+              application/yaml:
+                example: !include examples/policy-definition.ym
+
+/organizations:
+  description: |
+    Organizations are the container entity for all API Portal-related resources.
+
+  /current:
+    description: The current organization's data
+
+    get:
+      description: Get the current organization
+      responses:
+        200:
+          description: Successful
+          body:
+            application/json:
+        400:
+          description: Bad Request
+        500:
+          description: An unknown error occurred
+
+    put:
+      description: Update the current organization
+      body:
+        application/json:
+      responses:
+        200:
+          description: Successful
+          body:
+            application/json:
+        400:
+          description: Bad Request
+        500:
+          description: An unknown error occurred
+
+    /environments:
+      get:
+
+    /theme:
+      put:
+        description: Update the current organization theme.
+        body:
+          application/json:
+
+    /file/upload:
+      post:
+        description: Upload an organization file.
+        body:
+          multipart/form-data:
+        responses:
+          200:
+            description: Successful
+            body:
+              application/json:
+          400:
+            description: Bad Request
+          500:
+            description: An unknown error occurred
+
+/policy-templates:
+  description: |
+    Policy Templates are the basis for creating new policies.
+    The platform provides out of the box with several policies and new
+    ones can be added by MuleSoft Support Team if needed.
+
+  get:
+    description: Retrieve a list of policy templates.
+    responses:
+      200:
+        description: Successful
+        body:
+          application/json:
+            example: !include examples/policy-templates.json
+      400:
+        description: Bad Request
+
+      406:
+        description: The requested accept type is not supported
+
+      500:
+        description: An unknown error occurred
+
+  /{policyTemplateId}:
+    uriParameters:
+      policyTemplateId:
+        type: integer
+        minimum: 1
+        maximum: 2147483647
+
+    get:
+      description: |
+        Retrieve specific details from the policy template, including the full
+        XML that is being injected as well as all of its configuration parameters.
+      responses:
+        200:
+          description: Successful
+          body:
+            application/json:
+              example: !include examples/policy-template.json
+        400:
+          description: Bad Request
+
+        404:
+          description: There is no policy template defined under the specified id.
+
+        406:
+          description: The requested accept type is not supported
+
+        500:
+          description: An unknown error occurred
+
+/public/organizations/{organizationId}:
+  description: The root URI for all calls made against an organization.
+  uriParameters:
+    organizationId:
+      description: The organization's ID
+      type: integer
+      minimum: 1
+      maximum: 2147483647
+
+  /portals:
+    description: All of the APIs that have a portal in an organization the user has access to. These can be public portals, or portals for which the user has been granted access to read.
+    get:
+      is: [searchable]
+      description: Returns a list of APIs with all of its versions to which the user has read access to.
+      responses:
+        200:
+          body:
+            example: !include examples/portals-response.json
+
+  /apis/{apiId}/versions/{apiVersionId}:
+    description: The root URI for an APIs portal
+    uriParameters:
+      apiId:
+        description: The API's ID
+        type: integer
+        minimum: 1
+        maximum: 2147483647
+      apiVersionId:
+        description: The API version's ID
+        type: integer
+        minimum: 1
+        maximum: 2147483647
+    /portal:
+      description: A portal associated with this API version. The portal includes all of the pages and all content.
+      get:
+        responses:
+          200:
+            body:
+              example: !include examples/portal-response.json
+
+    /tiers:
+      description: All the SLA tiers in this API version
+      get:
+        responses:
+          200:
+            body:
+              example: !include examples/public-api-version-tiers.json
+
+/applications:
+  description: All the applications this user owns. In order for a user to be able to request access to a managed API, an application must be registered in the system.
+  get:
+    is: [ searchable ]
+    responses:
+      200:
+        body:
+          example: !include examples/applications.json
+  post:
+    body:
+      example: !include examples/applications-new.json
+    responses:
+      201:
+        body:
+          example: !include examples/applications-new-response.json
+
+  /{applicationId}:
+    description: An application
+    uriParameters:
+      applicationId:
+        type: integer
+        minimum: 1
+        maximum: 2147483647
+    get:
+      responses:
+        200:
+          body:
+            example: !include examples/application.json
+    put:
+      body:
+        example: !include examples/application-update.json
+      responses:
+        200:
+          body:
+            example: !include examples/application-update-response.json
+    delete:
+      description: Deletes an application
+      responses:
+        200:
+
+    /secret/reset:
+      description: Resets client secret for application
+      post:
+        body:
+        responses:
+          201:
+            body:
+              example: !include examples/secret.json
+
+    /contracts:
+      description: Contracts associated with the application
+      get:
+        description: Retrieves a list of contracts for the application.
+        is: [ searchable ]
+        responses:
+          200:
+            body:
+              example: !include examples/application-contracts.json
+      post:
+        description: Creates new contract between an API version and the application.
+        body:
+          example: !include examples/application-contract-new.json
+        responses:
+          201:
+            body:
+              example: !include examples/application-contract-new-response.json
+
+      /{contractId}:
+        description: A particular contract associated with the application.
+        delete:
+          description: Deletes a contract.
+        patch:
+          description: Allows changing the requested SLA tier for an unaccepted application.
+          body:
+            application/json:
+              example: !include examples/application-contract-update.json
+          responses:
+              200:

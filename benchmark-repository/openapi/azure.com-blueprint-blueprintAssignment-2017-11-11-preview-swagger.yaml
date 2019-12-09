@@ -1,0 +1,457 @@
+openapi: 3.0.0
+info:
+  description: Azure Blueprint Client.
+  title: BlueprintClient
+  version: 2017-11-11-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2017-11-11-preview/blueprintAssignment.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: blueprint-blueprintAssignment
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments":
+    get:
+      description: List Blueprint assignments within a subscription.
+      operationId: Assignments_List
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: OK - all Blueprint assignment retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssignmentList"
+              examples:
+                Assignment:
+                  $ref: "#/components/examples/Assignment"
+      tags:
+        - Assignment
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}":
+    delete:
+      description: Delete a Blueprint assignment.
+      operationId: Assignments_Delete
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/AssignmentNameParameter"
+      responses:
+        "202":
+          description: OK - Blueprint assignment deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Assignment"
+              examples:
+                Assignment_Delete:
+                  $ref: "#/components/examples/Assignment_Delete"
+        "204":
+          description: no content
+      tags:
+        - Assignment
+    get:
+      description: Get a Blueprint assignment.
+      operationId: Assignments_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/AssignmentNameParameter"
+      responses:
+        "200":
+          description: OK - Blueprint assignment retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Assignment"
+              examples:
+                Assignment:
+                  $ref: "#/components/examples/Assignment"
+      tags:
+        - Assignment
+    put:
+      description: Create or update a Blueprint assignment.
+      operationId: Assignments_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/AssignmentNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Assignment"
+        description: assignment object to save.
+        required: true
+      responses:
+        "201":
+          description: Created - Blueprint assignment saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Assignment"
+              examples:
+                Assignment:
+                  $ref: "#/components/examples/Assignment"
+      tags:
+        - Assignment
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Assignment:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Blueprint/blueprintAssignments/assignSimpleBlueprint
+        identity:
+          principalId: 00000000-0000-0000-0000-000000000000
+          tenantId: 00000000-0000-0000-0000-000000000000
+          type: SystemAssigned
+        location: eastus
+        name: assignSimpleBlueprint
+        properties:
+          blueprintId: /providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint
+          description: enforce pre-defined simpleBlueprint to this XXXXXXXX subscription.
+          parameters:
+            costCenter:
+              value: Contoso/Online/Shopping/Production
+            owners:
+              value:
+                - johnDoe@contoso.com
+                - johnsteam@contoso.com
+            storageAccountType:
+              value: Standard_LRS
+          provisioningState: creating
+          resourceGroups:
+            storageRG:
+              location: eastus
+              name: defaultRG
+        type: Microsoft.Blueprint/Assignment
+    Assignment_Delete:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Blueprint/blueprintAssignments/assignSimpleBlueprint
+        identity:
+          principalId: 00000000-0000-0000-0000-000000000000
+          tenantId: 00000000-0000-0000-0000-000000000000
+          type: SystemAssigned
+        location: eastus
+        name: assignSimpleBlueprint
+        properties:
+          blueprintId: /providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint
+          description: enforce pre-defined simpleBlueprint to this XXXXXXXX subscription.
+          parameters:
+            costCenter:
+              value: Contoso/Online/Shopping/Production
+            owners:
+              value:
+                - johnDoe@contoso.com
+                - johnsteam@contoso.com
+            storageAccountType:
+              value: Standard_LRS
+          provisioningState: deleting
+          resourceGroups:
+            storageRG:
+              location: eastus
+              name: defaultRG
+        type: Microsoft.Blueprint/Assignment
+  parameters:
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        Assignment:
+          value: 2017-11-11-preview
+        Assignment_Delete:
+          value: 2017-11-11-preview
+    AssignmentNameParameter:
+      description: name of the assignment.
+      in: path
+      name: assignmentName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Assignment_Delete:
+          value: assignSimpleBlueprint
+        Assignment:
+          value: assignSimpleBlueprint
+    SubscriptionIdParameter:
+      description: azure subscriptionId, which we assign the blueprint to.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Assignment:
+          value: 00000000-0000-0000-0000-000000000000
+        Assignment_Delete:
+          value: 00000000-0000-0000-0000-000000000000
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Assignment:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      description: Represents a Blueprint assignment.
+      properties:
+        identity:
+          $ref: "#/components/schemas/ManagedServiceIdentity"
+        properties:
+          $ref: "#/components/schemas/AssignmentProperties"
+      required:
+        - identity
+        - properties
+      type: object
+    AssignmentList:
+      description: List of Blueprint assignments
+      properties:
+        nextLink:
+          description: Link to the next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: List of Blueprint assignments.
+          items:
+            $ref: "#/components/schemas/Assignment"
+          type: array
+      type: object
+    AssignmentLockSettings:
+      description: Defines how Blueprint-managed resources will be locked.
+      properties:
+        mode:
+          description: Lock mode.
+          enum:
+            - None
+            - AllResources
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: AssignmentLockMode
+      type: object
+    AssignmentProperties:
+      allOf:
+        - $ref: "#/components/schemas/BlueprintResourcePropertiesBase"
+      description: Detailed properties for Assignment.
+      properties:
+        blueprintId:
+          description: ID of the Blueprint definition resource.
+          type: string
+        locks:
+          $ref: "#/components/schemas/AssignmentLockSettings"
+        parameters:
+          $ref: "#/components/schemas/ParameterValueCollection"
+        provisioningState:
+          description: State of the assignment.
+          enum:
+            - creating
+            - validating
+            - waiting
+            - deploying
+            - cancelling
+            - locking
+            - succeeded
+            - failed
+            - canceled
+            - deleting
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: AssignmentProvisioningState
+        resourceGroups:
+          $ref: "#/components/schemas/ResourceGroupValueCollection"
+        status:
+          $ref: "#/components/schemas/AssignmentStatus"
+      required:
+        - parameters
+        - resourceGroups
+      type: object
+    AssignmentStatus:
+      allOf:
+        - $ref: "#/components/schemas/BlueprintResourceStatusBase"
+      description: The status of Blueprint assignment. This field is readonly.
+      properties: {}
+      type: object
+    AzureResourceBase:
+      description: Common properties for all Azure resources.
+      properties:
+        id:
+          description: String Id used to locate any resource on Azure.
+          readOnly: true
+          type: string
+        name:
+          description: Name of this resource.
+          readOnly: true
+          type: string
+        type:
+          description: Type of this resource.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    BlueprintResourcePropertiesBase:
+      description: Shared properties between all Blueprint resources.
+      properties:
+        description:
+          description: Multi-line explain this resource.
+          maxLength: 500
+          type: string
+        displayName:
+          description: One-liner string explain this resource.
+          maxLength: 256
+          type: string
+      type: object
+      x-ms-external: true
+    BlueprintResourceStatusBase:
+      description: Shared status properties between all Blueprint resources.
+      properties:
+        lastModified:
+          description: Last modified time of this blueprint.
+          readOnly: true
+          type: string
+        timeCreated:
+          description: Creation time of this blueprint.
+          readOnly: true
+          type: string
+      type: object
+    ManagedServiceIdentity:
+      description: Managed Service Identity
+      properties:
+        principalId:
+          description: Azure Active Directory principal ID associated with this Identity.
+          type: string
+        tenantId:
+          description: ID of the Azure Active Directory.
+          type: string
+        type:
+          description: Type of the Managed Service Identity.
+          enum:
+            - None
+            - SystemAssigned
+            - UserAssigned
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ManagedServiceIdentityType
+      required:
+        - type
+      type: object
+    ParameterValue:
+      allOf:
+        - $ref: "#/components/schemas/ParameterValueBase"
+      description: Value for the specified parameter.
+      properties:
+        value:
+          description: actual value.
+      required:
+        - value
+      type: object
+    ParameterValueBase:
+      description: Base class for ParameterValue.
+      properties:
+        description:
+          description: Optional property, just to establish ParameterValueBase as a
+            BaseClass.
+          type: string
+      type: object
+    ParameterValueCollection:
+      additionalProperties:
+        $ref: "#/components/schemas/ParameterValueBase"
+      description: A dictionary for parameters and their corresponding values.
+      properties: {}
+      type: object
+    ResourceGroupValue:
+      description: Represents an Azure resource group.
+      properties:
+        location:
+          description: Location of the resource group
+          type: string
+        name:
+          description: Name of the resource group
+          maxLength: 90
+          minLength: 1
+          type: string
+      type: object
+    ResourceGroupValueCollection:
+      additionalProperties:
+        $ref: "#/components/schemas/ResourceGroupValue"
+      description: A dictionary which maps resource group placeholders to the resource
+        groups which will be created.
+      properties: {}
+      type: object
+    SecretReferenceParameterValue:
+      allOf:
+        - $ref: "#/components/schemas/ParameterValueBase"
+      description: The reference to a secret, if the parameter should be protected.
+      properties:
+        reference:
+          $ref: "#/components/schemas/SecretValueReference"
+      required:
+        - reference
+      type: object
+    SecretValueReference:
+      description: Reference to a KeyVault secret.
+      properties:
+        keyVault:
+          $ref: "#/components/schemas/keyVaultReference"
+        secretName:
+          description: Name of the secret.
+          type: string
+        secretVersion:
+          description: Version of the secret, (if there are multiple versions)
+          type: string
+      required:
+        - keyVault
+        - secretName
+      type: object
+    TrackedResource:
+      allOf:
+        - $ref: "#/components/schemas/AzureResourceBase"
+      description: Common properties for all Azure tracked resources.
+      properties:
+        location:
+          description: The location of this Blueprint assignment.
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+      required:
+        - location
+      type: object
+    keyVaultReference:
+      description: Specifies the link to a KeyVault.
+      properties:
+        id:
+          description: Azure resource ID of the KeyVault.
+          type: string
+      required:
+        - id
+      type: object

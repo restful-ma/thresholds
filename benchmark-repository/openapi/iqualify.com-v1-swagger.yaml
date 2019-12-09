@@ -1,0 +1,2193 @@
+openapi: 3.0.0
+info:
+  contact:
+    x-twitter: hello_iqualify
+  description: >+
+    The iQualify API offers management and analytics responses for building
+
+    learning experiences using your iQualify instance data.
+
+
+    Once you’ve registered with iQualify, you can request an API access token by
+
+    navigating to the API access section of the "Account Settings" area.
+
+
+    Find out how to [Request your API access token](https://intercom.help/iqualify/iqualify-set-up/authentication/requesting-your-api-access-token) on our Knowledge base.
+
+
+    All endpoints are only accessible via https and are located at
+
+    api.iqualify.com. For instance: you can find your current offerings by
+
+    accessing the following URL:
+
+        https://api.iqualify.com/v1/offerings/current
+
+  title: iQualify
+  version: v1
+  x-apisguru-categories:
+    - education
+  x-logo:
+    url: https://twitter.com/hello_iqualify/profile_image?size=original
+  x-origin:
+    - format: swagger
+      url: https://api.iqualify.com/v1/docs.json
+      version: "2.0"
+  x-providerName: iqualify.com
+security:
+  - jwt: []
+tags: []
+paths:
+  /:
+    get:
+      description: Responds with all supported endpoints URLs for v1 version.
+      responses:
+        "200":
+          description: Supported endpoints
+      summary: List supported endpoints URLs
+      tags:
+        - API info
+  /course-mappings:
+    get:
+      description: Returns all the course mappings
+      responses:
+        "200":
+          description: Course Mappings
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                title: course mappings
+                type: object
+      summary: Find course mappings
+      tags:
+        - course mappings
+  "/course-mappings/{offeringId}":
+    get:
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      responses:
+        "200":
+          description: Course Mapping
+          content:
+            application/json:
+              schema:
+                items:
+                  type: string
+                type: array
+      summary: Finds course mappings by offering id
+      tags:
+        - course mappings
+  "/course-mappings/{offeringId}/{externalCourseId}":
+    delete:
+      description: Removes the course mapping between the offering and the external course
+        id
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/externalCourseId"
+      responses:
+        "200":
+          description: Course Mapping
+          content:
+            application/json:
+              schema:
+                items:
+                  type: string
+                type: array
+      summary: Remove course mapping
+      tags:
+        - course mappings
+    put:
+      description: Creates a mapping between the offering and the external course id
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/externalCourseId"
+      responses:
+        "200":
+          description: Course Mapping
+          content:
+            application/json:
+              schema:
+                items:
+                  type: string
+                type: array
+      summary: Add course mapping
+      tags:
+        - course mappings
+  /courses:
+    get:
+      description: Responds with courses that can be activated (made to an offering).
+      responses:
+        "200":
+          description: All courses that can be activated
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/CourseResponse"
+                title: Courses
+                type: array
+      summary: Find courses
+      tags:
+        - courses
+  "/courses/{contentId}":
+    get:
+      parameters:
+        - description: The content Id
+          in: path
+          name: contentId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Course detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseMetaResponse"
+      summary: Find course by content id
+      tags:
+        - courses
+  "/courses/{contentId}/metadata/category":
+    put:
+      parameters:
+        - description: The content Id
+          in: path
+          name: contentId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Category"
+      responses:
+        "200":
+          description: Course detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseMetaResponse"
+      summary: Update course category
+      tags:
+        - courses
+  "/courses/{contentId}/metadata/level":
+    put:
+      parameters:
+        - description: The content Id
+          in: path
+          name: contentId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Level"
+      responses:
+        "200":
+          description: Course detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseMetaResponse"
+      summary: Update course level
+      tags:
+        - courses
+  "/courses/{contentId}/metadata/tags":
+    put:
+      parameters:
+        - description: The content Id
+          in: path
+          name: contentId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Tags"
+      responses:
+        "200":
+          description: Course detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseMetaResponse"
+      summary: Update course tags
+      tags:
+        - courses
+  "/courses/{contentId}/metadata/topic":
+    put:
+      parameters:
+        - description: The content Id
+          in: path
+          name: contentId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Topic"
+      responses:
+        "200":
+          description: Course detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseMetaResponse"
+      summary: Update course topic
+      tags:
+        - courses
+  "/courses/{contentId}/permissions":
+    post:
+      parameters:
+        - description: The content Id
+          in: path
+          name: contentId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/CourseUser"
+              title: users to be added to the offering.
+              type: array
+        required: true
+      responses:
+        "201":
+          description: user successfully added to the course with the specified permission.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseUser"
+      summary: Update course access
+      tags:
+        - courses
+  /offerings:
+    get:
+      description: Responds with all offerings for your organisation.
+      responses:
+        "200":
+          description: all offerings (current, past and future ones)
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingResponse"
+                title: Offerings
+                type: array
+      summary: Get current, past and future offerings
+      tags:
+        - offerings
+    post:
+      description: Creates new offering.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OfferingRequired"
+        required: true
+      responses:
+        "201":
+          description: offering created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfferingMetadataResponse"
+      summary: Create offering
+      tags:
+        - offerings
+  /offerings/current:
+    get:
+      description: Responds with current (active) offerings for your organisation. Offering
+        is current when today's date is between (inclusive) it's `start` and
+        `end` date.
+      responses:
+        "200":
+          description: current offerings
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingResponse"
+                title: Offerings
+                type: array
+      summary: Find active offerings
+      tags:
+        - offerings
+  /offerings/future:
+    get:
+      description: Responds with future (inactive) offerings for your organisation. Future
+        offerings have their `start` date after today's date (inclusive).
+      responses:
+        "200":
+          description: future offerings
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingResponse"
+                title: Offerings
+                type: array
+      summary: Find future offerings
+      tags:
+        - offerings
+  /offerings/past:
+    get:
+      description: Responds with past (inactive) offerings for your organisation. Past
+        offerings have their `end` date before today's date (inclusive).
+      responses:
+        "200":
+          description: past offerings
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingResponse"
+                title: Offerings
+                type: array
+      summary: Find past offerings
+      tags:
+        - offerings
+  "/offerings/{offeringId}":
+    get:
+      description: Returns an offering matching the offeringId.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      responses:
+        "200":
+          description: offering
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfferingMetadataResponse"
+      summary: Find offering by id
+      tags:
+        - offerings
+    patch:
+      description: Updates the offering.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Offering"
+        required: true
+      responses:
+        "200":
+          description: offering updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfferingMetadataResponse"
+      summary: Update offering
+      tags:
+        - offerings
+  "/offerings/{offeringId}/analytics/channels/{channelId}/comments":
+    get:
+      description: Responds with a list of all comments in any of the posts for a channel
+        in a offering
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/channelId"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "*/*":
+              schema:
+                items:
+                  $ref: "#/components/schemas/Comment"
+                title: Comments
+                type: array
+      summary: Find comments
+      tags:
+        - analytics
+  "/offerings/{offeringId}/analytics/channels/{channelId}/posts":
+    get:
+      description: Responds with a list of posts for a channel in a offering
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/channelId"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "*/*":
+              schema:
+                items:
+                  $ref: "#/components/schemas/Post"
+                title: Posts
+                type: array
+      summary: Find posts
+      tags:
+        - analytics
+  "/offerings/{offeringId}/analytics/channels/{channelId}/replies":
+    get:
+      description: Responds with a list of all replies in any of the posts for a channel in
+        a offering
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/channelId"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "*/*":
+              schema:
+                items:
+                  $ref: "#/components/schemas/Comment"
+                title: Comments
+                type: array
+      summary: Find replies
+      tags:
+        - analytics
+  "/offerings/{offeringId}/analytics/learners-progress":
+    get:
+      description: Responds with learners progress.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      responses:
+        "200":
+          description: Learners progress
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/LearnerProgressResponse"
+                title: LearnersProgress
+                type: array
+      summary: Find learners progress
+      tags:
+        - analytics
+  "/offerings/{offeringId}/analytics/marks/assignments":
+    get:
+      description: Responds with assignments marks.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      responses:
+        "200":
+          description: Assignments marks
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssignmentMarkResponse"
+                title: AssignmentsMarks
+                type: array
+      summary: Find assignments marks
+      tags:
+        - analytics
+  "/offerings/{offeringId}/analytics/marks/quizzes":
+    get:
+      description: Responds with quizzes marks.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      responses:
+        "200":
+          description: Quizzes marks
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/QuizMarkResponse"
+                title: QuizzesMarks
+                type: array
+      summary: Find quizzes marks
+      tags:
+        - analytics
+  "/offerings/{offeringId}/analytics/pulses/":
+    get:
+      description: Returns ids of all pulses that learners responded to.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      responses:
+        "200":
+          description: Pulses' ids
+          content:
+            application/json:
+              schema:
+                items:
+                  type: string
+                type: array
+      summary: Find pulses ids
+      tags:
+        - analytics
+  "/offerings/{offeringId}/analytics/pulses/responses":
+    get:
+      description: Returns pulses' responses matching the offeringId.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: Filter pulse responses by type.
+          in: query
+          name: pulseType
+          schema:
+            type: string
+            enum:
+              - submit_text
+              - MCQ
+              - spatial_triangular
+              - spatial_planar
+              - spatial_linear
+        - description: Filter pulse responses by responseTime. Lower then (`lt`), lower
+            then or equal (`lte`), greater then (`gt`) and greater then or equal
+            (`gte`) operators are available. Example of filtering by time range
+            __responseTime=gte\_\_2017-03-14T07:30:00Z&responseTime=lte\_\_2017-03-16T09:30:00Z__
+          in: query
+          name: responseTime
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        "200":
+          description: All pulses' responses
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/PulseResponse"
+                title: Pulses
+                type: array
+      summary: Find pulses by offeringId
+      tags:
+        - analytics
+  "/offerings/{offeringId}/analytics/pulses/{pulseId}/responses":
+    get:
+      description: Returns pulse's responses matching the offeringId and pulseId.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: pulse's base id
+          in: path
+          name: pulseId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Pulse data matching pulseId
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/PulseResponse"
+                title: Pulses
+                type: array
+      summary: Find pulses by offeringId and pulseId
+      tags:
+        - analytics
+  "/offerings/{offeringId}/analytics/submissions/assignments":
+    get:
+      description: Responds with assignments submissions.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      responses:
+        "200":
+          description: Assignments submissions
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssignmentMarkResponse"
+                title: AssignmentsSubmissions
+                type: array
+      summary: Find submissions to assignments, including marks if any
+      tags:
+        - analytics
+  "/offerings/{offeringId}/assessments":
+    get:
+      description: Get all offering's assessments
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      responses:
+        "200":
+          description: offering's assessments
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssessmentResponse"
+                title: Assessments
+                type: array
+      summary: Find offering's assessments
+      tags:
+        - offerings
+  "/offerings/{offeringId}/assessments/{assessmentId}":
+    patch:
+      description: Modifies assessment details
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: assessment's id
+          in: path
+          name: assessmentId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Assessment"
+        required: true
+      responses:
+        "200":
+          description: assessment successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssessmentResponse"
+      summary: Update assessment details
+      tags:
+        - offerings
+  "/offerings/{offeringId}/assessments/{assessmentId}/documents":
+    post:
+      description: Uploads assessment document file
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: assessment's id
+          in: path
+          name: assessmentId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  description: Assessment document
+                  type: string
+                  format: binary
+              required:
+                - file
+      responses:
+        "201":
+          description: assessment document successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+      summary: Upload new document
+      tags:
+        - offerings
+  "/offerings/{offeringId}/assessments/{assessmentId}/documents/{documentId}":
+    delete:
+      description: Removes assessment document file
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: assessment's id
+          in: path
+          name: assessmentId
+          required: true
+          schema:
+            type: string
+        - description: documents's id
+          in: path
+          name: documentId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: assessment document successfully removed
+      summary: Remove the document
+      tags:
+        - offerings
+  "/offerings/{offeringId}/channels":
+    get:
+      description: Responds with a list of channels in a offering
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      responses:
+        "200":
+          description: Succesful response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ChannelResponse"
+                title: List of channels in a offering
+                type: array
+      summary: Find channels
+      tags:
+        - channels
+    post:
+      description: Adds new channel to the offering
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChannelRequired"
+        required: true
+      responses:
+        "201":
+          description: channel successfully added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelResponse"
+      summary: Add channel
+      tags:
+        - channels
+  "/offerings/{offeringId}/channels/{channelId}":
+    patch:
+      description: Updates the channel
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/channelId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Channel"
+        required: true
+      responses:
+        "200":
+          description: channel successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelResponse"
+      summary: Update channel
+      tags:
+        - channels
+  "/offerings/{offeringId}/cover-image":
+    put:
+      description: Replaces offering's cover image with uploaded image
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  description: Cover image, required size is 1280x380px
+                  type: string
+                  format: binary
+              required:
+                - file
+      responses:
+        "200":
+          description: cover image successfully uploaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfferingResponse"
+      summary: Set offering's cover image
+      tags:
+        - offerings
+  "/offerings/{offeringId}/groups":
+    get:
+      description: Responds with a list of assessment groups in an offering
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      responses:
+        "200":
+          description: Succesful response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AssessmentGroupResponse"
+                title: List of assessment groups in an offering
+                type: array
+      summary: Find assessment groups
+      tags:
+        - assessment groups
+    post:
+      description: Creates a new assessment group in a offering
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssessmentGroupRequired"
+        required: true
+      responses:
+        "201":
+          description: assessment group successfully added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssessmentGroupResponse"
+      summary: Add an assessment group
+      tags:
+        - assessment groups
+  "/offerings/{offeringId}/groups/{groupId}/learners":
+    get:
+      description: Responds with a list of learners for the assessment group
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/groupId"
+      responses:
+        "200":
+          description: Succesful response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                title: List of learners
+                type: array
+      summary: Find learners in an assessment group
+      tags:
+        - assessment groups
+    post:
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/groupId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+        required: true
+      responses:
+        "201":
+          description: Succesful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+      summary: Add a learner to an assessment group
+      tags:
+        - assessment groups
+  "/offerings/{offeringId}/groups/{groupId}/learners/{userEmail}":
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/groupId"
+        - $ref: "#/components/parameters/userEmail"
+      responses:
+        "204":
+          description: user successfully removed from the assessment group
+      summary: Remove a learner from an assessment group
+      tags:
+        - assessment groups
+  "/offerings/{offeringId}/metadata/category":
+    put:
+      description: Updates the offering category metadata.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      requestBody:
+        $ref: "#/components/requestBodies/Category"
+      responses:
+        "200":
+          description: offering updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfferingMetadataResponse"
+      summary: Update offering category metadata
+      tags:
+        - offerings
+  "/offerings/{offeringId}/metadata/level":
+    put:
+      description: Updates the offering level metadata.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      requestBody:
+        $ref: "#/components/requestBodies/Level"
+      responses:
+        "200":
+          description: offering updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfferingMetadataResponse"
+      summary: Update offering level metadata
+      tags:
+        - offerings
+  "/offerings/{offeringId}/metadata/tags":
+    put:
+      description: Updates the offering tags metadata.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      requestBody:
+        $ref: "#/components/requestBodies/Tags"
+      responses:
+        "200":
+          description: offering updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfferingMetadataResponse"
+      summary: Update offering tags metadata
+      tags:
+        - offerings
+  "/offerings/{offeringId}/metadata/topic":
+    put:
+      description: Updates the offering topic metadata.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      requestBody:
+        $ref: "#/components/requestBodies/Topic"
+      responses:
+        "200":
+          description: offering updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfferingMetadataResponse"
+      summary: Update offering topic metadata
+      tags:
+        - offerings
+  "/offerings/{offeringId}/study-plan":
+    put:
+      description: Replaces offering's study plan with uploaded file
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  description: Study plan
+                  type: string
+                  format: binary
+              required:
+                - file
+      responses:
+        "200":
+          description: study plan successfully uploaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfferingResponse"
+      summary: Set offering's study plan
+      tags:
+        - offerings
+  "/offerings/{offeringId}/users":
+    get:
+      description: Responds with a list of offering's users (facilitators, learners and
+        markers).
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: If true, facilitators are included in the results.
+          in: query
+          name: facilitators
+          schema:
+            type: boolean
+            default: true
+        - description: If true, learners are included in the results.
+          in: query
+          name: learners
+          schema:
+            type: boolean
+            default: true
+        - description: If true, markers are included in the results.
+          in: query
+          name: markers
+          schema:
+            type: boolean
+            default: true
+      responses:
+        "200":
+          description: offering's users
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingUserResponse"
+                title: offering's users
+                type: array
+      summary: Find offering's users
+      tags:
+        - offering users
+    post:
+      description: Adds one or more users to the offering.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/OfferingUser"
+              title: users to be added to the offering.
+              type: array
+        required: true
+      responses:
+        "201":
+          description: user successfully added to the offering
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OfferingUser"
+      summary: Adds user to the offering.
+      tags:
+        - offering users
+  "/offerings/{offeringId}/users/{evaluatorEmail}/evaluates":
+    delete:
+      description: Remove learners from evaluator's list.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: evaluator's id
+          in: path
+          name: evaluatorEmail
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Learners"
+      responses:
+        "200":
+          description: learners evaluated by the peer evaluator
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingUser"
+                title: learners evaluated by the peer evaluator
+                type: array
+      summary: Remove learners from evaluator's list.
+      tags:
+        - offering users
+    get:
+      description: Get learners evaluated by the peer evaluator.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: evaluators's email
+          in: path
+          name: evaluatorEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: learners evaluated by the peer evaluator
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingUser"
+                title: learners evaluated by the peer evaluator
+                type: array
+      summary: Find learners evaluated by the peer evaluator.
+      tags:
+        - offering users
+    post:
+      description: Add learners to be evaluated by the peer evaluator.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: evaluator's email
+          in: path
+          name: evaluatorEmail
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Learners"
+      responses:
+        "200":
+          description: learners evaluated by the peer evaluator
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingUser"
+                title: learners evaluated by the peer evaluator
+                type: array
+      summary: Add learners to be evaluated by the peer evaluator.
+      tags:
+        - offering users
+  "/offerings/{offeringId}/users/{markerEmail}/marks":
+    delete:
+      description: Remove learners from marker's list.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: marker's email
+          in: path
+          name: markerEmail
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Learners"
+      responses:
+        "200":
+          description: learners marked by the marker
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingUser"
+                title: learners marked by the marker
+                type: array
+      summary: Remove learners from marker's list.
+      tags:
+        - offering users
+    get:
+      description: Get learners marked by the marker.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: marker's email
+          in: path
+          name: markerEmail
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: learners marked by the marker
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingUser"
+                title: learners marked by the marker
+                type: array
+      summary: Find Learners marked by the marker.
+      tags:
+        - offering users
+    post:
+      description: Add learners to be marked by the marker.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - description: marker's email
+          in: path
+          name: markerEmail
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/Learners"
+      responses:
+        "200":
+          description: learners marked by the marker
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingUser"
+                title: learners marked by the marker
+                type: array
+      summary: Add learners to be marked by the marker.
+      tags:
+        - offering users
+  "/offerings/{offeringId}/users/{userEmail}":
+    delete:
+      description: Removes user from the offering.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/userEmail"
+      responses:
+        "204":
+          description: user successfully removed from the offering
+      summary: Removes user from the offering.
+      tags:
+        - offering users
+  "/offerings/{offeringId}/users/{userEmail}/invite-email":
+    post:
+      description: Re-sends the invitation e-mail to the user.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/userEmail"
+      responses:
+        "204":
+          description: successfully requested invitation e-mail sending
+      summary: Re-sends the invitation e-mail.
+      tags:
+        - offering users
+  "/offerings/{offeringId}/users/{userEmail}/submissions/open-response":
+    get:
+      description: Gets user's open response assignment submissions.
+      parameters:
+        - $ref: "#/components/parameters/offeringId"
+        - $ref: "#/components/parameters/userEmail"
+      responses:
+        "200":
+          description: user open response submission and mark details
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Assignments"
+                title: user's assignments
+                type: array
+      summary: Gets user's open response assignment submissions
+      tags:
+        - submissions
+  /users:
+    post:
+      description: Adds new user
+      requestBody:
+        $ref: "#/components/requestBodies/User"
+      responses:
+        "201":
+          description: user added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+      summary: Add new user
+      tags:
+        - users
+  /users/all/progress:
+    get:
+      description: Returns offering progress for each learner
+      parameters:
+        - description: Returns only the first n results.
+          in: query
+          name: $top
+          schema:
+            type: integer
+            default: 20
+        - description: Sorts the results.
+          in: query
+          name: $orderby
+          schema:
+            type: string
+        - description: Filters the results, based on a Boolean condition.
+          in: query
+          name: $filter
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Learners progress
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    properties:
+                      offerings:
+                        additionalProperties:
+                          properties:
+                            name:
+                              type: string
+                          title: Offering
+                          type: object
+                        title: Offerings detail
+                        type: object
+                      progress:
+                        items:
+                          $ref: "#/components/schemas/LearnerResponse"
+                        title: Learners
+                        type: array
+                  top:
+                    type: integer
+      summary: Learner progress for all offerings
+      tags:
+        - analytics
+  "/users/{userEmail}":
+    get:
+      description: Returns a user matching the email.
+      parameters:
+        - $ref: "#/components/parameters/userEmail"
+      responses:
+        "200":
+          description: user data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+      summary: Find user by email
+      tags:
+        - users
+    patch:
+      description: Updates the user
+      parameters:
+        - $ref: "#/components/parameters/userEmail"
+      requestBody:
+        $ref: "#/components/requestBodies/User"
+      responses:
+        "200":
+          description: user updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+      summary: Update the user
+      tags:
+        - users
+  "/users/{userEmail}/offerings":
+    get:
+      description: Responds with all user's offerings.
+      parameters:
+        - $ref: "#/components/parameters/userEmail"
+      responses:
+        "200":
+          description: user's offerings
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/OfferingResponse"
+                title: Offerings
+                type: array
+      summary: Get user's offerings
+      tags:
+        - users
+  "/users/{userEmail}/permissions/{permissionName}":
+    post:
+      description: Adds permission to user
+      parameters:
+        - $ref: "#/components/parameters/userEmail"
+        - $ref: "#/components/parameters/permissionName"
+      responses:
+        "200":
+          description: permission successfully added to user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+      summary: Add permission to user
+      tags:
+        - users
+servers:
+  - url: https://api.iqualify.com/v1
+components:
+  parameters:
+    channelId:
+      description: channel's id
+      in: path
+      name: channelId
+      required: true
+      schema:
+        type: string
+    externalCourseId:
+      description: external course's id
+      in: path
+      name: externalCourseId
+      required: true
+      schema:
+        type: string
+    groupId:
+      description: Assessment group id
+      in: path
+      name: groupId
+      required: true
+      schema:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+    offeringId:
+      description: offering's id
+      in: path
+      name: offeringId
+      required: true
+      schema:
+        type: string
+    permissionName:
+      description: permission name
+      in: path
+      name: permissionName
+      required: true
+      schema:
+        type: string
+        enum:
+          - builder
+          - manager
+    userEmail:
+      description: user's email
+      in: path
+      name: userEmail
+      required: true
+      schema:
+        type: string
+        format: email
+  requestBodies:
+    Topic:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            properties:
+              topic:
+                type: string
+            type: object
+      required: true
+    Learners:
+      content:
+        application/json:
+          schema:
+            items:
+              type: string
+            type: array
+      description: array of learners e-mails
+      required: true
+    Tags:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            properties:
+              tags:
+                items:
+                  type: string
+                type: array
+            type: object
+      required: true
+    Level:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            properties:
+              level:
+                type: string
+            type: object
+      required: true
+    Category:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            properties:
+              category:
+                type: string
+            type: object
+      required: true
+    User:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+      required: true
+  securitySchemes:
+    jwt:
+      in: header
+      name: Authorization
+      type: apiKey
+  schemas:
+    Assessment:
+      properties:
+        content:
+          type: string
+        dueDate:
+          format: date-time
+          type: string
+        markNumber:
+          minLength: 1
+          type: string
+        markType:
+          minLength: 1
+          type: string
+        openDate:
+          format: date-time
+          type: string
+    AssessmentGroupRequired:
+      properties:
+        title:
+          default: "my group #1"
+          minLength: 1
+          type: string
+      required:
+        - title
+    AssessmentGroupResponse:
+      properties:
+        createdAt:
+          type: string
+        id:
+          type: string
+        title:
+          minLength: 1
+          type: string
+    AssessmentResponse:
+      properties:
+        content:
+          type: string
+        documents:
+          items:
+            $ref: "#/components/schemas/Document"
+          type: array
+        dueDate:
+          format: date-time
+          type: string
+        durationMinutes:
+          format: int32
+          type: integer
+        filename:
+          type: string
+        hidden:
+          default: false
+          type: boolean
+        id:
+          type: string
+        markNumber:
+          minLength: 1
+          type: string
+        markType:
+          minLength: 1
+          type: string
+        maxAttempts:
+          format: int32
+          type: integer
+        openDate:
+          format: date-time
+          type: string
+        pid:
+          type: string
+        points:
+          type: string
+        themes:
+          items:
+            $ref: "#/components/schemas/ThemeResponse"
+          type: array
+        title:
+          type: string
+        totalQuestions:
+          format: int32
+          type: integer
+        totalThemes:
+          format: int32
+          type: integer
+        type:
+          type: string
+    AssignmentMarkResponse:
+      properties:
+        assessmentId:
+          type: string
+        assessmentItemDetails:
+          type: string
+        assessmentItemName:
+          type: string
+        courseName:
+          type: string
+        learnerEmail:
+          type: string
+        learnerFirstName:
+          type: string
+        learnerLastName:
+          type: string
+        learnerPersonId:
+          type: string
+        mark:
+          type: string
+        markFeedback:
+          type: string
+        markedBy:
+          type: string
+        markedByEvaluator:
+          type: boolean
+        markedByFacilitator:
+          type: boolean
+        markedByMarker:
+          type: boolean
+        markedDateTime:
+          format: date-time
+          type: string
+        submissionDateTime:
+          format: date-time
+          type: string
+      title: AssignmentMark
+    Assignments:
+      properties:
+        files:
+          items:
+            $ref: "#/components/schemas/Document"
+          type: array
+        marks:
+          items:
+            $ref: "#/components/schemas/Mark"
+          type: array
+        status:
+          type: string
+        submittedAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+    Channel:
+      properties:
+        isBroadcastOnly:
+          default: false
+          type: boolean
+        title:
+          minLength: 1
+          type: string
+    ChannelRequired:
+      properties:
+        isBroadcastOnly:
+          default: false
+          type: boolean
+        title:
+          minLength: 1
+          type: string
+      required:
+        - title
+    ChannelResponse:
+      properties:
+        id:
+          type: string
+        isBroadcastOnly:
+          default: false
+          type: boolean
+        title:
+          minLength: 1
+          type: string
+    Comment:
+      properties:
+        content:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        isFacilitatorPost:
+          type: boolean
+        moderation:
+          $ref: "#/components/schemas/Moderation"
+        parentCommentId:
+          type: string
+        postId:
+          type: string
+    CourseMetaResponse:
+      properties:
+        coverImageUrl:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          type: string
+        learning_outcomes:
+          items:
+            $ref: "#/components/schemas/LearningOutcomes"
+          type: array
+        metadata:
+          $ref: "#/components/schemas/PortfolioMetadata"
+        name:
+          type: string
+      title: Course
+    CourseResponse:
+      properties:
+        coverImageUrl:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          type: string
+        learning_outcomes:
+          items:
+            $ref: "#/components/schemas/LearningOutcomes"
+          type: array
+        name:
+          type: string
+      title: Course
+    CourseUser:
+      allOf:
+        - $ref: "#/components/schemas/User"
+      properties:
+        isBuilder:
+          default: false
+          type: boolean
+        isReviewer:
+          default: false
+          type: boolean
+        profile:
+          $ref: "#/components/schemas/UserProfile"
+      required:
+        - email
+    Criteria:
+      properties:
+        hasCompletedCourse:
+          default: true
+          type: boolean
+        hasPassedMandatoryAssessedQuizzes:
+          default: true
+          type: boolean
+    Document:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        filename:
+          type: string
+        id:
+          type: string
+        mimetype:
+          type: string
+        size:
+          format: int64
+          type: integer
+        url:
+          type: string
+    DocumentResponse:
+      properties:
+        id:
+          type: string
+        mimetype:
+          type: string
+        size:
+          format: int64
+          type: integer
+        url:
+          type: string
+    LearnerProgressResponse:
+      properties:
+        completion:
+          type: string
+        courseId:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastLoggedInAt:
+          format: date-time
+          type: string
+        lastName:
+          type: string
+        personId:
+          type: string
+      title: LearnerProgress
+    LearnerResponse:
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        id:
+          type: string
+        lastName:
+          type: string
+        offerings:
+          items:
+            $ref: "#/components/schemas/OfferingProgressRow"
+          type: array
+        personId:
+          type: string
+    LearningOutcomes:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+    Mark:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        feedback:
+          type: string
+        mark:
+          type: string
+        markFeedback:
+          items:
+            $ref: "#/components/schemas/MarkFeedback"
+          type: array
+        markedBy:
+          type: string
+        markerId:
+          type: string
+    MarkFeedback:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        feedback:
+          type: string
+        feedbackBy:
+          type: string
+        mark:
+          type: string
+        markerId:
+          type: string
+    Moderation:
+      properties:
+        isMuted:
+          type: boolean
+        moderator:
+          $ref: "#/components/schemas/Moderator"
+        reason:
+          type: string
+    Moderator:
+      properties:
+        avatarUrl:
+          type: string
+        firstName:
+          type: string
+        id:
+          type: string
+        lastName:
+          type: string
+    Offering:
+      properties:
+        contentId:
+          minLength: 1
+          type: string
+        description:
+          minLength: 1
+          type: string
+        earlyCloseOffDate:
+          format: date-time
+          type: string
+        end:
+          format: date-time
+          type: string
+        isReadonly:
+          type: boolean
+        metadata:
+          additionalProperties: false
+          properties:
+            category:
+              type: string
+            level:
+              type: string
+            tags:
+              items:
+                type: string
+              type: array
+            topic:
+              type: string
+          type: object
+        name:
+          minLength: 1
+          type: string
+        start:
+          format: date-time
+          type: string
+        trailerVideoUrl:
+          minLength: 1
+          type: string
+        version:
+          description: Content version, if not specified, the most recent version is used.
+          minLength: 1
+          type: string
+    OfferingMetadataResponse:
+      properties:
+        contentId:
+          minLength: 1
+          type: string
+        coverImageUrl:
+          minLength: 1
+          type: string
+        currency:
+          type: string
+        description:
+          minLength: 1
+          type: string
+        earlyCloseOffDate:
+          format: date-time
+          type: string
+        end:
+          format: date-time
+          type: string
+        enrollmentLimit:
+          type: number
+        id:
+          type: string
+        isReadonly:
+          type: boolean
+        metadata:
+          $ref: "#/components/schemas/PortfolioMetadata"
+        name:
+          minLength: 1
+          type: string
+        price:
+          type: number
+        start:
+          format: date-time
+          type: string
+        trailerVideoUrl:
+          minLength: 1
+          type: string
+        version:
+          minLength: 1
+          type: string
+    OfferingProgressRow:
+      properties:
+        completion:
+          type: string
+        id:
+          type: string
+    OfferingRequired:
+      allOf:
+        - $ref: "#/components/schemas/Offering"
+      required:
+        - contentId
+        - start
+        - end
+    OfferingResponse:
+      properties:
+        contentId:
+          minLength: 1
+          type: string
+        coverImageUrl:
+          minLength: 1
+          type: string
+        currency:
+          type: string
+        description:
+          minLength: 1
+          type: string
+        earlyCloseOffDate:
+          format: date-time
+          type: string
+        end:
+          format: date-time
+          type: string
+        enrollmentLimit:
+          type: number
+        id:
+          type: string
+        isReadonly:
+          type: boolean
+        name:
+          minLength: 1
+          type: string
+        price:
+          type: number
+        start:
+          format: date-time
+          type: string
+        trailerVideoUrl:
+          minLength: 1
+          type: string
+        version:
+          minLength: 1
+          type: string
+    OfferingUser:
+      allOf:
+        - $ref: "#/components/schemas/User"
+      properties:
+        isFacilitator:
+          default: false
+          type: boolean
+        isMarker:
+          default: false
+          type: boolean
+        isReadonly:
+          default: false
+          type: boolean
+        profile:
+          $ref: "#/components/schemas/UserProfile"
+      required:
+        - email
+    OfferingUserResponse:
+      properties:
+        avatarUrl:
+          type: string
+        email:
+          format: email
+          minLength: 1
+          type: string
+        evaluatedBy:
+          items:
+            type: string
+          type: array
+        evaluates:
+          items:
+            type: string
+          type: array
+        firstName:
+          minLength: 1
+          type: string
+        id:
+          type: string
+        isFacilitator:
+          default: false
+          type: boolean
+        isMarker:
+          default: false
+          type: boolean
+        isReadonly:
+          default: false
+          type: boolean
+        lastName:
+          minLength: 1
+          type: string
+        markedBy:
+          items:
+            type: string
+          type: array
+        marks:
+          items:
+            type: string
+          type: array
+        personId:
+          minLength: 1
+          type: string
+        profile:
+          $ref: "#/components/schemas/UserProfile"
+    PortfolioMetadata:
+      additionalProperties: false
+      properties:
+        category:
+          type: string
+        level:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        topic:
+          type: string
+      type: object
+    Post:
+      properties:
+        attachments:
+          items:
+            $ref: "#/components/schemas/DocumentResponse"
+          type: array
+        content:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        isFacilitatorPost:
+          type: boolean
+        moderation:
+          $ref: "#/components/schemas/Moderation"
+        title:
+          type: string
+    PulseAnswer:
+      properties:
+        multiChoiceAnswer:
+          items:
+            $ref: "#/components/schemas/PulseMCQOption"
+          type: array
+        spatialAnswer:
+          items:
+            $ref: "#/components/schemas/PulseSpatialOption"
+          type: array
+        textAnswer:
+          type: string
+      title: Answer
+    PulseMCQOption:
+      properties:
+        option:
+          type: string
+        value:
+          type: boolean
+      title: MultiChoiceOption
+    PulseResponse:
+      properties:
+        learnerFirstName:
+          type: string
+        learnerId:
+          type: string
+        learnerLastName:
+          type: string
+        pulseBaseId:
+          type: string
+        pulseInstanceId:
+          type: string
+        pulseQuestion:
+          type: string
+        pulseRunDurationMinutes:
+          type: integer
+        pulseRunStart:
+          format: date-time
+          type: string
+        pulseType:
+          type: string
+        response:
+          $ref: "#/components/schemas/PulseAnswer"
+        responseTime:
+          format: date-time
+          type: string
+      title: Pulse
+    PulseSpatialOption:
+      properties:
+        option:
+          type: string
+        value:
+          format: float
+          type: number
+      title: SpatialOption
+    QuizMarkResponse:
+      properties:
+        attempts:
+          format: int32
+          type: integer
+        lastAttemptAt:
+          format: date-time
+          type: string
+        learnerFullname:
+          type: string
+        learnerId:
+          type: string
+        learnerPersonId:
+          type: string
+        mark:
+          type: string
+        quizId:
+          type: string
+        quizTitle:
+          type: string
+      title: QuizMark
+    ThemeResponse:
+      properties:
+        filter:
+          type: string
+        numberOfQuestions:
+          type: string
+    User:
+      properties:
+        email:
+          minLength: 1
+          type: string
+        firstName:
+          minLength: 1
+          type: string
+        lastName:
+          minLength: 1
+          type: string
+        metadata:
+          $ref: "#/components/schemas/UserMetadata"
+        personId:
+          minLength: 1
+          type: string
+    UserMetadata:
+      additionalProperties: false
+      properties:
+        tags:
+          items:
+            type: string
+          type: array
+      type: object
+    UserProfile:
+      properties:
+        displayName:
+          type: string
+        mobile:
+          type: string
+    UserResponse:
+      properties:
+        avatarUrl:
+          type: string
+        email:
+          format: email
+          minLength: 1
+          type: string
+        firstName:
+          minLength: 1
+          type: string
+        id:
+          type: string
+        lastAccessAt:
+          format: date-time
+          type: string
+        lastName:
+          minLength: 1
+          type: string
+        metadata:
+          $ref: "#/components/schemas/UserMetadata"
+        personId:
+          minLength: 1
+          type: string
+        profile:
+          $ref: "#/components/schemas/UserProfile"

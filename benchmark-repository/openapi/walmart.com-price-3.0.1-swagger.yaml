@@ -1,0 +1,190 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: partnerapis@walmartlabs.com
+    x-twitter: Walmart
+  description: Please make sure you use the correct version of the APIs for your use case.
+    To find out the appropriate version, go to the API Docs  drop down on the
+    menu.
+  title: Price
+  version: 3.0.1
+  x-apisguru-categories:
+    - ecommerce
+  x-logo:
+    url: https://twitter.com/Walmart/profile_image?size=original
+  x-origin:
+    - format: swagger
+      url: https://developer.walmart.com/v1/swaggerProxy?type=price
+      version: "2.0"
+  x-providerName: walmart.com
+  x-serviceName: price
+tags:
+  - name: Version 3
+paths:
+  /v3/feeds:
+    post:
+      description: You can upload a price feed. If the feed successfully processed, it
+        returns a feed ID. Use the returned feed ID to retrieve a feed status.
+        You need Your Consumer ID and the private key to upload the feed
+      operationId: updatePrice
+      parameters:
+        - description: Feed Type
+          in: query
+          name: feedType
+          required: true
+          schema:
+            type: string
+            enum:
+              - price
+              - promo
+            default: price
+        - description: Channel Type
+          in: header
+          name: WM_CONSUMER.CHANNEL.TYPE
+          required: true
+          schema:
+            type: string
+            enum:
+              - SWAGGER_CHANNEL_TYPE
+            default: SWAGGER_CHANNEL_TYPE
+        - description: Your Consumer ID
+          in: header
+          name: WM_CONSUMER.ID
+          required: true
+          schema:
+            type: string
+        - description: Epoch timestamp
+          in: header
+          name: WM_SEC.TIMESTAMP
+          required: true
+          schema:
+            type: string
+            default: Auto populated
+        - description: Authentication signature
+          in: header
+          name: WM_SEC.AUTH_SIGNATURE
+          required: true
+          schema:
+            type: string
+            default: Auto populated
+        - description: The Service name
+          in: header
+          name: WM_SVC.NAME
+          required: true
+          schema:
+            type: string
+            default: Walmart Marketplace
+        - description: A Transaction ID
+          in: header
+          name: WM_QOS.CORRELATION_ID
+          required: true
+          schema:
+            type: string
+            default: 123456abcdef
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  description: Feed File to upload
+                  example: XML conforming XSD v 1.5
+                  type: string
+                  format: binary
+              required:
+                - file
+      responses:
+        default:
+          description: successful operation
+      summary: Upload a price feed
+      tags:
+        - Version 3
+  "/v3/feeds/{feedId}":
+    get:
+      description: You can display the status of an item price within a feed. Use the feed
+        ID returned from the upload a price feed API.
+      operationId: getFeedsStatus
+      parameters:
+        - description: The feed ID which status you want to retrieve.
+          in: path
+          name: feedId
+          required: true
+          schema:
+            type: string
+        - description: Includes details of each entity in the feed. Do not set this
+            parameter to true.
+          in: query
+          name: includeDetails
+          required: false
+          schema:
+            type: string
+            default: "false"
+        - description: The object response to start with, where 0 is the first entity that
+            can be requested. It can only be used when includeDetails is set to
+            true.
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: string
+            default: "0"
+        - description: The number of entities to be returned. It cannot be more than 50
+            entities. Only used when includeDetails is set to true.
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: string
+            default: "50"
+        - description: Channel Type
+          in: header
+          name: WM_CONSUMER.CHANNEL.TYPE
+          required: true
+          schema:
+            type: string
+            enum:
+              - SWAGGER_CHANNEL_TYPE
+            default: SWAGGER_CHANNEL_TYPE
+        - description: Your Consumer ID
+          in: header
+          name: WM_CONSUMER.ID
+          required: true
+          schema:
+            type: string
+        - description: Epoch timestamp
+          in: header
+          name: WM_SEC.TIMESTAMP
+          required: true
+          schema:
+            type: string
+            default: Auto populated
+        - description: Authentication signature
+          in: header
+          name: WM_SEC.AUTH_SIGNATURE
+          required: true
+          schema:
+            type: string
+            default: Auto populated
+        - description: The Service name
+          in: header
+          name: WM_SVC.NAME
+          required: true
+          schema:
+            type: string
+            default: Walmart Marketplace
+        - description: A Transaction ID
+          in: header
+          name: WM_QOS.CORRELATION_ID
+          required: true
+          schema:
+            type: string
+            default: 123456abcdef
+      responses:
+        default:
+          description: successful operation
+      summary: Get status of a price feed
+      tags:
+        - Version 3
+servers:
+  - url: https://developer.walmart.com/priceProxy/price-api-doc-app/rest

@@ -1,0 +1,787 @@
+openapi: 3.0.0
+info:
+  description: Resource Provider
+  title: Azure Location Based Services Resource Provider
+  version: 2017-01-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-ms-code-generation-settings:
+    name: LocationBasedServicesManagementClient
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/locationbasedservices/resource-manager/Microsoft.LocationBasedServices/preview/2017-01-01-preview/locationbasedservices.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: locationbasedservices
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.LocationBasedServices/operations:
+    get:
+      description: List operations available for the Location Based Services Resource
+        Provider
+      operationId: Accounts_ListOperations
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationBasedServicesOperations"
+              examples:
+                GetOperations:
+                  $ref: "#/components/examples/GetOperations"
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      x-ms-pageable:
+        itemName: value
+  "/subscriptions/{subscriptionId}/providers/Microsoft.LocationBasedServices/accounts":
+    get:
+      description: Get all Location Based Services Accounts in a Subscription
+      operationId: Accounts_ListBySubscription
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+      responses:
+        "200":
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationBasedServicesAccounts"
+              examples:
+                ListAccountsBySubscription:
+                  $ref: "#/components/examples/ListAccountsBySubscription"
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      x-ms-pageable:
+        itemName: value
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/moveResources":
+    post:
+      description: Moves Location Based Services Accounts from one ResourceGroup (or
+        Subscription) to another
+      operationId: Accounts_Move
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: The name of the resource group that contains Location Based Services
+            Account to move.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            MoveAccounts:
+              value: myResourceGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationBasedServicesAccountsMoveRequest"
+        description: The details of the Location Based Services Account move.
+        required: true
+      responses:
+        "200":
+          description: The Accounts were successfully moved.
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LocationBasedServices/accounts":
+    get:
+      description: Get all Location Based Services Accounts in a Resource Group
+      operationId: Accounts_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+      responses:
+        "200":
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationBasedServicesAccounts"
+              examples:
+                ListAccountsByResourceGroup:
+                  $ref: "#/components/examples/ListAccountsByResourceGroup"
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      x-ms-pageable:
+        itemName: value
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LocationBasedServices/accounts/{accountName}":
+    delete:
+      description: Delete a Location Based Services Account
+      operationId: Accounts_Delete
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/AccountNameParameter"
+      responses:
+        "200":
+          description: The Account was deleted successfully.
+        "204":
+          description: The specified Account was not found. Nothing was deleted.
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      description: Get a Location Based Services Account
+      operationId: Accounts_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/AccountNameParameter"
+      responses:
+        "200":
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationBasedServicesAccount"
+              examples:
+                GetAccount:
+                  $ref: "#/components/examples/GetAccount"
+        "404":
+          description: The specified Account does not exist.
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      description: Updates a Location Based Services Account. Only a subset of the
+        parameters may be updated after creation, such as Sku and Tags.
+      operationId: Accounts_Update
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/AccountNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationBasedServicesAccountUpdateParamet\
+                ers"
+        description: The updated parameters for the Location Based Services Account.
+        required: true
+      responses:
+        "200":
+          description: The Account was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationBasedServicesAccount"
+              examples:
+                UpdateAccount:
+                  $ref: "#/components/examples/UpdateAccount"
+        "404":
+          description: The specified Account was not found. Nothing was updated.
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      description: Create or update a Location Based Services Account. A Location Based
+        Services Account holds the keys which allow access to the Location Based
+        Services REST APIs.
+      operationId: Accounts_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/AccountNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationBasedServicesAccountCreateParamet\
+                ers"
+        description: The new or updated parameters for the Location Based Services Account.
+        required: true
+      responses:
+        "200":
+          description: The Account was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationBasedServicesAccount"
+              examples:
+                CreateAccount:
+                  $ref: "#/components/examples/CreateAccount"
+        "201":
+          description: The Account was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationBasedServicesAccount"
+              examples:
+                CreateAccount:
+                  $ref: "#/components/examples/CreateAccount"
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LocationBasedServices/accounts/{accountName}/listKeys":
+    post:
+      description: Get the keys to use with the Location Based Services APIs. A key is used
+        to authenticate and authorize access to the Location Based Services REST
+        APIs. Only one key is needed at a time; two are given to provide
+        seamless key regeneration.
+      operationId: Accounts_ListKeys
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/AccountNameParameter"
+      responses:
+        "200":
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationBasedServicesAccountKeys"
+              examples:
+                ListKeys:
+                  $ref: "#/components/examples/ListKeys"
+        "404":
+          description: The specified Account does not exist.
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LocationBasedServices/accounts/{accountName}/regenerateKey":
+    post:
+      description: Regenerate either the primary or secondary key for use with the Location
+        Based Services APIs. The old key will stop working immediately.
+      operationId: Accounts_RegenerateKeys
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/AccountNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationBasedServicesKeySpecification"
+        description: "Which key to regenerate:  primary or secondary."
+        required: true
+      responses:
+        "200":
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationBasedServicesAccountKeys"
+              examples:
+                RegenerateKey:
+                  $ref: "#/components/examples/RegenerateKey"
+        "404":
+          description: The specified Account does not exist.
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    GetOperations:
+      value:
+        value:
+          - display:
+              description: Register the provider
+              operation: Register the provider
+              provider: Microsoft Location Based Services
+              resource: Location Based Services Account
+            name: Microsoft.LocationBasedServices/register/action
+          - display:
+              description: Create or update a Location Based Services Account.
+              operation: Create or update a Location Based Services Account.
+              provider: Microsoft Location Based Services
+              resource: Location Based Services Account
+            name: Microsoft.LocationBasedServices/accounts/write
+          - display:
+              description: Get a Location Based Services Account.
+              operation: Get a Location Based Services Account.
+              provider: Microsoft Location Based Services
+              resource: Location Based Services Account
+            name: Microsoft.LocationBasedServices/accounts/read
+          - display:
+              description: Delete a Location Based Services Account.
+              operation: Delete a Location Based Services Account.
+              provider: Microsoft Location Based Services
+              resource: Location Based Services Account
+            name: Microsoft.LocationBasedServices/accounts/delete
+          - display:
+              description: List Location Based Services Account keys
+              operation: List keys
+              provider: Microsoft Location Based Services
+              resource: Location Based Services Account
+            name: Microsoft.LocationBasedServices/accounts/listKeys/action
+          - display:
+              description: Generate new Location Based Services Account primary or
+                secondary key
+              operation: Generate new primary or secondary key
+              provider: Microsoft Location Based Services
+              resource: Location Based Services Account
+            name: Microsoft.LocationBasedServices/accounts/regenerateKey/action
+    ListAccountsBySubscription:
+      value:
+        value:
+          - id: /subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.LocationBasedServices/accounts/myLBSAccount2
+            location: global
+            name: myLBSAccount2
+            sku:
+              name: S0
+              tier: Standard
+            tags:
+              test: "true"
+            type: Microsoft.LocationBasedServices/accounts
+          - id: /subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.LocationBasedServices/accounts/myLBSAccount
+            location: global
+            name: myLBSAccount
+            sku:
+              name: S0
+              tier: Standard
+            tags:
+              test: "true"
+            type: Microsoft.LocationBasedServices/accounts
+    ListAccountsByResourceGroup:
+      value:
+        value:
+          - id: /subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.LocationBasedServices/accounts/myLBSAccount2
+            location: global
+            name: myLBSAccount2
+            sku:
+              name: S0
+              tier: Standard
+            tags:
+              test: "true"
+            type: Microsoft.LocationBasedServices/accounts
+          - id: /subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.LocationBasedServices/accounts/myLBSAccount
+            location: global
+            name: myLBSAccount
+            sku:
+              name: S0
+              tier: Standard
+            tags:
+              test: "true"
+            type: Microsoft.LocationBasedServices/accounts
+    GetAccount:
+      value:
+        id: /subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.LocationBasedServices/accounts/myLBSAccount
+        location: global
+        name: myLBSAccount
+        sku:
+          name: S0
+          tier: Standard
+        tags:
+          test: "true"
+        type: Microsoft.LocationBasedServices/accounts
+    UpdateAccount:
+      value:
+        id: /subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.LocationBasedServices/accounts/myLBSAccount
+        location: global
+        name: myLBSAccount
+        sku:
+          name: S0
+          tier: Standard
+        tags:
+          specialTag: "true"
+        type: Microsoft.LocationBasedServices/accounts
+    CreateAccount:
+      value:
+        id: /subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.LocationBasedServices/accounts/myLBSAccount
+        location: global
+        name: myLBSAccount
+        sku:
+          name: S0
+          tier: Standard
+        tags:
+          test: "true"
+        type: Microsoft.LocationBasedServices/accounts
+    ListKeys:
+      value:
+        id: /subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.LocationBasedServices/accounts/myLBSAccount
+        primaryKey: ZiBllKWCwXXLTO13S2TaoHoK8kPFYaoyYlAcnCcE4PQ
+        secondaryKey: cJHpmUGNaGGO8H59p6NKGhfff9VjD278-2bi5wo0_mU
+    RegenerateKey:
+      value:
+        id: /subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.LocationBasedServices/accounts/myLBSAccount
+        primaryKey: uj0yqjjz8zG3IOSWvb_smi1q1QenGtupAqrOA1zCO6s
+        secondaryKey: cJHpmUGNaGGO8H59p6NKGhfff9VjD278-2bi5wo0_mU
+  parameters:
+    AccountNameParameter:
+      description: The name of the Location Based Services Account.
+      in: path
+      name: accountName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        DeleteAccount:
+          value: myLBSAccount
+        GetAccount:
+          value: myLBSAccount
+        UpdateAccount:
+          value: myLBSAccount
+        CreateAccount:
+          value: myLBSAccount
+        ListKeys:
+          value: myLBSAccount
+        RegenerateKey:
+          value: myLBSAccount
+    ApiVersionParameter:
+      description: Client Api Version.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        GetOperations:
+          value: 2017-01-01-preview
+        ListAccountsBySubscription:
+          value: 2017-01-01-preview
+        MoveAccounts:
+          value: 2017-01-01-preview
+        ListAccountsByResourceGroup:
+          value: 2017-01-01-preview
+        DeleteAccount:
+          value: 2017-01-01-preview
+        GetAccount:
+          value: 2017-01-01-preview
+        UpdateAccount:
+          value: 2017-01-01-preview
+        CreateAccount:
+          value: 2017-01-01-preview
+        ListKeys:
+          value: 2017-01-01-preview
+        RegenerateKey:
+          value: 2017-01-01-preview
+    ResourceGroupNameParameter:
+      description: The name of the Azure Resource Group.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        ListAccountsByResourceGroup:
+          value: myResourceGroup
+        DeleteAccount:
+          value: myResourceGroup
+        GetAccount:
+          value: myResourceGroup
+        UpdateAccount:
+          value: myResourceGroup
+        CreateAccount:
+          value: myResourceGroup
+        ListKeys:
+          value: myResourceGroup
+        RegenerateKey:
+          value: myResourceGroup
+    SubscriptionIdParameter:
+      description: Subscription credentials which uniquely identify Microsoft Azure
+        subscription. The subscription ID forms part of the URI for every
+        service call.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        ListAccountsBySubscription:
+          value: 21a9967a-e8a9-4656-a70b-96ff1c4d05a0
+        MoveAccounts:
+          value: 21a9967a-e8a9-4656-a70b-96ff1c4d05a0
+        ListAccountsByResourceGroup:
+          value: 21a9967a-e8a9-4656-a70b-96ff1c4d05a0
+        DeleteAccount:
+          value: 21a9967a-e8a9-4656-a70b-96ff1c4d05a0
+        GetAccount:
+          value: 21a9967a-e8a9-4656-a70b-96ff1c4d05a0
+        UpdateAccount:
+          value: 21a9967a-e8a9-4656-a70b-96ff1c4d05a0
+        CreateAccount:
+          value: 21a9967a-e8a9-4656-a70b-96ff1c4d05a0
+        ListKeys:
+          value: 21a9967a-e8a9-4656-a70b-96ff1c4d05a0
+        RegenerateKey:
+          value: 21a9967a-e8a9-4656-a70b-96ff1c4d05a0
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    Error:
+      description: This object is returned when an error occurs in the Location Based
+        Service API
+      properties:
+        code:
+          description: Error code.
+          readOnly: true
+          type: string
+        details:
+          description: If available, a list of additional details about the error.
+          items:
+            properties:
+              code:
+                description: Error code.
+                readOnly: true
+                type: string
+              message:
+                description: If available, a human readable description of the error.
+                readOnly: true
+                type: string
+              target:
+                description: If available, the component generating the error.
+                readOnly: true
+                type: string
+            type: object
+          readOnly: true
+          type: array
+        message:
+          description: If available, a human readable description of the error.
+          readOnly: true
+          type: string
+        target:
+          description: If available, the component generating the error.
+          readOnly: true
+          type: string
+      type: object
+    LocationBasedServicesAccount:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: An Azure resource which represents access to a suite of Location Based
+        Services REST APIs.
+      properties:
+        location:
+          description: The location of the resource.
+          readOnly: true
+          type: string
+        sku:
+          $ref: "#/components/schemas/Sku"
+        tags:
+          additionalProperties:
+            type: string
+          description: Gets a list of key value pairs that describe the resource. These
+            tags can be used in viewing and grouping this resource (across
+            resource groups). A maximum of 15 tags can be provided for a
+            resource. Each tag must have a key no greater than 128 characters
+            and value no greater than 256 characters.
+          readOnly: true
+          type: object
+      type: object
+    LocationBasedServicesAccountCreateParameters:
+      description: Parameters used to create a new Location Based Services Account.
+      properties:
+        location:
+          description: The location of the resource.
+          type: string
+        sku:
+          $ref: "#/components/schemas/Sku"
+        tags:
+          additionalProperties:
+            type: string
+          description: Gets or sets a list of key value pairs that describe the resource.
+            These tags can be used in viewing and grouping this resource (across
+            resource groups). A maximum of 15 tags can be provided for a
+            resource. Each tag must have a key no greater than 128 characters
+            and value no greater than 256 characters.
+          type: object
+      required:
+        - location
+        - sku
+      type: object
+    LocationBasedServicesAccountKeys:
+      description: The set of keys which can be used to access the Location Based Services
+        REST APIs. Two keys are provided for key rotation without interruption.
+      properties:
+        id:
+          description: The full Azure resource identifier of the Location Based Services
+            Account.
+          readOnly: true
+          type: string
+        primaryKey:
+          description: The primary key for accessing the Location Based Services REST APIs.
+          readOnly: true
+          type: string
+        secondaryKey:
+          description: The secondary key for accessing the Location Based Services REST
+            APIs.
+          readOnly: true
+          type: string
+      type: object
+    LocationBasedServicesAccountUpdateParameters:
+      description: Parameters used to update an existing Location Based Services Account.
+      properties:
+        sku:
+          $ref: "#/components/schemas/Sku"
+        tags:
+          additionalProperties:
+            type: string
+          description: Gets or sets a list of key value pairs that describe the resource.
+            These tags can be used in viewing and grouping this resource (across
+            resource groups). A maximum of 15 tags can be provided for a
+            resource. Each tag must have a key no greater than 128 characters
+            and value no greater than 256 characters.
+          type: object
+      type: object
+    LocationBasedServicesAccounts:
+      description: A list of Location Based Services Accounts.
+      properties:
+        value:
+          description: A Location Based Services Account.
+          items:
+            $ref: "#/components/schemas/LocationBasedServicesAccount"
+          readOnly: true
+          type: array
+      type: object
+    LocationBasedServicesAccountsMoveRequest:
+      description: The description of what resources to move between resource groups.
+      properties:
+        resourceIds:
+          description: A list of resource names to move from the source resource group.
+          items:
+            type: string
+          type: array
+        targetResourceGroup:
+          description: The name of the destination resource group.
+          type: string
+      required:
+        - targetResourceGroup
+        - resourceIds
+      type: object
+    LocationBasedServicesKeySpecification:
+      description: Whether the operation refers to the primary or secondary key.
+      properties:
+        keyType:
+          description: Whether the operation refers to the primary or secondary key.
+          enum:
+            - primary
+            - secondary
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: KeyType
+      required:
+        - keyType
+      type: object
+    LocationBasedServicesOperations:
+      description: The set of operations available for Location Based Services.
+      properties:
+        value:
+          description: An operation available for Location Based Services.
+          items:
+            properties:
+              display:
+                description: The human-readable description of the operation.
+                properties:
+                  description:
+                    description: The description of the operation.
+                    readOnly: true
+                    type: string
+                  operation:
+                    description: The action that users can perform, based on their
+                      permission level.
+                    readOnly: true
+                    type: string
+                  provider:
+                    description: "Service provider: Microsoft Location Based Services."
+                    readOnly: true
+                    type: string
+                  resource:
+                    description: Resource on which the operation is performed.
+                    readOnly: true
+                    type: string
+                type: object
+              name:
+                description: "Operation name: {provider}/{resource}/{operation}."
+                readOnly: true
+                type: string
+              origin:
+                description: The origin of the operation.
+                readOnly: true
+                type: string
+            type: object
+          readOnly: true
+          type: array
+      type: object
+    Resource:
+      description: An Azure resource
+      properties:
+        id:
+          description: The fully qualified Location Based Services Account resource
+            identifier.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the Location Based Services Account, which is unique
+            within a Resource Group.
+          readOnly: true
+          type: string
+        type:
+          description: Azure resource type.
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    Sku:
+      description: The SKU of the Location Based Services Account.
+      properties:
+        name:
+          description: The name of the SKU, in standard format (such as S0).
+          type: string
+        tier:
+          description: Gets the sku tier. This is based on the SKU name.
+          readOnly: true
+          type: string
+      required:
+        - name

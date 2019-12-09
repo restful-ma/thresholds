@@ -1,0 +1,883 @@
+openapi: 3.0.0
+info:
+  description: Use these REST APIs for performing operations on the ApiVersionSet entity
+    associated with your Azure API Management deployment. Using this entity you
+    create and manage API Version Sets that are used to group APIs for
+    consistent versioning.
+  title: ApiManagementClient
+  version: 2018-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/apimanagement/resource-manager/Microsoft.ApiManagement/preview/2018-06-01-preview/apimversionsets.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: apimanagement-apimversionsets
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/api-version-sets":
+    get:
+      description: Lists a collection of API Version Sets in the specified service instance.
+      operationId: ApiVersionSet_ListByService
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementListApiVersionSets:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementListApiVersionSets:
+              value: apimService1
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListApiVersionSets:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementListApiVersionSets:
+              value: subid
+        - description: >-
+            | Field            | Supported operators    | Supported
+            functions               |
+
+            |------------------|------------------------|-----------------------------------|
+
+            | id               | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | firstName        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | lastName         | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | email            | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+
+            | state            | eq                     | N/A                               |
+
+            | registrationDate | ge, le, eq, ne, gt, lt | N/A                               |
+
+            | note             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+          in: query
+          name: $filter
+          required: false
+          schema:
+            type: string
+        - description: Number of records to return.
+          in: query
+          name: $top
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - description: Number of records to skip.
+          in: query
+          name: $skip
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+      responses:
+        "200":
+          description: Lists a collection of Api Version Set entities.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiVersionSetCollection"
+              examples:
+                ApiManagementListApiVersionSets:
+                  $ref: "#/components/examples/ApiManagementListApiVersionSets"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiVersionSets
+      x-ms-odata: "#/components/schemas/ApiVersionSetContract"
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/api-version-sets/{versionSetId}":
+    delete:
+      description: Deletes specific Api Version Set.
+      operationId: ApiVersionSet_Delete
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiVersionSet:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementDeleteApiVersionSet:
+              value: apimService1
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiVersionSet:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiVersionSet:
+              value: subid
+        - $ref: "#/components/parameters/ApiVersionSetIdParameter"
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementDeleteApiVersionSet:
+              value: "*"
+      responses:
+        "200":
+          description: The ApiVersion Set details were successfully deleted.
+        "204":
+          description: The ApiVersion Set details were successfully deleted.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiVersionSets
+    get:
+      description: Gets the details of the Api Version Set specified by its identifier.
+      operationId: ApiVersionSet_Get
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementGetApiVersionSet:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementGetApiVersionSet:
+              value: apimService1
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetApiVersionSet:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementGetApiVersionSet:
+              value: subid
+        - $ref: "#/components/parameters/ApiVersionSetIdParameter"
+      responses:
+        "200":
+          description: Gets the specified Api Version Set entity.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiVersionSetContract"
+              examples:
+                ApiManagementGetApiVersionSet:
+                  $ref: "#/components/examples/ApiManagementGetApiVersionSet"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiVersionSets
+    head:
+      description: Gets the entity state (Etag) version of the Api Version Set specified by
+        its identifier.
+      operationId: ApiVersionSet_GetEntityTag
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadApiVersionSet:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementHeadApiVersionSet:
+              value: apimService1
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadApiVersionSet:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementHeadApiVersionSet:
+              value: subid
+        - $ref: "#/components/parameters/ApiVersionSetIdParameter"
+      responses:
+        "200":
+          description: Specified Api Version Set entity exists and current entity state
+            version is present in the ETag header.
+          headers:
+            ETag:
+              description: Current entity state version. Should be treated as opaque and
+                used to make conditional HTTP requests.
+              schema:
+                type: string
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiVersionSets
+    patch:
+      description: Updates the details of the Api VersionSet specified by its identifier.
+      operationId: ApiVersionSet_Update
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateApiVersionSet:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementUpdateApiVersionSet:
+              value: apimService1
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateApiVersionSet:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateApiVersionSet:
+              value: subid
+        - $ref: "#/components/parameters/ApiVersionSetIdParameter"
+        - description: ETag of the Entity. ETag should match the current entity state from
+            the header response of the GET request or it should be * for
+            unconditional update.
+          in: header
+          name: If-Match
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementUpdateApiVersionSet:
+              value: "*"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiVersionSetUpdateParameters"
+        description: Update parameters.
+        required: true
+      responses:
+        "204":
+          description: The Api Version Set details were successfully updated.
+        default:
+          description: |-
+            *** Error Responses: ***
+
+             * 4XX Error response giving details why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiVersionSets
+    put:
+      description: Creates or Updates a Api Version Set.
+      operationId: ApiVersionSet_CreateOrUpdate
+      parameters:
+        - description: The name of the resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateApiVersionSet:
+              value: rg1
+        - description: The name of the API Management service.
+          in: path
+          name: serviceName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 50
+            pattern: ^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$
+          examples:
+            ApiManagementCreateApiVersionSet:
+              value: apimService1
+        - description: Version of the API to be used with the client request.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateApiVersionSet:
+              value: 2018-06-01-preview
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+          examples:
+            ApiManagementCreateApiVersionSet:
+              value: subid
+        - $ref: "#/components/parameters/ApiVersionSetIdParameter"
+        - description: ETag of the Entity. Not required when creating an entity, but
+            required when updating an entity.
+          in: header
+          name: If-Match
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiVersionSetContract"
+        description: Create or update parameters.
+        required: true
+      responses:
+        "200":
+          description: Api Version Set was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiVersionSetContract"
+              examples:
+                ApiManagementCreateApiVersionSet:
+                  $ref: "#/components/examples/ApiManagementCreateApiVersionSet"
+        "201":
+          description: Api Version Set was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiVersionSetContract"
+              examples:
+                ApiManagementCreateApiVersionSet:
+                  $ref: "#/components/examples/ApiManagementCreateApiVersionSet"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error Response.
+                properties:
+                  error:
+                    description: Error Body contract.
+                    properties:
+                      code:
+                        description: Service-defined error code. This code serves as a
+                          sub-status for the HTTP error code specified in the
+                          response.
+                        type: string
+                      details:
+                        description: The list of invalid fields send in request, in case of
+                          validation error.
+                        items:
+                          description: Error Field contract.
+                          properties:
+                            code:
+                              description: Property level error code.
+                              type: string
+                            message:
+                              description: Human-readable representation of property-level
+                                error.
+                              type: string
+                            target:
+                              description: Property name.
+                              type: string
+                        type: array
+                      message:
+                        description: Human-readable representation of the error.
+                        type: string
+      tags:
+        - ApiVersionSets
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    ApiManagementListApiVersionSets:
+      value:
+        nextLink: ""
+        value:
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/api-version-sets/vs1
+            name: vs1
+            properties:
+              description: Version configuration
+              displayName: api set 1
+              versioningScheme: Segment
+            type: Microsoft.ApiManagement/service/api-version-sets
+          - id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/api-version-sets/vs2
+            name: vs2
+            properties:
+              description: Version configuration 2
+              displayName: api set 2
+              versioningScheme: Query
+            type: Microsoft.ApiManagement/service/api-version-sets
+    ApiManagementGetApiVersionSet:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/api-version-sets/vs1
+        name: vs1
+        properties:
+          description: Version configuration
+          displayName: Version Set 1
+          versioningScheme: Segment
+        type: Microsoft.ApiManagement/service/api-version-sets
+    ApiManagementCreateApiVersionSet:
+      value:
+        id: /subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/api-version-sets/api1
+        name: api1
+        properties:
+          description: Version configuration
+          displayName: api set 1
+          versioningScheme: Segment
+        type: Microsoft.ApiManagement/service/api-version-sets
+  parameters:
+    ApiVersionSetIdParameter:
+      description: Api Version Set identifier. Must be unique in the current API Management
+        service instance.
+      in: path
+      name: versionSetId
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 80
+        pattern: (^[\w]+$)|(^[\w][\w\-]+[\w]$)
+      examples:
+        ApiManagementDeleteApiVersionSet:
+          value: a1
+        ApiManagementGetApiVersionSet:
+          value: vs1
+        ApiManagementHeadApiVersionSet:
+          value: vs1
+        ApiManagementUpdateApiVersionSet:
+          value: api1
+        ApiManagementCreateApiVersionSet:
+          value: api1
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    ApiVersionSetCollection:
+      description: Paged Api Version Set list representation.
+      properties:
+        nextLink:
+          description: Next page link if any.
+          type: string
+        value:
+          description: Page values.
+          items:
+            $ref: "#/components/schemas/ApiVersionSetContract"
+          type: array
+    ApiVersionSetContract:
+      allOf:
+        - description: The Resource definition.
+          properties:
+            id:
+              description: Resource ID.
+              readOnly: true
+              type: string
+            name:
+              description: Resource name.
+              readOnly: true
+              type: string
+            type:
+              description: Resource type for API Management resource.
+              readOnly: true
+              type: string
+          x-ms-azure-resource: true
+      description: Api Version Set Contract details.
+      properties:
+        properties:
+          $ref: "#/components/schemas/ApiVersionSetContractProperties"
+    ApiVersionSetContractProperties:
+      allOf:
+        - $ref: "#/components/schemas/ApiVersionSetEntityBase"
+      description: Properties of an API Version Set.
+      properties:
+        displayName:
+          description: Name of API Version Set
+          maxLength: 100
+          minLength: 1
+          type: string
+        versioningScheme:
+          description: An value that determines where the API Version identifer will be
+            located in a HTTP request.
+          enum:
+            - Segment
+            - Query
+            - Header
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: versioningScheme
+            values:
+              - description: The API Version is passed in a path segment.
+                value: Segment
+              - description: The API Version is passed in a query parameter.
+                value: Query
+              - description: The API Version is passed in a HTTP header.
+                value: Header
+      required:
+        - displayName
+        - versioningScheme
+    ApiVersionSetEntityBase:
+      description: Api Version set base parameters
+      properties:
+        description:
+          description: Description of API Version Set.
+          type: string
+        versionHeaderName:
+          description: Name of HTTP header parameter that indicates the API Version if
+            versioningScheme is set to `header`.
+          maxLength: 100
+          minLength: 1
+          type: string
+        versionQueryName:
+          description: Name of query parameter that indicates the API Version if
+            versioningScheme is set to `query`.
+          maxLength: 100
+          minLength: 1
+          type: string
+    ApiVersionSetUpdateParameters:
+      description: Parameters to update or create an Api Version Set Contract.
+      properties:
+        properties:
+          $ref: "#/components/schemas/ApiVersionSetUpdateParametersProperties"
+    ApiVersionSetUpdateParametersProperties:
+      allOf:
+        - $ref: "#/components/schemas/ApiVersionSetEntityBase"
+      description: Properties used to create or update an API Version Set.
+      properties:
+        displayName:
+          description: Name of API Version Set
+          maxLength: 100
+          minLength: 1
+          type: string
+        versioningScheme:
+          description: An value that determines where the API Version identifer will be
+            located in a HTTP request.
+          enum:
+            - Segment
+            - Query
+            - Header
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: versioningScheme
+            values:
+              - description: The API Version is passed in a path segment.
+                value: Segment
+              - description: The API Version is passed in a query parameter.
+                value: Query
+              - description: The API Version is passed in a HTTP header.
+                value: Header

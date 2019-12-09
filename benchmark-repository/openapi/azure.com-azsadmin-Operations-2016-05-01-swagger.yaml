@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  description: Operation status operation endpoints and objects.
+  title: FabricAdminClient
+  version: 2016-05-01
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/azsadmin/resource-manager/fabric/Microsoft.Fabric.Admin/stable/2016-05-01/Operations.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: azsadmin-Operations
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/resourceGroups/System.{location}/providers/{provider}/fabricLocations/{location}/computeOperationResults/{computeOperationResult}":
+    get:
+      description: Get the status of a compute fabric operation.
+      operationId: ComputeFabricOperations_Get
+      parameters:
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription.The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+        - description: Location of the resource.
+          in: path
+          name: location
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - $ref: "#/components/parameters/ProviderParameter"
+        - $ref: "#/components/parameters/ComputeOperationResultParameter"
+        - description: Client Api Version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            default: 2016-05-01
+      responses:
+        "202":
+          description: ACCEPTED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationStatus"
+      tags:
+        - ComputeFabricOperations
+  "/subscriptions/{subscriptionId}/resourceGroups/System.{location}/providers/{provider}/fabricLocations/{location}/networkOperationResults/{networkOperationResult}":
+    get:
+      description: Get the status of a network fabric operation.
+      operationId: NetworkFabricOperations_Get
+      parameters:
+        - description: Subscription credentials which uniquely identify Microsoft Azure
+            subscription.The subscription ID forms part of the URI for every
+            service call.
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+        - description: Location of the resource.
+          in: path
+          name: location
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+        - $ref: "#/components/parameters/ProviderParameter"
+        - $ref: "#/components/parameters/NetworkOperationResultParameter"
+        - description: Client Api Version.
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+            default: 2016-05-01
+      responses:
+        "202":
+          description: ACCEPTED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationStatus"
+      tags:
+        - NetworkFabricOperations
+servers:
+  - url: https://adminmanagement.local.azurestack.external
+components:
+  parameters:
+    ApplicationOperationResultParameter:
+      description: Id of an infra role operation.
+      in: path
+      name: applicationOperationResult
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ComputeOperationResultParameter:
+      description: Id of a compute fabric operation.
+      in: path
+      name: computeOperationResult
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    NetworkOperationResultParameter:
+      description: Id of a network fabric operation.
+      in: path
+      name: networkOperationResult
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ProviderParameter:
+      description: Name of the provider.
+      in: path
+      name: provider
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    StorageOperationResultParameter:
+      description: Id of a storage fabric operation.
+      in: path
+      name: storageOperationResult
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    OperationStatus:
+      description: Status of the compute operation.
+      properties:
+        properties:
+          $ref: "#/components/schemas/ProvisioningStateModel"
+    ProvisioningStateModel:
+      description: The state of the operation.
+      properties:
+        provisioningState:
+          description: The state of the operation.
+          type: string

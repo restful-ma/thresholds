@@ -1,0 +1,198 @@
+openapi: 3.0.0
+info:
+  contact:
+    x-twitter: tradeworks_tech
+  description: >-
+    Authentication is required to access all methods of the API. Enter username
+    and password.
+                    Credentials are automatically set as you type.
+  title: Tradeworks
+  version: "1.0"
+  x-apisguru-categories:
+    - financial
+  x-logo:
+    url: https://twitter.com/tradeworks_tech/profile_image?size=original
+  x-origin:
+    - converter:
+        url: https://github.com/lucybot/api-spec-converter
+        version: 2.6.2
+      format: swagger
+      url: http://devui.magick.nu/api/api-docs
+      version: "1.2"
+  x-providerName: magick.nu
+tags:
+  - name: strategies
+  - name: tradingAccounts
+  - name: users
+paths:
+  "/strategies/strategyId/{strategyId}":
+    get:
+      operationId: getStrategiesStrategyIdStrategyId
+      parameters:
+        - in: path
+          name: strategyId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: No response was specified
+      summary: Get Strategy by ID
+      tags:
+        - strategies
+  /strategies/templates:
+    get:
+      operationId: getStrategiesTemplates
+      responses:
+        "200":
+          description: No response was specified
+      summary: Get all Template Strategies
+      tags:
+        - strategies
+  /tradingAccounts:
+    post:
+      operationId: postTradingAccounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TradingAccount"
+        required: true
+      responses:
+        "200":
+          description: No response was specified
+      summary: Add a Trading Account
+      tags:
+        - tradingAccounts
+  "/tradingAccounts/password/{username}/{brokerserver}/{mt4username}":
+    put:
+      operationId: putTradingAccountsPasswordUsernameBrokerserverMt4username
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: brokerserver
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: mt4username
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/PasswordDTO"
+      responses:
+        "200":
+          description: No response was specified
+      summary: Update MT4 Account Password
+      tags:
+        - tradingAccounts
+  /users:
+    post:
+      operationId: postUsers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDTO"
+        required: true
+      responses:
+        "200":
+          description: No response was specified
+      summary: Create a new Tradeworks User
+      tags:
+        - users
+  "/users/email/{email}":
+    get:
+      operationId: getUsersEmailEmail
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: No response was specified
+      summary: Check if email is available
+      tags:
+        - users
+  "/users/password/{username}":
+    put:
+      operationId: putUsersPasswordUsername
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/PasswordDTO"
+      responses:
+        "200":
+          description: No response was specified
+      summary: Update user's password
+      tags:
+        - users
+  "/users/username/{username}":
+    get:
+      operationId: getUsersUsernameUsername
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: No response was specified
+      summary: Check if username is available
+      tags:
+        - users
+servers:
+  - url: http://devui.magick.nu/rest
+components:
+  requestBodies:
+    PasswordDTO:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PasswordDTO"
+      required: true
+  schemas:
+    PasswordDTO:
+      properties:
+        newPassword:
+          type: string
+        oldPassword:
+          type: string
+    TradingAccount:
+      properties:
+        brokerServer:
+          type: string
+        magickUsername:
+          type: string
+        password:
+          type: string
+        username:
+          type: string
+    UserDTO:
+      properties:
+        affiliateId:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        password:
+          type: string
+        subscriptionType:
+          type: string
+        username:
+          type: string

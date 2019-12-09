@@ -1,0 +1,3037 @@
+openapi: 3.0.0
+info:
+  description: Use these APIs to manage Azure CDN resources through the Azure Resource
+    Manager. You must make sure that requests made to these resources are
+    secure.
+  title: CdnManagementClient
+  version: 2017-04-02
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cdn/resource-manager/Microsoft.Cdn/stable/2017-04-02/cdn.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: cdn
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.Cdn/checkNameAvailability:
+    post:
+      description: Check the availability of a resource name. This is needed for resources
+        where name is globally unique, such as a CDN endpoint.
+      operationId: CheckNameAvailability
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckNameAvailabilityInput"
+        description: Input to check.
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckNameAvailabilityOutput"
+              examples:
+                CheckNameAvailability:
+                  $ref: "#/components/examples/CheckNameAvailability"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CheckNameAvailability
+  /providers/Microsoft.Cdn/edgenodes:
+    get:
+      description: Edgenodes are the global Point of Presence (POP) locations used to
+        deliver CDN content to end users.
+      operationId: EdgeNodes_List
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EdgenodeResult"
+              examples:
+                EdgeNodes_List:
+                  $ref: "#/components/examples/EdgeNodes_List"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Edgenodes
+      x-ms-pageable:
+        nextLinkName: nextLink
+  /providers/Microsoft.Cdn/operations:
+    get:
+      description: Lists all of the available CDN REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationsListResult"
+              examples:
+                Operations_List:
+                  $ref: "#/components/examples/Operations_List"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage":
+    post:
+      description: Check the quota and actual usage of the CDN profiles under the given
+        subscription.
+      operationId: ResourceUsage_List
+      parameters:
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUsageListResult"
+              examples:
+                ResourceUsage_List:
+                  $ref: "#/components/examples/ResourceUsage_List"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CheckResourceUsage
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles":
+    get:
+      description: Lists all of the CDN profiles within an Azure subscription.
+      operationId: Profiles_List
+      parameters:
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileListResult"
+              examples:
+                Profiles_List:
+                  $ref: "#/components/examples/Profiles_List"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Profiles
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/validateProbe":
+    post:
+      description: Check if the probe path is a valid path and the file can be accessed.
+        Probe path is the path to a file hosted on the origin server to help
+        accelerate the delivery of dynamic content via the CDN endpoint. This
+        path is relative to the origin path specified in the endpoint
+        configuration.
+      operationId: ValidateProbe
+      parameters:
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ValidateProbeInput"
+        description: Input to check.
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidateProbeOutput"
+              examples:
+                ValidateProbe:
+                  $ref: "#/components/examples/ValidateProbe"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - ValidateProbe
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles":
+    get:
+      description: Lists all of the CDN profiles within a resource group.
+      operationId: Profiles_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileListResult"
+              examples:
+                Profiles_ListByResourceGroup:
+                  $ref: "#/components/examples/Profiles_ListByResourceGroup"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Profiles
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}":
+    delete:
+      description: Deletes an existing CDN profile with the specified parameters. Deleting
+        a profile will result in the deletion of all of the sub-resources
+        including endpoints, origins and custom domains.
+      operationId: Profiles_Delete
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Profiles_Delete:
+              value: profile1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "202":
+          description: Accepted. The request has been accepted for processing and the
+            operation will complete asynchronously.
+        "204":
+          description: No Content. The request has been accepted but the profile was not
+            found.
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Profiles
+      x-ms-long-running-operation: true
+    get:
+      description: Gets a CDN profile with the specified profile name under the specified
+        subscription and resource group.
+      operationId: Profiles_Get
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Profiles_Get:
+              value: profile1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+              examples:
+                Profiles_Get:
+                  $ref: "#/components/examples/Profiles_Get"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Profiles
+    patch:
+      description: Updates an existing CDN profile with the specified profile name under
+        the specified subscription and resource group.
+      operationId: Profiles_Update
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Profiles_Update:
+              value: profile1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileUpdateParameters"
+        description: Profile properties needed to update an existing profile.
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "202":
+          description: Accepted. The request has been accepted for processing and the
+            operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Profiles
+      x-ms-long-running-operation: true
+    put:
+      description: Creates a new CDN profile with a profile name under the specified
+        subscription and resource group.
+      operationId: Profiles_Create
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Profiles_Create:
+              value: profile1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Profile"
+        description: Profile properties needed to create a new profile.
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "201":
+          description: Created. The request has been fulfilled and a new profile has been
+            created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+              examples:
+                Profiles_Create:
+                  $ref: "#/components/examples/Profiles_Create"
+        "202":
+          description: Accepted. The request has been accepted for processing and the
+            operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Profiles
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkResourceUsage":
+    post:
+      description: Checks the quota and actual usage of endpoints under the given CDN
+        profile.
+      operationId: Profiles_ListResourceUsage
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Profiles_ListResourceUsage:
+              value: profile1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUsageListResult"
+              examples:
+                Profiles_ListResourceUsage:
+                  $ref: "#/components/examples/Profiles_ListResourceUsage"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Profiles
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints":
+    get:
+      description: Lists existing CDN endpoints.
+      operationId: Endpoints_ListByProfile
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_ListByProfile:
+              value: profile1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EndpointListResult"
+              examples:
+                Endpoints_ListByProfile:
+                  $ref: "#/components/examples/Endpoints_ListByProfile"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Endpoints
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}":
+    delete:
+      description: Deletes an existing CDN endpoint with the specified endpoint name under
+        the specified subscription, resource group and profile.
+      operationId: Endpoints_Delete
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Delete:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Delete:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "202":
+          description: Accepted and the operation will complete asynchronously.
+        "204":
+          description: No Content. The request has been accepted but the endpoint was not
+            found.
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Endpoints
+      x-ms-long-running-operation: true
+    get:
+      description: Gets an existing CDN endpoint with the specified endpoint name under the
+        specified subscription, resource group and profile.
+      operationId: Endpoints_Get
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Get:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Get:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Endpoint"
+              examples:
+                Endpoints_Get:
+                  $ref: "#/components/examples/Endpoints_Get"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Endpoints
+    patch:
+      description: Updates an existing CDN endpoint with the specified endpoint name under
+        the specified subscription, resource group and profile. Only tags and
+        Origin HostHeader can be updated after creating an endpoint. To update
+        origins, use the Update Origin operation. To update custom domains, use
+        the Update Custom Domain operation.
+      operationId: Endpoints_Update
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Update:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Update:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EndpointUpdateParameters"
+        description: Endpoint update properties
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Endpoint"
+              examples:
+                Endpoints_Update:
+                  $ref: "#/components/examples/Endpoints_Update"
+        "202":
+          description: Accepted and  the operation will complete asynchronously
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Endpoint"
+        default:
+          description: CDN error response describing why the operation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Endpoints
+      x-ms-long-running-operation: true
+    put:
+      description: Creates a new CDN endpoint with the specified endpoint name under the
+        specified subscription, resource group and profile.
+      operationId: Endpoints_Create
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Create:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Create:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Endpoint"
+        description: Endpoint properties
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Endpoint"
+        "201":
+          description: Created. The request has been fulfilled and a new endpoint has been
+            created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Endpoint"
+              examples:
+                Endpoints_Create:
+                  $ref: "#/components/examples/Endpoints_Create"
+        "202":
+          description: Accepted and the operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Endpoint"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Endpoints
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/checkResourceUsage":
+    post:
+      description: Checks the quota and usage of geo filters and custom domains under the
+        given endpoint.
+      operationId: Endpoints_ListResourceUsage
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_ListResourceUsage:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_ListResourceUsage:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceUsageListResult"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Endpoints
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains":
+    get:
+      description: Lists all of the existing custom domains within an endpoint.
+      operationId: CustomDomains_ListByEndpoint
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_ListByEndpoint:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_ListByEndpoint:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomDomainListResult"
+              examples:
+                CustomDomains_ListByEndpoint:
+                  $ref: "#/components/examples/CustomDomains_ListByEndpoint"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CustomDomains
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}":
+    delete:
+      description: Deletes an existing custom domain within an endpoint.
+      operationId: CustomDomains_Delete
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_Delete:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_Delete:
+              value: endpoint1
+        - description: Name of the custom domain within an endpoint.
+          in: path
+          name: customDomainName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_Delete:
+              value: www-someDomain-net
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+        "202":
+          description: Accepted and the operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomDomain"
+        "204":
+          description: No Content. The request has been accepted but the custom domain was
+            not found
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CustomDomains
+      x-ms-long-running-operation: true
+    get:
+      description: Gets an existing custom domain within an endpoint.
+      operationId: CustomDomains_Get
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_Get:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_Get:
+              value: endpoint1
+        - description: Name of the custom domain within an endpoint.
+          in: path
+          name: customDomainName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_Get:
+              value: www-someDomain-net
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomDomain"
+              examples:
+                CustomDomains_Get:
+                  $ref: "#/components/examples/CustomDomains_Get"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CustomDomains
+    put:
+      description: Creates a new custom domain within an endpoint.
+      operationId: CustomDomains_Create
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_Create:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_Create:
+              value: endpoint1
+        - description: Name of the custom domain within an endpoint.
+          in: path
+          name: customDomainName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_Create:
+              value: www-someDomain-net
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomDomainParameters"
+        description: Properties required to create a new custom domain.
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomDomain"
+              examples:
+                CustomDomains_Create:
+                  $ref: "#/components/examples/CustomDomains_Create"
+        "201":
+          description: Created. The request has been fulfilled and a new custom domain has
+            been created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomDomain"
+        "202":
+          description: Accepted and the operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomDomain"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CustomDomains
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/disableCustomHttps":
+    post:
+      description: Disable https delivery of the custom domain.
+      operationId: CustomDomains_DisableCustomHttps
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_DisableCustomHttps:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_DisableCustomHttps:
+              value: endpoint1
+        - description: Name of the custom domain within an endpoint.
+          in: path
+          name: customDomainName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_DisableCustomHttps:
+              value: www-someDomain-net
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+        "202":
+          description: Accepted and the operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomDomain"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CustomDomains
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/enableCustomHttps":
+    post:
+      description: Enable https delivery of the custom domain.
+      operationId: CustomDomains_EnableCustomHttps
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_EnableCustomHttps:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_EnableCustomHttps:
+              value: endpoint1
+        - description: Name of the custom domain within an endpoint.
+          in: path
+          name: customDomainName
+          required: true
+          schema:
+            type: string
+          examples:
+            CustomDomains_EnableCustomHttps:
+              value: www-someDomain-net
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+        "202":
+          description: Accepted and the operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomDomain"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - CustomDomains
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/load":
+    post:
+      description: Pre-loads a content to CDN. Available for Verizon Profiles.
+      operationId: Endpoints_LoadContent
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_LoadContent:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_LoadContent:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoadParameters"
+        description: "The path to the content to be loaded. Path should be a full URL, e.g.
+          ‘/pictures/city.png' which loads a single file "
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+        "202":
+          description: Accepted and the operation will complete asynchronously.
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Endpoints
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/origins":
+    get:
+      description: Lists all of the existing origins within an endpoint.
+      operationId: Origins_ListByEndpoint
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Origins_ListByEndpoint:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Origins_ListByEndpoint:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OriginListResult"
+              examples:
+                Origins_ListByEndpoint:
+                  $ref: "#/components/examples/Origins_ListByEndpoint"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Origins
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/origins/{originName}":
+    get:
+      description: Gets an existing origin within an endpoint.
+      operationId: Origins_Get
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Origins_Get:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Origins_Get:
+              value: endpoint1
+        - description: Name of the origin which is unique within the endpoint.
+          in: path
+          name: originName
+          required: true
+          schema:
+            type: string
+          examples:
+            Origins_Get:
+              value: www-someDomain-net
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Origin"
+              examples:
+                Origins_Get:
+                  $ref: "#/components/examples/Origins_Get"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Origins
+    patch:
+      description: Updates an existing origin within an endpoint.
+      operationId: Origins_Update
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Origins_Update:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Origins_Update:
+              value: endpoint1
+        - description: Name of the origin which is unique within the endpoint.
+          in: path
+          name: originName
+          required: true
+          schema:
+            type: string
+          examples:
+            Origins_Update:
+              value: www-someDomain-net
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OriginUpdateParameters"
+        description: Origin properties
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Origin"
+        "202":
+          description: Accepted and the operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Origin"
+              examples:
+                Origins_Update:
+                  $ref: "#/components/examples/Origins_Update"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Origins
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/purge":
+    post:
+      description: Removes a content from CDN.
+      operationId: Endpoints_PurgeContent
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_PurgeContent:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_PurgeContent:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PurgeParameters"
+        description: The path to the content to be purged. Path can be a full URL, e.g.
+          '/pictures/city.png' which removes a single file, or a directory with
+          a wildcard, e.g. '/pictures/*' which removes all folders and files in
+          the directory.
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+        "202":
+          description: Accepted and the operation will complete asynchronously.
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Endpoints
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/start":
+    post:
+      description: Starts an existing CDN endpoint that is on a stopped state.
+      operationId: Endpoints_Start
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Start:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Start:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Endpoint"
+        "202":
+          description: Accepted and the operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Endpoint"
+              examples:
+                Endpoints_Start:
+                  $ref: "#/components/examples/Endpoints_Start"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Endpoints
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/stop":
+    post:
+      description: Stops an existing running CDN endpoint.
+      operationId: Endpoints_Stop
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Stop:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_Stop:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Endpoint"
+        "202":
+          description: Accepted and the operation will complete asynchronously.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Endpoint"
+              examples:
+                Endpoints_Stop:
+                  $ref: "#/components/examples/Endpoints_Stop"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Endpoints
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/validateCustomDomain":
+    post:
+      description: Validates the custom domain mapping to ensure it maps to the correct CDN
+        endpoint in DNS.
+      operationId: Endpoints_ValidateCustomDomain
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_ValidateCustomDomain:
+              value: profile1
+        - description: Name of the endpoint under the profile which is unique globally.
+          in: path
+          name: endpointName
+          required: true
+          schema:
+            type: string
+          examples:
+            Endpoints_ValidateCustomDomain:
+              value: endpoint1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ValidateCustomDomainInput"
+        description: Custom domain to be validated.
+        required: true
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidateCustomDomainOutput"
+              examples:
+                Endpoints_ValidateCustomDomain:
+                  $ref: "#/components/examples/Endpoints_ValidateCustomDomain"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Endpoints
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/generateSsoUri":
+    post:
+      description: Generates a dynamic SSO URI used to sign in to the CDN supplemental
+        portal. Supplemental portal is used to configure advanced feature
+        capabilities that are not yet available in the Azure portal, such as
+        core reports in a standard profile; rules engine, advanced HTTP reports,
+        and real-time stats and alerts in a premium profile. The SSO URI changes
+        approximately every 10 minutes.
+      operationId: Profiles_GenerateSsoUri
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Profiles_GenerateSsoUri:
+              value: profile1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SsoUri"
+              examples:
+                Profiles_GenerateSsoUri:
+                  $ref: "#/components/examples/Profiles_GenerateSsoUri"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Profiles
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getSupportedOptimizationTypes":
+    post:
+      description: Gets the supported optimization types for the current profile. A user
+        can create an endpoint with an optimization type from the listed values.
+      operationId: Profiles_ListSupportedOptimizationTypes
+      parameters:
+        - $ref: "#/components/parameters/resourceGroupNameParameter"
+        - description: Name of the CDN profile which is unique within the resource group.
+          in: path
+          name: profileName
+          required: true
+          schema:
+            type: string
+          examples:
+            Profiles_ListSupportedOptimizationTypes:
+              value: profile1
+        - $ref: "#/components/parameters/subscriptionIdParameter"
+        - $ref: "#/components/parameters/apiVersionParameter"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupportedOptimizationTypesListResult"
+              examples:
+                Profiles_ListSupportedOptimizationTypes:
+                  $ref: "#/components/examples/Profiles_ListSupportedOptimizationTy\
+                    pes"
+        default:
+          description: CDN error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      tags:
+        - Profiles
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    CheckNameAvailability:
+      value:
+        message: Name not available
+        nameAvailable: false
+        reason: Name is already in use
+    EdgeNodes_List:
+      value:
+        value:
+          - id: /providers/Microsoft.Cdn/edgenodes/Standard_Verizon
+            name: Standard_Verizon
+            properties:
+              ipAddressGroups:
+                - deliveryRegion: All
+                  ipv4Addresses:
+                    - baseIpAddress: 192.229.176.0
+                      prefixLength: 24
+                    - baseIpAddress: 180.240.184.128
+                      prefixLength: 25
+                    - baseIpAddress: 152.195.27.0
+                      prefixLength: 24
+                  ipv6Addresses:
+                    - baseIpAddress: "2606:2800:60f2::"
+                      prefixLength: 48
+                    - baseIpAddress: "2606:2800:700c::"
+                      prefixLength: 48
+            type: Microsoft.Cdn/edgenodes
+          - id: /providers/Microsoft.Cdn/edgenodes/Premium_Verizon
+            name: Premium_Verizon
+            properties:
+              ipAddressGroups:
+                - deliveryRegion: All
+                  ipv4Addresses:
+                    - baseIpAddress: 192.229.176.0
+                      prefixLength: 24
+                    - baseIpAddress: 152.195.27.0
+                      prefixLength: 24
+                  ipv6Addresses:
+                    - baseIpAddress: "2606:2800:60f2::"
+                      prefixLength: 48
+                    - baseIpAddress: "2606:2800:700c::"
+                      prefixLength: 48
+            type: Microsoft.Cdn/edgenodes
+          - id: /providers/Microsoft.Cdn/edgenodes/Custom_Verizon
+            name: Custom_Verizon
+            properties:
+              ipAddressGroups:
+                - deliveryRegion: All
+                  ipv4Addresses:
+                    - baseIpAddress: 192.229.176.0
+                      prefixLength: 24
+                    - baseIpAddress: "2606:2800:420b::"
+                      prefixLength: 48
+                    - baseIpAddress: "2606:2800:700c::"
+                      prefixLength: 48
+            type: Microsoft.Cdn/edgenodes
+    Operations_List:
+      value:
+        value:
+          - display:
+              description: Registers the subscription for the CDN resource provider and
+                enables the creation of CDN profiles.
+              operation: Registers the Microsoft.Cdn Resource Provider
+              provider: Microsoft.Cdn
+              resource: Microsoft.Cdn Resource Provider
+            name: Microsoft.Cdn/register/action
+          - display:
+              operation: read
+              provider: Microsoft.Cdn
+              resource: EdgeNode
+            name: Microsoft.Cdn/edgenodes/read
+          - display:
+              operation: write
+              provider: Microsoft.Cdn
+              resource: EdgeNode
+            name: Microsoft.Cdn/edgenodes/write
+          - display:
+              operation: delete
+              provider: Microsoft.Cdn
+              resource: EdgeNode
+            name: Microsoft.Cdn/edgenodes/delete
+          - display:
+              operation: read
+              provider: Microsoft.Cdn
+              resource: Profile
+            name: Microsoft.Cdn/profiles/read
+          - display:
+              operation: write
+              provider: Microsoft.Cdn
+              resource: Profile
+            name: Microsoft.Cdn/profiles/write
+          - display:
+              operation: write
+              provider: Microsoft.Cdn
+              resource: Profile
+            name: Microsoft.Cdn/operationresults/profileresults/write
+          - display:
+              operation: delete
+              provider: Microsoft.Cdn
+              resource: Profile
+            name: Microsoft.Cdn/operationresults/profileresults/delete
+          - display:
+              operation: CheckResourceUsage
+              provider: Microsoft.Cdn
+              resource: Profile
+            name: Microsoft.Cdn/operationresults/profileresults/CheckResourceUsage/action
+          - display:
+              operation: GenerateSsoUri
+              provider: Microsoft.Cdn
+              resource: Profile
+            name: Microsoft.Cdn/operationresults/profileresults/GenerateSsoUri/action
+    ResourceUsage_List:
+      value:
+        value:
+          - currentValue: 31
+            limit: 200
+            resourceType: profile
+            unit: count
+    Profiles_List:
+      value:
+        value:
+          - id: /subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile1
+            location: WestCentralUs
+            name: profile1
+            properties:
+              provisioningState: Succeeded
+              resourceState: Active
+            sku:
+              name: Standard_Akamai
+            tags: {}
+            type: Microsoft.Cdn/profiles
+          - id: /subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile2
+            location: WestCentralUs
+            name: profile2
+            properties:
+              provisioningState: Succeeded
+              resourceState: Active
+            sku:
+              name: Standard_Akamai
+            tags: {}
+            type: Microsoft.Cdn/profiles
+    ValidateProbe:
+      value:
+        errorCode: None
+        isValid: true
+    Profiles_ListByResourceGroup:
+      value:
+        value:
+          - id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1
+            location: WestCentralUs
+            name: profile1
+            properties:
+              provisioningState: Succeeded
+              resourceState: Active
+            sku:
+              name: Standard_Akamai
+            tags: {}
+            type: Microsoft.Cdn/profiles
+          - id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile2
+            location: WestCentralUs
+            name: profile2
+            properties:
+              provisioningState: Succeeded
+              resourceState: Active
+            sku:
+              name: Standard_Akamai
+            tags: {}
+            type: Microsoft.Cdn/profiles
+    Profiles_Delete:
+      value: {}
+    Profiles_Get:
+      value:
+        value:
+          - id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1
+            location: WestCentralUs
+            name: profile1
+            properties:
+              provisioningState: Succeeded
+              resourceState: Active
+            sku:
+              name: Standard_Akamai
+            tags: {}
+            type: Microsoft.Cdn/profiles
+    Profiles_Update:
+      value:
+        id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1
+        location: WestCentralUs
+        name: profile1
+        properties:
+          provisioningState: Succeeded
+          resourceState: Active
+        sku:
+          name: Standard_Verizon
+        tags:
+          additionalProperties: Tag1
+        type: Microsoft.Cdn/profiles
+    Profiles_Create:
+      value:
+        id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1
+        location: WestCentralUs
+        name: profile1
+        properties:
+          provisioningState: Creating
+          resourceState: Creating
+        sku:
+          name: Standard_Verizon
+        tags: {}
+        type: Microsoft.Cdn/profiles
+    Profiles_ListResourceUsage:
+      value:
+        value:
+          - currentValue: 0
+            limit: 25
+            resourceType: endpoint
+            unit: count
+    Endpoints_ListByProfile:
+      value:
+        value:
+          - id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1
+            location: CentralUs
+            name: endpoint1
+            properties:
+              contentTypesToCompress: []
+              customDomains: []
+              geoFilters: []
+              hostName: endpoint1.azureedge.net
+              isCompressionEnabled: false
+              isHttpAllowed: true
+              isHttpsAllowed: true
+              optimizationType: DynamicSiteAcceleration
+              originHostHeader: www.bing.com
+              origins:
+                - name: www-bing-com
+                  properties:
+                    hostName: www.bing.com
+                    httpPort: 80
+                    httpsPort: 443
+              probePath: /image
+              provisioningState: Succeeded
+              queryStringCachingBehavior: NotSet
+              resourceState: Running
+            tags: {}
+            type: Microsoft.Cdn/profiles/endpoints
+    Endpoints_Delete:
+      value: {}
+    Endpoints_Get:
+      value:
+        id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1
+        location: CentralUs
+        name: endpoint1
+        properties:
+          contentTypesToCompress: []
+          customDomains: []
+          geoFilters: []
+          hostName: endpoint1.azureedge.net
+          isCompressionEnabled: false
+          isHttpAllowed: true
+          isHttpsAllowed: true
+          optimizationType: DynamicSiteAcceleration
+          originHostHeader: www.bing.com
+          origins:
+            - name: www-bing-com
+              properties:
+                hostName: www.bing.com
+                httpPort: 80
+                httpsPort: 443
+          probePath: /image
+          provisioningState: Succeeded
+          queryStringCachingBehavior: NotSet
+          resourceState: Running
+        tags: {}
+        type: Microsoft.Cdn/profiles/endpoints
+    Endpoints_Update:
+      value:
+        id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1
+        location: WestCentralUs
+        name: endpoint1
+        properties:
+          contentTypesToCompress: []
+          customDomains: []
+          geoFilters: []
+          hostName: endpoint1.azureedge.net
+          isCompressionEnabled: false
+          isHttpAllowed: true
+          isHttpsAllowed: true
+          origins:
+            - name: www-bing-com
+              properties:
+                hostName: www.bing.com
+                httpPort: 80
+                httpsPort: 443
+          provisioningState: Creating
+          queryStringCachingBehavior: IgnoreQueryString
+          resourceState: Creating
+        tags:
+          additionalProperties: Tag1
+        type: Microsoft.Cdn/profiles/endpoints
+    Endpoints_Create:
+      value:
+        id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1
+        location: WestCentralUs
+        name: endpoint1
+        properties:
+          contentTypesToCompress: []
+          customDomains: []
+          geoFilters: []
+          hostName: endpoint1.azureedge.net
+          isCompressionEnabled: false
+          isHttpAllowed: true
+          isHttpsAllowed: true
+          origins:
+            - name: www-bing-com
+              properties:
+                hostName: www.bing.com
+                httpPort: 80
+                httpsPort: 443
+          provisioningState: Creating
+          queryStringCachingBehavior: IgnoreQueryString
+          resourceState: Creating
+        tags: {}
+        type: Microsoft.Cdn/profiles/endpoints
+    Endpoints_ListResourceUsage:
+      value:
+        value:
+          - currentValue: 1
+            limit: 20
+            resourceType: customdomain
+            unit: count
+          - currentValue: 0
+            limit: 25
+            resourceType: geofilter
+            unit: count
+    CustomDomains_ListByEndpoint:
+      value:
+        value:
+          - id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/customdomains/www-someDomain-net
+            name: www-someDomain-net
+            properties:
+              customHttpsProvisioningState: Disabled
+              customHttpsProvisioningSubstate: None
+              hostName: www.someDomain.net
+              provisioningState: Succeeded
+              resourceState: Active
+            type: Microsoft.Cdn/profiles/endpoints/customdomains
+    CustomDomains_Delete:
+      value: {}
+    CustomDomains_Get:
+      value:
+        id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/customdomains/www-someDomain-net
+        name: www-someDomain-net
+        properties:
+          customHttpsProvisioningState: Disabled
+          customHttpsProvisioningSubstate: None
+          hostName: www.someDomain.net
+          provisioningState: Succeeded
+          resourceState: Active
+        type: Microsoft.Cdn/profiles/endpoints/customdomains
+    CustomDomains_Create:
+      value:
+        id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/customdomains/www-someDomain-net
+        name: www-someDomain-net
+        properties:
+          customHttpsProvisioningState: Enabling
+          customHttpsProvisioningSubstate: PendingDomainControlValidationREquestApproval
+          hostName: www.someDomain.net
+          provisioningState: Succeeded
+          resourceState: Active
+        type: Microsoft.Cdn/profiles/endpoints/customdomains
+    CustomDomains_DisableCustomHttps:
+      value: {}
+    CustomDomains_EnableCustomHttps:
+      value: {}
+    Endpoints_LoadContent:
+      value: {}
+    Origins_ListByEndpoint:
+      value:
+        value:
+          - id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net
+            name: www-someDomain-net
+            properties:
+              hostName: www.someDomain.net
+              provisioningState: Succeeded
+              resourceState: Active
+            type: Microsoft.Cdn/profiles/endpoints/origins
+    Origins_Get:
+      value:
+        id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net
+        name: www-someDomain-net
+        properties:
+          hostName: www.someDomain.net
+          provisioningState: Succeeded
+          resourceState: Active
+        type: Microsoft.Cdn/profiles/endpoints/origins
+    Origins_Update:
+      value:
+        id: /subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/www-someDomain-net
+        name: www-someDomain-net
+        properties:
+          hostName: www.someDomain.net
+          httpPort: 42
+          httpsPort: 43
+          provisioningState: Succeeded
+          resourceState: Active
+        type: Microsoft.Cdn/profiles/endpoints/origins
+    Endpoints_PurgeContent:
+      value: {}
+    Endpoints_Start:
+      value:
+        contentTypesToCompress: []
+        customDomains: []
+        geoFilters: []
+        hostName: endpoint1.azureedge.net
+        isCompressionEnabled: false
+        isHttpAllowed: true
+        isHttpsAllowed: true
+        optimizationType: DynamicSiteAcceleration
+        originHostHeader: www.bing.com
+        origins:
+          - name: www-bing-com
+            properties:
+              hostName: www.bing.com
+              httpPort: 80
+              httpsPort: 443
+        probePath: /image
+        provisioningState: Succeeded
+        queryStringCachingBehavior: NotSet
+        resourceState: Starting
+    Endpoints_Stop:
+      value:
+        contentTypesToCompress: []
+        customDomains: []
+        geoFilters: []
+        hostName: endpoint1.azureedge.net
+        isCompressionEnabled: false
+        isHttpAllowed: true
+        isHttpsAllowed: true
+        optimizationType: DynamicSiteAcceleration
+        originHostHeader: www.bing.com
+        origins:
+          - name: www-bing-com
+            properties:
+              hostName: www.bing.com
+              httpPort: 80
+              httpsPort: 443
+        probePath: /image
+        provisioningState: Succeeded
+        queryStringCachingBehavior: NotSet
+        resourceState: Stopping
+    Endpoints_ValidateCustomDomain:
+      value:
+        customDomainValidated: true
+    Profiles_GenerateSsoUri:
+      value:
+        ssoUriValue: https://someuri.com
+    Profiles_ListSupportedOptimizationTypes:
+      value:
+        supportedOptimizationTypes:
+          - GeneralWebDelivery
+          - DynamicSiteAcceleration
+  parameters:
+    apiVersionParameter:
+      description: Version of the API to be used with the client request. Current version
+        is 2017-04-02.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        CheckNameAvailability:
+          value: 2017-04-02
+        EdgeNodes_List:
+          value: 2017-04-02
+        Operations_List:
+          value: 2017-04-02
+        ResourceUsage_List:
+          value: 2017-04-02
+        Profiles_List:
+          value: 2017-04-02
+        ValidateProbe:
+          value: 2017-04-02
+        Profiles_ListByResourceGroup:
+          value: 2017-04-02
+        Profiles_Delete:
+          value: 2017-04-02
+        Profiles_Get:
+          value: 2017-04-02
+        Profiles_Update:
+          value: 2017-04-02
+        Profiles_Create:
+          value: 2017-04-02
+        Profiles_ListResourceUsage:
+          value: 2017-04-02
+        Endpoints_ListByProfile:
+          value: 2017-04-02
+        Endpoints_Delete:
+          value: 2017-04-02
+        Endpoints_Get:
+          value: 2017-04-02
+        Endpoints_Update:
+          value: 2017-04-02
+        Endpoints_Create:
+          value: 2017-04-02
+        Endpoints_ListResourceUsage:
+          value: 2017-04-02
+        CustomDomains_ListByEndpoint:
+          value: 2017-04-02
+        CustomDomains_Delete:
+          value: 2017-04-02
+        CustomDomains_Get:
+          value: 2017-04-02
+        CustomDomains_Create:
+          value: 2017-04-02
+        CustomDomains_DisableCustomHttps:
+          value: 2017-04-02
+        CustomDomains_EnableCustomHttps:
+          value: 2017-04-02
+        Endpoints_LoadContent:
+          value: 2017-04-02
+        Origins_ListByEndpoint:
+          value: 2017-04-02
+        Origins_Get:
+          value: 2017-04-02
+        Origins_Update:
+          value: 2017-04-02
+        Endpoints_PurgeContent:
+          value: 2017-04-02
+        Endpoints_Start:
+          value: 2017-04-02
+        Endpoints_Stop:
+          value: 2017-04-02
+        Endpoints_ValidateCustomDomain:
+          value: 2017-04-02
+        Profiles_GenerateSsoUri:
+          value: 2017-04-02
+        Profiles_ListSupportedOptimizationTypes:
+          value: 2017-04-02
+    resourceGroupNameParameter:
+      description: Name of the Resource group within the Azure subscription.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\._\(\)]+$
+      examples:
+        Profiles_ListByResourceGroup:
+          value: RG
+        Profiles_Delete:
+          value: RG
+        Profiles_Get:
+          value: RG
+        Profiles_Update:
+          value: RG
+        Profiles_Create:
+          value: RG
+        Profiles_ListResourceUsage:
+          value: RG
+        Endpoints_ListByProfile:
+          value: RG
+        Endpoints_Delete:
+          value: RG
+        Endpoints_Get:
+          value: RG
+        Endpoints_Update:
+          value: RG
+        Endpoints_Create:
+          value: RG
+        Endpoints_ListResourceUsage:
+          value: RG
+        CustomDomains_ListByEndpoint:
+          value: RG
+        CustomDomains_Delete:
+          value: RG
+        CustomDomains_Get:
+          value: RG
+        CustomDomains_Create:
+          value: RG
+        CustomDomains_DisableCustomHttps:
+          value: RG
+        CustomDomains_EnableCustomHttps:
+          value: RG
+        Endpoints_LoadContent:
+          value: RG
+        Origins_ListByEndpoint:
+          value: RG
+        Origins_Get:
+          value: RG
+        Origins_Update:
+          value: RG
+        Endpoints_PurgeContent:
+          value: RG
+        Endpoints_Start:
+          value: RG
+        Endpoints_Stop:
+          value: RG
+        Endpoints_ValidateCustomDomain:
+          value: RG
+        Profiles_GenerateSsoUri:
+          value: RG
+        Profiles_ListSupportedOptimizationTypes:
+          value: RG
+    subscriptionIdParameter:
+      description: Azure Subscription ID.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        ResourceUsage_List:
+          value: subid
+        Profiles_List:
+          value: subid
+        Profiles_ListByResourceGroup:
+          value: subid
+        Profiles_Delete:
+          value: subid
+        Profiles_Get:
+          value: subid
+        Profiles_Update:
+          value: subid
+        Profiles_Create:
+          value: subid
+        Profiles_ListResourceUsage:
+          value: subid
+        Endpoints_ListByProfile:
+          value: subid
+        Endpoints_Delete:
+          value: subid
+        Endpoints_Get:
+          value: subid
+        Endpoints_Update:
+          value: subid
+        Endpoints_Create:
+          value: subid
+        Endpoints_ListResourceUsage:
+          value: subid
+        CustomDomains_ListByEndpoint:
+          value: subid
+        CustomDomains_Delete:
+          value: subid
+        CustomDomains_Get:
+          value: subid
+        CustomDomains_Create:
+          value: subid
+        CustomDomains_DisableCustomHttps:
+          value: subid
+        CustomDomains_EnableCustomHttps:
+          value: subid
+        Endpoints_LoadContent:
+          value: subid
+        Origins_ListByEndpoint:
+          value: subid
+        Origins_Get:
+          value: subid
+        Origins_Update:
+          value: subid
+        Endpoints_PurgeContent:
+          value: subid
+        Endpoints_Start:
+          value: subid
+        Endpoints_Stop:
+          value: subid
+        Endpoints_ValidateCustomDomain:
+          value: subid
+        Profiles_GenerateSsoUri:
+          value: subid
+        Profiles_ListSupportedOptimizationTypes:
+          value: subid
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    CheckNameAvailabilityInput:
+      description: Input of CheckNameAvailability API.
+      properties:
+        name:
+          description: The resource name to validate.
+          type: string
+        type:
+          $ref: "#/components/schemas/ResourceType"
+      required:
+        - name
+        - type
+      type: object
+    CheckNameAvailabilityOutput:
+      description: Output of check name availability API.
+      properties:
+        message:
+          description: The detailed error message describing why the name is not available.
+          readOnly: true
+          type: string
+        nameAvailable:
+          description: Indicates whether the name is available.
+          readOnly: true
+          type: boolean
+        reason:
+          description: The reason why the name is not available.
+          readOnly: true
+          type: string
+      type: object
+    CustomDomain:
+      allOf:
+        - $ref: "#/components/schemas/ProxyResource"
+      description: Friendly domain name mapping to the endpoint hostname that the customer
+        provides for branding purposes, e.g. www.contoso.com.
+      properties:
+        properties:
+          $ref: "#/components/schemas/CustomDomainProperties"
+      type: object
+    CustomDomainListResult:
+      description: Result of the request to list custom domains. It contains a list of
+        custom domain objects and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of custom domain objects if there are any.
+          type: string
+        value:
+          description: List of CDN CustomDomains within an endpoint.
+          items:
+            $ref: "#/components/schemas/CustomDomain"
+          readOnly: true
+          type: array
+    CustomDomainParameters:
+      description: The customDomain JSON object required for custom domain creation or
+        update.
+      properties:
+        properties:
+          $ref: "#/components/schemas/CustomDomainPropertiesParameters"
+      type: object
+    CustomDomainProperties:
+      description: The JSON object that contains the properties of the custom domain to
+        create.
+      properties:
+        customHttpsProvisioningState:
+          description: Provisioning status of Custom Https of the custom domain.
+          enum:
+            - Enabling
+            - Enabled
+            - Disabling
+            - Disabled
+            - Failed
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: CustomHttpsProvisioningState
+        customHttpsProvisioningSubstate:
+          description: Provisioning substate shows the progress of custom HTTPS
+            enabling/disabling process step by step.
+          enum:
+            - SubmittingDomainControlValidationRequest
+            - PendingDomainControlValidationREquestApproval
+            - DomainControlValidationRequestApproved
+            - DomainControlValidationRequestRejected
+            - DomainControlValidationRequestTimedOut
+            - IssuingCertificate
+            - DeployingCertificate
+            - CertificateDeployed
+            - DeletingCertificate
+            - CertificateDeleted
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: CustomHttpsProvisioningSubstate
+        hostName:
+          description: The host name of the custom domain. Must be a domain name.
+          type: string
+        provisioningState:
+          description: Provisioning status of the custom domain.
+          readOnly: true
+          type: string
+        resourceState:
+          description: Resource status of the custom domain.
+          enum:
+            - Creating
+            - Active
+            - Deleting
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: CustomDomainResourceState
+        validationData:
+          description: Special validation or data may be required when delivering CDN to
+            some regions due to local compliance reasons. E.g. ICP license
+            number of a custom domain is required to deliver content in China.
+          type: string
+      required:
+        - hostName
+    CustomDomainPropertiesParameters:
+      description: The JSON object that contains the properties of the custom domain to
+        create.
+      properties:
+        hostName:
+          description: The host name of the custom domain. Must be a domain name.
+          type: string
+      required:
+        - hostName
+    DeepCreatedOrigin:
+      description: The main origin of CDN content which is added when creating a CDN
+        endpoint.
+      properties:
+        name:
+          description: Origin name
+          type: string
+        properties:
+          $ref: "#/components/schemas/DeepCreatedOriginProperties"
+      required:
+        - name
+      type: object
+      x-ms-azure-resource: true
+    DeepCreatedOriginProperties:
+      description: Properties of the origin created on the CDN endpoint.
+      properties:
+        hostName:
+          description: The address of the origin. It can be a domain name, IPv4 address, or
+            IPv6 address.
+          type: string
+        httpPort:
+          description: The value of the HTTP port. Must be between 1 and 65535
+          exclusiveMaximum: false
+          exclusiveMinimum: false
+          maximum: 65535
+          minimum: 1
+          type: integer
+        httpsPort:
+          description: The value of the HTTPS port. Must be between 1 and 65535
+          exclusiveMaximum: false
+          exclusiveMinimum: false
+          maximum: 65535
+          minimum: 1
+          type: integer
+      required:
+        - hostName
+      type: object
+      x-ms-azure-resource: true
+    EdgeNode:
+      allOf:
+        - $ref: "#/components/schemas/ProxyResource"
+      description: Edgenode is a global Point of Presence (POP) location used to deliver
+        CDN content to end users.
+      properties:
+        properties:
+          $ref: "#/components/schemas/EdgeNodeProperties"
+      type: object
+    EdgeNodeProperties:
+      description: The JSON object that contains the properties required to create an
+        edgenode.
+      properties:
+        ipAddressGroups:
+          description: List of ip address groups.
+          items:
+            $ref: "#/components/schemas/IpAddressGroup"
+          type: array
+      required:
+        - ipAddressGroups
+    EdgenodeResult:
+      description: Result of the request to list CDN edgenodes. It contains a list of ip
+        address group and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of edgenode list results if there are any.
+          type: string
+        value:
+          description: Edge node of CDN service.
+          items:
+            $ref: "#/components/schemas/EdgeNode"
+          readOnly: true
+          type: array
+    Endpoint:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      description: CDN endpoint is the entity within a CDN profile containing configuration
+        information such as origin, protocol, content caching and delivery
+        behavior. The CDN endpoint uses the URL format
+        <endpointname>.azureedge.net.
+      properties:
+        properties:
+          $ref: "#/components/schemas/EndpointProperties"
+      type: object
+    EndpointListResult:
+      description: Result of the request to list endpoints. It contains a list of endpoint
+        objects and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of endpoint objects if there is any.
+          type: string
+        value:
+          description: List of CDN endpoints within a profile
+          items:
+            $ref: "#/components/schemas/Endpoint"
+          readOnly: true
+          type: array
+    EndpointProperties:
+      allOf:
+        - $ref: "#/components/schemas/EndpointPropertiesUpdateParameters"
+      description: The JSON object that contains the properties required to create an
+        endpoint.
+      properties:
+        hostName:
+          description: The host name of the endpoint structured as
+            {endpointName}.{DNSZone}, e.g. contoso.azureedge.net
+          readOnly: true
+          type: string
+        origins:
+          description: The source of the content being delivered via CDN.
+          items:
+            $ref: "#/components/schemas/DeepCreatedOrigin"
+          type: array
+        provisioningState:
+          description: Provisioning status of the endpoint.
+          readOnly: true
+          type: string
+        resourceState:
+          description: Resource status of the endpoint.
+          enum:
+            - Creating
+            - Deleting
+            - Running
+            - Starting
+            - Stopped
+            - Stopping
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: EndpointResourceState
+      required:
+        - origins
+    EndpointPropertiesUpdateParameters:
+      description: The JSON object containing endpoint update parameters.
+      properties:
+        contentTypesToCompress:
+          description: List of content types on which compression applies. The value should
+            be a valid MIME type.
+          items:
+            type: string
+          type: array
+        geoFilters:
+          description: List of rules defining the user's geo access within a CDN endpoint.
+            Each geo filter defines an access rule to a specified path or
+            content, e.g. block APAC for path /pictures/
+          items:
+            $ref: "#/components/schemas/GeoFilter"
+          type: array
+        isCompressionEnabled:
+          description: Indicates whether content compression is enabled on CDN. Default
+            value is false. If compression is enabled, content will be served as
+            compressed if user requests for a compressed version. Content won't
+            be compressed on CDN when requested content is smaller than 1 byte
+            or larger than 1 MB.
+          type: boolean
+        isHttpAllowed:
+          description: Indicates whether HTTP traffic is allowed on the endpoint. Default
+            value is true. At least one protocol (HTTP or HTTPS) must be
+            allowed.
+          type: boolean
+        isHttpsAllowed:
+          description: Indicates whether HTTPS traffic is allowed on the endpoint. Default
+            value is true. At least one protocol (HTTP or HTTPS) must be
+            allowed.
+          type: boolean
+        optimizationType:
+          $ref: "#/components/schemas/OptimizationType"
+        originHostHeader:
+          description: The host header value sent to the origin with each request. If you
+            leave this blank, the request hostname determines this value. Azure
+            CDN origins, such as Web Apps, Blob Storage, and Cloud Services
+            require this host header value to match the origin hostname by
+            default.
+          type: string
+        originPath:
+          description: A directory path on the origin that CDN can use to retrieve content
+            from, e.g. contoso.cloudapp.net/originpath.
+          type: string
+        probePath:
+          description: Path to a file hosted on the origin which helps accelerate delivery
+            of the dynamic content and calculate the most optimal routes for the
+            CDN. This is relative to the origin path.
+          type: string
+        queryStringCachingBehavior:
+          $ref: "#/components/schemas/QueryStringCachingBehavior"
+    EndpointUpdateParameters:
+      description: Properties required to create or update an endpoint.
+      properties:
+        properties:
+          $ref: "#/components/schemas/EndpointPropertiesUpdateParameters"
+        tags:
+          additionalProperties:
+            type: string
+          description: Endpoint tags.
+          type: object
+      type: object
+      x-ms-azure-resource: true
+    ErrorResponse:
+      description: Error response indicates CDN service is not able to process the incoming
+        request. The reason is provided in the error message.
+      properties:
+        code:
+          description: Error code.
+          readOnly: true
+          type: string
+        message:
+          description: Error message indicating why the operation failed.
+          readOnly: true
+          type: string
+      type: object
+    GeoFilter:
+      description: Rules defining user's geo access within a CDN endpoint.
+      properties:
+        action:
+          description: Action of the geo filter, i.e. allow or block access.
+          enum:
+            - Block
+            - Allow
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: GeoFilterActions
+        countryCodes:
+          description: Two letter country codes defining user country access in a geo
+            filter, e.g. AU, MX, US.
+          items:
+            type: string
+          type: array
+        relativePath:
+          description: Relative path applicable to geo filter. (e.g. '/mypictures',
+            '/mypicture/kitty.jpg', and etc.)
+          type: string
+      required:
+        - relativePath
+        - action
+        - countryCodes
+      type: object
+    IpAddressGroup:
+      description: CDN Ip address group
+      properties:
+        deliveryRegion:
+          description: The delivery region of the ip address group
+          type: string
+        ipv4Addresses:
+          description: The list of ip v4 addresses.
+          items:
+            $ref: "#/components/schemas/cidrIpAddress"
+          type: array
+        ipv6Addresses:
+          description: The list of ip v6 addresses.
+          items:
+            $ref: "#/components/schemas/cidrIpAddress"
+          type: array
+      type: object
+    LoadParameters:
+      description: Parameters required for content load.
+      properties:
+        contentPaths:
+          description: The path to the content to be loaded. Path should be a relative file
+            URL of the origin.
+          items:
+            type: string
+          type: array
+      required:
+        - contentPaths
+      type: object
+    Operation:
+      description: CDN REST API operation
+      properties:
+        display:
+          description: The object that represents the operation.
+          properties:
+            operation:
+              description: "Operation type: Read, write, delete, etc."
+              readOnly: true
+              type: string
+            provider:
+              description: "Service provider: Microsoft.Cdn"
+              readOnly: true
+              type: string
+            resource:
+              description: "Resource on which the operation is performed: Profile,
+                endpoint, etc."
+              readOnly: true
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{operation}"
+          readOnly: true
+          type: string
+      type: object
+    OperationsListResult:
+      description: Result of the request to list CDN operations. It contains a list of
+        operations and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          type: string
+        value:
+          description: List of CDN operations supported by the CDN resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          readOnly: true
+          type: array
+    OptimizationType:
+      description: Specifies what scenario the customer wants this CDN endpoint to
+        optimize, e.g. Download, Media services. With this information we can
+        apply scenario driven optimization.
+      enum:
+        - GeneralWebDelivery
+        - GeneralMediaStreaming
+        - VideoOnDemandMediaStreaming
+        - LargeFileDownload
+        - DynamicSiteAcceleration
+      type: string
+      x-ms-enum:
+        modelAsString: true
+        name: OptimizationType
+    Origin:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      description: CDN origin is the source of the content being delivered via CDN. When
+        the edge nodes represented by an endpoint do not have the requested
+        content cached, they attempt to fetch it from one or more of the
+        configured origins.
+      properties:
+        properties:
+          $ref: "#/components/schemas/OriginProperties"
+      type: object
+    OriginListResult:
+      description: Result of the request to list origins. It contains a list of origin
+        objects and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of origin objects if there are any.
+          type: string
+        value:
+          description: List of CDN origins within an endpoint
+          items:
+            $ref: "#/components/schemas/Origin"
+          readOnly: true
+          type: array
+    OriginProperties:
+      description: The JSON object that contains the properties of the origin.
+      properties:
+        hostName:
+          description: The address of the origin. Domain names, IPv4 addresses, and IPv6
+            addresses are supported.
+          type: string
+        httpPort:
+          description: The value of the HTTP port. Must be between 1 and 65535.
+          exclusiveMaximum: false
+          exclusiveMinimum: false
+          maximum: 65535
+          minimum: 1
+          type: integer
+        httpsPort:
+          description: The value of the https port. Must be between 1 and 65535.
+          exclusiveMaximum: false
+          exclusiveMinimum: false
+          maximum: 65535
+          minimum: 1
+          type: integer
+        provisioningState:
+          description: Provisioning status of the origin.
+          readOnly: true
+          type: string
+        resourceState:
+          description: Resource status of the origin.
+          enum:
+            - Creating
+            - Active
+            - Deleting
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: OriginResourceState
+      required:
+        - hostName
+    OriginPropertiesParameters:
+      description: The JSON object that contains the properties of the origin.
+      properties:
+        hostName:
+          description: The address of the origin. Domain names, IPv4 addresses, and IPv6
+            addresses are supported.
+          type: string
+        httpPort:
+          description: The value of the HTTP port. Must be between 1 and 65535.
+          exclusiveMaximum: false
+          exclusiveMinimum: false
+          maximum: 65535
+          minimum: 1
+          type: integer
+        httpsPort:
+          description: The value of the HTTPS port. Must be between 1 and 65535.
+          exclusiveMaximum: false
+          exclusiveMinimum: false
+          maximum: 65535
+          minimum: 1
+          type: integer
+    OriginUpdateParameters:
+      description: Origin properties needed for origin creation or update.
+      properties:
+        properties:
+          $ref: "#/components/schemas/OriginPropertiesParameters"
+      type: object
+      x-ms-azure-resource: true
+    Profile:
+      allOf:
+        - $ref: "#/components/schemas/TrackedResource"
+      description: CDN profile is a logical grouping of endpoints that share the same
+        settings, such as CDN provider and pricing tier.
+      properties:
+        properties:
+          $ref: "#/components/schemas/ProfileProperties"
+        sku:
+          $ref: "#/components/schemas/Sku"
+      required:
+        - sku
+      type: object
+    ProfileListResult:
+      description: Result of the request to list profiles. It contains a list of profile
+        objects and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of profile objects if there are any.
+          type: string
+        value:
+          description: List of CDN profiles within a resource group.
+          items:
+            $ref: "#/components/schemas/Profile"
+          readOnly: true
+          type: array
+    ProfileProperties:
+      description: The JSON object that contains the properties required to create a
+        profile.
+      properties:
+        provisioningState:
+          description: Provisioning status of the profile.
+          readOnly: true
+          type: string
+        resourceState:
+          description: Resource status of the profile.
+          enum:
+            - Creating
+            - Active
+            - Deleting
+            - Disabled
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ProfileResourceState
+    ProfileUpdateParameters:
+      description: Properties required to update a profile.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Profile tags
+          type: object
+      type: object
+      x-ms-azure-resource: true
+    ProxyResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The resource model definition for a ARM proxy resource. It will have
+        everything other than required location and tags
+    PurgeParameters:
+      description: Parameters required for content purge.
+      properties:
+        contentPaths:
+          description: The path to the content to be purged. Can describe a file path or a
+            wild card directory.
+          items:
+            type: string
+          type: array
+      required:
+        - contentPaths
+      type: object
+    QueryStringCachingBehavior:
+      description: Defines how CDN caches requests that include query strings. You can
+        ignore any query strings when caching, bypass caching to prevent
+        requests that contain query strings from being cached, or cache every
+        request with a unique URL.
+      enum:
+        - IgnoreQueryString
+        - BypassCaching
+        - UseQueryString
+        - NotSet
+      type: string
+      x-ms-enum:
+        modelAsString: false
+        name: QueryStringCachingBehavior
+    Resource:
+      description: The core properties of ARM resources
+      properties:
+        id:
+          description: Resource ID.
+          readOnly: true
+          type: string
+        name:
+          description: Resource name.
+          readOnly: true
+          type: string
+        type:
+          description: Resource type.
+          readOnly: true
+          type: string
+      x-ms-azure-resource: true
+    ResourceType:
+      description: Type of CDN resource used in CheckNameAvailability.
+      enum:
+        - Microsoft.Cdn/Profiles/Endpoints
+      type: string
+      x-ms-enum:
+        modelAsString: false
+        name: ResourceType
+    ResourceUsage:
+      description: Output of check resource usage API.
+      properties:
+        currentValue:
+          description: Actual value of usage on the specified resource type.
+          readOnly: true
+          type: integer
+        limit:
+          description: Quota of the specified resource type.
+          readOnly: true
+          type: integer
+        resourceType:
+          description: Resource type for which the usage is provided.
+          readOnly: true
+          type: string
+        unit:
+          description: Unit of the usage. e.g. Count.
+          readOnly: true
+          type: string
+      type: object
+    ResourceUsageListResult:
+      description: Output of check resource usage API.
+      properties:
+        nextLink:
+          description: URL to get the next set of custom domain objects if there are any.
+          type: string
+        value:
+          description: List of resource usages.
+          items:
+            $ref: "#/components/schemas/ResourceUsage"
+          readOnly: true
+          type: array
+    Sku:
+      description: The pricing tier (defines a CDN provider, feature list and rate) of the
+        CDN profile.
+      properties:
+        name:
+          description: Name of the pricing tier.
+          enum:
+            - Standard_Verizon
+            - Premium_Verizon
+            - Custom_Verizon
+            - Standard_Akamai
+            - Standard_ChinaCdn
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SkuName
+      type: object
+    SsoUri:
+      description: The URI required to login to the supplemental portal from the Azure
+        portal.
+      properties:
+        ssoUriValue:
+          description: The URI used to login to the supplemental portal.
+          readOnly: true
+          type: string
+      type: object
+    SupportedOptimizationTypesListResult:
+      description: The result of the GetSupportedOptimizationTypes API
+      properties:
+        supportedOptimizationTypes:
+          description: Supported optimization types for a profile.
+          items:
+            $ref: "#/components/schemas/OptimizationType"
+          readOnly: true
+          type: array
+      type: object
+    TrackedResource:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The resource model definition for a ARM tracked top level resource.
+      properties:
+        location:
+          description: Resource location.
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+          x-ms-mutability:
+            - read
+            - create
+            - update
+      required:
+        - location
+    ValidateCustomDomainInput:
+      description: Input of the custom domain to be validated for DNS mapping.
+      properties:
+        hostName:
+          description: The host name of the custom domain. Must be a domain name.
+          type: string
+      required:
+        - hostName
+      type: object
+    ValidateCustomDomainOutput:
+      description: Output of custom domain validation.
+      properties:
+        customDomainValidated:
+          description: Indicates whether the custom domain is valid or not.
+          readOnly: true
+          type: boolean
+        message:
+          description: Error message describing why the custom domain is not valid.
+          readOnly: true
+          type: string
+        reason:
+          description: The reason why the custom domain is not valid.
+          readOnly: true
+          type: string
+      type: object
+    ValidateProbeInput:
+      description: Input of the validate probe API.
+      properties:
+        probeURL:
+          description: The probe URL to validate.
+          type: string
+      required:
+        - probeURL
+      type: object
+    ValidateProbeOutput:
+      description: Output of the validate probe API.
+      properties:
+        errorCode:
+          description: Specifies the error code when the probe url is not accepted.
+          readOnly: true
+          type: string
+        isValid:
+          description: Indicates whether the probe URL is accepted or not.
+          readOnly: true
+          type: boolean
+        message:
+          description: The detailed error message describing why the probe URL is not
+            accepted.
+          readOnly: true
+          type: string
+      type: object
+    cidrIpAddress:
+      description: CIDR Ip address
+      properties:
+        baseIpAddress:
+          description: IP address itself.
+          type: string
+        prefixLength:
+          description: The length of the prefix of the ip address.
+          type: integer
+      type: object

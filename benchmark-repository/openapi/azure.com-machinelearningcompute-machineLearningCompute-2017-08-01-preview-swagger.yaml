@@ -1,0 +1,1442 @@
+openapi: 3.0.0
+info:
+  description: These APIs allow end users to operate on Azure Machine Learning Compute
+    resources. They support the following operations:<ul><li>Create or update a
+    cluster</li><li>Get a cluster</li><li>Patch a cluster</li><li>Delete a
+    cluster</li><li>Get keys for a cluster</li><li>Check if updates are
+    available for system services in a cluster</li><li>Update system services in
+    a cluster</li><li>Get all clusters in a resource group</li><li>Get all
+    clusters in a subscription</li></ul>
+  title: Machine Learning Compute Management Client
+  version: 2017-08-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/machinelearningcompute/resource-manager/Microsoft.MachineLearningCompute/preview/2017-08-01-preview/machineLearningCompute.json
+      version: "2.0"
+  x-preferred: true
+  x-providerName: azure.com
+  x-serviceName: machinelearningcompute-machineLearningCompute
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  /providers/Microsoft.MachineLearningCompute/operations:
+    get:
+      description: Gets all available operations.
+      operationId: MachineLearningCompute_ListAvailableOperations
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AvailableOperations"
+              examples:
+                Machine Learning Compute List Available Operations:
+                  $ref: "#/components/examples/Machine_Learning_Compute_List_Availa\
+                    ble_Operations"
+      tags:
+        - MachineLearningComputeOperations
+  "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningCompute/operationalizationClusters":
+    get:
+      description: Gets the operationalization clusters in the specified subscription.
+      operationId: OperationalizationClusters_ListBySubscriptionId
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - description: Continuation token for pagination.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK. The response includes a paginated array of cluster objects and a
+            URI to the next set of results, if any. Note that the cluster
+            objects are sparsely populated to conserve space in the response
+            content. To get the full cluster object, call the GET operation on
+            the cluster.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedOperationalizationClustersList"
+              examples:
+                List Operationalization Clusters by Subscription:
+                  $ref: "#/components/examples/List_Operationalization_Clusters_by_\
+                    Subscription"
+      tags:
+        - OperationalizationClusters
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningCompute/operationalizationClusters":
+    get:
+      description: Gets the clusters in the specified resource group.
+      operationId: OperationalizationClusters_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - description: Continuation token for pagination.
+          in: query
+          name: $skiptoken
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK. The response includes a paginated array of cluster objects and a
+            URI to the next set of results, if any. For the more information the
+            limits of the number of items in a resource group, see
+            https://azure.microsoft.com/en-us/documentation/articles/azure-subscription-service-limits/.
+            Note that the cluster objects are sparsely populated to conserve
+            space in the response content. To get the full cluster object, call
+            the GET operation on the cluster.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedOperationalizationClustersList"
+              examples:
+                List Operationalization Clusters by Resource Group:
+                  $ref: "#/components/examples/List_Operationalization_Clusters_by_\
+                    Resource_Group"
+      tags:
+        - OperationalizationClusters
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningCompute/operationalizationClusters/{clusterName}":
+    delete:
+      description: Deletes the specified cluster.
+      operationId: OperationalizationClusters_Delete
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+        - $ref: "#/components/parameters/DeleteAllParameter"
+      responses:
+        "202":
+          description: The delete request was accepted and will complete asynchronously.
+            The know the progress of the delete operation do a GET call on the
+            URI in the Location header. For more information about Asynchronous
+            Operations, see
+            https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-async-operations.
+          headers:
+            Location:
+              description: URI of the async operation.
+              schema:
+                type: string
+              example: http://async-operation-URI
+        "204":
+          description: No Content. The cluster did not exist but the request was well
+            formed.
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWrapper"
+      tags:
+        - OperationalizationClusters
+      x-ms-long-running-operation: true
+    get:
+      description: Gets the operationalization cluster resource view. Note that the
+        credentials are not returned by this call. Call ListKeys to get them.
+      operationId: OperationalizationClusters_Get
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationalizationCluster"
+              examples:
+                GET Operationalization Cluster:
+                  $ref: "#/components/examples/GET_Operationalization_Cluster"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWrapper"
+      tags:
+        - OperationalizationClusters
+    patch:
+      description: The PATCH operation can be used to update only the tags for a cluster.
+        Use PUT operation to update other properties.
+      operationId: OperationalizationClusters_Update
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OperationalizationClusterUpdateParameters"
+        description: The parameters supplied to patch the cluster.
+        required: true
+      responses:
+        "200":
+          description: OK. The update completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationalizationCluster"
+              examples:
+                PATCH Operationalization Cluster:
+                  $ref: "#/components/examples/PATCH_Operationalization_Cluster"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWrapper"
+      tags:
+        - OperationalizationClusters
+    put:
+      description: Create or update an operationalization cluster.
+      operationId: OperationalizationClusters_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OperationalizationCluster"
+        description: Parameters supplied to create or update an Operationalization cluster.
+        required: true
+      responses:
+        "200":
+          description: The create or update succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationalizationCluster"
+              examples:
+                PUT Operationalization Cluster:
+                  $ref: "#/components/examples/PUT_Operationalization_Cluster"
+        "201":
+          description: The request was accepted and will complete asynchronously. To get
+            the progress of the operation, call GET operation on the URL in
+            Azure-AsyncOperation header field. For more information about
+            Asynchronous Operations, see
+            https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-async-operations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationalizationCluster"
+              examples:
+                PUT Operationalization Cluster:
+                  $ref: "#/components/examples/PUT_Operationalization_Cluster"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseWrapper"
+      tags:
+        - OperationalizationClusters
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningCompute/operationalizationClusters/{clusterName}/checkSystemServicesUpdatesAvailable":
+    post:
+      description: Checks if updates are available for system services in the cluster.
+      operationId: OperationalizationClusters_CheckSystemServicesUpdatesAvailable
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+      responses:
+        "200":
+          description: OK. The request completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckSystemServicesUpdatesAvailableResp\
+                  onse"
+              examples:
+                Check Update for an Operationalization Cluster:
+                  $ref: "#/components/examples/Check_Update_for_an_Operationalizati\
+                    on_Cluster"
+      tags:
+        - OperationalizationClusters
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningCompute/operationalizationClusters/{clusterName}/listKeys":
+    post:
+      description: Gets the credentials for the specified cluster such as Storage, ACR and
+        ACS credentials. This is a long running operation because it fetches
+        keys from dependencies.
+      operationId: OperationalizationClusters_ListKeys
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+      responses:
+        "200":
+          description: OK. The request completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationalizationClusterCredentials"
+              examples:
+                List Keys of an Operationalization Cluster:
+                  $ref: "#/components/examples/List_Keys_of_an_Operationalization_C\
+                    luster"
+      tags:
+        - OperationalizationClusters
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningCompute/operationalizationClusters/{clusterName}/updateSystemServices":
+    post:
+      description: Updates system services in a cluster.
+      operationId: OperationalizationClusters_UpdateSystemServices
+      parameters:
+        - $ref: "#/components/parameters/ApiVersionParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ResourceGroupNameParameter"
+        - $ref: "#/components/parameters/ClusterNameParameter"
+      responses:
+        "200":
+          description: OK. The request completed successfully. Check the response body for
+            update details.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateSystemServicesResponse"
+              examples:
+                Update System Services in an Operationalization Cluster:
+                  $ref: "#/components/examples/Update_System_Services_in_an_Operati\
+                    onalization_Cluster"
+        "202":
+          description: The request was accepted and will complete asynchronously. The know
+            the progress of the async operation do a GET call on the URI in the
+            Location header. For more information about Asynchronous Operations,
+            see
+            https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-async-operations.
+          headers:
+            Location:
+              description: URI of the async operation.
+              schema:
+                type: string
+              example: http://async-operation-URI
+      tags:
+        - OperationalizationClusters
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Machine_Learning_Compute_List_Available_Operations:
+      value:
+        value:
+          - display:
+              description: Registers the subscription for the Machine Learning Compute
+                resource provider and enables the management of Machine Leaning
+                Compute resources.
+              operation: Register the provider
+              provider: Microsoft Machine Learning Compute Management
+              resource: Machine Learning Compute Provider
+            name: Microsoft.MachineLearningCompute/register/action
+            origin: user,system
+          - display:
+              description: Read any operationalization cluster
+              operation: Read the operationalization cluster
+              provider: Microsoft Machine Learning Compute Management
+              resource: Machine Learning Compute Operationalization Cluster
+            name: Microsoft.MachineLearningCompute/operationalizationClusters/read
+            origin: user,system
+          - display:
+              description: Create or update any operationalization cluster
+              operation: Write the operationalization cluster
+              provider: Microsoft Machine Learning Compute Management
+              resource: Machine Learning Compute Operationalization Cluster
+            name: Microsoft.MachineLearningCompute/operationalizationClusters/write
+            origin: user,system
+          - display:
+              description: Delete any operationalization cluster
+              operation: Delete the operationalization cluster
+              provider: Microsoft Machine Learning Compute Management
+              resource: Machine Learning Compute Operationalization Cluster
+            name: Microsoft.MachineLearningCompute/operationalizationClusters/delete
+            origin: user,system
+          - display:
+              description: List keys for an operationalization cluster
+              operation: List keys for an operationalization cluster
+              provider: Microsoft Machine Learning Compute Management
+              resource: Machine Learning Compute Operationalization Cluster
+            name: Microsoft.MachineLearningCompute/operationalizationClusters/listKeys/action
+            origin: user,system
+          - display:
+              description: Check available system updates for an operationalization cluster
+              operation: Check available system updates for an operationalization cluster
+              provider: Microsoft Machine Learning Compute Management
+              resource: Machine Learning Compute Operationalization Cluster
+            name: Microsoft.MachineLearningCompute/operationalizationClusters/checkUpdate/action
+            origin: user,system
+          - display:
+              description: Apply available system updates for an operationalization cluster
+              operation: Apply available system updates for an operationalization cluster
+              provider: Microsoft Machine Learning Compute Management
+              resource: Machine Learning Compute Operationalization Cluster
+            name: Microsoft.MachineLearningCompute/operationalizationClusters/updateSystem/action
+            origin: user,system
+    List_Operationalization_Clusters_by_Subscription:
+      value:
+        nextLink: https://the.next/link
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup1/providers/Microsoft.MachineLearningCompute/operationalizationClusters/MyCluster
+            location: West US
+            name: MyCluster
+            properties:
+              appInsights:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Insights/components/mlcrpai3d5859117108
+              clusterType: ACS
+              containerRegistry:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup1/providers/Microsoft.ContainerRegistry/registries/mycluster1123456
+              containerService:
+                agentCount: 2
+                agentVmSize: Standard_D2_v2
+                clusterFqdn: myclusterabcxyz.westus.cloudapp.azure.com
+                masterCount: 3
+                orchestratorProperties:
+                  servicePrincipal:
+                    clientId: abcdefghijklmnopqrt
+                    secret: ""
+                orchestratorType: Kubernetes
+                systemServices:
+                  - publicIpAddress: 13.92.143.67
+                    systemServiceType: ScoringFrontEnd
+                    version: prod/20170803.1.5a451c98af3972f7c966b439d471c1ed280314ea
+              createdOn: 2017-05-04T07:12:28.191Z
+              description: My Operationalization Cluster
+              globalServiceConfiguration:
+                autoScale:
+                  maxReplicas: 100
+                  minReplicas: 1
+                  status: Enabled
+                ssl:
+                  cert: afjdklq2131casfakld=
+                  cname: foo.bar.com
+                  key: flksdafkldsajf
+                  status: Enabled
+              modifiedOn: 2017-05-04T07:12:28.191Z
+              provisioningState: Succeeded
+              storageAccount:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup1/providers/Microsoft.Storage/storageAccounts/mycluster18787878
+            tags:
+              key1: alpha
+              key2: beta
+            type: Microsoft.MachineLearningCompute/operationalizationClusters
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup2/providers/Microsoft.MachineLearningCompute/operationalizationClusters/myCluster2
+            location: West US
+            name: MyCluster2
+            properties:
+              appInsights:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Insights/components/mlcrpai3d5859117108
+              clusterType: ACS
+              containerRegistry:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup2/providers/Microsoft.ContainerRegistry/registries/myCluster28923849
+              containerService:
+                agentCount: 2
+                agentVmSize: Standard_D2_v2
+                clusterFqdn: mycluster2defghi.westus.cloudapp.azure.com
+                masterCount: 3
+                orchestratorProperties:
+                  servicePrincipal:
+                    clientId: abcdefghijklmnopqrt
+                    secret: ""
+                orchestratorType: Kubernetes
+                systemServices:
+                  - publicIpAddress: 13.92.143.67
+                    systemServiceType: ScoringFrontEnd
+                    version: prod/20170803.1.5a451c98af3972f7c966b439d471c1ed280314ea
+              createdOn: 2017-05-04T07:12:28.191Z
+              description: My Operationalization Cluster 2
+              globalServiceConfiguration:
+                autoScale:
+                  maxReplicas: 100
+                  minReplicas: 1
+                  status: Enabled
+                ssl:
+                  cert: afjdklq2131casfakld=
+                  cname: foo.bar.com
+                  key: flksdafkldsajf
+                  status: Enabled
+              modifiedOn: 2017-05-04T07:12:28.191Z
+              provisioningState: Succeeded
+              storageAccount:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup2/providers/Microsoft.Storage/storageAccounts/myCluster2998989
+            tags:
+              key1: alpha
+              key2: beta
+            type: Microsoft.MachineLearningCompute/operationalizationClusters
+    List_Operationalization_Clusters_by_Resource_Group:
+      value:
+        nextLink: https://the.next/link
+        value:
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearningCompute/operationalizationClusters/MyCluster
+            location: West US
+            name: MyCluster
+            properties:
+              appInsights:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Insights/components/mlcrpai3d5859117108
+              clusterType: ACS
+              containerRegistry:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/mycluster123456
+              containerService:
+                agentCount: 2
+                agentVmSize: Standard_D2_v2
+                clusterFqdn: myclusterabcxyz.westus.cloudapp.azure.com
+                masterCount: 3
+                orchestratorProperties:
+                  servicePrincipal:
+                    clientId: abcdefghijklmnopqrt
+                    secret: ""
+                orchestratorType: Kubernetes
+                systemServices:
+                  - publicIpAddress: 13.92.143.67
+                    systemServiceType: ScoringFrontEnd
+                    version: prod/20170803.1.5a451c98af3972f7c966b439d471c1ed280314ea
+              createdOn: 2017-05-04T07:12:28.191Z
+              description: My Operationalization Cluster
+              globalServiceConfiguration:
+                autoScale:
+                  maxReplicas: 100
+                  minReplicas: 1
+                  status: Enabled
+                ssl:
+                  cert: afjdklq2131casfakld=
+                  cname: foo.bar.com
+                  key: flksdafkldsajf
+                  status: Enabled
+              modifiedOn: 2017-05-04T07:12:28.191Z
+              provisioningState: Succeeded
+              storageAccount:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/mycluster123456
+            tags:
+              key1: alpha
+              key2: beta
+            type: Microsoft.MachineLearningCompute/operationalizationClusters
+          - id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearningCompute/operationalizationClusters/MyCluster2
+            location: West US
+            name: MyCluster2
+            properties:
+              appInsights:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Insights/components/mlcrpai3d5859117108
+              clusterType: ACS
+              containerRegistry:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myregistry8923849
+              containerService:
+                agentCount: 2
+                agentVmSize: Standard_D2_v2
+                clusterFqdn: mycluster2defghi.westus.cloudapp.azure.com
+                masterCount: 3
+                orchestratorProperties:
+                  servicePrincipal:
+                    clientId: abcdefghijklmnopqrt
+                    secret: ""
+                orchestratorType: Kubernetes
+                systemServices:
+                  - publicIpAddress: 13.92.143.67
+                    systemServiceType: ScoringFrontEnd
+                    version: prod/20170803.1.5a451c98af3972f7c966b439d471c1ed280314ea
+              createdOn: 2017-05-04T07:12:28.191Z
+              description: My Operationalization Cluster 2
+              globalServiceConfiguration:
+                autoScale:
+                  maxReplicas: 100
+                  minReplicas: 1
+                  status: Enabled
+                ssl:
+                  cert: afjdklq2131casfakld=
+                  cname: foo.bar.com
+                  key: flksdafkldsajf
+                  status: Enabled
+              modifiedOn: 2017-05-04T07:12:28.191Z
+              provisioningState: Succeeded
+              storageAccount:
+                resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/mycluster998989
+            tags:
+              key1: alpha
+              key2: beta
+            type: Microsoft.MachineLearningCompute/operationalizationClusters
+    GET_Operationalization_Cluster:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearningCompute/operationalizationClusters/myCluster
+        location: West US
+        name: myCluster
+        properties:
+          appInsights:
+            resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Insights/components/mlcrpai3d5859117108
+          clusterType: ACS
+          containerRegistry:
+            resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myregistry123456
+          containerService:
+            agentCount: 2
+            agentVmSize: Standard_D2_v2
+            clusterFqdn: myclusterabcxyz.westus.cloudapp.azure.com
+            masterCount: 3
+            orchestratorProperties:
+              servicePrincipal:
+                clientId: abcdefghijklmnopqrt
+                secret: ""
+            orchestratorType: Kubernetes
+            systemServices:
+              - publicIpAddress: 13.92.143.67
+                systemServiceType: ScoringFrontEnd
+                version: prod/20170803.1.5a451c98af3972f7c966b439d471c1ed280314ea
+          createdOn: 2017-05-04T07:12:28.191Z
+          description: My Operationalization Cluster
+          globalServiceConfiguration:
+            autoScale:
+              maxReplicas: 100
+              minReplicas: 1
+              status: Enabled
+            ssl:
+              cert: afjdklq2131casfakld=
+              cname: foo.bar.com
+              key: flksdafkldsajf
+              status: Enabled
+          modifiedOn: 2017-05-04T07:12:28.191Z
+          provisioningErrors:
+            - code: Timeout
+              message: Timeout waiting for deployment to start.
+              statusCode: "408"
+          provisioningState: Failed
+          storageAccount:
+            resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/mycluster123456
+        tags:
+          key1: alpha
+          key2: beta
+        type: Microsoft.MachineLearningCompute/operationalizationClusters
+    PATCH_Operationalization_Cluster:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearningCompute/operationalizationClusters/myCluster
+        location: West US
+        name: MyCluster
+        properties:
+          appInsights:
+            resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Insights/components/mlcrpai3d5859117108
+          clusterType: ACS
+          containerRegistry:
+            resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/mycluster742894
+          containerService:
+            agentCount: 2
+            agentVmSize: Standard_D2_v2
+            clusterFqdn: myclusterabcxyz.westus.cloudapp.azure.com
+            masterCount: 3
+            orchestratorProperties:
+              servicePrincipal:
+                clientId: abcdefghijklmnopqrt
+                secret: ""
+            orchestratorType: Kubernetes
+            systemServices:
+              - publicIpAddress: 13.92.143.67
+                systemServiceType: ScoringFrontEnd
+                version: prod/20170803.1.5a451c98af3972f7c966b439d471c1ed280314ea
+          createdOn: 2017-05-04T07:12:28.191Z
+          description: My Operationalization Cluster
+          globalServiceConfiguration:
+            autoScale:
+              maxReplicas: 100
+              minReplicas: 1
+              status: Enabled
+            ssl:
+              cert: afjdklq2131casfakld=
+              cname: foo.bar.com
+              key: flksdafkldsajf
+              status: Enabled
+          modifiedOn: 2017-05-04T07:12:28.191Z
+          provisioningState: Succeeded
+          storageAccount:
+            resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/mycluster123456
+        tags:
+          key1: value1
+        type: Microsoft.MachineLearningCompute/operationalizationClusters
+    PUT_Operationalization_Cluster:
+      value:
+        id: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.MachineLearningCompute/operationalizationClusters/MyCluster
+        location: West US
+        name: MyCluster
+        properties:
+          appInsights:
+            resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Insights/components/mlcrpai3d5859117108
+          clusterType: ACS
+          containerRegistry:
+            resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myregistry123456
+          containerService:
+            agentCount: 2
+            agentVmSize: Standard_D2_v2
+            clusterFqdn: myclusterabcxyz.westus.cloudapp.azure.com
+            masterCount: 3
+            orchestratorProperties:
+              servicePrincipal:
+                clientId: abcdefghijklmnopqrt
+                secret: ""
+            orchestratorType: Kubernetes
+            systemServices:
+              - publicIpAddress: 13.92.143.67
+                systemServiceType: ScoringFrontEnd
+                version: prod/20170803.1.5a451c98af3972f7c966b439d471c1ed280314ea
+          createdOn: 2017-05-04T07:12:28.191Z
+          description: My Operationalization Cluster
+          globalServiceConfiguration:
+            autoScale:
+              maxReplicas: 100
+              minReplicas: 1
+              status: Enabled
+            ssl:
+              cert: afjdklq2131casfakld=
+              cname: foo.bar.com
+              key: flksdafkldsajf
+              status: Enabled
+          modifiedOn: 2017-05-04T07:12:28.191Z
+          provisioningState: Creating
+          storageAccount:
+            resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/mycluster123456
+        tags:
+          key1: alpha
+          key2: beta
+        type: Microsoft.MachineLearningCompute/operationalizationClusters
+    Check_Update_for_an_Operationalization_Cluster:
+      value:
+        updatesAvailable: Yes
+    List_Keys_of_an_Operationalization_Cluster:
+      value:
+        appInsights:
+          appId: abcdefghijklmnop
+          instrumentationKey: ppppppppppppppppppTTTTTTTT
+        containerRegistry:
+          loginServer: myclusterghijkl.azurecr.io
+          password: ccccKKKKKKKK=
+          password2: bddddTTTTTTTTTTT
+          username: mlcrpacr489402380295
+        containerService:
+          acsKubeConfig: AAAAAAAAAAAAAACCCCCCCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAA===
+          imagePullSecretName: myclusterghijklacrkey
+        storageAccount:
+          primaryKey: aaaaNNNNNNNNNNNN==
+          resourceId: subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myCluster998989
+          secondaryKey: bbbbXXXXXXXXXXXXXXX==
+    Update_System_Services_in_an_Operationalization_Cluster:
+      value:
+        updateCompletedOn: 2017-05-04T07:13:28.191Z
+        updateStartedOn: 2017-05-04T07:12:28.191Z
+        updateStatus: Completed
+  parameters:
+    ApiVersionParameter:
+      description: The version of the Microsoft.MachineLearningCompute resource provider
+        API to use.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        Machine Learning Compute List Available Operations:
+          value: 2017-08-01-preview
+        List Operationalization Clusters by Subscription:
+          value: 2017-08-01-preview
+        List Operationalization Clusters by Resource Group:
+          value: 2017-08-01-preview
+        DELETE Operationalization Cluster:
+          value: 2017-08-01-preview
+        GET Operationalization Cluster:
+          value: 2017-08-01-preview
+        PATCH Operationalization Cluster:
+          value: 2017-08-01-preview
+        PUT Operationalization Cluster:
+          value: 2017-08-01-preview
+        Check Update for an Operationalization Cluster:
+          value: 2017-08-01-preview
+        List Keys of an Operationalization Cluster:
+          value: 2017-08-01-preview
+        Update System Services in an Operationalization Cluster:
+          value: 2017-08-01-preview
+    ClusterNameParameter:
+      description: The name of the cluster.
+      in: path
+      name: clusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[a-zA-Z][-\w\._\(\)]+[a-zA-Z0-9]$
+      examples:
+        DELETE Operationalization Cluster:
+          value: myCluster
+        GET Operationalization Cluster:
+          value: myCluster
+        PATCH Operationalization Cluster:
+          value: myCluster
+        PUT Operationalization Cluster:
+          value: myCluster
+        Check Update for an Operationalization Cluster:
+          value: myCluster
+        List Keys of an Operationalization Cluster:
+          value: myCluster
+        Update System Services in an Operationalization Cluster:
+          value: myCluster
+    DeleteAllParameter:
+      description: If true, deletes all resources associated with this cluster.
+      in: query
+      name: deleteAll
+      required: false
+      x-ms-parameter-location: method
+      schema:
+        type: boolean
+    ResourceGroupNameParameter:
+      description: Name of the resource group in which the cluster is located.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90
+        pattern: ^[-\w\._\(\)]+$
+      examples:
+        List Operationalization Clusters by Resource Group:
+          value: myResourceGroup
+        DELETE Operationalization Cluster:
+          value: myResourceGroup
+        GET Operationalization Cluster:
+          value: myResourceGroup
+        PATCH Operationalization Cluster:
+          value: myResourceGroup
+        PUT Operationalization Cluster:
+          value: myResourceGroup
+        Check Update for an Operationalization Cluster:
+          value: myResourceGroup
+        List Keys of an Operationalization Cluster:
+          value: myResourceGroup
+        Update System Services in an Operationalization Cluster:
+          value: myResourceGroup
+    SubscriptionIdParameter:
+      description: The Azure subscription ID.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        List Operationalization Clusters by Subscription:
+          value: 00000000-0000-0000-0000-000000000000
+        List Operationalization Clusters by Resource Group:
+          value: 00000000-0000-0000-0000-000000000000
+        DELETE Operationalization Cluster:
+          value: 00000000-0000-0000-0000-000000000000
+        GET Operationalization Cluster:
+          value: 00000000-0000-0000-0000-000000000000
+        PATCH Operationalization Cluster:
+          value: 00000000-0000-0000-0000-000000000000
+        PUT Operationalization Cluster:
+          value: 00000000-0000-0000-0000-000000000000
+        Check Update for an Operationalization Cluster:
+          value: 00000000-0000-0000-0000-000000000000
+        List Keys of an Operationalization Cluster:
+          value: 00000000-0000-0000-0000-000000000000
+        Update System Services in an Operationalization Cluster:
+          value: 00000000-0000-0000-0000-000000000000
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AcsClusterProperties:
+      description: Information about the container service backing the cluster
+      properties:
+        agentCount:
+          default: 2
+          description: The number of agent nodes in the Container Service. This can be
+            changed to scale the cluster.
+          maximum: 100
+          minimum: 1
+          type: integer
+        agentVmSize:
+          default: Standard_D3_v2
+          description: The Azure VM size of the agent VM nodes. This cannot be changed once
+            the cluster is created. This list is non exhaustive; refer to
+            https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes
+            for the possible VM sizes.
+          enum:
+            - Standard_A0
+            - Standard_A1
+            - Standard_A2
+            - Standard_A3
+            - Standard_A4
+            - Standard_A5
+            - Standard_A6
+            - Standard_A7
+            - Standard_A8
+            - Standard_A9
+            - Standard_A10
+            - Standard_A11
+            - Standard_D1
+            - Standard_D2
+            - Standard_D3
+            - Standard_D4
+            - Standard_D11
+            - Standard_D12
+            - Standard_D13
+            - Standard_D14
+            - Standard_D1_v2
+            - Standard_D2_v2
+            - Standard_D3_v2
+            - Standard_D4_v2
+            - Standard_D5_v2
+            - Standard_D11_v2
+            - Standard_D12_v2
+            - Standard_D13_v2
+            - Standard_D14_v2
+            - Standard_G1
+            - Standard_G2
+            - Standard_G3
+            - Standard_G4
+            - Standard_G5
+            - Standard_DS1
+            - Standard_DS2
+            - Standard_DS3
+            - Standard_DS4
+            - Standard_DS11
+            - Standard_DS12
+            - Standard_DS13
+            - Standard_DS14
+            - Standard_GS1
+            - Standard_GS2
+            - Standard_GS3
+            - Standard_GS4
+            - Standard_GS5
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: AgentVMSizeTypes
+        clusterFqdn:
+          description: "The FQDN of the cluster. "
+          readOnly: true
+          type: string
+        masterCount:
+          default: 1
+          description: The number of master nodes in the container service.
+          maximum: 5
+          minimum: 1
+          type: integer
+        orchestratorProperties:
+          $ref: "#/components/schemas/KubernetesClusterProperties"
+        orchestratorType:
+          description: Type of orchestrator. It cannot be changed once the cluster is
+            created.
+          enum:
+            - Kubernetes
+            - None
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: OrchestratorType
+        systemServices:
+          description: The system services deployed to the cluster
+          items:
+            $ref: "#/components/schemas/SystemService"
+          type: array
+      required:
+        - orchestratorType
+      type: object
+    AppInsightsCredentials:
+      description: AppInsights credentials.
+      properties:
+        appId:
+          description: The AppInsights application ID.
+          type: string
+        instrumentationKey:
+          description: The AppInsights instrumentation key. This is not returned in
+            response of GET/PUT on the resource. To see this please call
+            listKeys API.
+          type: string
+      type: object
+    AppInsightsProperties:
+      description: Properties of App Insights.
+      properties:
+        resourceId:
+          description: ARM resource ID of the App Insights.
+          type: string
+      type: object
+    AutoScaleConfiguration:
+      description: AutoScale configuration properties.
+      properties:
+        maxReplicas:
+          default: 100
+          description: The maximum number of replicas for each service.
+          minimum: 1
+          type: integer
+        minReplicas:
+          default: 1
+          description: The minimum number of replicas for each service.
+          minimum: 1
+          type: integer
+        refreshPeriodInSeconds:
+          description: Refresh period in seconds.
+          type: integer
+        status:
+          default: Disabled
+          description: If auto-scale is enabled for all services. Each service can turn it
+            off individually.
+          enum:
+            - Enabled
+            - Disabled
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: Status
+        targetUtilization:
+          description: The target utilization.
+          type: number
+      type: object
+    AvailableOperations:
+      description: Available operation list.
+      properties:
+        value:
+          description: An array of available operations.
+          items:
+            $ref: "#/components/schemas/ResourceOperation"
+          type: array
+      type: object
+    CheckSystemServicesUpdatesAvailableResponse:
+      description: Information about updates available for system services in a cluster.
+      properties:
+        updatesAvailable:
+          description: Yes if updates are available for the system services, No if not.
+          enum:
+            - Yes
+            - No
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: UpdatesAvailable
+      type: object
+    ContainerRegistryCredentials:
+      description: Information about the Azure Container Registry which contains the images
+        deployed to the cluster.
+      properties:
+        loginServer:
+          description: The ACR login server name. User name is the first part of the FQDN.
+          readOnly: true
+          type: string
+        password:
+          description: The ACR primary password.
+          readOnly: true
+          type: string
+        password2:
+          description: The ACR secondary password.
+          readOnly: true
+          type: string
+        username:
+          description: The ACR login username.
+          readOnly: true
+          type: string
+      type: object
+    ContainerRegistryProperties:
+      description: Properties of Azure Container Registry.
+      properties:
+        resourceId:
+          description: ARM resource ID of the Azure Container Registry used to store Docker
+            images for web services in the cluster. If not provided one will be
+            created. This cannot be changed once the cluster is created.
+          type: string
+      type: object
+    ContainerServiceCredentials:
+      description: Information about the Azure Container Registry which contains the images
+        deployed to the cluster.
+      properties:
+        acsKubeConfig:
+          description: The ACS kube config file.
+          readOnly: true
+          type: string
+        imagePullSecretName:
+          description: The ACR image pull secret name which was created in Kubernetes.
+          readOnly: true
+          type: string
+        servicePrincipalConfiguration:
+          $ref: "#/components/schemas/ServicePrincipalProperties"
+      type: object
+    ErrorDetail:
+      description: Error detail information.
+      properties:
+        code:
+          description: Error code.
+          type: string
+        message:
+          description: Error message.
+          type: string
+      required:
+        - code
+        - message
+      type: object
+    ErrorResponse:
+      description: Error response information.
+      properties:
+        code:
+          description: Error code.
+          type: string
+        details:
+          description: An array of error detail objects.
+          items:
+            $ref: "#/components/schemas/ErrorDetail"
+          type: array
+        message:
+          description: Error message.
+          type: string
+      required:
+        - code
+        - message
+      type: object
+    ErrorResponseWrapper:
+      description: Wrapper for error response to follow ARM guidelines.
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorResponse"
+      type: object
+    GlobalServiceConfiguration:
+      additionalProperties:
+        description: Any additional configuration key-value pairs.
+        type: object
+      description: Global configuration for services in the cluster.
+      properties:
+        autoScale:
+          $ref: "#/components/schemas/AutoScaleConfiguration"
+        etag:
+          description: The configuration ETag for updates.
+          type: string
+        serviceAuth:
+          $ref: "#/components/schemas/ServiceAuthConfiguration"
+        ssl:
+          $ref: "#/components/schemas/SslConfiguration"
+      type: object
+    KubernetesClusterProperties:
+      description: Kubernetes cluster specific properties
+      properties:
+        servicePrincipal:
+          $ref: "#/components/schemas/ServicePrincipalProperties"
+      type: object
+      x-ms-discriminator-value: Kubernetes
+    OperationalizationCluster:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: Instance of an Azure ML Operationalization Cluster resource.
+      properties:
+        properties:
+          $ref: "#/components/schemas/OperationalizationClusterProperties"
+      type: object
+    OperationalizationClusterCredentials:
+      description: Credentials to resources in the cluster.
+      properties:
+        appInsights:
+          $ref: "#/components/schemas/AppInsightsCredentials"
+        containerRegistry:
+          $ref: "#/components/schemas/ContainerRegistryCredentials"
+        containerService:
+          $ref: "#/components/schemas/ContainerServiceCredentials"
+        serviceAuthConfiguration:
+          $ref: "#/components/schemas/ServiceAuthConfiguration"
+        sslConfiguration:
+          $ref: "#/components/schemas/SslConfiguration"
+        storageAccount:
+          $ref: "#/components/schemas/StorageAccountCredentials"
+      type: object
+    OperationalizationClusterProperties:
+      description: Properties of an operationalization cluster
+      properties:
+        appInsights:
+          $ref: "#/components/schemas/AppInsightsProperties"
+        clusterType:
+          description: The cluster type.
+          enum:
+            - ACS
+            - Local
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: ClusterType
+        containerRegistry:
+          $ref: "#/components/schemas/ContainerRegistryProperties"
+        containerService:
+          $ref: "#/components/schemas/AcsClusterProperties"
+        createdOn:
+          description: The date and time when the cluster was created.
+          format: date-time
+          readOnly: true
+          type: string
+        description:
+          description: The description of the cluster.
+          type: string
+        globalServiceConfiguration:
+          $ref: "#/components/schemas/GlobalServiceConfiguration"
+        modifiedOn:
+          description: The date and time when the cluster was last modified.
+          format: date-time
+          readOnly: true
+          type: string
+        provisioningErrors:
+          description: List of provisioning errors reported by the resource provider.
+          items:
+            $ref: "#/components/schemas/ErrorResponseWrapper"
+          readOnly: true
+          type: array
+        provisioningState:
+          description: The provision state of the cluster. Valid values are Unknown,
+            Updating, Provisioning, Succeeded, and Failed.
+          enum:
+            - Unknown
+            - Updating
+            - Creating
+            - Deleting
+            - Succeeded
+            - Failed
+            - Canceled
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: OperationStatus
+        storageAccount:
+          $ref: "#/components/schemas/StorageAccountProperties"
+      required:
+        - clusterType
+      type: object
+    OperationalizationClusterUpdateParameters:
+      description: Parameters for PATCH operation on an operationalization cluster
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Gets or sets a list of key value pairs that describe the resource.
+            These tags can be used in viewing and grouping this resource (across
+            resource groups). A maximum of 15 tags can be provided for a
+            resource. Each tag must have a key no greater in length than 128
+            characters and a value no greater in length than 256 characters.
+          type: object
+      type: object
+    PaginatedOperationalizationClustersList:
+      description: Paginated list of operationalization clusters.
+      properties:
+        nextLink:
+          description: A continuation link (absolute URI) to the next page of results in
+            the list.
+          type: string
+        value:
+          description: An array of cluster objects.
+          items:
+            $ref: "#/components/schemas/OperationalizationCluster"
+          type: array
+      type: object
+    Resource:
+      description: Azure resource
+      properties:
+        id:
+          description: Specifies the resource ID.
+          readOnly: true
+          type: string
+        location:
+          description: Specifies the location of the resource.
+          type: string
+          x-ms-mutability:
+            - create
+            - read
+        name:
+          description: Specifies the name of the resource.
+          readOnly: true
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Contains resource tags defined as key/value pairs.
+          type: object
+        type:
+          description: Specifies the type of the resource.
+          readOnly: true
+          type: string
+      required:
+        - location
+      x-ms-azure-resource: true
+    ResourceOperation:
+      description: Resource operation.
+      properties:
+        display:
+          description: Display of the operation.
+          properties:
+            description:
+              description: The description of the operation.
+              type: string
+            operation:
+              description: The operation.
+              type: string
+            provider:
+              description: The resource provider name.
+              type: string
+            resource:
+              description: The resource name.
+              type: string
+          type: object
+        name:
+          description: Name of this operation.
+          type: string
+        origin:
+          description: The operation origin.
+          type: string
+      type: object
+    ServiceAuthConfiguration:
+      description: Global service auth configuration properties. These are the data-plane
+        authorization keys and are used if a service doesn't define it's own.
+      properties:
+        primaryAuthKeyHash:
+          description: The primary auth key hash. This is not returned in response of
+            GET/PUT on the resource.. To see this please call listKeys API.
+          type: string
+        secondaryAuthKeyHash:
+          description: The secondary auth key hash. This is not returned in response of
+            GET/PUT on the resource.. To see this please call listKeys API.
+          type: string
+      required:
+        - primaryAuthKeyHash
+        - secondaryAuthKeyHash
+      type: object
+    ServicePrincipalProperties:
+      description: The Azure service principal used by Kubernetes for configuring load
+        balancers
+      properties:
+        clientId:
+          description: The service principal client ID
+          type: string
+        secret:
+          description: The service principal secret. This is not returned in response of
+            GET/PUT on the resource. To see this please call listKeys.
+          type: string
+      required:
+        - clientId
+        - secret
+      type: object
+    SslConfiguration:
+      description: SSL configuration. If configured data-plane calls to user services will
+        be exposed over SSL only.
+      properties:
+        cert:
+          description: The SSL cert data in PEM format.
+          type: string
+        cname:
+          description: The CName of the certificate.
+          type: string
+        key:
+          description: The SSL key data in PEM format. This is not returned in response of
+            GET/PUT on the resource. To see this please call listKeys API.
+          type: string
+        status:
+          default: Enabled
+          description: SSL status. Allowed values are Enabled and Disabled.
+          enum:
+            - Enabled
+            - Disabled
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: Status
+      type: object
+    StorageAccountCredentials:
+      description: Access information for the storage account.
+      properties:
+        primaryKey:
+          description: The primary key of the storage account.
+          readOnly: true
+          type: string
+        resourceId:
+          description: The ARM resource ID of the storage account.
+          readOnly: true
+          type: string
+        secondaryKey:
+          description: The secondary key of the storage account.
+          readOnly: true
+          type: string
+      type: object
+    StorageAccountProperties:
+      description: Properties of Storage Account.
+      properties:
+        resourceId:
+          description: ARM resource ID of the Azure Storage Account to store CLI specific
+            files. If not provided one will be created. This cannot be changed
+            once the cluster is created.
+          type: string
+      type: object
+    SystemService:
+      description: Information about a system service deployed in the cluster
+      properties:
+        publicIpAddress:
+          description: The public IP address of the system service
+          readOnly: true
+          type: string
+        systemServiceType:
+          description: The system service type
+          enum:
+            - None
+            - ScoringFrontEnd
+            - BatchFrontEnd
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: SystemServiceType
+        version:
+          description: The state of the system service
+          readOnly: true
+          type: string
+      required:
+        - systemServiceType
+      type: object
+    UpdateSystemServicesResponse:
+      description: Response of the update system services API
+      properties:
+        updateCompletedOn:
+          description: The date and time when the last system services update completed.
+          format: date-time
+          readOnly: true
+          type: string
+        updateStartedOn:
+          description: The date and time when the last system services update was started.
+          format: date-time
+          readOnly: true
+          type: string
+        updateStatus:
+          description: Update status
+          enum:
+            - Unknown
+            - Updating
+            - Creating
+            - Deleting
+            - Succeeded
+            - Failed
+            - Canceled
+          readOnly: true
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: OperationStatus
+      type: object

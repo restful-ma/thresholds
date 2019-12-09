@@ -1,0 +1,649 @@
+openapi: 3.0.0
+info:
+  description: The Azure SQL Database management API provides a RESTful set of web APIs
+    that interact with Azure SQL Database services to manage your databases. The
+    API enables users to create, retrieve, update, and delete databases,
+    servers, and other entities.
+  title: SqlManagementClient
+  version: 2018-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/instancePools.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: sql-instancePools
+  x-tags:
+    - Azure
+    - Microsoft
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/instancePools":
+    get:
+      description: Gets a list of all instance pools in the subscription.
+      operationId: InstancePools_List
+      parameters:
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of instance pools in a subscription.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstancePoolListResult"
+              examples:
+                List instance pools in the subscription:
+                  $ref: "#/components/examples/List_instance_pools_in_the_subscript\
+                    ion"
+        default:
+          description: "*** Error Responses: ***"
+      tags:
+        - InstancePools
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools":
+    get:
+      description: Gets a list of instance pools in the resource group
+      operationId: InstancePools_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the list of instance pools.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstancePoolListResult"
+              examples:
+                List instance pools by resource group:
+                  $ref: "#/components/examples/List_instance_pools_by_resource_group"
+        default:
+          description: "*** Error Responses: ***"
+      tags:
+        - InstancePools
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}":
+    delete:
+      description: Deletes an instance pool
+      operationId: InstancePools_Delete
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - description: The name of the instance pool to be deleted
+          in: path
+          name: instancePoolName
+          required: true
+          schema:
+            type: string
+          examples:
+            Delete an instance pool:
+              value: testIP
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully deleted the instance pool.
+        "202":
+          description: Accepted
+        "204":
+          description: The specified instance pool does not exist.
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InstancePoolNotEmpty - An instance pool is not empty
+
+             * 404 InstancePoolNotFound - An instance pool cannot be found
+
+             * 404 InstancePoolNotFound - An instance pool cannot be found
+
+             * 409 InstancePoolBusy - An instance pool is busy with another ongoing operation
+      tags:
+        - InstancePools
+      x-ms-long-running-operation: true
+    get:
+      description: Gets an instance pool.
+      operationId: InstancePools_Get
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - description: The name of the instance pool to be retrieved.
+          in: path
+          name: instancePoolName
+          required: true
+          schema:
+            type: string
+          examples:
+            Get an instance pool:
+              value: testIP
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      responses:
+        "200":
+          description: Successfully retrieved the specified instance pool.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstancePool"
+              examples:
+                Get an instance pool:
+                  $ref: "#/components/examples/Get_an_instance_pool"
+        default:
+          description: |-
+            *** Error Responses: ***
+
+             * 404 InstancePoolNotFound - An instance pool cannot be found
+      tags:
+        - InstancePools
+    patch:
+      description: Updates an instance pool.
+      operationId: InstancePools_Update
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - description: The name of the instance pool to be updated.
+          in: path
+          name: instancePoolName
+          required: true
+          schema:
+            type: string
+          examples:
+            Patch an instance pool:
+              value: testIP
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstancePoolUpdate"
+        description: The requested instance pool resource state.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the instance pool.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstancePool"
+              examples:
+                Patch an instance pool:
+                  $ref: "#/components/examples/Patch_an_instance_pool"
+        "202":
+          description: Accepted
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidResourceRequestBody - The resource or resource properties in the request body is empty or invalid.
+      tags:
+        - InstancePools
+      x-ms-long-running-operation: true
+    put:
+      description: Creates or updates an instance pool.
+      operationId: InstancePools_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/ResourceGroupParameter"
+        - description: The name of the instance pool to be created or updated.
+          in: path
+          name: instancePoolName
+          required: true
+          schema:
+            type: string
+          examples:
+            Create an instance pool with all properties.:
+              value: testIP
+            Create an instance pool with min properties.:
+              value: testIP
+        - $ref: "#/components/parameters/SubscriptionIdParameter"
+        - $ref: "#/components/parameters/ApiVersionParameter"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstancePool"
+        description: The requested instance pool resource state.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the instance pool.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstancePool"
+              examples:
+                Create an instance pool with all properties.:
+                  $ref: "#/components/examples/Create_an_instance_pool_with_all_pro\
+                    perties."
+                Create an instance pool with min properties.:
+                  $ref: "#/components/examples/Create_an_instance_pool_with_min_pro\
+                    perties."
+        "201":
+          description: Successfully created the instance pool.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstancePool"
+              examples:
+                Create an instance pool with all properties.:
+                  $ref: "#/components/examples/Create_an_instance_pool_with_all_pro\
+                    perties."
+                Create an instance pool with min properties.:
+                  $ref: "#/components/examples/Create_an_instance_pool_with_min_pro\
+                    perties."
+        "202":
+          description: Accepted
+        default:
+          description: >-
+            *** Error Responses: ***
+
+             * 400 InvalidResourceRequestBody - The resource or resource properties in the request body is empty or invalid.
+
+             * 400 MissingSkuName - Sku name is required.
+
+             * 400 InstancePoolRequestedVcoreCountIsInvalid - Requested vcore count for instance pool is invalid
+
+             * 400 InstancePoolRequestMissingSku - Instance pool request is missing sku
+
+             * 400 InstancePoolRequestMissingSkuTier - Instance pool request is missing sku tier
+
+             * 400 InstancePoolRequestMissingSkuFamily - Instance pool request is missing sku family
+
+             * 400 InstancePoolRequestedSubnetResourceIdIsInvalid - Subnet id for instance pool is null or empty
+
+             * 409 InstancePoolBusy - An instance pool is busy with another ongoing operation
+      tags:
+        - InstancePools
+      x-ms-long-running-operation: true
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    List_instance_pools_in_the_subscription:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP
+            location: onebox
+            name: testIP
+            properties:
+              licenseType: LicenseIncluded
+              subnetId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1
+              vCores: 8
+            sku:
+              family: Gen5
+              name: GP_Gen5
+              tier: GeneralPurpose
+            tags:
+              a: b
+            type: Microsoft.Sql/instancePools
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group2/providers/Microsoft.Sql/instancePools/testIP2
+            location: onebox
+            name: testIP2
+            properties:
+              licenseType: LicenseIncluded
+              subnetId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group2/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1
+              vCores: 8
+            sku:
+              family: Gen5
+              name: GP_Gen5
+              tier: GeneralPurpose
+            tags:
+              a: b
+            type: Microsoft.Sql/instancePools
+    List_instance_pools_by_resource_group:
+      value:
+        value:
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP
+            location: onebox
+            name: testIP
+            properties:
+              licenseType: LicenseIncluded
+              subnetId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1
+              vCores: 8
+            sku:
+              family: Gen5
+              name: GP_Gen5
+              tier: GeneralPurpose
+            tags:
+              a: b
+            type: Microsoft.Sql/instancePools
+          - id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP2
+            location: onebox
+            name: testIP2
+            properties:
+              licenseType: LicenseIncluded
+              subnetId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1
+              vCores: 8
+            sku:
+              family: Gen5
+              name: GP_Gen5
+              tier: GeneralPurpose
+            tags:
+              a: b
+            type: Microsoft.Sql/instancePools
+    Get_an_instance_pool:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP
+        location: onebox
+        name: testIP
+        properties:
+          licenseType: LicenseIncluded
+          subnetId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1
+          vCores: 8
+        sku:
+          family: Gen5
+          name: GP_Gen5
+          tier: GeneralPurpose
+        tags:
+          a: b
+        type: Microsoft.Sql/instancePools
+    Patch_an_instance_pool:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP
+        location: onebox
+        name: testIP
+        properties:
+          licenseType: LicenseIncluded
+          subnetId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1
+          vCores: 8
+        sku:
+          family: Gen5
+          name: GP_Gen5
+          tier: GeneralPurpose
+        tags:
+          x: y
+        type: Microsoft.Sql/instancePools
+    Create_an_instance_pool_with_all_properties.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP
+        location: onebox
+        name: testIP
+        properties:
+          licenseType: LicenseIncluded
+          subnetId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1
+          vCores: 8
+        sku:
+          family: Gen5
+          name: GP_Gen5
+          tier: GeneralPurpose
+        tags:
+          a: b
+        type: Microsoft.Sql/instancePools
+    Create_an_instance_pool_with_min_properties.:
+      value:
+        id: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/instancePools/testIP
+        location: onebox
+        name: testIP
+        properties:
+          licenseType: LicenseIncluded
+          subnetId: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1
+          vCores: 8
+        sku:
+          family: Gen5
+          name: GP_Gen5
+          tier: GeneralPurpose
+        tags: {}
+        type: Microsoft.Sql/instancePools
+  parameters:
+    ApiVersionParameter:
+      description: The API version to use for the request.
+      in: query
+      name: api-version
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        List instance pools in the subscription:
+          value: 2018-06-01-preview
+        List instance pools by resource group:
+          value: 2018-06-01-preview
+        Delete an instance pool:
+          value: 2018-06-01-preview
+        Get an instance pool:
+          value: 2018-06-01-preview
+        Patch an instance pool:
+          value: 2018-06-01-preview
+        Create an instance pool with all properties.:
+          value: 2018-06-01-preview
+        Create an instance pool with min properties.:
+          value: 2018-06-01-preview
+    BlobAuditingPolicyNameParameter:
+      description: The name of the blob auditing policy.
+      in: path
+      name: blobAuditingPolicyName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - default
+    DatabaseNameParameter:
+      description: The name of the database.
+      in: path
+      name: databaseName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ManagedInstanceNameParameter:
+      description: The name of the managed instance.
+      in: path
+      name: managedInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    ResourceGroupParameter:
+      description: The name of the resource group that contains the resource. You can
+        obtain this value from the Azure Resource Manager API or the portal.
+      in: path
+      name: resourceGroupName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        List instance pools by resource group:
+          value: group1
+        Delete an instance pool:
+          value: group1
+        Get an instance pool:
+          value: group1
+        Patch an instance pool:
+          value: group1
+        Create an instance pool with all properties.:
+          value: group1
+        Create an instance pool with min properties.:
+          value: group1
+    ServerNameParameter:
+      description: The name of the server.
+      in: path
+      name: serverName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineContainerNameParameter:
+      description: The name of the SqlVirtualMachineContainer.
+      in: path
+      name: sqlVirtualMachineContainerName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SqlVirtualMachineInstanceNameParameter:
+      description: The name of the SqlVirtualMachineInstance.
+      in: path
+      name: sqlVirtualMachineInstanceName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+    SubscriptionIdParameter:
+      description: The subscription ID that identifies an Azure subscription.
+      in: path
+      name: subscriptionId
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+      examples:
+        List instance pools in the subscription:
+          value: 00000000-1111-2222-3333-444444444444
+        List instance pools by resource group:
+          value: 00000000-1111-2222-3333-444444444444
+        Delete an instance pool:
+          value: 00000000-1111-2222-3333-444444444444
+        Get an instance pool:
+          value: 00000000-1111-2222-3333-444444444444
+        Patch an instance pool:
+          value: 00000000-1111-2222-3333-444444444444
+        Create an instance pool with all properties.:
+          value: 00000000-1111-2222-3333-444444444444
+        Create an instance pool with min properties.:
+          value: 00000000-1111-2222-3333-444444444444
+    VirtualClusterNameParameter:
+      description: The name of the virtual cluster.
+      in: path
+      name: virtualClusterName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    InstancePool:
+      allOf:
+        - allOf:
+            - description: ARM resource.
+              properties:
+                id:
+                  description: Resource ID.
+                  readOnly: true
+                  type: string
+                name:
+                  description: Resource name.
+                  readOnly: true
+                  type: string
+                type:
+                  description: Resource type.
+                  readOnly: true
+                  type: string
+              type: object
+              x-ms-azure-resource: true
+          description: ARM tracked top level resource.
+          properties:
+            location:
+              description: Resource location.
+              type: string
+              x-ms-mutability:
+                - read
+                - create
+            tags:
+              additionalProperties:
+                type: string
+              description: Resource tags.
+              type: object
+          required:
+            - location
+          type: object
+      description: An Azure SQL instance pool.
+      properties:
+        properties:
+          $ref: "#/components/schemas/InstancePoolProperties"
+        sku:
+          description: An ARM Resource SKU.
+          properties:
+            capacity:
+              description: Capacity of the particular SKU.
+              format: int32
+              type: integer
+            family:
+              description: If the service has different generations of hardware, for the
+                same SKU, then that can be captured here.
+              type: string
+            name:
+              description: The name of the SKU, typically, a letter + Number code, e.g. P3.
+              type: string
+            size:
+              description: Size of the particular SKU
+              type: string
+            tier:
+              description: The tier or edition of the particular SKU, e.g. Basic, Premium.
+              type: string
+          required:
+            - name
+          type: object
+      required:
+        - location
+      type: object
+    InstancePoolListResult:
+      description: A list of Azure SQL instance pools.
+      properties:
+        nextLink:
+          description: Link to retrieve next page of results.
+          readOnly: true
+          type: string
+        value:
+          description: Array of results.
+          items:
+            $ref: "#/components/schemas/InstancePool"
+          readOnly: true
+          type: array
+      type: object
+    InstancePoolProperties:
+      description: Properties of an instance pool.
+      properties:
+        licenseType:
+          description: The license type. Possible values are 'LicenseIncluded' (price for
+            SQL license is included) and 'BasePrice' (without SQL license
+            price).
+          enum:
+            - LicenseIncluded
+            - BasePrice
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: InstancePoolLicenseType
+          x-ms-mutability:
+            - read
+            - create
+        subnetId:
+          description: Resource ID of the subnet to place this instance pool in.
+          type: string
+          x-ms-mutability:
+            - read
+            - create
+        vCores:
+          description: Count of vCores belonging to this instance pool.
+          format: int32
+          type: integer
+          x-ms-mutability:
+            - read
+            - create
+      required:
+        - subnetId
+        - vCores
+        - licenseType
+      type: object
+    InstancePoolUpdate:
+      description: An update to an Instance pool.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags.
+          type: object
+      type: object

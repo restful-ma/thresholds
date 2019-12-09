@@ -1,0 +1,2202 @@
+openapi: 3.0.0
+info:
+  version: 2018-11-14
+  x-release: v4
+  title: Managed Streaming for Kafka
+  description: |-2
+    
+                   <p>The operations for managing an Amazon MSK cluster.</p>
+  x-logo:
+    url: https://twitter.com/awscloud/profile_image?size=original
+    backgroundColor: "#FFFFFF"
+  termsOfService: https://aws.amazon.com/service-terms/
+  contact:
+    name: Mike Ralphson
+    email: mike.ralphson@gmail.com
+    url: https://github.com/mermade/aws2openapi
+    x-twitter: PermittedSoc
+  license:
+    name: Apache 2.0 License
+    url: http://www.apache.org/licenses/
+  x-providerName: amazonaws.com
+  x-serviceName: kafka
+  x-origin:
+    - contentType: application/json
+      url: https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/kafka-2018-11-14.normal.json
+      converter:
+        url: https://github.com/mermade/aws2openapi
+        version: 1.0.0
+      x-apisguru-direct: true
+  x-apiClientRegistration:
+    url: https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-preferred: true
+externalDocs:
+  description: Amazon Web Services documentation
+  url: https://docs.aws.amazon.com/kafka/
+x-hasEquivalentPaths: true
+security:
+  - hmac: []
+paths:
+  /v1/clusters:
+    post:
+      operationId: CreateCluster
+      description: |-2
+        
+                    <p>Creates a new MSK cluster.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateClusterResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "482":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "483":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+        "486":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - brokerNodeGroupInfo
+                - clusterName
+                - configurationInfo
+                - kafkaVersion
+                - numberOfBrokerNodes
+              properties:
+                brokerNodeGroupInfo:
+                  description: >-2
+                    
+                                <p>Describes the setup to be used for Kafka broker nodes in the cluster.</p>
+                  type: object
+                  properties:
+                    BrokerAZDistribution:
+                      $ref: "#/components/schemas/BrokerAZDistribution"
+                    ClientSubnets:
+                      $ref: "#/components/schemas/__listOf__string"
+                    InstanceType:
+                      $ref: "#/components/schemas/__stringMin5Max32"
+                    SecurityGroups:
+                      $ref: "#/components/schemas/__listOf__string"
+                    StorageInfo:
+                      $ref: "#/components/schemas/StorageInfo"
+                clientAuthentication:
+                  description: >-2
+                    
+                                <p>Includes all client authentication information.</p>
+                  type: object
+                  properties:
+                    Tls:
+                      $ref: "#/components/schemas/Tls"
+                clusterName:
+                  description: |-2
+                    
+                                <p>The name of the cluster.</p>
+                  type: string
+                  minLength: 1
+                  maxLength: 64
+                configurationInfo:
+                  description: >-2
+                    
+                                <p>Specifies the configuration to use for the brokers.</p>
+                  type: object
+                  properties:
+                    Arn:
+                      $ref: "#/components/schemas/__string"
+                    Revision:
+                      $ref: "#/components/schemas/__long"
+                encryptionInfo:
+                  description: >-2
+                    
+                                <p>Includes encryption-related information, such as the AWS KMS key used for encrypting data at rest and whether you want MSK to encrypt your data in transit.</p>
+                  type: object
+                  properties:
+                    EncryptionAtRest:
+                      $ref: "#/components/schemas/EncryptionAtRest"
+                    EncryptionInTransit:
+                      $ref: "#/components/schemas/EncryptionInTransit"
+                enhancedMonitoring:
+                  description: >-2
+                    
+                                <p>Specifies which metrics are gathered for the MSK cluster. This property has three possible values: DEFAULT, PER_BROKER, and PER_TOPIC_PER_BROKER. For a list of the metrics associated with each of these three levels of monitoring, see <a href="https://docs.aws.amazon.com/msk/latest/developerguide/monitoring.html">Monitoring</a>.</p>
+                  type: string
+                  enum:
+                    - DEFAULT
+                    - PER_BROKER
+                    - PER_TOPIC_PER_BROKER
+                kafkaVersion:
+                  description: |-2
+                    
+                                <p>The version of Apache Kafka.</p>
+                  type: string
+                  minLength: 1
+                  maxLength: 128
+                numberOfBrokerNodes:
+                  description: >-2
+                    
+                                <p>The number of broker nodes in the cluster.</p>
+                  type: integer
+                  minimum: 1
+                  maximum: 15
+                tags:
+                  description: |-2
+                    
+                                <p>Create tags when creating the cluster.</p>
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListClusters
+      description: >-2
+        
+                    <p>Returns a list of all the MSK clusters in the current Region.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListClustersResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "482":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "483":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+      parameters:
+        - name: clusterNameFilter
+          in: query
+          required: false
+          description: >-2
+            
+                        <p>Specify a prefix of the name of the clusters that you want to list. The service lists all the clusters whose names start with this prefix.</p>
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: >-2
+            
+                        <p>The maximum number of results to return in the response. If there are more results, the response includes a NextToken parameter.</p>
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: >-2
+            
+                        <p>The paginated results marker. When the result of the operation is truncated, the call returns NextToken in the response. 
+                        To get the next batch, provide this token in your next request.</p>
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  /v1/configurations:
+    post:
+      operationId: CreateConfiguration
+      description: |-2
+        
+                    <p>Creates a new MSK configuration.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateConfigurationResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "482":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "483":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "484":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "485":
+          description: TooManyRequestsException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequestsException"
+        "486":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - kafkaVersions
+                - name
+                - serverProperties
+              properties:
+                description:
+                  description: |-2
+                    
+                                <p>The description of the configuration.</p>
+                  type: string
+                kafkaVersions:
+                  description: >-2
+                    
+                                <p>The versions of Apache Kafka with which you can use this MSK configuration.</p>
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/__string"
+                name:
+                  description: |-2
+                    
+                                <p>The name of the configuration.</p>
+                  type: string
+                serverProperties:
+                  description: >-2
+                    
+                                <p>Contents of the <filename>server.properties</filename> file. When using the API, you must ensure that the contents of the file are base64 encoded. 
+                                   When using the AWS Management Console, the SDK, or the AWS CLI, the contents of <filename>server.properties</filename> can be in plaintext.</p>
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: ListConfigurations
+      description: >-2
+        
+                    <p>Returns a list of all the MSK configurations in this Region.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListConfigurationsResponse"
+        "480":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "481":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "482":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+      parameters:
+        - name: maxResults
+          in: query
+          required: false
+          description: >-2
+            
+                        <p>The maximum number of results to return in the response. If there are more results, the response includes a NextToken parameter.</p>
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: >-2
+            
+                        <p>The paginated results marker. When the result of the operation is truncated, the call returns NextToken in the response. 
+                        To get the next batch, provide this token in your next request.</p>
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+  "/v1/clusters/{clusterArn}":
+    delete:
+      operationId: DeleteCluster
+      description: >-2
+        
+                    <p>Deletes the MSK cluster specified by the Amazon Resource Name (ARN) in the request.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteClusterResponse"
+        "480":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "481":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+      parameters:
+        - name: clusterArn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies the cluster.</p>
+          schema:
+            type: string
+        - name: currentVersion
+          in: query
+          required: false
+          description: |-2
+            
+                        <p>The current version of the MSK cluster.</p>
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    get:
+      operationId: DescribeCluster
+      description: >-2
+        
+                    <p>Returns a description of the MSK cluster whose Amazon Resource Name (ARN) is specified in the request.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeClusterResponse"
+        "480":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "481":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "482":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+      parameters:
+        - name: clusterArn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies the cluster.</p>
+          schema:
+            type: string
+  "/v1/operations/{clusterOperationArn}":
+    get:
+      operationId: DescribeClusterOperation
+      description: >-2
+        
+                    <p>Returns a description of the cluster operation specified by the ARN.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeClusterOperationResponse"
+        "480":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "481":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "482":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+      parameters:
+        - name: clusterOperationArn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies the MSK cluster operation.</p>
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/v1/configurations/{arn}":
+    get:
+      operationId: DescribeConfiguration
+      description: |-2
+        
+                    <p>Returns a description of this MSK configuration.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeConfigurationResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "484":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "485":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: arn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies an MSK configuration and all of its revisions.</p>
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/v1/configurations/{arn}/revisions/{revision}":
+    get:
+      operationId: DescribeConfigurationRevision
+      description: >-2
+        
+                    <p>Returns a description of this revision of the configuration.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DescribeConfigurationRevisionResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "484":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "485":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: arn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies an MSK configuration and all of its revisions.</p>
+          schema:
+            type: string
+        - name: revision
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>A string that uniquely identifies a revision of an MSK configuration.</p>
+          schema:
+            type: integer
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/v1/clusters/{clusterArn}/bootstrap-brokers":
+    get:
+      operationId: GetBootstrapBrokers
+      description: >-2
+        
+                    <p>A list of brokers that a client application can use to bootstrap.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBootstrapBrokersResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictException"
+        "484":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+      parameters:
+        - name: clusterArn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies the cluster.</p>
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/v1/clusters/{clusterArn}/operations":
+    get:
+      operationId: ListClusterOperations
+      description: >-2
+        
+                    <p>Returns a list of all the operations that have been performed on the specified MSK cluster.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListClusterOperationsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "482":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "483":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+      parameters:
+        - name: clusterArn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies the cluster.</p>
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: >-2
+            
+                        <p>The maximum number of results to return in the response. If there are more results, the response includes a NextToken parameter.</p>
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: >-2
+            
+                        <p>The paginated results marker. When the result of the operation is truncated, the call returns NextToken in the response. 
+                        To get the next batch, provide this token in your next request.</p>
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/v1/configurations/{arn}/revisions":
+    get:
+      operationId: ListConfigurationRevisions
+      description: >-2
+        
+                    <p>Returns a list of all the MSK configurations in this Region.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListConfigurationRevisionsResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "484":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "485":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: arn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies an MSK configuration and all of its revisions.</p>
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: >-2
+            
+                        <p>The maximum number of results to return in the response. If there are more results, the response includes a NextToken parameter.</p>
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: >-2
+            
+                        <p>The paginated results marker. When the result of the operation is truncated, the call returns NextToken in the response. 
+                        To get the next batch, provide this token in your next request.</p>
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/v1/clusters/{clusterArn}/nodes":
+    get:
+      operationId: ListNodes
+      description: |-2
+        
+                    <p>Returns a list of the broker nodes in the cluster.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListNodesResponse"
+        "480":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "481":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+      parameters:
+        - name: clusterArn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies the cluster.</p>
+          schema:
+            type: string
+        - name: maxResults
+          in: query
+          required: false
+          description: >-2
+            
+                        <p>The maximum number of results to return in the response. If there are more results, the response includes a NextToken parameter.</p>
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: nextToken
+          in: query
+          required: false
+          description: >-2
+            
+                        <p>The paginated results marker. When the result of the operation is truncated, the call returns NextToken in the response. 
+                        To get the next batch, provide this token in your next request.</p>
+          schema:
+            type: string
+        - name: MaxResults
+          in: query
+          description: Pagination limit
+          required: false
+          schema:
+            type: string
+        - name: NextToken
+          in: query
+          description: Pagination token
+          required: false
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/v1/tags/{resourceArn}":
+    get:
+      operationId: ListTagsForResource
+      description: >-2
+        
+                    <p>Returns a list of the tags associated with the specified resource.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTagsForResourceResponse"
+        "480":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "481":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies the resource that's associated with the tags.</p>
+          schema:
+            type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+    post:
+      operationId: TagResource
+      description: |-2
+        
+                    <p>Adds tags to the specified MSK resource.</p>
+      responses:
+        "204":
+          description: Success
+        "480":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "481":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies the resource that's associated with the tags.</p>
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tags
+              properties:
+                tags:
+                  description: |-2
+                    
+                                <p>The key-value pair for the resource tag.</p>
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/__string"
+        required: true
+  "/v1/tags/{resourceArn}#tagKeys":
+    delete:
+      operationId: UntagResource
+      description: >-2
+        
+                    <p>Removes the tags associated with the keys that are provided in the query.</p>
+      responses:
+        "204":
+          description: Success
+        "480":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "481":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+      parameters:
+        - name: resourceArn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies the resource that's associated with the tags.</p>
+          schema:
+            type: string
+        - name: tagKeys
+          in: query
+          required: true
+          description: >-2
+            
+                        <p>Tag keys must be unique for a given cluster. In addition, the following restrictions apply:</p>
+                        <ul>
+                           <li>
+                              <p>Each tag key must be unique. If you add a tag with a key that's already in
+                              use, your new tag overwrites the existing key-value pair. </p>
+                           </li>
+                           <li>
+                              <p>You can't start a tag key with aws: because this prefix is reserved for use
+                              by  AWS.  AWS creates tags that begin with this prefix on your behalf, but
+                              you can't edit or delete them.</p>
+                           </li>
+                           <li>
+                              <p>Tag keys must be between 1 and 128 Unicode characters in length.</p>
+                           </li>
+                           <li>
+                              <p>Tag keys must consist of the following characters: Unicode letters, digits,
+                              white space, and the following special characters: _ . / = + -
+                                 @.</p>
+                           </li>
+                        </ul>
+          schema:
+            type: array
+            items:
+              type: string
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/v1/clusters/{clusterArn}/nodes/storage":
+    put:
+      operationId: UpdateBrokerStorage
+      description: |-2
+        
+                    <p>Updates the EBS storage associated with MSK brokers.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateBrokerStorageResponse"
+        "480":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+        "481":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "482":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "483":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "484":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+      parameters:
+        - name: clusterArn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies the cluster.</p>
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - currentVersion
+                - targetBrokerEBSVolumeInfo
+              properties:
+                currentVersion:
+                  description: >-2
+                    
+                                <p>The version of cluster to update from. A successful operation will then generate a new version.</p>
+                  type: string
+                targetBrokerEBSVolumeInfo:
+                  description: >-2
+                    
+                                <p>Describes the target volume size and the ID of the broker to apply the update to.</p>
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/BrokerEBSVolumeInfo"
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+  "/v1/clusters/{clusterArn}/configuration":
+    put:
+      operationId: UpdateClusterConfiguration
+      description: >-2
+        
+                    <p>Updates the cluster with the configuration that is specified in the request body.</p>
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateClusterConfigurationResponse"
+        "480":
+          description: BadRequestException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestException"
+        "481":
+          description: UnauthorizedException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedException"
+        "482":
+          description: InternalServerErrorException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerErrorException"
+        "483":
+          description: ForbiddenException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenException"
+        "484":
+          description: NotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundException"
+        "485":
+          description: ServiceUnavailableException
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailableException"
+      parameters:
+        - name: clusterArn
+          in: path
+          required: true
+          description: >-2
+            
+                        <p>The Amazon Resource Name (ARN) that uniquely identifies the cluster.</p>
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - configurationInfo
+                - currentVersion
+              properties:
+                configurationInfo:
+                  description: >-2
+                    
+                                <p>Specifies the configuration to use for the brokers.</p>
+                  type: object
+                  properties:
+                    Arn:
+                      $ref: "#/components/schemas/__string"
+                    Revision:
+                      $ref: "#/components/schemas/__long"
+                currentVersion:
+                  description: >-2
+                    
+                                <p>The version of the cluster that needs to be updated.</p>
+                  type: string
+        required: true
+    parameters:
+      - $ref: "#/components/parameters/X-Amz-Content-Sha256"
+      - $ref: "#/components/parameters/X-Amz-Date"
+      - $ref: "#/components/parameters/X-Amz-Algorithm"
+      - $ref: "#/components/parameters/X-Amz-Credential"
+      - $ref: "#/components/parameters/X-Amz-Security-Token"
+      - $ref: "#/components/parameters/X-Amz-Signature"
+      - $ref: "#/components/parameters/X-Amz-SignedHeaders"
+servers:
+  - url: http://kafka.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Kafka multi-region endpoint
+  - url: https://kafka.{region}.amazonaws.com
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - us-east-1
+          - us-east-2
+          - us-west-1
+          - us-west-2
+          - us-gov-west-1
+          - us-gov-east-1
+          - ca-central-1
+          - eu-north-1
+          - eu-west-1
+          - eu-west-2
+          - eu-west-3
+          - eu-central-1
+          - ap-northeast-1
+          - ap-northeast-2
+          - ap-northeast-3
+          - ap-southeast-1
+          - ap-southeast-2
+          - ap-south-1
+          - sa-east-1
+        default: us-east-1
+    description: The Kafka multi-region endpoint
+  - url: http://kafka.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Kafka endpoint for China (Beijing) and China (Ningxia)
+  - url: https://kafka.{region}.amazonaws.com.cn
+    variables:
+      region:
+        description: The AWS region
+        enum:
+          - cn-north-1
+          - cn-northwest-1
+        default: cn-north-1
+    description: The Kafka endpoint for China (Beijing) and China (Ningxia)
+components:
+  parameters:
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      required: false
+      schema:
+        type: string
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    hmac:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Amazon Signature authorization v4
+      x-amazon-apigateway-authtype: awsSigv4
+  schemas:
+    CreateClusterResponse:
+      type: object
+      properties:
+        ClusterArn:
+          $ref: "#/components/schemas/__string"
+        ClusterName:
+          $ref: "#/components/schemas/__string"
+        State:
+          $ref: "#/components/schemas/ClusterState"
+    BrokerAZDistribution:
+      type: string
+      enum:
+        - DEFAULT
+      description: >-2
+        
+                    <p>The distribution of broker nodes across Availability Zones. By default, broker nodes are distributed among three Availability Zones. Currently, the only supported value is DEFAULT. You can either specify this value explicitly or leave it out.</p>
+    __listOf__string:
+      type: array
+      items:
+        $ref: "#/components/schemas/__string"
+    __stringMin5Max32:
+      type: string
+      minLength: 5
+      maxLength: 32
+    StorageInfo:
+      type: object
+      properties:
+        EbsStorageInfo:
+          $ref: "#/components/schemas/EBSStorageInfo"
+      description: >-2
+        
+                    <p>Contains information about storage volumes attached to MSK broker nodes.</p>
+    Tls:
+      type: object
+      properties:
+        CertificateAuthorityArnList:
+          $ref: "#/components/schemas/__listOf__string"
+      description: |-2
+        
+                    <p>Details for client authentication using TLS.</p>
+    __string:
+      type: string
+    __long:
+      type: integer
+    EncryptionAtRest:
+      type: object
+      required:
+        - DataVolumeKMSKeyId
+      properties:
+        DataVolumeKMSKeyId:
+          $ref: "#/components/schemas/__string"
+      description: |-2
+        
+                    <p>The data-volume encryption details.</p>
+    EncryptionInTransit:
+      type: object
+      properties:
+        ClientBroker:
+          $ref: "#/components/schemas/ClientBroker"
+        InCluster:
+          $ref: "#/components/schemas/__boolean"
+      description: |-2
+        
+                    <p>The settings for encrypting data in transit.</p>
+    BadRequestException: {}
+    InternalServerErrorException: {}
+    UnauthorizedException: {}
+    ForbiddenException: {}
+    ServiceUnavailableException: {}
+    TooManyRequestsException: {}
+    ConflictException: {}
+    CreateConfigurationResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTime:
+          $ref: "#/components/schemas/__timestampIso8601"
+        LatestRevision:
+          $ref: "#/components/schemas/ConfigurationRevision"
+        Name:
+          $ref: "#/components/schemas/__string"
+    DeleteClusterResponse:
+      type: object
+      properties:
+        ClusterArn:
+          $ref: "#/components/schemas/__string"
+        State:
+          $ref: "#/components/schemas/ClusterState"
+    NotFoundException: {}
+    DescribeClusterResponse:
+      type: object
+      properties:
+        ClusterInfo:
+          $ref: "#/components/schemas/ClusterInfo"
+    DescribeClusterOperationResponse:
+      type: object
+      properties:
+        ClusterOperationInfo:
+          $ref: "#/components/schemas/ClusterOperationInfo"
+    DescribeConfigurationResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTime:
+          $ref: "#/components/schemas/__timestampIso8601"
+        Description:
+          $ref: "#/components/schemas/__string"
+        KafkaVersions:
+          $ref: "#/components/schemas/__listOf__string"
+        LatestRevision:
+          $ref: "#/components/schemas/ConfigurationRevision"
+        Name:
+          $ref: "#/components/schemas/__string"
+    DescribeConfigurationRevisionResponse:
+      type: object
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTime:
+          $ref: "#/components/schemas/__timestampIso8601"
+        Description:
+          $ref: "#/components/schemas/__string"
+        Revision:
+          $ref: "#/components/schemas/__long"
+        ServerProperties:
+          $ref: "#/components/schemas/__blob"
+    GetBootstrapBrokersResponse:
+      type: object
+      properties:
+        BootstrapBrokerString:
+          $ref: "#/components/schemas/__string"
+        BootstrapBrokerStringTls:
+          $ref: "#/components/schemas/__string"
+    ListClusterOperationsResponse:
+      type: object
+      properties:
+        ClusterOperationInfoList:
+          $ref: "#/components/schemas/__listOfClusterOperationInfo"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListClustersResponse:
+      type: object
+      properties:
+        ClusterInfoList:
+          $ref: "#/components/schemas/__listOfClusterInfo"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListConfigurationRevisionsResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        Revisions:
+          $ref: "#/components/schemas/__listOfConfigurationRevision"
+    ListConfigurationsResponse:
+      type: object
+      properties:
+        Configurations:
+          $ref: "#/components/schemas/__listOfConfiguration"
+        NextToken:
+          $ref: "#/components/schemas/__string"
+    ListNodesResponse:
+      type: object
+      properties:
+        NextToken:
+          $ref: "#/components/schemas/__string"
+        NodeInfoList:
+          $ref: "#/components/schemas/__listOfNodeInfo"
+    ListTagsForResourceResponse:
+      type: object
+      properties:
+        Tags:
+          $ref: "#/components/schemas/__mapOf__string"
+    UpdateBrokerStorageResponse:
+      type: object
+      properties:
+        ClusterArn:
+          $ref: "#/components/schemas/__string"
+        ClusterOperationArn:
+          $ref: "#/components/schemas/__string"
+    BrokerEBSVolumeInfo:
+      type: object
+      required:
+        - VolumeSizeGB
+        - KafkaBrokerNodeId
+      properties:
+        KafkaBrokerNodeId:
+          $ref: "#/components/schemas/__string"
+        VolumeSizeGB:
+          $ref: "#/components/schemas/__integer"
+      description: >-2
+        
+                    <p>Specifies the EBS volume upgrade information. The broker identifier must be set to the keyword ALL. This means the changes apply to all the brokers in the cluster.</p>
+    UpdateClusterConfigurationResponse:
+      type: object
+      properties:
+        ClusterArn:
+          $ref: "#/components/schemas/__string"
+        ClusterOperationArn:
+          $ref: "#/components/schemas/__string"
+    __integer:
+      type: integer
+    BrokerNodeGroupInfo:
+      type: object
+      required:
+        - ClientSubnets
+        - InstanceType
+      properties:
+        BrokerAZDistribution:
+          $ref: "#/components/schemas/BrokerAZDistribution"
+        ClientSubnets:
+          $ref: "#/components/schemas/__listOf__string"
+        InstanceType:
+          $ref: "#/components/schemas/__stringMin5Max32"
+        SecurityGroups:
+          $ref: "#/components/schemas/__listOf__string"
+        StorageInfo:
+          $ref: "#/components/schemas/StorageInfo"
+      description: >-2
+        
+                    <p>Describes the setup to be used for Kafka broker nodes in the cluster.</p>
+    __double:
+      type: number
+      format: double
+    BrokerSoftwareInfo:
+      type: object
+      properties:
+        ConfigurationArn:
+          $ref: "#/components/schemas/__string"
+        ConfigurationRevision:
+          $ref: "#/components/schemas/__long"
+        KafkaVersion:
+          $ref: "#/components/schemas/__string"
+      description: >-2
+        
+                    <p>Information about the current software installed on the cluster.</p>
+    BrokerNodeInfo:
+      type: object
+      properties:
+        AttachedENIId:
+          $ref: "#/components/schemas/__string"
+        BrokerId:
+          $ref: "#/components/schemas/__double"
+        ClientSubnet:
+          $ref: "#/components/schemas/__string"
+        ClientVpcIpAddress:
+          $ref: "#/components/schemas/__string"
+        CurrentBrokerSoftwareInfo:
+          $ref: "#/components/schemas/BrokerSoftwareInfo"
+        Endpoints:
+          $ref: "#/components/schemas/__listOf__string"
+      description: |-2
+        
+                    <p>BrokerNodeInfo</p>
+    ClientAuthentication:
+      type: object
+      properties:
+        Tls:
+          $ref: "#/components/schemas/Tls"
+      description: |-2
+        
+                    <p>Includes all client authentication information.</p>
+    ClientBroker:
+      type: string
+      enum:
+        - TLS
+        - TLS_PLAINTEXT
+        - PLAINTEXT
+      description: |-2
+        
+                    <p>Client-broker encryption in transit setting.</p>
+    __timestampIso8601:
+      type: string
+      format: date-time
+    EncryptionInfo:
+      type: object
+      properties:
+        EncryptionAtRest:
+          $ref: "#/components/schemas/EncryptionAtRest"
+        EncryptionInTransit:
+          $ref: "#/components/schemas/EncryptionInTransit"
+      description: >-2
+        
+                    <p>Includes encryption-related information, such as the AWS KMS key used for encrypting data at rest and whether you want MSK to encrypt your data in transit.</p>
+    EnhancedMonitoring:
+      type: string
+      enum:
+        - DEFAULT
+        - PER_BROKER
+        - PER_TOPIC_PER_BROKER
+      description: >-2
+        
+                    <p>Specifies which metrics are gathered for the MSK cluster. This property has three possible values: DEFAULT, PER_BROKER, and PER_TOPIC_PER_BROKER. For a list of the metrics associated with each of these three levels of monitoring, see <a href="https://docs.aws.amazon.com/msk/latest/developerguide/monitoring.html">Monitoring</a>.</p>
+    ClusterState:
+      type: string
+      enum:
+        - ACTIVE
+        - CREATING
+        - UPDATING
+        - DELETING
+        - FAILED
+      description: |-2
+        
+                    <p>The state of a Kafka cluster.</p>
+    __mapOf__string:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/__string"
+    ClusterInfo:
+      type: object
+      properties:
+        ActiveOperationArn:
+          $ref: "#/components/schemas/__string"
+        BrokerNodeGroupInfo:
+          $ref: "#/components/schemas/BrokerNodeGroupInfo"
+        ClientAuthentication:
+          $ref: "#/components/schemas/ClientAuthentication"
+        ClusterArn:
+          $ref: "#/components/schemas/__string"
+        ClusterName:
+          $ref: "#/components/schemas/__string"
+        CreationTime:
+          $ref: "#/components/schemas/__timestampIso8601"
+        CurrentBrokerSoftwareInfo:
+          $ref: "#/components/schemas/BrokerSoftwareInfo"
+        CurrentVersion:
+          $ref: "#/components/schemas/__string"
+        EncryptionInfo:
+          $ref: "#/components/schemas/EncryptionInfo"
+        EnhancedMonitoring:
+          $ref: "#/components/schemas/EnhancedMonitoring"
+        NumberOfBrokerNodes:
+          $ref: "#/components/schemas/__integer"
+        State:
+          $ref: "#/components/schemas/ClusterState"
+        Tags:
+          $ref: "#/components/schemas/__mapOf__string"
+        ZookeeperConnectString:
+          $ref: "#/components/schemas/__string"
+      description: |-2
+        
+                    <p>Returns information about a cluster.</p>
+    ErrorInfo:
+      type: object
+      properties:
+        ErrorCode:
+          $ref: "#/components/schemas/__string"
+        ErrorString:
+          $ref: "#/components/schemas/__string"
+      description: >-2
+        
+                    <p>Returns information about an error state of the cluster.</p>
+    MutableClusterInfo:
+      type: object
+      properties:
+        BrokerEBSVolumeInfo:
+          $ref: "#/components/schemas/__listOfBrokerEBSVolumeInfo"
+        ConfigurationInfo:
+          $ref: "#/components/schemas/ConfigurationInfo"
+        NumberOfBrokerNodes:
+          $ref: "#/components/schemas/__integer"
+      description: >-2
+        
+                    <p>Information about cluster attributes that can be updated via update APIs.</p>
+    ClusterOperationInfo:
+      type: object
+      properties:
+        ClientRequestId:
+          $ref: "#/components/schemas/__string"
+        ClusterArn:
+          $ref: "#/components/schemas/__string"
+        CreationTime:
+          $ref: "#/components/schemas/__timestampIso8601"
+        EndTime:
+          $ref: "#/components/schemas/__timestampIso8601"
+        ErrorInfo:
+          $ref: "#/components/schemas/ErrorInfo"
+        OperationArn:
+          $ref: "#/components/schemas/__string"
+        OperationState:
+          $ref: "#/components/schemas/__string"
+        OperationType:
+          $ref: "#/components/schemas/__string"
+        SourceClusterInfo:
+          $ref: "#/components/schemas/MutableClusterInfo"
+        TargetClusterInfo:
+          $ref: "#/components/schemas/MutableClusterInfo"
+      description: |-2
+        
+                    <p>Returns information about a cluster operation.</p>
+    ConfigurationRevision:
+      type: object
+      required:
+        - Revision
+        - CreationTime
+      properties:
+        CreationTime:
+          $ref: "#/components/schemas/__timestampIso8601"
+        Description:
+          $ref: "#/components/schemas/__string"
+        Revision:
+          $ref: "#/components/schemas/__long"
+      description: |-2
+        
+                    <p>Describes a configuration revision.</p>
+    Configuration:
+      type: object
+      required:
+        - Description
+        - LatestRevision
+        - CreationTime
+        - KafkaVersions
+        - Arn
+        - Name
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        CreationTime:
+          $ref: "#/components/schemas/__timestampIso8601"
+        Description:
+          $ref: "#/components/schemas/__string"
+        KafkaVersions:
+          $ref: "#/components/schemas/__listOf__string"
+        LatestRevision:
+          $ref: "#/components/schemas/ConfigurationRevision"
+        Name:
+          $ref: "#/components/schemas/__string"
+      description: |-2
+        
+                    <p>Represents an MSK Configuration.</p>
+    ConfigurationInfo:
+      type: object
+      required:
+        - Revision
+        - Arn
+      properties:
+        Arn:
+          $ref: "#/components/schemas/__string"
+        Revision:
+          $ref: "#/components/schemas/__long"
+      description: |-2
+        
+                    <p>Specifies the configuration to use for the brokers.</p>
+    __stringMin1Max64:
+      type: string
+      minLength: 1
+      maxLength: 64
+    __stringMin1Max128:
+      type: string
+      minLength: 1
+      maxLength: 128
+    __integerMin1Max15:
+      type: integer
+      minimum: 1
+      maximum: 15
+    CreateClusterRequest:
+      type: object
+      required:
+        - BrokerNodeGroupInfo
+        - KafkaVersion
+        - NumberOfBrokerNodes
+        - ClusterName
+      properties:
+        BrokerNodeGroupInfo:
+          $ref: "#/components/schemas/BrokerNodeGroupInfo"
+        ClientAuthentication:
+          $ref: "#/components/schemas/ClientAuthentication"
+        ClusterName:
+          $ref: "#/components/schemas/__stringMin1Max64"
+        ConfigurationInfo:
+          $ref: "#/components/schemas/ConfigurationInfo"
+        EncryptionInfo:
+          $ref: "#/components/schemas/EncryptionInfo"
+        EnhancedMonitoring:
+          $ref: "#/components/schemas/EnhancedMonitoring"
+        KafkaVersion:
+          $ref: "#/components/schemas/__stringMin1Max128"
+        NumberOfBrokerNodes:
+          $ref: "#/components/schemas/__integerMin1Max15"
+        Tags:
+          $ref: "#/components/schemas/__mapOf__string"
+    __blob:
+      type: string
+    CreateConfigurationRequest:
+      type: object
+      required:
+        - ServerProperties
+        - KafkaVersions
+        - Name
+      properties:
+        Description:
+          $ref: "#/components/schemas/__string"
+        KafkaVersions:
+          $ref: "#/components/schemas/__listOf__string"
+        Name:
+          $ref: "#/components/schemas/__string"
+        ServerProperties:
+          $ref: "#/components/schemas/__blob"
+    DeleteClusterRequest:
+      type: object
+      properties: {}
+    DescribeClusterOperationRequest:
+      type: object
+      properties: {}
+    DescribeClusterRequest:
+      type: object
+      properties: {}
+    DescribeConfigurationRequest:
+      type: object
+      properties: {}
+    DescribeConfigurationRevisionRequest:
+      type: object
+      properties: {}
+    __integerMin1Max16384:
+      type: integer
+      minimum: 1
+      maximum: 16384
+    EBSStorageInfo:
+      type: object
+      properties:
+        VolumeSize:
+          $ref: "#/components/schemas/__integerMin1Max16384"
+      description: >-2
+        
+                    <p>Contains information about the EBS storage volumes attached to Kafka broker nodes.</p>
+    __boolean:
+      type: boolean
+    GetBootstrapBrokersRequest:
+      type: object
+      properties: {}
+    MaxResults:
+      type: integer
+      minimum: 1
+      maximum: 100
+    ListClusterOperationsRequest:
+      type: object
+      properties: {}
+    __listOfClusterOperationInfo:
+      type: array
+      items:
+        $ref: "#/components/schemas/ClusterOperationInfo"
+    ListClustersRequest:
+      type: object
+      properties: {}
+    __listOfClusterInfo:
+      type: array
+      items:
+        $ref: "#/components/schemas/ClusterInfo"
+    ListConfigurationRevisionsRequest:
+      type: object
+      properties: {}
+    __listOfConfigurationRevision:
+      type: array
+      items:
+        $ref: "#/components/schemas/ConfigurationRevision"
+    ListConfigurationsRequest:
+      type: object
+      properties: {}
+    __listOfConfiguration:
+      type: array
+      items:
+        $ref: "#/components/schemas/Configuration"
+    ListNodesRequest:
+      type: object
+      properties: {}
+    __listOfNodeInfo:
+      type: array
+      items:
+        $ref: "#/components/schemas/NodeInfo"
+    ListTagsForResourceRequest:
+      type: object
+      properties: {}
+    __listOfBrokerEBSVolumeInfo:
+      type: array
+      items:
+        $ref: "#/components/schemas/BrokerEBSVolumeInfo"
+    NodeType:
+      type: string
+      enum:
+        - BROKER
+      description: |-2
+        
+                    <p>The broker or Zookeeper node.</p>
+    ZookeeperNodeInfo:
+      type: object
+      properties:
+        AttachedENIId:
+          $ref: "#/components/schemas/__string"
+        ClientVpcIpAddress:
+          $ref: "#/components/schemas/__string"
+        Endpoints:
+          $ref: "#/components/schemas/__listOf__string"
+        ZookeeperId:
+          $ref: "#/components/schemas/__double"
+        ZookeeperVersion:
+          $ref: "#/components/schemas/__string"
+      description: |-2
+        
+                    <p>Zookeeper node information.</p>
+    NodeInfo:
+      type: object
+      properties:
+        AddedToClusterTime:
+          $ref: "#/components/schemas/__string"
+        BrokerNodeInfo:
+          $ref: "#/components/schemas/BrokerNodeInfo"
+        InstanceType:
+          $ref: "#/components/schemas/__string"
+        NodeARN:
+          $ref: "#/components/schemas/__string"
+        NodeType:
+          $ref: "#/components/schemas/NodeType"
+        ZookeeperNodeInfo:
+          $ref: "#/components/schemas/ZookeeperNodeInfo"
+      description: |-2
+        
+                    <p>The node information object.</p>
+    TagResourceRequest:
+      type: object
+      required:
+        - Tags
+      properties:
+        Tags:
+          $ref: "#/components/schemas/__mapOf__string"
+    UntagResourceRequest:
+      type: object
+      properties: {}
+    UpdateBrokerStorageRequest:
+      type: object
+      required:
+        - TargetBrokerEBSVolumeInfo
+        - CurrentVersion
+      properties:
+        CurrentVersion:
+          $ref: "#/components/schemas/__string"
+        TargetBrokerEBSVolumeInfo:
+          $ref: "#/components/schemas/__listOfBrokerEBSVolumeInfo"
+    UpdateClusterConfigurationRequest:
+      type: object
+      required:
+        - CurrentVersion
+        - ConfigurationInfo
+      properties:
+        ConfigurationInfo:
+          $ref: "#/components/schemas/ConfigurationInfo"
+        CurrentVersion:
+          $ref: "#/components/schemas/__string"

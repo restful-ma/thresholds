@@ -1,0 +1,829 @@
+openapi: 3.0.0
+info:
+  description: API spec for Microsoft.Security (Azure Security Center) resource provider
+  title: Security Center
+  version: 2015-06-01-preview
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/tasks.json
+      version: "2.0"
+  x-providerName: azure.com
+  x-serviceName: security-tasks
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks":
+    get:
+      description: Recommended tasks that will help improve the security of the
+        subscription proactively
+      operationId: Tasks_ListByHomeRegion
+      parameters:
+        - description: API version for the operation
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Get security recommendations tasks from security data location:
+              value: 2015-06-01-preview
+        - description: Azure subscription ID
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$
+          examples:
+            Get security recommendations tasks from security data location:
+              value: 20ff7fc3-e762-44dd-bd96-b71116dcdc23
+        - description: The location where ASC stores the data of the subscription. can be
+            retrieved from Get locations
+          in: path
+          name: ascLocation
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Get security recommendations tasks from security data location:
+              value: westeurope
+        - description: OData filter. Optional.
+          in: query
+          name: $filter
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SecurityTaskList"
+              examples:
+                Get security recommendations tasks from security data location:
+                  $ref: "#/components/examples/Get_security_recommendations_tasks_f\
+                    rom_security_data_location"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error response structure.
+                properties:
+                  error:
+                    description: Error details.
+                    properties:
+                      code:
+                        description: An identifier for the error. Codes are invariant and
+                          are intended to be consumed programmatically.
+                        readOnly: true
+                        type: string
+                      message:
+                        description: A message describing the error, intended to be
+                          suitable for display in a user interface.
+                        readOnly: true
+                        type: string
+                    type: object
+                    x-ms-external: true
+                type: object
+                x-ms-external: true
+      tags:
+        - Tasks
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}":
+    get:
+      description: Recommended tasks that will help improve the security of the
+        subscription proactively
+      operationId: Tasks_GetSubscriptionLevelTask
+      parameters:
+        - description: API version for the operation
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Get security recommendation task from security data location:
+              value: 2015-06-01-preview
+        - description: Azure subscription ID
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$
+          examples:
+            Get security recommendation task from security data location:
+              value: 20ff7fc3-e762-44dd-bd96-b71116dcdc23
+        - description: The location where ASC stores the data of the subscription. can be
+            retrieved from Get locations
+          in: path
+          name: ascLocation
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Get security recommendation task from security data location:
+              value: westeurope
+        - $ref: "#/components/parameters/TaskName"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SecurityTask"
+              examples:
+                Get security recommendation task from security data location:
+                  $ref: "#/components/examples/Get_security_recommendation_task_fro\
+                    m_security_data_location"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error response structure.
+                properties:
+                  error:
+                    description: Error details.
+                    properties:
+                      code:
+                        description: An identifier for the error. Codes are invariant and
+                          are intended to be consumed programmatically.
+                        readOnly: true
+                        type: string
+                      message:
+                        description: A message describing the error, intended to be
+                          suitable for display in a user interface.
+                        readOnly: true
+                        type: string
+                    type: object
+                    x-ms-external: true
+                type: object
+                x-ms-external: true
+      tags:
+        - Tasks
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}":
+    post:
+      description: Recommended tasks that will help improve the security of the
+        subscription proactively
+      operationId: Tasks_UpdateSubscriptionLevelTaskState
+      parameters:
+        - description: API version for the operation
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Change security recommendation task state:
+              value: 2015-06-01-preview
+        - description: Azure subscription ID
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$
+          examples:
+            Change security recommendation task state:
+              value: 20ff7fc3-e762-44dd-bd96-b71116dcdc23
+        - description: The location where ASC stores the data of the subscription. can be
+            retrieved from Get locations
+          in: path
+          name: ascLocation
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Change security recommendation task state:
+              value: westeurope
+        - $ref: "#/components/parameters/TaskName"
+        - $ref: "#/components/parameters/TaskUpdateActionType"
+      responses:
+        "204":
+          description: No Content
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error response structure.
+                properties:
+                  error:
+                    description: Error details.
+                    properties:
+                      code:
+                        description: An identifier for the error. Codes are invariant and
+                          are intended to be consumed programmatically.
+                        readOnly: true
+                        type: string
+                      message:
+                        description: A message describing the error, intended to be
+                          suitable for display in a user interface.
+                        readOnly: true
+                        type: string
+                    type: object
+                    x-ms-external: true
+                type: object
+                x-ms-external: true
+      tags:
+        - Tasks
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Security/tasks":
+    get:
+      description: Recommended tasks that will help improve the security of the
+        subscription proactively
+      operationId: Tasks_List
+      parameters:
+        - description: API version for the operation
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Get security recommendations tasks:
+              value: 2015-06-01-preview
+        - description: Azure subscription ID
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$
+          examples:
+            Get security recommendations tasks:
+              value: 20ff7fc3-e762-44dd-bd96-b71116dcdc23
+        - description: OData filter. Optional.
+          in: query
+          name: $filter
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SecurityTaskList"
+              examples:
+                Get security recommendations tasks:
+                  $ref: "#/components/examples/Get_security_recommendations_tasks"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error response structure.
+                properties:
+                  error:
+                    description: Error details.
+                    properties:
+                      code:
+                        description: An identifier for the error. Codes are invariant and
+                          are intended to be consumed programmatically.
+                        readOnly: true
+                        type: string
+                      message:
+                        description: A message describing the error, intended to be
+                          suitable for display in a user interface.
+                        readOnly: true
+                        type: string
+                    type: object
+                    x-ms-external: true
+                type: object
+                x-ms-external: true
+      tags:
+        - Tasks
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks":
+    get:
+      description: Recommended tasks that will help improve the security of the
+        subscription proactively
+      operationId: Tasks_ListByResourceGroup
+      parameters:
+        - description: API version for the operation
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Get security recommendation tasks in a resource group:
+              value: 2015-06-01-preview
+        - description: Azure subscription ID
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$
+          examples:
+            Get security recommendation tasks in a resource group:
+              value: 20ff7fc3-e762-44dd-bd96-b71116dcdc23
+        - description: The name of the resource group within the user's subscription. The
+            name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            Get security recommendation tasks in a resource group:
+              value: myRg
+        - description: The location where ASC stores the data of the subscription. can be
+            retrieved from Get locations
+          in: path
+          name: ascLocation
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Get security recommendation tasks in a resource group:
+              value: westeurope
+        - description: OData filter. Optional.
+          in: query
+          name: $filter
+          required: false
+          x-ms-parameter-location: method
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SecurityTaskList"
+              examples:
+                Get security recommendation tasks in a resource group:
+                  $ref: "#/components/examples/Get_security_recommendation_tasks_in\
+                    _a_resource_group"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error response structure.
+                properties:
+                  error:
+                    description: Error details.
+                    properties:
+                      code:
+                        description: An identifier for the error. Codes are invariant and
+                          are intended to be consumed programmatically.
+                        readOnly: true
+                        type: string
+                      message:
+                        description: A message describing the error, intended to be
+                          suitable for display in a user interface.
+                        readOnly: true
+                        type: string
+                    type: object
+                    x-ms-external: true
+                type: object
+                x-ms-external: true
+      tags:
+        - Tasks
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}":
+    get:
+      description: Recommended tasks that will help improve the security of the
+        subscription proactively
+      operationId: Tasks_GetResourceGroupLevelTask
+      parameters:
+        - description: API version for the operation
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Get security recommendation task in a resource group:
+              value: 2015-06-01-preview
+        - description: Azure subscription ID
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$
+          examples:
+            Get security recommendation task in a resource group:
+              value: 20ff7fc3-e762-44dd-bd96-b71116dcdc23
+        - description: The name of the resource group within the user's subscription. The
+            name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            Get security recommendation task in a resource group:
+              value: myRg
+        - description: The location where ASC stores the data of the subscription. can be
+            retrieved from Get locations
+          in: path
+          name: ascLocation
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Get security recommendation task in a resource group:
+              value: westeurope
+        - $ref: "#/components/parameters/TaskName"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SecurityTask"
+              examples:
+                Get security recommendation task in a resource group:
+                  $ref: "#/components/examples/Get_security_recommendation_task_in_\
+                    a_resource_group"
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error response structure.
+                properties:
+                  error:
+                    description: Error details.
+                    properties:
+                      code:
+                        description: An identifier for the error. Codes are invariant and
+                          are intended to be consumed programmatically.
+                        readOnly: true
+                        type: string
+                      message:
+                        description: A message describing the error, intended to be
+                          suitable for display in a user interface.
+                        readOnly: true
+                        type: string
+                    type: object
+                    x-ms-external: true
+                type: object
+                x-ms-external: true
+      tags:
+        - Tasks
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}":
+    post:
+      description: Recommended tasks that will help improve the security of the
+        subscription proactively
+      operationId: Tasks_UpdateResourceGroupLevelTaskState
+      parameters:
+        - description: API version for the operation
+          in: query
+          name: api-version
+          required: true
+          schema:
+            type: string
+          examples:
+            Change security recommendation task state:
+              value: 2015-06-01-preview
+        - description: Azure subscription ID
+          in: path
+          name: subscriptionId
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$
+          examples:
+            Change security recommendation task state:
+              value: 20ff7fc3-e762-44dd-bd96-b71116dcdc23
+        - description: The name of the resource group within the user's subscription. The
+            name is case insensitive.
+          in: path
+          name: resourceGroupName
+          required: true
+          x-ms-parameter-location: method
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 90
+            pattern: ^[-\w\._\(\)]+$
+          examples:
+            Change security recommendation task state:
+              value: myRg
+        - description: The location where ASC stores the data of the subscription. can be
+            retrieved from Get locations
+          in: path
+          name: ascLocation
+          required: true
+          x-ms-parameter-location: client
+          schema:
+            type: string
+          examples:
+            Change security recommendation task state:
+              value: westeurope
+        - $ref: "#/components/parameters/TaskName"
+        - $ref: "#/components/parameters/TaskUpdateActionType"
+      responses:
+        "204":
+          description: No Content
+        default:
+          description: Error response describing why the operation failed.
+          content:
+            application/json:
+              schema:
+                description: Error response structure.
+                properties:
+                  error:
+                    description: Error details.
+                    properties:
+                      code:
+                        description: An identifier for the error. Codes are invariant and
+                          are intended to be consumed programmatically.
+                        readOnly: true
+                        type: string
+                      message:
+                        description: A message describing the error, intended to be
+                          suitable for display in a user interface.
+                        readOnly: true
+                        type: string
+                    type: object
+                    x-ms-external: true
+                type: object
+                x-ms-external: true
+      tags:
+        - Tasks
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    Get_security_recommendations_tasks_from_security_data_location:
+      value:
+        value:
+          - id: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/locations/westeurope/tasks/62609ee7-d0a5-8616-9fe4-1df5cca7758d
+            name: 62609ee7-d0a5-8616-9fe4-1df5cca7758d
+            properties:
+              creationTimeUtc: 2018-03-05T10:42:03.9935508Z
+              lastStateChangeTimeUtc: 2018-03-05T10:42:03.9935508Z
+              securityTaskParameters:
+                location: uksouth
+                name: NetworkSecurityGroupMissingOnSubnet
+                resourceGroup: myRg
+                resourceId: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/default
+                resourceName: default
+                resourceParent: vnet1
+                resourceType: Subnet
+                uniqueKey: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/default
+              state: Active
+              subState: NA
+            type: Microsoft.Security/locations/tasks
+          - id: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Security/locations/westeurope/tasks/d55b4dc0-779c-c66c-33e5-d7bce24c4222
+            name: d55b4dc0-779c-c66c-33e5-d7bce24c4222
+            properties:
+              creationTimeUtc: 2018-04-02T11:41:27.0541014Z
+              lastStateChangeTimeUtc: 2018-04-02T11:41:27.0541014Z
+              securityTaskParameters:
+                isDataDiskEncrypted: false
+                isOsDiskEncrypted: false
+                name: EncryptionOnVm
+                resourceId: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+                severity: High
+                uniqueKey: EncryptionOnVmTaskParameters_/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+                vmId: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+                vmName: vm1
+              state: Active
+              subState: NA
+            type: Microsoft.Security/locations/tasks
+    Get_security_recommendation_task_from_security_data_location:
+      value:
+        id: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/locations/westeurope/tasks/62609ee7-d0a5-8616-9fe4-1df5cca7758d
+        name: 62609ee7-d0a5-8616-9fe4-1df5cca7758d
+        properties:
+          creationTimeUtc: 2018-03-05T10:42:03.9935508Z
+          lastStateChangeTimeUtc: 2018-03-05T10:42:03.9935508Z
+          securityTaskParameters:
+            location: uksouth
+            name: NetworkSecurityGroupMissingOnSubnet
+            resourceGroup: myRg
+            resourceId: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/default
+            resourceName: default
+            resourceParent: vnet1
+            resourceType: Subnet
+            uniqueKey: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/default
+          state: Active
+          subState: NA
+        type: Microsoft.Security/locations/tasks
+    Get_security_recommendations_tasks:
+      value:
+        value:
+          - id: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/locations/westeurope/tasks/62609ee7-d0a5-8616-9fe4-1df5cca7758d
+            name: 62609ee7-d0a5-8616-9fe4-1df5cca7758d
+            properties:
+              creationTimeUtc: 2018-03-05T10:42:03.9935508Z
+              lastStateChangeTimeUtc: 2018-03-05T10:42:03.9935508Z
+              securityTaskParameters:
+                location: uksouth
+                name: NetworkSecurityGroupMissingOnSubnet
+                resourceGroup: myRg
+                resourceId: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/default
+                resourceName: default
+                resourceParent: vnet1
+                resourceType: Subnet
+                uniqueKey: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/default
+              state: Active
+              subState: NA
+            type: Microsoft.Security/locations/tasks
+          - id: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Security/locations/westeurope/tasks/d55b4dc0-779c-c66c-33e5-d7bce24c4222
+            name: d55b4dc0-779c-c66c-33e5-d7bce24c4222
+            properties:
+              creationTimeUtc: 2018-04-02T11:41:27.0541014Z
+              lastStateChangeTimeUtc: 2018-04-02T11:41:27.0541014Z
+              securityTaskParameters:
+                isDataDiskEncrypted: false
+                isOsDiskEncrypted: false
+                name: EncryptionOnVm
+                resourceId: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+                severity: High
+                uniqueKey: EncryptionOnVmTaskParameters_/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+                vmId: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+                vmName: vm1
+              state: Active
+              subState: NA
+            type: Microsoft.Security/locations/tasks
+    Get_security_recommendation_tasks_in_a_resource_group:
+      value:
+        value:
+          - id: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Security/locations/westeurope/tasks/d55b4dc0-779c-c66c-33e5-d7bce24c4222
+            name: d55b4dc0-779c-c66c-33e5-d7bce24c4222
+            properties:
+              creationTimeUtc: 2018-04-02T11:41:27.0541014Z
+              lastStateChangeTimeUtc: 2018-04-02T11:41:27.0541014Z
+              securityTaskParameters:
+                isDataDiskEncrypted: false
+                isOsDiskEncrypted: false
+                name: EncryptionOnVm
+                resourceId: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+                severity: High
+                uniqueKey: EncryptionOnVmTaskParameters_/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+                vmId: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+                vmName: vm1
+              state: Active
+              subState: NA
+            type: Microsoft.Security/locations/tasks
+    Get_security_recommendation_task_in_a_resource_group:
+      value:
+        id: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Security/locations/westeurope/tasks/d55b4dc0-779c-c66c-33e5-d7bce24c4222
+        name: d55b4dc0-779c-c66c-33e5-d7bce24c4222
+        properties:
+          creationTimeUtc: 2018-04-02T11:41:27.0541014Z
+          lastStateChangeTimeUtc: 2018-04-02T11:41:27.0541014Z
+          securityTaskParameters:
+            isDataDiskEncrypted: false
+            isOsDiskEncrypted: false
+            name: EncryptionOnVm
+            resourceId: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+            severity: High
+            uniqueKey: EncryptionOnVmTaskParameters_/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+            vmId: /subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/vm1
+            vmName: vm1
+          state: Active
+          subState: NA
+        type: Microsoft.Security/locations/tasks
+  parameters:
+    TaskName:
+      description: Name of the task object, will be a GUID
+      in: path
+      name: taskName
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+      examples:
+        Get security recommendation task from security data location:
+          value: 62609ee7-d0a5-8616-9fe4-1df5cca7758d
+        Change security recommendation task state:
+          value: d55b4dc0-779c-c66c-33e5-d7bce24c4222
+        Get security recommendation task in a resource group:
+          value: d55b4dc0-779c-c66c-33e5-d7bce24c4222
+    TaskUpdateActionType:
+      description: Type of the action to do on the task
+      in: path
+      name: taskUpdateActionType
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        enum:
+          - Activate
+          - Dismiss
+          - Start
+          - Resolve
+          - Close
+      examples:
+        Change security recommendation task state:
+          value: Dismiss
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    SecurityTask:
+      allOf:
+        - description: Describes an Azure resource.
+          properties:
+            id:
+              description: Resource Id
+              readOnly: true
+              type: string
+            name:
+              description: Resource name
+              readOnly: true
+              type: string
+            type:
+              description: Resource type
+              readOnly: true
+              type: string
+          type: object
+          x-ms-azure-resource: true
+      description: Security task that we recommend to do in order to strengthen security
+      properties:
+        properties:
+          $ref: "#/components/schemas/SecurityTaskProperties"
+      type: object
+    SecurityTaskList:
+      description: List of security task recommendations
+      properties:
+        nextLink:
+          description: The URI to fetch the next page.
+          readOnly: true
+          type: string
+        value:
+          items:
+            $ref: "#/components/schemas/SecurityTask"
+          readOnly: true
+          type: array
+      type: object
+    SecurityTaskParameters:
+      additionalProperties: true
+      description: Changing set of properties, depending on the task type that is derived
+        from the name field
+      properties:
+        name:
+          description: Name of the task type
+          readOnly: true
+          type: string
+      type: object
+    SecurityTaskProperties:
+      description: Describes properties of a task.
+      properties:
+        creationTimeUtc:
+          description: The time this task was discovered in UTC
+          format: date-time
+          readOnly: true
+          type: string
+        lastStateChangeTimeUtc:
+          description: The time this task's details were last changed in UTC
+          format: date-time
+          readOnly: true
+          type: string
+        securityTaskParameters:
+          $ref: "#/components/schemas/SecurityTaskParameters"
+        state:
+          description: State of the task (Active, Resolved etc.)
+          readOnly: true
+          type: string
+        subState:
+          description: Additional data on the state of the task
+          readOnly: true
+          type: string
+      type: object

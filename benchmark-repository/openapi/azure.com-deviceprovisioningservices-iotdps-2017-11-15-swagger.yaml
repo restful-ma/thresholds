@@ -1,0 +1,2098 @@
+openapi: 3.0.0
+info:
+  description: API for using the Azure IoT Hub Device Provisioning Service features.
+  title: iotDpsClient
+  version: 2017-11-15
+  x-apisguru-categories:
+    - cloud
+  x-logo:
+    url: https://assets.onestore.ms/cdnfiles/onestorerolling-1606-01000/shell/v3/images/logo/microsoft.png
+  x-ms-code-generation-settings:
+    host: management.azure.com
+  x-origin:
+    - format: swagger
+      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2017-11-15/iotdps.json
+      version: "2.0"
+  x-preferred: false
+  x-providerName: azure.com
+  x-serviceName: deviceprovisioningservices-iotdps
+  x-tags:
+    - Azure
+    - Microsoft
+security:
+  - azure_auth:
+      - user_impersonation
+paths:
+  /providers/Microsoft.Devices/operations:
+    get:
+      description: Lists all of the available Microsoft.Devices REST API operations.
+      operationId: Operations_List
+      parameters:
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: OK. The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OperationListResult"
+              examples:
+                DPSOperations:
+                  $ref: "#/components/examples/DPSOperations"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - Operations
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/checkProvisioningServiceNameAvailability":
+    post:
+      description: Check if a provisioning service name is available. This will validate if
+        the name is syntactically valid and if the name is usable
+      operationId: IotDpsResource_CheckProvisioningServiceNameAvailability
+      parameters:
+        - $ref: "#/components/parameters/subscriptionId"
+        - $ref: "#/components/parameters/api-version"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OperationInputs"
+        description: Set the name parameter in the OperationInputs structure to the name of
+          the provisioning service to check.
+        required: true
+      responses:
+        "200":
+          description: This is a synchronous operation. The body contains a JSON-serialized
+            response that specifies whether the provisioning service name is
+            available. If the name is not available, the body contains the
+            reason.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NameAvailabilityInfo"
+              examples:
+                DPSCheckName:
+                  $ref: "#/components/examples/DPSCheckName"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      summary: Check if a provisioning service name is available.
+      tags:
+        - POST
+  "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/provisioningServices":
+    get:
+      description: List all the provisioning services for a given subscription id.
+      operationId: IotDpsResource_ListBySubscription
+      parameters:
+        - $ref: "#/components/parameters/subscriptionId"
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: This is a synchronous operation. The body contains a JSON-serialized
+            array of the metadata from all the provisioning services in the
+            subscription.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisioningServiceDescriptionListResult"
+              examples:
+                DPSListBySubscription:
+                  $ref: "#/components/examples/DPSListBySubscription"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      summary: Get all the provisioning services in a subscription.
+      tags:
+        - GET
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices":
+    get:
+      description: Get a list of all provisioning services in the given resource group.
+      operationId: IotDpsResource_ListByResourceGroup
+      parameters:
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Resource group identifier.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSListByResourceGroup:
+              value: myResourceGroup
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: List of provisioning services in the resource group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisioningServiceDescriptionListResult"
+              examples:
+                DPSListByResourceGroup:
+                  $ref: "#/components/examples/DPSListByResourceGroup"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - GET
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}":
+    delete:
+      description: Deletes the Provisioning Service.
+      operationId: IotDpsResource_Delete
+      parameters:
+        - description: Name of provisioning service to delete.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSDelete:
+              value: myFirstProvisioningService
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Resource group identifier.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSDelete:
+              value: myResourceGroup
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: This is returned as a response to the status polling request for the
+            delete operation. The body contains the resource representation that
+            indicates a transitional provisioning state.
+        "202":
+          description: The provisioning service resource provider always returns a 202
+            Accepted status code with valid Location and Retry-After headers.
+            The resource provider also sets the Azure-AsyncOperation header with
+            a URL that points to the operation resource for this operation.
+            Subsequent GET attempts on the resource after a DELETE operation
+            return a resource representation that indicates a transitional
+            provisioning state (such as Terminating). To retrieve the status of
+            the operation, a client can either poll the URL returned in the
+            Location header after the Retry-After interval, get the provisioning
+            service status directly, or query the operation resource.
+        "204":
+          description: Once the long running delete operation completes successfully, a 204
+            No Content status code is returned when the status polling request
+            finds the provisioning service metadata in the service and the
+            status of the delete operation is set to a completed state.
+        "404":
+          description: After the long running delete operation completes successfully, a
+            404 Not Found is returned when the status polling request no longer
+            finds the provisioning service metadata in the service.
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      summary: Delete the Provisioning Service
+      tags:
+        - DELETE
+      x-ms-long-running-operation: true
+    get:
+      description: Get the metadata of the provisioning service without SAS keys.
+      operationId: IotDpsResource_Get
+      parameters:
+        - description: Name of the provisioning service to retrieve.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGet:
+              value: myFirstProvisioningService
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Resource group name.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGet:
+              value: myResourceGroup
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: Provisioning service description with no keys is included in the
+            response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisioningServiceDescription"
+              examples:
+                DPSGet:
+                  $ref: "#/components/examples/DPSGet"
+        default:
+          description: Default error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      summary: Get the non-security related metadata of the provisioning service.
+      tags:
+        - GET
+    patch:
+      description: Update an existing provisioning service's tags. to update other fields
+        use the CreateOrUpdate method
+      operationId: IotDpsResource_Update
+      parameters:
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Resource group identifier.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSPatch:
+              value: myResourceGroup
+        - description: Name of provisioning service to create or update.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSPatch:
+              value: myFirstProvisioningService
+        - $ref: "#/components/parameters/api-version"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TagsResource"
+        description: Updated tag information to set into the provisioning service instance.
+        required: true
+      responses:
+        "200":
+          description: Provisioning Service was successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisioningServiceDescription"
+              examples:
+                DPSPatch:
+                  $ref: "#/components/examples/DPSPatch"
+      summary: Update an existing provisioning service's tags.
+      tags:
+        - PATCH
+      x-ms-long-running-operation: true
+    put:
+      description: Create or update the metadata of the provisioning service. The usual
+        pattern to modify a property is to retrieve the provisioning service
+        metadata and security metadata, and then combine them with the modified
+        values in a new body to update the provisioning service.
+      operationId: IotDpsResource_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Resource group identifier.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSCreate:
+              value: myResourceGroup
+        - description: Name of provisioning service to create or update.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSCreate:
+              value: myFirstProvisioningService
+        - $ref: "#/components/parameters/api-version"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProvisioningServiceDescription"
+        description: Description of the provisioning service to create or update.
+        required: true
+      responses:
+        "200":
+          description: The body contains all the non-security properties of the
+            provisioning service. Security-related properties are set to null.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisioningServiceDescription"
+              examples:
+                DPSCreate:
+                  $ref: "#/components/examples/DPSCreate"
+        "201":
+          description: This is a long running operation. The operation returns a 201 if the
+            validation is complete. The response includes an
+            Azure-AsyncOperation header that contains a status URL. Clients are
+            expected to poll the status URL for the status of the operation. If
+            successful, the operation returns HTTP status code of 201 (OK).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisioningServiceDescription"
+              examples:
+                DPSCreate:
+                  $ref: "#/components/examples/DPSCreate"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      summary: Create or update the metadata of the provisioning service.
+      tags:
+        - PUT
+      x-ms-long-running-operation: true
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates":
+    get:
+      description: Get all the certificates tied to the provisioning service.
+      operationId: DpsCertificate_List
+      parameters:
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Name of resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetCertificates:
+              value: myResourceGroup
+        - description: Name of provisioning service to retrieve certificates for.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetCertificates:
+              value: myFirstProvisioningService
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: List of certificate descriptions in a JSON-serialized array.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CertificateListDescription"
+              examples:
+                DPSGetCertificates:
+                  $ref: "#/components/examples/DPSGetCertificates"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - GET
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}":
+    delete:
+      description: Deletes the specified certificate associated with the Provisioning
+        Service
+      operationId: DpsCertificate_Delete
+      parameters:
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Resource group identifier.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSDeleteCertificate:
+              value: myResourceGroup
+        - description: ETag of the certificate
+          in: header
+          name: If-Match
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSDeleteCertificate:
+              value: AAAAAAAADGk=
+        - description: The name of the provisioning service.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSDeleteCertificate:
+              value: myFirstProvisioningService
+        - description: This is a mandatory field, and is the logical name of the
+            certificate that the provisioning service will access by.
+          in: path
+          name: certificateName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSDeleteCertificate:
+              value: cert
+        - description: This is optional, and it is the Common Name of the certificate.
+          in: query
+          name: certificate.name
+          required: false
+          schema:
+            type: string
+        - description: Raw data within the certificate.
+          in: query
+          name: certificate.rawBytes
+          required: false
+          schema:
+            type: string
+            format: byte
+        - description: Indicates if certificate has been verified by owner of the private
+            key.
+          in: query
+          name: certificate.isVerified
+          required: false
+          schema:
+            type: boolean
+        - description: A description that mentions the purpose of the certificate.
+          in: query
+          name: certificate.purpose
+          required: false
+          x-ms-enum:
+            modelAsString: true
+            name: CertificatePurpose
+          schema:
+            type: string
+            enum:
+              - clientAuthentication
+              - serverAuthentication
+        - description: Time the certificate is created.
+          in: query
+          name: certificate.created
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: Time the certificate is last updated.
+          in: query
+          name: certificate.lastUpdated
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: Indicates if the certificate contains a private key.
+          in: query
+          name: certificate.hasPrivateKey
+          required: false
+          schema:
+            type: boolean
+        - description: Random number generated to indicate Proof of Possession.
+          in: query
+          name: certificate.nonce
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: OK.
+        "204":
+          description: No content.
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      summary: Delete the Provisioning Service Certificate.
+      tags:
+        - DELETE
+    get:
+      description: Get the certificate from the provisioning service.
+      operationId: DpsCertificate_Get
+      parameters:
+        - description: Name of the certificate to retrieve.
+          in: path
+          name: certificateName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetCertificate:
+              value: cert
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Resource group identifier.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetCertificate:
+              value: myResourceGroup
+        - description: Name of the provisioning service the certificate is associated with.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetCertificate:
+              value: myFirstProvisioningService
+        - description: ETag of the certificate.
+          in: header
+          name: If-Match
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: Metadata for the specified certificate.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CertificateResponse"
+              examples:
+                DPSGetCertificate:
+                  $ref: "#/components/examples/DPSGetCertificate"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - GET
+    put:
+      deprecated: false
+      description: Add new certificate or update an existing certificate.
+      operationId: DpsCertificate_CreateOrUpdate
+      parameters:
+        - $ref: "#/components/parameters/api-version"
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Resource group identifier.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSCreateOrUpdateCertificate:
+              value: myResourceGroup
+        - description: The name of the provisioning service.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSCreateOrUpdateCertificate:
+              value: myFirstProvisioningService
+        - description: The name of the certificate create or update.
+          in: path
+          name: certificateName
+          required: true
+          schema:
+            type: string
+            maxLength: 256
+          examples:
+            DPSCreateOrUpdateCertificate:
+              value: cert
+        - description: ETag of the certificate. This is required to update an existing
+            certificate, and ignored while creating a brand new certificate.
+          in: header
+          name: If-Match
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CertificateBodyDescription"
+        description: The certificate body.
+        required: true
+      responses:
+        "200":
+          description: If certificate already exist and update was successful, the
+            operation returns HTTP status code of 201 (OK).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CertificateResponse"
+              examples:
+                DPSCreateOrUpdateCertificate:
+                  $ref: "#/components/examples/DPSCreateOrUpdateCertificate"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      summary: Upload the certificate to the provisioning service.
+      tags:
+        - PUT
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}/generateVerificationCode":
+    post:
+      description: Generate verification code for Proof of Possession.
+      operationId: DpsCertificate_GenerateVerificationCode
+      parameters:
+        - description: The mandatory logical name of the certificate, that the provisioning
+            service uses to access.
+          in: path
+          name: certificateName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGenerateVerificationCode:
+              value: cert
+        - description: ETag of the certificate. This is required to update an existing
+            certificate, and ignored while creating a brand new certificate.
+          in: header
+          name: If-Match
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGenerateVerificationCode:
+              value: AAAAAAAADGk=
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: name of resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGenerateVerificationCode:
+              value: myResourceGroup
+        - description: Name of provisioning service.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGenerateVerificationCode:
+              value: myFirstProvisioningService
+        - description: Common Name for the certificate.
+          in: query
+          name: certificate.name
+          required: false
+          schema:
+            type: string
+        - description: Raw data of certificate.
+          in: query
+          name: certificate.rawBytes
+          required: false
+          schema:
+            type: string
+            format: byte
+        - description: Indicates if the certificate has been verified by owner of the
+            private key.
+          in: query
+          name: certificate.isVerified
+          required: false
+          schema:
+            type: boolean
+        - description: Description mentioning the purpose of the certificate.
+          in: query
+          name: certificate.purpose
+          required: false
+          x-ms-enum:
+            modelAsString: true
+            name: CertificatePurpose
+          schema:
+            type: string
+            enum:
+              - clientAuthentication
+              - serverAuthentication
+        - description: Certificate creation time.
+          in: query
+          name: certificate.created
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: Certificate last updated time.
+          in: query
+          name: certificate.lastUpdated
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: Indicates if the certificate contains private key.
+          in: query
+          name: certificate.hasPrivateKey
+          required: false
+          schema:
+            type: boolean
+        - description: Random number generated to indicate Proof of Possession.
+          in: query
+          name: certificate.nonce
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: Generated verification code for that certificate is returned.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerificationCodeResponse"
+              examples:
+                DPSGenerateVerificationCode:
+                  $ref: "#/components/examples/DPSGenerateVerificationCode"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - POST
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}/verify":
+    post:
+      description: Verifies the certificate's private key possession by providing the leaf
+        cert issued by the verifying pre uploaded certificate.
+      operationId: DpsCertificate_VerifyCertificate
+      parameters:
+        - description: The mandatory logical name of the certificate, that the provisioning
+            service uses to access.
+          in: path
+          name: certificateName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSVerifyCertificate:
+              value: cert
+        - description: ETag of the certificate.
+          in: header
+          name: If-Match
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSVerifyCertificate:
+              value: AAAAAAAADGk=
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Resource group name.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSVerifyCertificate:
+              value: myResourceGroup
+        - description: Provisioning service name.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSVerifyCertificate:
+              value: myFirstProvisioningService
+        - description: Common Name for the certificate.
+          in: query
+          name: certificate.name
+          required: false
+          schema:
+            type: string
+        - description: Raw data of certificate.
+          in: query
+          name: certificate.rawBytes
+          required: false
+          schema:
+            type: string
+            format: byte
+        - description: Indicates if the certificate has been verified by owner of the
+            private key.
+          in: query
+          name: certificate.isVerified
+          required: false
+          schema:
+            type: boolean
+        - description: Describe the purpose of the certificate.
+          in: query
+          name: certificate.purpose
+          required: false
+          x-ms-enum:
+            modelAsString: true
+            name: CertificatePurpose
+          schema:
+            type: string
+            enum:
+              - clientAuthentication
+              - serverAuthentication
+        - description: Certificate creation time.
+          in: query
+          name: certificate.created
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: Certificate last updated time.
+          in: query
+          name: certificate.lastUpdated
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: Indicates if the certificate contains private key.
+          in: query
+          name: certificate.hasPrivateKey
+          required: false
+          schema:
+            type: boolean
+        - description: Random number generated to indicate Proof of Possession.
+          in: query
+          name: certificate.nonce
+          required: false
+          schema:
+            type: string
+        - $ref: "#/components/parameters/api-version"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerificationCodeRequest"
+        description: The name of the certificate
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CertificateResponse"
+              examples:
+                DPSVerifyCertificate:
+                  $ref: "#/components/examples/DPSVerifyCertificate"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      summary: Verify certificate's private key possession.
+      tags:
+        - POST
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/keys/{keyName}/listkeys":
+    post:
+      description: List primary and secondary keys for a specific key name
+      operationId: IotDpsResource_ListKeysForKeyName
+      parameters:
+        - description: Name of the provisioning service.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetKey:
+              value: myFirstProvisioningService
+        - description: Logical key name to get key-values for.
+          in: path
+          name: keyName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetKey:
+              value: testKey
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: The name of the resource group that contains the provisioning
+            service.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetKey:
+              value: myResourceGroup
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: This is a synchronous operation. The body contains a JSON-serialized
+            shared access policy, including keys, that you can use to access one
+            or more provisioning service endpoints.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharedAccessSignatureAuthorizationRule_\
+                  AccessRightsDescription_"
+              examples:
+                DPSGetKey:
+                  $ref: "#/components/examples/DPSGetKey"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      summary: Get a shared access policy by name from a provisioning service.
+      tags:
+        - POST
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/listkeys":
+    post:
+      description: List the primary and secondary keys for a provisioning service.
+      operationId: IotDpsResource_ListKeys
+      parameters:
+        - description: The provisioning service name to get the shared access keys for.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSListKeys:
+              value: myFirstProvisioningService
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: resource group name
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSListKeys:
+              value: myResourceGroup
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: This is a synchronous operation. The body contains a JSON-serialized
+            array of shared access policies, including keys, that you can use to
+            access the provisioning service endpoints.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharedAccessSignatureAuthorizationRuleL\
+                  istResult"
+              examples:
+                DPSListKeys:
+                  $ref: "#/components/examples/DPSListKeys"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      summary: Get the security metadata for a provisioning service.
+      tags:
+        - POST
+      x-ms-pageable:
+        nextLinkName: nextLink
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/operationresults/{operationId}":
+    get:
+      description: Gets the status of a long running operation, such as create, update or
+        delete a provisioning service.
+      operationId: IotDpsResource_GetOperationResult
+      parameters:
+        - description: Operation id corresponding to long running operation. Use this to
+            poll for the status.
+          in: path
+          name: operationId
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetOperationResult:
+              value: MTY5OTNmZDctODI5Yy00N2E2LTkxNDQtMDU1NGIyYzY1ZjRl
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Resource group identifier.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetOperationResult:
+              value: myResourceGroup
+        - description: Name of provisioning service that the operation is running on.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetOperationResult:
+              value: myFirstProvisioningService
+        - description: Async header used to poll on the status of the operation, obtained
+            while creating the long running operation.
+          in: query
+          name: asyncinfo
+          required: true
+          schema:
+            type: string
+            default: "true"
+          examples:
+            DPSGetOperationResult:
+              value: "1508265712453"
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: The status of the long running operation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsyncOperationResult"
+              examples:
+                DPSGetOperationResult:
+                  $ref: "#/components/examples/DPSGetOperationResult"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      tags:
+        - GET
+  "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/skus":
+    get:
+      description: Gets the list of valid SKUs and tiers for a provisioning service.
+      operationId: IotDpsResource_listValidSkus
+      parameters:
+        - description: Name of provisioning service.
+          in: path
+          name: provisioningServiceName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetValidSku:
+              value: myFirstProvisioningService
+        - $ref: "#/components/parameters/subscriptionId"
+        - description: Name of resource group.
+          in: path
+          name: resourceGroupName
+          required: true
+          schema:
+            type: string
+          examples:
+            DPSGetValidSku:
+              value: myResourceGroup
+        - $ref: "#/components/parameters/api-version"
+      responses:
+        "200":
+          description: This is a synchronous operation. The body contains a JSON-serialized
+            array of the valid SKUs for this provisioning service.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IotDpsSkuDefinitionListResult"
+              examples:
+                DPSGetValidSku:
+                  $ref: "#/components/examples/DPSGetValidSku"
+        default:
+          description: Default error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDetails"
+      summary: Get the list of valid SKUs for a provisioning service.
+      tags:
+        - GET
+      x-ms-pageable:
+        nextLinkName: nextLink
+servers:
+  - url: https://management.azure.com
+components:
+  examples:
+    DPSOperations:
+      value:
+        value:
+          - display:
+              operation: Register Resource Provider
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/register/action
+          - display:
+              operation: Get Diagnostic Setting
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/IotHubs/diagnosticSettings/read
+          - display:
+              operation: Set Diagnostic Setting
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/IotHubs/diagnosticSettings/write
+          - display:
+              operation: Read IotHub service metric definitions
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/IotHubs/metricDefinitions/read
+          - display:
+              operation: Read IotHub service log definitions
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/IotHubs/logDefinitions/read
+          - display:
+              operation: Get All ResourceProvider Operations
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/operations/Read
+          - display:
+              operation: Check If IotHub name is available
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/checkNameAvailability/Action
+          - display:
+              operation: Get Subscription Usages
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/usages/Read
+          - display:
+              operation: Get IotHub(s)
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/Read
+          - display:
+              operation: Create or update IotHub Resource
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/Write
+          - display:
+              operation: Delete IotHub Resource
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/Delete
+          - display:
+              operation: Get IotHub Statistics
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/iotHubStats/Read
+          - display:
+              operation: Get valid IotHub Skus
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/skus/Read
+          - display:
+              operation: Get all IotHub Keys
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/listkeys/Action
+          - display:
+              operation: Get IotHub Key for the given name
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/iotHubKeys/listkeys/Action
+          - display:
+              operation: Create EventHub Consumer Group
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/eventHubEndpoints/consumerGroups/Write
+          - display:
+              operation: Get EventHub Consumer Group(s)
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/eventHubEndpoints/consumerGroups/Read
+          - display:
+              operation: Delete EventHub Consumer Group
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/eventHubEndpoints/consumerGroups/Delete
+          - display:
+              operation: Export Devices
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/exportDevices/Action
+          - display:
+              operation: Import Devices
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/importDevices/Action
+          - display:
+              operation: Get the Job(s) on IotHub
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/jobs/Read
+          - display:
+              operation: Get Quota Metrics
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/quotaMetrics/Read
+          - display:
+              operation: Routing Rule Test All
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/routing/routes/$testall/Action
+          - display:
+              operation: Routing Rule Test Route
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/routing/routes/$testnew/Action
+          - display:
+              operation: Get Endpoint Health
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/iotHubs/routingEndpointsHealth/Read
+          - display:
+              operation: Get Diagnostic Setting
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/ProvisioningServices/diagnosticSettings/read
+          - display:
+              operation: Set Diagnostic Setting
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/ProvisioningServices/diagnosticSettings/write
+          - display:
+              operation: Read DPS service metric definitions
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/ProvisioningServices/metricDefinitions/read
+          - display:
+              operation: Read DPS service log definitions
+              provider: Microsoft Devices
+              resource: IotHubs
+            name: Microsoft.Devices/ProvisioningServices/logDefinitions/read
+          - display:
+              operation: Check If Provisioning Service name is available
+              provider: Microsoft Devices
+              resource: ProvisioningServives
+            name: Microsoft.Devices/checkProvisioningServiceNameAvailability/Action
+          - display:
+              operation: Get Provisioning Service resource
+              provider: Microsoft Devices
+              resource: ProvisioningServices
+            name: Microsoft.Devices/provisioningServices/Read
+          - display:
+              operation: Create Provisioning Service resource
+              provider: Microsoft Devices
+              resource: ProvisioningServices
+            name: Microsoft.Devices/provisioningServices/Write
+          - display:
+              operation: Delete Provisioning Service resource
+              provider: Microsoft Devices
+              resource: ProvisioningServices
+            name: Microsoft.Devices/provisioningServices/Delete
+          - display:
+              operation: Delete Provisioning Service resource
+              provider: Microsoft Devices
+              resource: ProvisioningServices
+            name: Microsoft.Devices/provisioningServices/skus/Read
+          - display:
+              operation: get security related metadata
+              provider: Microsoft Devices
+              resource: ProvisioningServices
+            name: Microsoft.Devices/provisioningServices/listkeys/Action
+    DPSCheckName:
+      value:
+        message: name is valid
+        nameAvailable: true
+        reason: Invalid
+    DPSListBySubscription:
+      value:
+        value:
+          - etag: AAAAAAAADGk=
+            id: /subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService
+            location: eastus
+            name: myFirstProvisioningService
+            properties:
+              allocationPolicy: Hashed
+              deviceProvisioningHostName: global.azure-devices-provisioning.net
+              idScope: 0ne00000012
+              serviceOperationsHostName: myFirstProvisioningService.azure-devices-provisioning.net
+              state: Active
+            sku:
+              capacity: 1
+              name: S1
+              tier: Standard
+            tags: {}
+            type: Microsoft.Devices/ProvisioningServices
+          - etag: AAAAAAAADGk=
+            id: /subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/mySecondProvisioningService
+            location: eastus
+            name: mySecondProvisioningService
+            properties:
+              allocationPolicy: Hashed
+              deviceProvisioningHostName: global.azure-devices-provisioning.net
+              idScope: 0ne00000012
+              serviceOperationsHostName: myFirstProvisioningService.azure-devices-provisioning.net
+              state: Active
+            sku:
+              capacity: 1
+              name: S1
+              tier: Standard
+            tags: {}
+            type: Microsoft.Devices/ProvisioningServices
+    DPSListByResourceGroup:
+      value:
+        value:
+          - etag: AAAAAAAADGk=
+            id: /subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService
+            location: eastus
+            name: myFirstProvisioningService
+            properties:
+              allocationPolicy: Hashed
+              deviceProvisioningHostName: global.azure-devices-provisioning.net
+              idScope: 0ne00000012
+              serviceOperationsHostName: myFirstProvisioningService.azure-devices-provisioning.net
+              state: Active
+            sku:
+              capacity: 1
+              name: S1
+              tier: Standard
+            tags: {}
+            type: Microsoft.Devices/ProvisioningServices
+          - etag: AAAAAAAADGk=
+            id: /subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/mySecondProvisioningService
+            location: eastus
+            name: mySecondProvisioningService
+            properties:
+              allocationPolicy: Hashed
+              deviceProvisioningHostName: global.azure-devices-provisioning.net
+              idScope: 0ne00000012
+              serviceOperationsHostName: mySecondProvisioningService.azure-devices-provisioning.net
+              state: Active
+            sku:
+              capacity: 1
+              name: S1
+              tier: Standard
+            tags: {}
+            type: Microsoft.Devices/ProvisioningServices
+    DPSGet:
+      value:
+        etag: AAAAAAAADGk=
+        id: /subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService
+        location: eastus
+        name: myFirstProvisioningService
+        properties:
+          allocationPolicy: Hashed
+          authorizationPolicies: []
+          deviceProvisioningHostName: global.azure-devices-provisioning.net
+          idScope: 0ne00000012
+          serviceOperationsHostName: myFirstProvisioningService.azure-devices-provisioning.net
+          state: Active
+        sku:
+          capacity: 1
+          name: S1
+          tier: Standard
+        tags: {}
+        type: Microsoft.Devices/ProvisioningServices
+    DPSPatch:
+      value:
+        etag: AAAAAAAADGk=
+        id: /subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService
+        location: eastus
+        name: myFirstProvisioningService
+        properties:
+          allocationPolicy: Hashed
+          deviceProvisioningHostName: global.azure-devices-provisioning.net
+          idScope: 0ne00000012
+          serviceOperationsHostName: myFirstProvisioningService.azure-devices-provisioning.net
+          state: Active
+        sku:
+          capacity: 1
+          name: S1
+          tier: Standard
+        tags:
+          foo: bar
+        type: Microsoft.Devices/ProvisioningServices
+    DPSCreate:
+      value:
+        etag: AAAAAAAADGk=
+        id: /subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups//providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService
+        location: eastus
+        name: myFirstProvisioningService
+        properties:
+          allocationPolicy: Hashed
+          authorizationPolicies: []
+          deviceProvisioningHostName: global.azure-devices-provisioning.net
+          idScope: 0ne00000012
+          serviceOperationsHostName: myFirstProvisioningService.azure-devices-provisioning.net
+          state: Active
+        sku:
+          capacity: 1
+          name: S1
+          tier: Standard
+        tags: {}
+        type: Microsoft.Devices/ProvisioningServices
+    DPSGetCertificates:
+      value:
+        value:
+          - etag: AAAAAAExpNs=
+            id: /subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/andbuc-hub/certificates/cert
+            name: cert
+            properties:
+              created: Thu, 12 Oct 2017 19:23:50 GMT
+              expiry: Sat, 31 Dec 2039 23:59:59 GMT
+              isVerified: false
+              subject: CN=testdevice1
+              thumbprint: 97388663832D0393C9246CAB4FBA2C8677185A25
+              updated: Thu, 12 Oct 2017 19:23:50 GMT
+            type: Microsoft.Devices/ProvisioningServices/Certificates
+    DPSGetCertificate:
+      value:
+        etag: AAAAAAExpNs=
+        id: /subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/andbuc-hub/certificates/cert
+        name: cert
+        properties:
+          created: Thu, 12 Oct 2017 19:23:50 GMT
+          expiry: Sat, 31 Dec 2039 23:59:59 GMT
+          isVerified: false
+          subject: CN=testdevice1
+          thumbprint: 97388663832D0393C9246CAB4FBA2C8677185A25
+          updated: Thu, 12 Oct 2017 19:23:50 GMT
+        type: Microsoft.Devices/ProvisioningServices/Certificates
+    DPSCreateOrUpdateCertificate:
+      value:
+        etag: AAAAAAExpNs=
+        id: /subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServives/myFirstProvisioningService/certificates/cert
+        name: cert
+        properties:
+          created: Thu, 12 Oct 2017 19:23:50 GMT
+          expiry: Sat, 31 Dec 2039 23:59:59 GMT
+          isVerified: false
+          subject: CN=testdevice1
+          thumbprint: 97388663832D0393C9246CAB4FBA2C8677185A25
+          updated: Thu, 12 Oct 2017 19:23:50 GMT
+        type: Microsoft.Devices/ProvisioningServices/Certificates
+    DPSGenerateVerificationCode:
+      value:
+        name: cert
+        properties:
+          created: Thu, 12 Oct 2017 19:23:50 GMT
+          expiry: Sat, 31 Dec 2039 23:59:59 GMT
+          isVerified: false
+          subject: CN=andbucdevice1
+          thumbprint: "##############################"
+          updated: Thu, 12 Oct 2017 19:26:56 GMT
+          verificationCode: "##################################"
+    DPSVerifyCertificate:
+      value:
+        etag: AAAAAAExpTQ=
+        id: /subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService/certificates/cert
+        name: cert
+        properties:
+          created: Thu, 12 Oct 2017 19:23:50 GMT
+          expiry: Sat, 31 Dec 2039 23:59:59 GMT
+          isVerified: true
+          subject: CN=andbucdevice1
+          thumbprint: 97388663832D0393C9246CAB4FBA2C8677185A25
+          updated: Thu, 12 Oct 2017 19:26:56 GMT
+        type: Microsoft.Devices/ProvisioningServices/Certificates
+    DPSGetKey:
+      value:
+        keyName: testKey
+        primaryKey: "##################################"
+        rights: RegistrationStatusWrite
+        secondaryKey: "################################"
+    DPSListKeys:
+      value:
+        value:
+          - keyName: key1
+            primaryKey: "#####################################"
+            rights: ServiceConfig
+            secondaryKey: "###################################"
+          - keyName: key2
+            primaryKey: "#######################################"
+            rights: ServiceConfig
+            secondaryKey: "####################################="
+    DPSGetOperationResult:
+      value:
+        status: Succeeded
+    DPSGetValidSku:
+      value:
+        value:
+          - name: S1
+  parameters:
+    api-version:
+      description: The version of the API.
+      in: query
+      name: api-version
+      required: true
+      schema:
+        type: string
+      examples:
+        DPSOperations:
+          value: 2017-11-15
+        DPSCheckName:
+          value: 2017-11-15
+        DPSListBySubscription:
+          value: 2017-11-15
+        DPSListByResourceGroup:
+          value: 2017-11-15
+        DPSDelete:
+          value: 2017-11-15
+        DPSGet:
+          value: 2017-11-15
+        DPSPatch:
+          value: 2017-11-15
+        DPSCreate:
+          value: 2017-11-15
+        DPSGetCertificates:
+          value: 2017-11-15
+        DPSDeleteCertificate:
+          value: 2017-11-15
+        DPSGetCertificate:
+          value: 2017-11-15
+        DPSCreateOrUpdateCertificate:
+          value: 2017-11-15
+        DPSGenerateVerificationCode:
+          value: 2017-11-15
+        DPSVerifyCertificate:
+          value: 2017-11-15
+        DPSGetKey:
+          value: 2017-11-15
+        DPSListKeys:
+          value: 2017-11-15
+        DPSGetOperationResult:
+          value: 2017-11-15
+        DPSGetValidSku:
+          value: 2017-11-15
+    subscriptionId:
+      description: The subscription identifier.
+      in: path
+      name: subscriptionId
+      required: true
+      schema:
+        type: string
+      examples:
+        DPSCheckName:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSListBySubscription:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSListByResourceGroup:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSDelete:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSGet:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSPatch:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSCreate:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSGetCertificates:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSDeleteCertificate:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSGetCertificate:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSCreateOrUpdateCertificate:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSGenerateVerificationCode:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSVerifyCertificate:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSGetKey:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSListKeys:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSGetOperationResult:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+        DPSGetValidSku:
+          value: 91d12660-3dec-467a-be2a-213b5544ddc0
+  securitySchemes:
+    azure_auth:
+      description: Azure Active Directory OAuth2 Flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+  schemas:
+    AsyncOperationResult:
+      description: Result of a long running operation.
+      properties:
+        error:
+          $ref: "#/components/schemas/ErrorMesssage"
+        status:
+          description: current status of a long running operation.
+          type: string
+      type: object
+    CertificateBodyDescription:
+      description: The JSON-serialized X509 Certificate.
+      properties:
+        certificate:
+          description: Base-64 representation of the X509 leaf certificate .cer file or
+            just .pem file content.
+          type: string
+      type: object
+    CertificateListDescription:
+      description: The JSON-serialized array of Certificate objects.
+      properties:
+        value:
+          description: The array of Certificate objects.
+          items:
+            $ref: "#/components/schemas/CertificateResponse"
+          type: array
+      type: object
+    CertificateProperties:
+      description: The description of an X509 CA Certificate.
+      properties:
+        created:
+          description: The certificate's creation date and time.
+          format: date-time-rfc1123
+          readOnly: true
+          type: string
+        expiry:
+          description: The certificate's expiration date and time.
+          format: date-time-rfc1123
+          readOnly: true
+          type: string
+        isVerified:
+          description: Determines whether certificate has been verified.
+          readOnly: true
+          type: boolean
+        subject:
+          description: The certificate's subject name.
+          readOnly: true
+          type: string
+        thumbprint:
+          description: The certificate's thumbprint.
+          readOnly: true
+          type: string
+        updated:
+          description: The certificate's last update date and time.
+          format: date-time-rfc1123
+          readOnly: true
+          type: string
+      type: object
+    CertificateResponse:
+      description: The X509 Certificate.
+      properties:
+        etag:
+          description: The entity tag.
+          readOnly: true
+          type: string
+        id:
+          description: The resource identifier.
+          readOnly: true
+          type: string
+        name:
+          description: The name of the certificate.
+          readOnly: true
+          type: string
+        properties:
+          $ref: "#/components/schemas/CertificateProperties"
+        type:
+          description: The resource type.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    ErrorDetails:
+      description: Error details.
+      properties:
+        Code:
+          description: The error code.
+          readOnly: true
+          type: string
+        Details:
+          description: The error details.
+          readOnly: true
+          type: string
+        HttpStatusCode:
+          description: The HTTP status code.
+          readOnly: true
+          type: string
+        Message:
+          description: The error message.
+          readOnly: true
+          type: string
+      type: object
+    ErrorMesssage:
+      description: Error response containing message and code.
+      properties:
+        code:
+          description: standard error code
+          type: string
+        details:
+          description: detailed summary of error
+          type: string
+        message:
+          description: standard error description
+          type: string
+      type: object
+    IotDpsPropertiesDescription:
+      description: the service specific properties of a provisioning service, including
+        keys, linked iot hubs, current state, and system generated properties
+        such as hostname and idScope
+      properties:
+        allocationPolicy:
+          description: Allocation policy to be used by this provisioning service.
+          enum:
+            - Hashed
+            - GeoLatency
+            - Static
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: AllocationPolicy
+        authorizationPolicies:
+          description: List of authorization keys for a provisioning service.
+          items:
+            $ref: "#/components/schemas/SharedAccessSignatureAuthorizationRule_Acce\
+              ssRightsDescription_"
+          type: array
+        deviceProvisioningHostName:
+          description: Device endpoint for this provisioning service.
+          readOnly: true
+          type: string
+        idScope:
+          description: Unique identifier of this provisioning service.
+          readOnly: true
+          type: string
+        iotHubs:
+          description: List of IoT hubs associated with this provisioning service.
+          items:
+            $ref: "#/components/schemas/IotHubDefinitionDescription"
+          type: array
+        provisioningState:
+          description: The ARM provisioning state of the provisioning service.
+          type: string
+        serviceOperationsHostName:
+          description: Service endpoint for provisioning service.
+          readOnly: true
+          type: string
+        state:
+          description: Current state of the provisioning service.
+          enum:
+            - Activating
+            - Active
+            - Deleting
+            - Deleted
+            - ActivationFailed
+            - DeletionFailed
+            - Transitioning
+            - Suspending
+            - Suspended
+            - Resuming
+            - FailingOver
+            - FailoverFailed
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: state
+      type: object
+    IotDpsSkuDefinition:
+      description: Available SKUs of tier and units.
+      properties:
+        name:
+          description: SKU name.
+          enum:
+            - S1
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: IotDpsSku
+      type: object
+    IotDpsSkuDefinitionListResult:
+      description: List of available SKUs.
+      properties:
+        nextLink:
+          description: The next link.
+          readOnly: true
+          type: string
+        value:
+          description: The list of SKUs
+          items:
+            $ref: "#/components/schemas/IotDpsSkuDefinition"
+          type: array
+      type: object
+    IotDpsSkuInfo:
+      description: List of possible provisioning service SKUs.
+      properties:
+        capacity:
+          description: The number of units to provision
+          format: int64
+          type: integer
+        name:
+          description: Sku name.
+          enum:
+            - S1
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: IotDpsSku
+        tier:
+          description: Pricing tier name of the provisioning service.
+          readOnly: true
+          type: string
+      type: object
+    IotHubDefinitionDescription:
+      description: Description of the IoT hub.
+      properties:
+        allocationWeight:
+          description: Weight to apply for a given IoT hub.
+          format: int32
+          type: integer
+        applyAllocationPolicy:
+          description: Flag for applying allocationPolicy or not for a given IoT hub.
+          type: boolean
+        connectionString:
+          description: Connection string of the IoT hub.
+          type: string
+        location:
+          description: ARM region of the IoT hub.
+          type: string
+        name:
+          description: Host name of the IoT hub.
+          readOnly: true
+          type: string
+      required:
+        - connectionString
+        - location
+      type: object
+    NameAvailabilityInfo:
+      description: Description of name availability.
+      properties:
+        message:
+          description: message containing a detailed reason name is unavailable
+          type: string
+        nameAvailable:
+          description: specifies if a name is available or not
+          type: boolean
+        reason:
+          description: specifies the reason a name is unavailable
+          enum:
+            - Invalid
+            - AlreadyExists
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: NameUnavailabilityReason
+      type: object
+    Operation:
+      description: IoT Hub REST API operation.
+      properties:
+        display:
+          description: The object that represents the operation.
+          properties:
+            operation:
+              description: Name of the operation.
+              readOnly: true
+              type: string
+            provider:
+              description: "Service provider: Microsoft Devices."
+              readOnly: true
+              type: string
+            resource:
+              description: "Resource Type: ProvisioningServices."
+              readOnly: true
+              type: string
+        name:
+          description: "Operation name: {provider}/{resource}/{read | write | action |
+            delete}"
+          readOnly: true
+          type: string
+      type: object
+    OperationInputs:
+      description: Input values for operation results call.
+      properties:
+        name:
+          description: The name of the Provisioning Service to check.
+          type: string
+      required:
+        - name
+      type: object
+    OperationListResult:
+      description: Result of the request to list IoT Hub operations. It contains a list of
+        operations and a URL link to get the next set of results.
+      properties:
+        nextLink:
+          description: URL to get the next set of operation list results if there are any.
+          readOnly: true
+          type: string
+        value:
+          description: List of IoT Hub operations supported by the Microsoft.Devices
+            resource provider.
+          items:
+            $ref: "#/components/schemas/Operation"
+          readOnly: true
+          type: array
+    ProvisioningServiceDescription:
+      allOf:
+        - $ref: "#/components/schemas/Resource"
+      description: The description of the provisioning service.
+      properties:
+        etag:
+          description: The Etag field is *not* required. If it is provided in the response
+            body, it must also be provided as a header per the normal ETag
+            convention.
+          type: string
+        properties:
+          $ref: "#/components/schemas/IotDpsPropertiesDescription"
+        sku:
+          $ref: "#/components/schemas/IotDpsSkuInfo"
+      required:
+        - sku
+        - properties
+      type: object
+    ProvisioningServiceDescriptionListResult:
+      description: List of provisioning service descriptions.
+      properties:
+        nextLink:
+          description: the next link
+          readOnly: true
+          type: string
+        value:
+          description: List of provisioning service descriptions.
+          items:
+            $ref: "#/components/schemas/ProvisioningServiceDescription"
+          type: array
+      type: object
+    Resource:
+      description: The common properties of an Azure resource.
+      properties:
+        id:
+          description: The resource identifier.
+          readOnly: true
+          type: string
+        location:
+          description: The resource location.
+          type: string
+        name:
+          description: The resource name.
+          pattern: ^(?![0-9]+$)(?!-)[a-zA-Z0-9-]{2,49}[a-zA-Z0-9]$
+          readOnly: true
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: The resource tags.
+          type: object
+        type:
+          description: The resource type.
+          readOnly: true
+          type: string
+      required:
+        - location
+      x-ms-azure-resource: true
+    SharedAccessSignatureAuthorizationRuleListResult:
+      description: List of shared access keys.
+      properties:
+        nextLink:
+          description: The next link.
+          readOnly: true
+          type: string
+        value:
+          description: The list of shared access policies.
+          items:
+            $ref: "#/components/schemas/SharedAccessSignatureAuthorizationRule_Acce\
+              ssRightsDescription_"
+          type: array
+      type: object
+    TagsResource:
+      description: A container holding only the Tags for a resource, allowing the user to
+        update the tags on a Provisioning Service instance.
+      properties:
+        tags:
+          additionalProperties:
+            type: string
+          description: Resource tags
+    VerificationCodeRequest:
+      description: The JSON-serialized leaf certificate
+      properties:
+        certificate:
+          description: base-64 representation of X509 certificate .cer file or just .pem
+            file content.
+          type: string
+      type: object
+    VerificationCodeResponse:
+      description: Description of the response of the verification code.
+      properties:
+        etag:
+          description: Request etag.
+          readOnly: true
+          type: string
+        id:
+          description: The resource identifier.
+          readOnly: true
+          type: string
+        name:
+          description: Name of certificate.
+          readOnly: true
+          type: string
+        properties:
+          properties:
+            created:
+              description: Certificate created time.
+              type: string
+            expiry:
+              description: Code expiry.
+              type: string
+            isVerified:
+              description: Indicate if the certificate is verified by owner of private key.
+              type: boolean
+            subject:
+              description: Certificate subject.
+              type: string
+            thumbprint:
+              description: Certificate thumbprint.
+              type: string
+            updated:
+              description: Certificate updated time.
+              type: string
+            verificationCode:
+              description: Verification code.
+              type: string
+          type: object
+        type:
+          description: The resource type.
+          readOnly: true
+          type: string
+      type: object
+      x-ms-azure-resource: true
+    SharedAccessSignatureAuthorizationRule_AccessRightsDescription_:
+      description: Description of the shared access key.
+      properties:
+        keyName:
+          description: Name of the key.
+          type: string
+        primaryKey:
+          description: Primary SAS key value.
+          type: string
+        rights:
+          description: Rights that this key has.
+          enum:
+            - ServiceConfig
+            - EnrollmentRead
+            - EnrollmentWrite
+            - DeviceConnect
+            - RegistrationStatusRead
+            - RegistrationStatusWrite
+          type: string
+          x-ms-enum:
+            modelAsString: true
+            name: AccessRightsDescription
+        secondaryKey:
+          description: Secondary SAS key value.
+          type: string
+      required:
+        - keyName
+        - rights
+      type: object
