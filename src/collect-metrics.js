@@ -68,10 +68,10 @@ async function executeJar(files, inFolder, outFolder, format) {
                     // failure because the cli console output (exceeds buffer), but execution was still valid
                     if (err.code === "ERR_CHILD_PROCESS_STDIO_MAXBUFFER") {
                         console.log(
-                            "CLI output exceeds buffer, but still valid. Just in case this is logged to MetricOutputTooBig.txt"
+                            "CLI output exceeds buffer, but analysis was successul. Logged to console-overflow.log..."
                         );
                         fs.appendFileSync(
-                            "MetricOutputTooBig.txt",
+                            "console-overflow.log",
                             files[i] + "\n"
                         );
                     } else {
