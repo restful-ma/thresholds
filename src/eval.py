@@ -4,7 +4,8 @@ import json
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def save(path, ext='png', close=True, verbose=True,x='',y=''):
+
+def save(path, ext='png', close=True, verbose=True, x='', y=''):
     """Save a figure from pyplot.
     Parameters
     ----------
@@ -40,7 +41,7 @@ def save(path, ext='png', close=True, verbose=True,x='',y=''):
 
     if verbose:
         print("Saving figure to '%s'..." % savepath),
-    
+
     plt.xlabel(x)
     plt.ylabel(y)
     # Actually save the figure
@@ -52,6 +53,7 @@ def save(path, ext='png', close=True, verbose=True,x='',y=''):
 
     if verbose:
         print("Done")
+
 
 # predefine some ranges for histograms
 metricRanges = {
@@ -106,25 +108,31 @@ for headerName, data in df.iteritems():
         temp = json.loads(spec_format_groups.count().to_json())
         results["formats"] = temp[next(iter(temp))]
     else:
-        results["metrics"][headerName] = {"all": json.loads(data.describe().to_json(double_precision=4))}
+        results["metrics"][headerName] = {"all": json.loads(
+            data.describe().to_json(double_precision=4))}
 
         df.boxplot(column=headerName, showfliers=False)
         save(box + headerName + box_suffix)
 
         if "range" not in metricRanges[headerName]:
-            metricRanges[headerName]["range"] = [df[headerName].min(), df[headerName].max()]
+            metricRanges[headerName]["range"] = [
+                df[headerName].min(), df[headerName].max()]
 
-        bins = int(math.ceil(metricRanges[headerName]["range"][1] - metricRanges[headerName]["range"][0]))
+        bins = int(math.ceil(
+            metricRanges[headerName]["range"][1] - metricRanges[headerName]["range"][0]))
         if bins > 100:
             bins = 100
         elif bins == 1:
             bins = 20
-            
+
         if metricRanges[headerName]["range"][1] != 1:
-            df[headerName].hist(bins=range(int(metricRanges[headerName]["range"][0]), int(metricRanges[headerName]["range"][1]) + 1, 1), range=metricRanges[headerName]["range"])
+            df[headerName].hist(bins=range(int(metricRanges[headerName]["range"][0]), int(
+                metricRanges[headerName]["range"][1]) + 1, 1), range=metricRanges[headerName]["range"])
         else:
-            df[headerName].hist(bins=bins, range=metricRanges[headerName]["range"])
-        save(hist + headerName + hist_suffix, x=headerName, y='specification files')
+            df[headerName].hist(
+                bins=bins, range=metricRanges[headerName]["range"])
+        save(hist + headerName + hist_suffix,
+             x=headerName, y='specification files')
 
         df[headerName].plot.area()
         save(area + headerName + area_suffix)
@@ -134,16 +142,21 @@ for headerName, data in df.iteritems():
 
         for specFormat in spec_format_groups.groups.keys():
             results["metrics"][headerName][specFormat] = \
-                json.loads(spec_format_groups.get_group(specFormat)[headerName].describe().to_json(double_precision=4))
-            
-            spec_format_groups.get_group(specFormat).boxplot(column=headerName, showfliers=False)
+                json.loads(spec_format_groups.get_group(specFormat)[
+                           headerName].describe().to_json(double_precision=4))
+
+            spec_format_groups.get_group(specFormat).boxplot(
+                column=headerName, showfliers=False)
             save(box + headerName + "_" + specFormat + box_suffix)
 
             if metricRanges[headerName]["range"][1] != 1:
-                spec_format_groups.get_group(specFormat)[headerName].hist(bins=range(int(metricRanges[headerName]["range"][0]), int(metricRanges[headerName]["range"][1]) + 1, 1), range=metricRanges[headerName]["range"])
+                spec_format_groups.get_group(specFormat)[headerName].hist(bins=range(int(metricRanges[headerName]["range"][0]), int(
+                    metricRanges[headerName]["range"][1]) + 1, 1), range=metricRanges[headerName]["range"])
             else:
-                spec_format_groups.get_group(specFormat)[headerName].hist(bins=bins, range=metricRanges[headerName]["range"])
-            save(hist + headerName + "_" + specFormat + hist_suffix, x=headerName, y='specification files')
+                spec_format_groups.get_group(specFormat)[headerName].hist(
+                    bins=bins, range=metricRanges[headerName]["range"])
+            save(hist + headerName + "_" + specFormat +
+                 hist_suffix, x=headerName, y='specification files')
 
             spec_format_groups.get_group(specFormat)[headerName].plot.area()
             save(area + headerName + "_" + specFormat + area_suffix)

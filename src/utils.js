@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-exports.ensureDirExists = (dirName) => {
+exports.ensureDirExists = dirName => {
     try {
         fs.mkdirSync(dirName, { recursive: true });
     } catch (err) {

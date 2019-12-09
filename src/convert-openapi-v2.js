@@ -30,7 +30,9 @@ function main() {
             elapsedTime();
         } catch (e) {
             console.log("SKIPPED " + fileList[i]);
-            console.log("LOG ERROR to ConversionFailure.txt --------------------------------------------------");
+            console.log(
+                "LOG ERROR to ConversionFailure.txt --------------------------------------------------"
+            );
             console.log(e);
             fs.appendFileSync("ConversionFailure.txt", fileList[i] + "\n");
         }
@@ -40,9 +42,14 @@ function main() {
 function elapsedTime() {
     const precision = 3;
     const elapsed = process.hrtime(start)[1] / 1000000;
-    console.log("Total time in seconds: " + process.hrtime(start)[0] + " s, time for last file: " + elapsed.toFixed(precision) + " ms");
+    console.log(
+        "Total time in seconds: " +
+            process.hrtime(start)[0] +
+            " s, time for last file: " +
+            elapsed.toFixed(precision) +
+            " ms"
+    );
 }
-
 
 function convertFile(name) {
     const inputFileName = name;
@@ -50,14 +57,21 @@ function convertFile(name) {
     outFileName = outFileName.replace("openapi-directory-APIs-", "");
     console.log(outFileName);
 
-    exec("swagger2openapi -r --yaml -o " + outDirectory + outFileName + " " + inputFileName, async (err, stdout, stderr) => {
-        if (err) {
-            // node couldn't execute the command
-            console.log(" node couldn't execute the command");
-            console.log(`stderr: ${stderr}`);
-            return;
+    exec(
+        "swagger2openapi -r --yaml -o " +
+            outDirectory +
+            outFileName +
+            " " +
+            inputFileName,
+        async (err, stdout, stderr) => {
+            if (err) {
+                // node couldn't execute the command
+                console.log(" node couldn't execute the command");
+                console.log(`stderr: ${stderr}`);
+                return;
+            }
         }
-    });
+    );
 }
 
 /*
@@ -67,19 +81,16 @@ function recFindByExt(base, files, result) {
     files = files || fs.readdirSync(base);
     result = result || [];
 
-    files.forEach(
-        function (file) {
-            const newbase = path.join(base, file);
-            if (fs.statSync(newbase).isDirectory()) {
-                result = recFindByExt(newbase, fs.readdirSync(newbase), result);
-            }
-            else {
-                if (file == SWAGGER_YAML || file == OPENAPI_YAML) {
-                    result.push(newbase);
-                    console.log(newbase);
-                }
+    files.forEach(function(file) {
+        const newbase = path.join(base, file);
+        if (fs.statSync(newbase).isDirectory()) {
+            result = recFindByExt(newbase, fs.readdirSync(newbase), result);
+        } else {
+            if (file == SWAGGER_YAML || file == OPENAPI_YAML) {
+                result.push(newbase);
+                console.log(newbase);
             }
         }
-    );
+    });
     return result;
 }
