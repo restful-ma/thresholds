@@ -119,6 +119,7 @@ function getRamlFile(inFolder) {
         const ramlSubFiles = fs.readdirSync(inFolder + ramlFoldersArray[i]);
         for (let j = 0; j < ramlSubFiles.length; j++) {
             if (ramlSubFiles[j].endsWith("api.raml")) {
+                // surround filename with quotes to avoid issues with spaces in dir/file names
                 const fileName = ramlFoldersArray[i] + "/" + ramlSubFiles[j];
                 ramlMainFiles.push(fileName);
             }
