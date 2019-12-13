@@ -1,16 +1,17 @@
 const fs = require("fs");
 const { ensureDirExists } = require("./utils");
 
-const RESULTS_JSON = "./results/results.json";
-const LATEX_OUTPUT_FILE = "./results/latex-tables.tex";
+const RESULTS_JSON = "./results/aggregated-metrics.json";
+const LATEX_DIR = "./results/";
+const LATEX_OUTPUT_FILE = "latex-tables.tex";
 
 // read results JSON file
 const json = JSON.parse(fs.readFileSync(RESULTS_JSON, "utf8"));
 
 // ensure output dir exists
-ensureDirExists(LATEX_OUTPUT_FILE);
+ensureDirExists(LATEX_DIR);
 // create latex output file
-fs.writeFileSync(LATEX_OUTPUT_FILE, "\n\n");
+fs.writeFileSync(LATEX_DIR + LATEX_OUTPUT_FILE, "\n\n");
 
 const metrics = json.metrics;
 const formats = json.formats;
@@ -27,8 +28,8 @@ const metricsNames = [
     "LackOfMessageLevelCohesion"
 ];
 
-for (let i = 0; i < metricsNames.length; i++) {
-    const metricName = metricsNames[i];
+for (let x = 0; x < metricsNames.length; x++) {
+    const metricName = metricsNames[x];
     const latexTable =
         metricName +
         "\n\n" +
@@ -121,7 +122,7 @@ for (let i = 0; i < metricsNames.length; i++) {
         " \\end{tabular}\n " +
         "\\end{center}";
 
-    fs.appendFileSync(LATEX_OUTPUT_FILE, latexTable + "\n\n");
+    fs.appendFileSync(LATEX_DIR + LATEX_OUTPUT_FILE, latexTable + "\n\n");
 }
 
 function round(number) {

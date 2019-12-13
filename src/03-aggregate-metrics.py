@@ -84,28 +84,29 @@ metricRanges = {
 }
 
 # constants denoting path / file name of pictures
-box = "box/"
+box = "./results/diagrams/box/"
 box_suffix = "-box"
-hist = "hist/"
+hist = "./results/diagrams/hist/"
 hist_suffix = "-hist"
-area = "area/"
+area = "./results/diagrams/area/"
 area_suffix = "-area"
+csv_input_file = "./results/metrics.csv"
+results_file = "./results/aggregated-metrics.json"
 
-# filePath = input("Enter file path: ")
-# df = pd.read_csv(filePath)
-df = pd.read_csv("results.csv")
+# read data frame from CSV file
+df = pd.read_csv(csv_input_file)
 
 # limit evaluated files to APIs with more than 4 operations
 df = df.query("WeightedServiceInterfaceCount > 4")
-spec_format_groups = df.groupby("specFormat")
+api_format_groups = df.groupby("ApiFormat")
 
 results = {"metrics": {}}
 
 for headerName, data in df.iteritems():
-    if headerName == "FILE-NAME":
+    if headerName == "FileName":
         continue
-    elif headerName == "specFormat":
-        temp = json.loads(spec_format_groups.count().to_json())
+    elif headerName == "ApiFormat":
+        temp = json.loads(api_format_groups.count().to_json())
         results["formats"] = temp[next(iter(temp))]
     else:
         results["metrics"][headerName] = {"all": json.loads(
@@ -137,29 +138,29 @@ for headerName, data in df.iteritems():
         df[headerName].plot.area()
         save(area + headerName + area_suffix)
 
-        df.boxplot(column=headerName, showfliers=False, by="specFormat")
+        df.boxplot(column=headerName, showfliers=False, by="ApiFormat")
         save(box + headerName + "_format" + box_suffix)
 
-        for specFormat in spec_format_groups.groups.keys():
-            results["metrics"][headerName][specFormat] = \
-                json.loads(spec_format_groups.get_group(specFormat)[
+        for ApiFormat in api_format_groups.groups.keys():
+            results["metrics"][headerName][ApiFormat] = \
+                json.loads(api_format_groups.get_group(ApiFormat)[
                            headerName].describe().to_json(double_precision=4))
 
-            spec_format_groups.get_group(specFormat).boxplot(
+            api_format_groups.get_group(ApiFormat).boxplot(
                 column=headerName, showfliers=False)
-            save(box + headerName + "_" + specFormat + box_suffix)
+            save(box + headerName + "_" + ApiFormat + box_suffix)
 
             if metricRanges[headerName]["range"][1] != 1:
-                spec_format_groups.get_group(specFormat)[headerName].hist(bins=range(int(metricRanges[headerName]["range"][0]), int(
+                api_format_groups.get_group(ApiFormat)[headerName].hist(bins=range(int(metricRanges[headerName]["range"][0]), int(
                     metricRanges[headerName]["range"][1]) + 1, 1), range=metricRanges[headerName]["range"])
             else:
-                spec_format_groups.get_group(specFormat)[headerName].hist(
+                api_format_groups.get_group(ApiFormat)[headerName].hist(
                     bins=bins, range=metricRanges[headerName]["range"])
-            save(hist + headerName + "_" + specFormat +
+            save(hist + headerName + "_" + ApiFormat +
                  hist_suffix, x=headerName, y='specification files')
 
-            spec_format_groups.get_group(specFormat)[headerName].plot.area()
-            save(area + headerName + "_" + specFormat + area_suffix)
+            api_format_groups.get_group(ApiFormat)[headerName].plot.area()
+            save(area + headerName + "_" + ApiFormat + area_suffix)
 
-with open("results.json", "w") as json_file:
+with open(results_file, "w") as json_file:
     json.dump(results, json_file)

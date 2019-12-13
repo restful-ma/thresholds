@@ -1,7 +1,7 @@
 const fs = require("fs");
 const exec = require("child_process").execSync;
 const path = require("path");
-const { ensureDirExists } = require("./utils");
+const { ensureDirExists, logTime } = require("./utils");
 
 const start = process.hrtime();
 
@@ -25,30 +25,17 @@ function main() {
 
     for (let i = 0; i < fileList.length; i++) {
         try {
-            console.log(i);
             convertFile(fileList[i]);
-            elapsedTime();
+            logTime(start);
         } catch (e) {
             console.log("SKIPPED " + fileList[i]);
             console.log(
                 "LOG ERROR to ConversionFailure.txt --------------------------------------------------"
             );
             console.log(e);
-            fs.appendFileSync("ConversionFailure.txt", fileList[i] + "\n");
+            fs.appendFileSync("conversion-failure.log", fileList[i] + "\n");
         }
     }
-}
-
-function elapsedTime() {
-    const precision = 3;
-    const elapsed = process.hrtime(start)[1] / 1000000;
-    console.log(
-        "Total time in seconds: " +
-            process.hrtime(start)[0] +
-            " s, time for last file: " +
-            elapsed.toFixed(precision) +
-            " ms"
-    );
 }
 
 function convertFile(name) {
@@ -58,11 +45,11 @@ function convertFile(name) {
     console.log(outFileName);
 
     exec(
-        "swagger2openapi -r --yaml -o " +
-            outDirectory +
-            outFileName +
-            " " +
-            inputFileName,
+        "npx swagger2openapi -r --yaml -o " +
+        outDirectory +
+        outFileName +
+        " " +
+        inputFileName,
         async (err, stdout, stderr) => {
             if (err) {
                 // node couldn't execute the command
@@ -81,7 +68,7 @@ function recFindByExt(base, files, result) {
     files = files || fs.readdirSync(base);
     result = result || [];
 
-    files.forEach(function(file) {
+    files.forEach(function (file) {
         const newbase = path.join(base, file);
         if (fs.statSync(newbase).isDirectory()) {
             result = recFindByExt(newbase, fs.readdirSync(newbase), result);
