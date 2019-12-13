@@ -13,6 +13,9 @@ npm install                         # nodejs
 pip install -r requirements.txt     # python
 
 # collect metrics for all API types via RAMA CLI (list of JSON files in ./results/<api-format>)
+    # the script expects the RAMA CLI to be located at `../rama-cli/target/rama-cli-0.1.2.jar`
+    # you can use the following helper script to automatically set this up: `download-and-build-rama-cli.sh`
+    # if the JAR is located somewhere else, use the --cliPath argument to specify the path to it
 node src/01-collect-metrics.js --format=raml
 node src/01-collect-metrics.js --format=wadl
 node src/01-collect-metrics.js --format=openapi
