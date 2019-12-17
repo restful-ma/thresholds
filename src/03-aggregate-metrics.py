@@ -88,8 +88,6 @@ box = "./results/diagrams/box/"
 box_suffix = "-box"
 hist = "./results/diagrams/hist/"
 hist_suffix = "-hist"
-area = "./results/diagrams/area/"
-area_suffix = "-area"
 csv_input_file = "./results/metrics.csv"
 results_file = "./results/aggregated-metrics.json"
 
@@ -133,10 +131,7 @@ for headerName, data in df.iteritems():
             df[headerName].hist(
                 bins=bins, range=metricRanges[headerName]["range"])
         save(hist + headerName + hist_suffix,
-             x=headerName, y='specification files')
-
-        df[headerName].plot.area()
-        save(area + headerName + area_suffix)
+             x=headerName, y='# of APIs')
 
         df.boxplot(column=headerName, showfliers=False, by="ApiFormat")
         save(box + headerName + "_format" + box_suffix)
@@ -157,10 +152,7 @@ for headerName, data in df.iteritems():
                 api_format_groups.get_group(ApiFormat)[headerName].hist(
                     bins=bins, range=metricRanges[headerName]["range"])
             save(hist + headerName + "_" + ApiFormat +
-                 hist_suffix, x=headerName, y='specification files')
-
-            api_format_groups.get_group(ApiFormat)[headerName].plot.area()
-            save(area + headerName + "_" + ApiFormat + area_suffix)
+                 hist_suffix, x=headerName, y='# of APIs')
 
 with open(results_file, "w") as json_file:
     json.dump(results, json_file)
