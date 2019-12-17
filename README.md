@@ -12,3 +12,5 @@
 
 ## Purpose
 This benchmark uses a large collection of publicly available API descriptions (OpenAPI, RAML, WADL) to calculate metric thresholds for all metrics of the [RAMA CLI](https://github.com/restful-ma/rama-cli). The API files are located in the respective subfolders of `./benchmark-repository`.
+
+TODO: Finish documentation
