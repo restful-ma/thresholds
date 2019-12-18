@@ -25,7 +25,7 @@ node src/02-generate-csv.js --format=raml
 node src/02-generate-csv.js --format=wadl
 node src/02-generate-csv.js --format=openapi
 
-# produce aggregated JSON results file (./results/aggregated-metrics.json) as well as diagrams
+# produce aggregated JSON results file (./results/aggregated-metrics.json) as well as diagrams (./results/diagrams)
 python src/03-aggregate-metrics.py
 
 # produce LaTex tables with statistic results (./results/latex-tables.tex); only works if all three formats have been generated
